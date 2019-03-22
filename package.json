@@ -10,7 +10,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "deploy": "ng build --prod --base-href '/cutie/' && npx angular-cli-ghpages"
+    "deploy": "ng build --prod --base-href '/cutie/' && npx angular-cli-ghpages --dir=www"
   },
   "private": true,
   "dependencies": {
