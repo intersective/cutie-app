@@ -10,7 +10,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "deploy": "ng build --prod --base-href '/cutie/' && npx angular-cli-ghpages --dir=www"
+    "deploy": "ng build --base-href '/cutie/' && npx angular-cli-ghpages --dir=www"
   },
   "private": true,
   "dependencies": {
@@ -56,5 +56,5 @@
     "tslint": "~5.12.0",
     "typescript": "~3.1.6"
   },
-  "description": "An Ionic project"
+  "description": "Practera CUTIE project"
 }
