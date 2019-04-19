@@ -33,7 +33,6 @@ $RECYCLE.BIN/
 Thumbs.db
 UserInterfaceState.xcuserstate
 
-electron/
 android/
 ios/
 .gradle/

@@ -1,0 +1,6 @@
+{
+  "appId": "cutie.practera.app",
+  "appName": "cutie",
+  "bundledWebRuntime": false,
+  "webDir": "www"
+}
