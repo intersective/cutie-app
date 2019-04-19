@@ -17,11 +17,9 @@ Run `npm run start` to start a development server on your local, and calling sta
 
 We use Capacitor to make the app work on Android, IOS & Electron
 
-
 ### Android
  - install [JAVA 8 JDK](https://www.oracle.com/technetwork/java/javaee/downloads/jdk8-downloads-2133151.html)
  - install [Android Studio](https://developer.android.com/studio/index.html)
- - run `npx cap add android` to add android folder
  - run `npx cap open android` to open the project
 
 ### IOS
@@ -29,11 +27,11 @@ We use Capacitor to make the app work on Android, IOS & Electron
  - install the Xcode Command Line tools (either from Xcode, or running `xcode-select --install`)
  - run `sudo gem install cocoapods` to install cocoapods
  - run `pod repo update` to update Cocoapods
- - run `npx cap add ios` to add ios folder
  - run `npx cap open ios` to open the project in Xcode
 
 ### Electron
- - run `npx cap add electron` to add electron folder
  - run `npm run electron:start` to launch the Electron instance
 
-After code changes, in order to test the code on Android/IOS/Electron, run `npm run build`
+After code changes, in order to test the code on Android/IOS/Electron, run `npm run build`.
+
+If there are dependency changes, run `npx cap sync`
