@@ -7,7 +7,7 @@
 - Ionic 4
 - Angular 7
 
-## Install
+## Installation
 
 Run `npm install` to install necessary packages
 
@@ -19,11 +19,16 @@ We use Capacitor to make the app work on Android, IOS & Electron
 
 
 ### Android
+ - install [JAVA 8 JDK](https://www.oracle.com/technetwork/java/javaee/downloads/jdk8-downloads-2133151.html)
+ - install [Android Studio](https://developer.android.com/studio/index.html)
  - run `npx cap add android` to add android folder
  - run `npx cap open android` to open the project
 
 ### IOS
+ - Xcode 9 or above version is needed
+ - install the Xcode Command Line tools (either from Xcode, or running `xcode-select --install`)
  - run `sudo gem install cocoapods` to install cocoapods
+ - run `pod repo update` to update Cocoapods
  - run `npx cap add ios` to add ios folder
  - run `npx cap open ios` to open the project in Xcode
 
