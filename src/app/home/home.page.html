@@ -1,14 +1,65 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>
-      Ionic Blank
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+<app-navbar></app-navbar>
 
 <ion-content>
-  <div class="ion-padding">
-    The world is your oyster.
-    <p>If you get lost, the <a target="_blank" rel="noopener" href="https://ionicframework.com/docs/">docs</a> will be your guide.</p>
+  <app-metric-grid></app-metric-grid>
+  <div class="people-list">
+    <ion-toolbar>
+      <ion-title>Student progress</ion-title>
+      <ion-buttons slot="primary">
+        <ion-button color="primary">
+          <ion-icon slot="icon-only" name="filter"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+    <ngx-datatable
+      [rows]="rows"
+      [columnMode]="'force'"
+      [headerHeight]="48"
+      [rowHeight]="48"
+      [selected]="selected"
+      [selectionType]="'checkbox'"
+      class="material">
+      <ngx-datatable-column
+        [width]="48"
+        [sortable]="false"
+        [canAutoResize]="false"
+        [draggable]="false"
+        [resizeable]="false"
+        [headerCheckboxable]="true"
+        [checkboxable]="true">
+      </ngx-datatable-column>
+      <ngx-datatable-column
+        name="Student"
+        [sortable]="true"
+        [canAutoResize]="false"
+        [draggable]="false"
+        [resizeable]="false">
+      </ngx-datatable-column>
+      <ngx-datatable-column
+        name="Progress"
+        [sortable]="true"
+        [canAutoResize]="false"
+        [draggable]="false"
+        [resizeable]="false">
+        <ng-template let-value="value" ngx-datatable-cell-template>
+          <ion-progress-bar [value]=value></ion-progress-bar>
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column
+        name="Action"
+        [width]="128"
+        [sortable]="true"
+        [canAutoResize]="false"
+        [draggable]="false"
+        [resizeable]="false">
+        <ng-template ngx-datatable-cell-template>
+          <ion-button color="medium" fill="clear" size="small">
+            <ion-icon slot="icon-only" name="more"></ion-icon>
+          </ion-button>
+        </ng-template>
+      </ngx-datatable-column>
+    </ngx-datatable>
   </div>
 </ion-content>
+
+<app-elsa-bar></app-elsa-bar>

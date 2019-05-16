@@ -1,0 +1,7 @@
+ion-toolbar {
+  --background: transparent;
+
+  ion-buttons[slot='primary'] {
+    margin-right: 8px;
+  }
+}

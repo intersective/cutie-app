@@ -1,0 +1,117 @@
+// Default Material theme
+@import '~@swimlane/ngx-datatable/release/index.css';
+@import '~@swimlane/ngx-datatable/release/themes/material.css';
+@import '~@swimlane/ngx-datatable/release/assets/icons.css';
+
+// Customizations
+
+.ngx-datatable.material {
+  box-shadow: none;
+  background-color: transparent;
+}
+
+.ngx-datatable.material .datatable-header {
+  border-bottom: 0.5px solid var(--ion-color-medium-tint);
+}
+
+.ngx-datatable.material .datatable-header .datatable-header-cell {
+  padding: .75rem 1.5rem;
+  color: var(--ion-text-color);
+  font-size: 14px;
+  line-height: 24px;
+}
+
+.ngx-datatable.material .datatable-body .datatable-body-row .datatable-body-cell {
+  padding: .75rem 1.5rem;
+  color: var(--ion-text-color);
+  line-height: 20px;
+}
+.ngx-datatable.material .datatable-body .datatable-body-row .datatable-body-group-cell {
+  padding: .75rem 1.5rem;
+  color: var(--ion-text-color);
+  line-height: 20px;
+}
+
+.datatable-checkbox {
+  position: relative;
+  margin: 0;
+  cursor: pointer;
+  vertical-align: middle;
+  display: inline-block;
+  box-sizing: border-box;
+  padding: 0;
+}
+.datatable-checkbox input[type='checkbox'] {
+position: absolute;
+margin: 0;
+left: 0;
+top: 50%;
+transform: translateY(-50%);
+width: 24px;
+height: 24px;
+cursor: pointer;
+outline: none;
+appearance: none;
+}
+.datatable-checkbox input[type='checkbox']:before {
+  transition: none;
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  width: 24px;
+  height: 24px;
+  border: none;
+  background-size: 24px 24px;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-image: url(data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Im0wIDBoMjR2MjRoLTI0eiIvPjxwYXRoIGQ9Im0xOSA1djE0aC0xNHYtMTR6bTAtMmgtMTRjLTEuMSAwLTIgLjktMiAydjE0YzAgMS4xLjkgMiAyIDJoMTRjMS4xIDAgMi0uOSAyLTJ2LTE0YzAtMS4xLS45LTItMi0yeiIgZmlsbD0iI2FmYjVkMiIvPjwvZz48L3N2Zz4=);
+}
+
+.datatable-checkbox input[type='checkbox']:checked:before {
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  border: none;
+  background-size: 24px 24px;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-image: url(data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Im0wIDBoMjR2MjRoLTI0eiIvPjxwYXRoIGQ9Im0xOSAzaC0xNGMtMS4xMSAwLTIgLjktMiAydjE0YzAgMS4xLjg5IDIgMiAyaDE0YzEuMTEgMCAyLS45IDItMnYtMTRjMC0xLjEtLjg5LTItMi0yem0tOSAxNC01LTUgMS40MS0xLjQxIDMuNTkgMy41OCA3LjU5LTcuNTkgMS40MSAxLjQyeiIgZmlsbD0iIzJiYzFkOSIvPjwvZz48L3N2Zz4=);
+}
+
+.datatable-checkbox input[type='checkbox']:after {
+  // content: "";
+  // position: absolute;
+  // left: 0;
+  // top: 50%;
+  // transform: translateY(-50%);
+  // width: 24px;
+  // height: 24px;
+  // background: #fff;
+  // cursor: pointer;
+  display: none;
+}
+
+// Position progress bar
+.datatable-body-cell {
+  ion-progress-bar {
+    margin: 8px 0;
+  }
+
+  ion-button {
+    height: 24px;
+    --padding-start: 12px;
+    --padding-end: 12px;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
+
+// Add dividers back to rows
+.datatable-body-row {
+  border-bottom: 0.5px solid var(--ion-color-medium-tint);
+}

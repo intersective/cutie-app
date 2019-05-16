@@ -1,0 +1,19 @@
+:host {
+  height: 144px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-content: center;
+  text-align: center;
+}
+
+.metric-value {
+  color: var(--ion-text-color);
+  flex-basis: 100%;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.metric-label {
+  color: var(--ion-color-medium-shade);
+}

@@ -1,0 +1,43 @@
+.elsa-ghost {
+  width: 112px;
+  height: 112px;
+  margin: 16px;
+}
+
+.elsa-ghost-gray {
+  animation: anticlockwise 5s infinite linear;
+  transform-origin: 50% 50%;
+}
+
+.elsa-ghost-green {
+  animation: clockwise 5s infinite linear;
+  transform-origin: 50% 50%;
+}
+
+.elsa-ghost-purple {
+  animation: clockwise 3s infinite linear;
+  transform-origin: 50% 50%;
+}
+
+.elsa-ghost-white {
+  animation: anticlockwise 9s infinite linear;
+  transform-origin: 50% 50%;
+}
+
+@keyframes clockwise {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes anticlockwise {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
