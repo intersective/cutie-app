@@ -17,8 +17,8 @@ const api = {
 };
 
 export interface Enrolment {
-  uid: string;
   name: string;
+  userUid: string;
 }
 
 @Injectable({
@@ -32,14 +32,23 @@ export class HomeService {
 
   getEnrolments(offset = 0, limit = 10) {
     return this.request.get(api.get.enrolments, {params: {
-        offset: offset,
-        limit: limit,
-        role: 'participant',
-        fields: 'name'
-      }})
-      .pipe(map(response => {
-        return response;
-      })
-    );
+      offset: offset,
+      limit: limit,
+      role: 'participant',
+      fields: 'name,user_uid'
+    }})
+    .pipe(map(response => {
+      const enrolments: Array<Enrolment> = [];
+      response.data.forEach(enrolment => {
+        enrolments.push({
+          name: enrolment.name,
+          userUid: enrolment.user_uid
+        });
+      });
+      return {
+        data: enrolments,
+        total: response.total
+      };
+    }));
   }
 }

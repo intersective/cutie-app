@@ -41,8 +41,32 @@
         [canAutoResize]="false"
         [draggable]="false"
         [resizeable]="false">
-        <ng-template let-value="value" ngx-datatable-cell-template>
-          <ion-progress-bar [value]=value></ion-progress-bar>
+        <ng-template let-value="progresses" ngx-datatable-cell-template>
+          <ion-button *ngFor="let progress of progresses" [color]="progress.overdue ? 'danger' : 'success'">
+            <ng-container [ngSwitch]="progress.status">
+
+              <ng-container *ngSwitchCase="'done'">
+                <ion-icon name="checkmark"></ion-icon>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'in progress'">
+                <ion-icon name="create"></ion-icon>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'published'">
+                <ion-icon name="done-all"></ion-icon>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'not started'">
+
+              </ng-container>
+
+              <ng-container *ngSwitchDefault>
+                <ion-icon name="hourglass"></ion-icon>
+              </ng-container>
+
+            </ng-container>
+          </ion-button>
         </ng-template>
       </ngx-datatable-column>
       <ngx-datatable-column

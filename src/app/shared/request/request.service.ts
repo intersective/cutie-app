@@ -156,8 +156,15 @@ export class RequestService {
    * @returns {string}
    */
   public getPrefixUrl(endPoint: string) {
-    if (endPoint.indexOf('auth') >= 0) {
-      return this.apiUrlOld;
+    const oldEndPoints = [
+      'auth',
+      'message/notify/pusher_auth',
+      'message/notify/channels'
+    ];
+    for (let i = 0; i <= oldEndPoints.length; i++) {
+      if (endPoint.indexOf(oldEndPoints[i]) >= 0) {
+        return this.apiUrlOld;
+      }
     }
     return this.apiUrl;
   }
