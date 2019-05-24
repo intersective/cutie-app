@@ -38,11 +38,11 @@
       <ngx-datatable-column
         name="Progress"
         [sortable]="true"
-        [canAutoResize]="false"
+        [canAutoResize]="true"
         [draggable]="false"
         [resizeable]="false">
-        <ng-template let-value="progresses" ngx-datatable-cell-template>
-          <ion-button *ngFor="let progress of progresses" [color]="progress.overdue ? 'danger' : 'success'">
+        <ng-template let-value="value" ngx-datatable-cell-template>
+          <ion-button *ngFor="let progress of value" [color]="progress.overdue ? 'danger' : 'success'">
             <ng-container [ngSwitch]="progress.status">
 
               <ng-container *ngSwitchCase="'done'">
@@ -58,7 +58,7 @@
               </ng-container>
 
               <ng-container *ngSwitchCase="'not started'">
-
+                <ion-icon name="checkmark" [color]="progress.overdue ? 'danger' : 'success'"></ion-icon>
               </ng-container>
 
               <ng-container *ngSwitchDefault>
