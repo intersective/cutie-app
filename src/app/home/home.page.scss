@@ -10,3 +10,17 @@ app-metric-grid,
 ion-content {
   --background: var(--ion-background-color);
 }
+
+.progress {
+  div {
+    display: inline-block;
+  }
+  ion-button {
+    width: 100%;
+    vertical-align: middle;
+  }
+  span {
+    color: var(--ion-color-medium);
+    vertical-align: middle;
+  }
+}

@@ -52,8 +52,7 @@ export class PusherService {
           headers: {
             'Authorization': 'pusherKey=' + this.pusherKey,
             'appkey': environment.appkey,
-            'apikey': this.storage.getUser().apikey,
-            'timelineid': this.storage.getUser().timelineId
+            'apikey': this.storage.getUser().apikey
           },
         },
       });

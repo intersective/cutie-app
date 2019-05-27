@@ -6,7 +6,6 @@ import { IonicModule } from '@ionic/angular';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { ElsaGhostComponent } from './components/elsa-ghost/elsa-ghost.component';
 import { StorageService } from '@services/storage.service';
-import { UtilsService } from '@services/utils.service';
 
 @NgModule({
   declarations: [
@@ -26,7 +25,6 @@ import { UtilsService } from '@services/utils.service';
     ElsaGhostComponent
   ],
   providers: [
-    UtilsService,
     StorageService
   ]
 })

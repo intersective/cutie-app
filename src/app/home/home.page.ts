@@ -17,17 +17,22 @@ export class HomePage implements OnInit {
   constructor(
     private homeService: HomeService,
     private pusher: PusherService,
-    private utils: UtilsService
-  ) {}
+    public utils: UtilsService
+  ) {
+    this.utils.getEvent('student-progress').subscribe(event => {
+      const index = this.rows.findIndex(row => {
+        return row.uid === event.user_uid
+      });
+      this.rows[index].progress = event.progress;
+      this.rows = [...this.rows];
+    });
+  }
 
   ngOnInit() {
     this.pusher.initialisePusher();
     this.homeService.getEnrolments().subscribe(response => {
       this.enrolments = response.data;
       this._updateEnrolments();
-    });
-    this.utils.getEvent('student-progress').subscribe(event => {
-
     });
   }
 
@@ -40,38 +45,7 @@ export class HomePage implements OnInit {
       rows.push({
         uid: enrolment.userUid,
         student: enrolment.name,
-        progress: [
-          {
-              "due_date": "2018-09-08 07:00:00",
-              "status": "published",
-              "overdue": false
-          },
-          {
-              "due_date": "2018-09-08 07:00:00",
-              "status": "in progress",
-              "overdue": true
-          },
-          {
-              "due_date": "2018-09-08 07:00:00",
-              "status": "done",
-              "overdue": false
-          },
-          {
-              "due_date": "2018-09-08 07:00:00",
-              "status": "pending review",
-              "overdue": true
-          },
-          {
-              "due_date": "2019-09-08 07:00:00",
-              "status": "not started",
-              "overdue": false
-          },
-          {
-              "due_date": "2019-09-08 07:00:00",
-              "status": "not started",
-              "overdue": false
-          }
-        ],
+        progress: [],
         action: '...'
       });
     });
@@ -83,4 +57,7 @@ export class HomePage implements OnInit {
     return this.utils.timeComparer(date) <= 0;
   }
 
+  progressWidth(x) {
+    return Math.floor(100/x);
+  }
 }

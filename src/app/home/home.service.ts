@@ -35,7 +35,8 @@ export class HomeService {
       offset: offset,
       limit: limit,
       role: 'participant',
-      fields: 'name,user_uid'
+      fields: 'name,user_uid',
+      progress: true
     }})
     .pipe(map(response => {
       const enrolments: Array<Enrolment> = [];

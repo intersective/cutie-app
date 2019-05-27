@@ -1,10 +1,17 @@
-.div-logo {
-  margin-top: 10vh;
-  margin-bottom: 7vh;
+.logo {
+  margin-top: 25%;
+  margin-bottom: 5%;
+  span {
+    margin-left: 20px;
+    display: inline-block;
+    font-size: 40px;
+    font-weight: bold;
+  }
 }
 
-.div-after-logo {
-  margin: 0 30px 50px;
+.msg {
+  margin-left: 30%;
+  margin-right: 30%;
 }
 
 .vertical-middle {

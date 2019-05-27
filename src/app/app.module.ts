@@ -10,6 +10,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { RequestModule } from '@shared/request/request.module';
 import { PusherModule } from '@shared/pusher/pusher.module';
+import { UtilsService } from '@services/utils.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,7 +25,8 @@ import { PusherModule } from '@shared/pusher/pusher.module';
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    UtilsService
   ],
   bootstrap: [AppComponent]
 })
