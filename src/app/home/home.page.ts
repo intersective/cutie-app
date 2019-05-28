@@ -98,16 +98,12 @@ export class HomePage implements OnInit {
   }
 
   progressWidth(x) {
-    return Math.floor(100/x);
+    return (100/x - 0.1).toFixed(2);
   }
 
-  scrollLeft(i) {
-    const elementRef = this.progressRefs.toArray()[i];
-    elementRef.nativeElement.scrollTo({left: elementRef.nativeElement.scrollLeft - 100});
-  }
-
-  scrollRight(i) {
-    const elementRef = this.progressRefs.toArray()[i];
-    elementRef.nativeElement.scrollTo({left: elementRef.nativeElement.scrollLeft + 100});
+  scroll(scrollLeft) {
+    this.progressRefs.toArray().forEach(progressRef => {
+      progressRef.nativeElement.scrollTo({left: scrollLeft});
+    });
   }
 }

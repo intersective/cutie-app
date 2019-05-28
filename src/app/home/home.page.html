@@ -50,18 +50,18 @@
         [canAutoResize]="true"
         [draggable]="false"
         [resizeable]="false">
-        <ng-template let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+        <ng-template let-value="value" ngx-datatable-cell-template>
           <div class="cell">
             <ion-button
               class="btn-scroll-left"
               color="medium"
               fill="clear"
-              (click)="scrollLeft(rowIndex)"
+              (click)="scroll(progressRef.scrollLeft - 100)"
               *ngIf="progressRef.scrollWidth > progressRef.offsetWidth">
               <ion-icon name="arrow-dropleft"></ion-icon>
             </ion-button>
 
-            <div class="progress" #progressRef>
+            <div class="progress" (scroll)="scroll(progressRef.scrollLeft)" #progressRef>
               <div *ngFor="let progress of value; let i = index" [style.width]="progressWidth(value.length) + '%'" #iconRef>
 
                 <ng-container *ngIf="progress.status === 'not started' || progress.status === 'in progress'">
@@ -94,7 +94,7 @@
               class="btn-scroll-right"
               color="medium"
               fill="clear"
-              (click)="scrollRight(rowIndex)"
+              (click)="scroll(progressRef.scrollLeft + 100)"
               *ngIf="progressRef.scrollWidth > progressRef.offsetWidth">
               <ion-icon name="arrow-dropright"></ion-icon>
             </ion-button>
