@@ -7,6 +7,7 @@ import { MetricPaneComponent } from './components/metric-pane/metric-pane.compon
 import { MetricGridComponent } from './components/metric-grid/metric-grid.component';
 import { ElsaBarComponent } from './components/elsa-bar/elsa-bar.component';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { ProgressPopoverComponent } from './components/progress-popover/progress-popover.component';
 
 @NgModule({
   imports: [
@@ -23,7 +24,11 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
     HomePage,
     MetricPaneComponent,
     MetricGridComponent,
-    ElsaBarComponent
+    ElsaBarComponent,
+    ProgressPopoverComponent
+  ],
+  entryComponents: [
+    ProgressPopoverComponent
   ]
 })
 export class HomeModule {}

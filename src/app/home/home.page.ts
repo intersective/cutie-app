@@ -2,7 +2,8 @@ import { Component, OnInit, ViewChildren, ElementRef, QueryList } from '@angular
 import { HomeService, Enrolment } from './home.service';
 import { PusherService } from '@shared/pusher/pusher.service';
 import { UtilsService } from '@services/utils.service';
-
+import { PopoverController } from '@ionic/angular';
+import { ProgressPopoverComponent } from './components/progress-popover/progress-popover.component';
 
 @Component({
   selector: 'app-home',
@@ -23,7 +24,8 @@ export class HomePage implements OnInit {
   constructor(
     private homeService: HomeService,
     private pusher: PusherService,
-    public utils: UtilsService
+    public utils: UtilsService,
+    public popoverController: PopoverController
   ) {
     this.utils.getEvent('student-progress').subscribe(event => {
       let index = this.rows.findIndex(row => {
@@ -95,6 +97,18 @@ export class HomePage implements OnInit {
 
   isOverDue(date: string) {
     return this.utils.timeComparer(date) <= 0;
+  }
+
+  async presentPopover(ev: any, progress) {
+    const popover = await this.popoverController.create({
+      component: ProgressPopoverComponent,
+      event: ev,
+      componentProps: {
+        progress: progress
+      },
+      mode: 'ios'
+    });
+    return await popover.present();
   }
 
   progressWidth(x) {
