@@ -50,40 +50,60 @@
         [canAutoResize]="true"
         [draggable]="false"
         [resizeable]="false">
-        <ng-template let-value="value" ngx-datatable-cell-template>
-          <div class="progress">
-            <div *ngFor="let progress of value; let i = index" [style.width]="progressWidth(value.length) + '%'">
+        <ng-template let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+          <div class="cell">
+            <ion-button
+              class="btn-scroll-left"
+              color="medium"
+              fill="clear"
+              (click)="scrollLeft(rowIndex)"
+              *ngIf="progressRef.scrollWidth > progressRef.offsetWidth">
+              <ion-icon name="arrow-dropleft"></ion-icon>
+            </ion-button>
 
-              <ng-container *ngIf="progress.status === 'not started' || progress.status === 'in progress'">
-                <ion-button *ngIf="progress.overdue" color="danger" fill="clear">
-                  <ion-icon name="information-circle-outline"></ion-icon>
-                </ion-button>
-                <ion-button *ngIf="!progress.overdue" color="medium" fill="clear">
-                  <ion-icon name="radio-button-off"></ion-icon>
-                </ion-button>
-              </ng-container>
+            <div class="progress" #progressRef>
+              <div *ngFor="let progress of value; let i = index" [style.width]="progressWidth(value.length) + '%'" #iconRef>
 
-              <ng-container *ngIf="progress.status === 'done' || progress.status === 'published'">
-                <ion-button [color]="progress.overdue ? 'warning' : 'success'" fill="clear">
-                  <ion-icon name="checkmark-circle-outline"></ion-icon>
-                </ion-button>
-              </ng-container>
+                <ng-container *ngIf="progress.status === 'not started' || progress.status === 'in progress'">
+                  <ion-button *ngIf="progress.overdue" color="danger" fill="clear" (click)="presentPopover($event, progress)">
+                    <ion-icon name="information-circle-outline"></ion-icon>
+                  </ion-button>
+                  <ion-button *ngIf="!progress.overdue" color="medium" fill="clear" (click)="presentPopover($event, progress)">
+                    <ion-icon name="radio-button-off"></ion-icon>
+                  </ion-button>
+                </ng-container>
 
-              <ng-container *ngIf="progress.status === 'pending review' || progress.status === 'pending approval'">
-                <ion-button [color]="progress.overdue ? 'warning' : 'success'" fill="clear">
-                  <ion-icon name="hourglass"></ion-icon>
-                </ion-button>
-              </ng-container>
+                <ng-container *ngIf="progress.status === 'done' || progress.status === 'published'">
+                  <ion-button [color]="progress.overdue ? 'warning' : 'success'" fill="clear" (click)="presentPopover($event, progress)">
+                    <ion-icon name="checkmark-circle-outline"></ion-icon>
+                  </ion-button>
+                </ng-container>
 
-              <span color="light" *ngIf="i < value.length - 1">|</span>
+                <ng-container *ngIf="progress.status === 'pending review' || progress.status === 'pending approval'">
+                  <ion-button [color]="progress.overdue ? 'warning' : 'success'" fill="clear" (click)="presentPopover($event, progress)">
+                    <ion-icon name="hourglass"></ion-icon>
+                  </ion-button>
+                </ng-container>
 
+                <span color="light" *ngIf="i < value.length - 1 && iconRef.offsetWidth >= 60">|</span>
+
+              </div>
             </div>
+
+            <ion-button
+              class="btn-scroll-right"
+              color="medium"
+              fill="clear"
+              (click)="scrollRight(rowIndex)"
+              *ngIf="progressRef.scrollWidth > progressRef.offsetWidth">
+              <ion-icon name="arrow-dropright"></ion-icon>
+            </ion-button>
           </div>
         </ng-template>
       </ngx-datatable-column>
       <ngx-datatable-column
         name="Action"
-        [width]="128"
+        [width]="90"
         [sortable]="false"
         [canAutoResize]="false"
         [draggable]="false"

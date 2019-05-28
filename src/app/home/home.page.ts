@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChildren, ElementRef, QueryList } from '@angular/core';
 import { HomeService, Enrolment } from './home.service';
 import { PusherService } from '@shared/pusher/pusher.service';
 import { UtilsService } from '@services/utils.service';
@@ -18,6 +18,7 @@ export class HomePage implements OnInit {
   count = 0;
   loading = false;
   progresses = [];
+  @ViewChildren('progressRef', {read: ElementRef}) progressRefs: QueryList<ElementRef>;
 
   constructor(
     private homeService: HomeService,
@@ -98,5 +99,15 @@ export class HomePage implements OnInit {
 
   progressWidth(x) {
     return Math.floor(100/x);
+  }
+
+  scrollLeft(i) {
+    const elementRef = this.progressRefs.toArray()[i];
+    elementRef.nativeElement.scrollTo({left: elementRef.nativeElement.scrollLeft - 100});
+  }
+
+  scrollRight(i) {
+    const elementRef = this.progressRefs.toArray()[i];
+    elementRef.nativeElement.scrollTo({left: elementRef.nativeElement.scrollLeft + 100});
   }
 }
