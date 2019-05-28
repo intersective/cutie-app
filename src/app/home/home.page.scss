@@ -12,8 +12,15 @@ ion-content {
 }
 
 .progress {
+  overflow-x: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;  // Safari and Chrome
+  }
   div {
     display: inline-block;
+    min-width: 60px;
   }
   ion-button {
     width: 100%;

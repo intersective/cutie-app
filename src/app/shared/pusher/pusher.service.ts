@@ -28,7 +28,7 @@ export class PusherService {
     teamNoMentor: null,
     notification: null
   };
-  private channels = {
+  public channels = {
     presence: null,
     team: null,
     teamNoMentor: null,
@@ -43,6 +43,9 @@ export class PusherService {
   ) { }
 
   initialisePusher() {
+    if (this.pusher) {
+      return;
+    }
     try {
       this.pusher = new Pusher(this.pusherKey, {
         cluster: 'mt1',

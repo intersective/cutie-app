@@ -13,6 +13,11 @@ export class HomePage implements OnInit {
   enrolments: Array<Enrolment> = [];
   rows = [];
   selected = [];
+  limit = 10;
+  offset = 0;
+  count = 0;
+  loading = false;
+  progresses = [];
 
   constructor(
     private homeService: HomeService,
@@ -20,19 +25,45 @@ export class HomePage implements OnInit {
     public utils: UtilsService
   ) {
     this.utils.getEvent('student-progress').subscribe(event => {
-      const index = this.rows.findIndex(row => {
+      let index = this.rows.findIndex(row => {
         return row.uid === event.user_uid
       });
+      // store the progress if the row data is not ready yet
+      if (index < 0) {
+        return this.progresses.push(event);
+      }
       this.rows[index].progress = event.progress;
+      // retrive any stored progress data and display them
+      this.progresses.forEach(progress => {
+        index = this.rows.findIndex(row => {
+          return row.uid === progress.user_uid
+        });
+        this.rows[index].progress = progress.progress;
+      });
+      this.progresses = [];
       this.rows = [...this.rows];
     });
   }
 
   ngOnInit() {
     this.pusher.initialisePusher();
-    this.homeService.getEnrolments().subscribe(response => {
+    this.getEnrolments(this.offset, this.limit);
+  }
+
+  getEnrolments(offset, limit) {
+    this.loading = true;
+    // try to get the enrolment data only if pusher is ready
+    if (!this.pusher.channels.notification) {
+      setTimeout(() => {
+        this.getEnrolments(offset, limit);
+      }, 500);
+      return ;
+    }
+    this.homeService.getEnrolments(offset, limit).subscribe(response => {
       this.enrolments = response.data;
+      this.count = response.total;
       this._updateEnrolments();
+      this.loading = false;
     });
   }
 
@@ -51,6 +82,14 @@ export class HomePage implements OnInit {
     });
     // trigger the data table detection
     this.rows = rows;
+  }
+
+  page(event) {
+    this.getEnrolments(event.offset * event.limit, event.limit);
+  }
+
+  sort(event) {
+    console.log(event);
   }
 
   isOverDue(date: string) {

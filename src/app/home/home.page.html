@@ -7,7 +7,7 @@
       <ion-title>Student progress</ion-title>
       <ion-buttons slot="primary">
         <ion-button color="primary">
-          <ion-icon slot="icon-only" name="filter"></ion-icon>
+          <ion-icon slot="icon-only" name="funnel"></ion-icon>
         </ion-button>
       </ion-buttons>
     </ion-toolbar>
@@ -15,9 +15,18 @@
       [rows]="rows"
       [columnMode]="'force'"
       [headerHeight]="48"
+      [footerHeight]="48"
       [rowHeight]="48"
       [selected]="selected"
       [selectionType]="'checkbox'"
+      [limit]="limit"
+      [offset]="offset"
+      [count]="count"
+      externalPaging=true
+      externalSorting=true
+      [loadingIndicator]="loading"
+      (page)="page($event)"
+      (sort)="sort($event)"
       class="material">
       <ngx-datatable-column
         [width]="48"
@@ -30,7 +39,7 @@
       </ngx-datatable-column>
       <ngx-datatable-column
         name="Student"
-        [sortable]="true"
+        [sortable]="false"
         [canAutoResize]="false"
         [draggable]="false"
         [resizeable]="false">
@@ -75,7 +84,7 @@
       <ngx-datatable-column
         name="Action"
         [width]="128"
-        [sortable]="true"
+        [sortable]="false"
         [canAutoResize]="false"
         [draggable]="false"
         [resizeable]="false">
@@ -89,4 +98,4 @@
   </div>
 </ion-content>
 
-<app-elsa-bar></app-elsa-bar>
+<!-- <app-elsa-bar></app-elsa-bar> -->
