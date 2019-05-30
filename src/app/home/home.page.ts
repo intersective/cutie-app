@@ -78,7 +78,10 @@ export class HomePage implements OnInit {
     this.enrolments.forEach(enrolment => {
       rows.push({
         uid: enrolment.userUid,
-        student: enrolment.name,
+        student: {
+          name: enrolment.name,
+          image: enrolment.image
+        },
         progress: [],
         action: '...'
       });

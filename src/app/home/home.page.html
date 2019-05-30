@@ -27,7 +27,8 @@
       [loadingIndicator]="loading"
       (page)="page($event)"
       (sort)="sort($event)"
-      class="material">
+      class="material"
+      margin-horizontal>
       <ngx-datatable-column
         [width]="48"
         [sortable]="false"
@@ -43,6 +44,12 @@
         [canAutoResize]="false"
         [draggable]="false"
         [resizeable]="false">
+        <ng-template let-value="value" ngx-datatable-cell-template>
+          <div class="student">
+            <ion-avatar><img [src]="value.image"></ion-avatar>
+            {{ value.name }}
+          </div>
+        </ng-template>
       </ngx-datatable-column>
       <ngx-datatable-column
         name="Progress"

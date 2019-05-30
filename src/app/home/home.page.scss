@@ -27,14 +27,26 @@ ion-content {
   --padding-start: 0;
   --padding-end: 0;
 }
-
-.progress {
+@mixin scroll-bar() {
   overflow-x: scroll;
   -ms-overflow-style: none;
   scrollbar-width: none;
   &::-webkit-scrollbar {
     display: none;  // Safari and Chrome
   }
+}
+.student {
+  @include scroll-bar();
+  ion-avatar {
+    max-width: 30px;
+    max-height: 30px;
+    vertical-align: middle;
+    display: inline-block;
+  }
+}
+
+.progress {
+  @include scroll-bar();
   div {
     display: inline-block;
     min-width: 30px;

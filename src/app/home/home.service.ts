@@ -19,6 +19,7 @@ const api = {
 export interface Enrolment {
   name: string;
   userUid: string;
+  image?: string;
 }
 
 @Injectable({
@@ -42,18 +43,19 @@ export class HomeService {
       params['sort'] = sort.progress === 'asc' ? 'progress' : '-progress';
     }
     return this.request.get(api.get.enrolments, {params: params})
-    .pipe(map(response => {
-      const enrolments: Array<Enrolment> = [];
-      response.data.forEach(enrolment => {
-        enrolments.push({
-          name: enrolment.name,
-          userUid: enrolment.user_uid
+      .pipe(map(response => {
+        const enrolments: Array<Enrolment> = [];
+        response.data.forEach(enrolment => {
+          enrolments.push({
+            name: enrolment.name,
+            userUid: enrolment.user_uid,
+            image: enrolment.image ? enrolment.image : ''
+          });
         });
-      });
-      return {
-        data: enrolments,
-        total: response.total
-      };
-    }));
+        return {
+          data: enrolments,
+          total: response.total
+        };
+      }));
   }
 }
