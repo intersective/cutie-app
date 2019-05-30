@@ -30,14 +30,18 @@ export class HomeService {
     private request: RequestService,
   ) { }
 
-  getEnrolments(offset = 0, limit = 10) {
-    return this.request.get(api.get.enrolments, {params: {
+  getEnrolments(offset = 0, limit = 10, sort = null) {
+    const params = {
       offset: offset,
       limit: limit,
       role: 'participant',
       fields: 'name,user_uid',
       progress: true
-    }})
+    };
+    if (sort && sort.progress) {
+      params['sort'] = sort.progress === 'asc' ? 'progress' : '-progress';
+    }
+    return this.request.get(api.get.enrolments, {params: params})
     .pipe(map(response => {
       const enrolments: Array<Enrolment> = [];
       response.data.forEach(enrolment => {

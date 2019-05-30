@@ -53,16 +53,16 @@ export class HomePage implements OnInit {
     this.getEnrolments(this.offset, this.limit);
   }
 
-  getEnrolments(offset, limit) {
+  getEnrolments(offset, limit, sort = null) {
     this.loading = true;
     // try to get the enrolment data only if pusher is ready
     if (!this.pusher.channels.notification) {
       setTimeout(() => {
-        this.getEnrolments(offset, limit);
+        this.getEnrolments(offset, limit, sort);
       }, 500);
       return ;
     }
-    this.homeService.getEnrolments(offset, limit).subscribe(response => {
+    this.homeService.getEnrolments(offset, limit, sort).subscribe(response => {
       this.enrolments = response.data;
       this.count = response.total;
       this._updateEnrolments();
@@ -92,7 +92,9 @@ export class HomePage implements OnInit {
   }
 
   sort(event) {
-    console.log(event);
+    this.getEnrolments(this.offset, this.limit, {
+      progress: event.sorts[0].dir
+    });
   }
 
   isOverDue(date: string) {
