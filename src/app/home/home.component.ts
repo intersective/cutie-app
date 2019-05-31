@@ -7,10 +7,10 @@ import { ProgressPopoverComponent } from './components/progress-popover/progress
 
 @Component({
   selector: 'app-home',
-  templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss'],
+  templateUrl: 'home.component.html',
+  styleUrls: ['home.component.scss'],
 })
-export class HomePage implements OnInit {
+export class HomeComponent implements OnInit {
   enrolments: Array<Enrolment> = [];
   rows = [];
   selected = [];

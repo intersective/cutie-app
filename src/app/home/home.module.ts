@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { SharedModule } from '@shared/shared.module';
 import { RouterModule } from '@angular/router';
 
-import { HomePage } from './home.page';
+import { HomeComponent } from './home.component';
 import { MetricPaneComponent } from './components/metric-pane/metric-pane.component';
 import { MetricGridComponent } from './components/metric-grid/metric-grid.component';
 import { ElsaBarComponent } from './components/elsa-bar/elsa-bar.component';
@@ -15,13 +15,13 @@ import { ProgressPopoverComponent } from './components/progress-popover/progress
     RouterModule.forChild([
       {
         path: '',
-        component: HomePage
+        component: HomeComponent
       }
     ]),
     NgxDatatableModule
   ],
   declarations: [
-    HomePage,
+    HomeComponent,
     MetricPaneComponent,
     MetricGridComponent,
     ElsaBarComponent,
