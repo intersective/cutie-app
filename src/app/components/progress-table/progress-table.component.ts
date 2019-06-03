@@ -83,6 +83,7 @@ enrolments: Array<Enrolment> = [];
           name: enrolment.name,
           image: enrolment.image
         },
+        team: enrolment.teamName,
         progress: [],
       });
     });

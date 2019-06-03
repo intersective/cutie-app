@@ -18,6 +18,7 @@ const api = {
 
 export interface Enrolment {
   name: string;
+  teamName?: string;
   userUid: string;
   image?: string;
 }
@@ -36,7 +37,7 @@ export class ProgressTableService {
       offset: offset,
       limit: limit,
       role: 'participant',
-      fields: 'name,user_uid',
+      fields: 'name,user_uid,team_name',
       progress: true
     };
     if (sort) {
@@ -48,6 +49,7 @@ export class ProgressTableService {
         response.data.forEach(enrolment => {
           enrolments.push({
             name: enrolment.name,
+            teamName: enrolment.team_name,
             userUid: enrolment.user_uid,
             image: enrolment.image ? enrolment.image : ''
           });
