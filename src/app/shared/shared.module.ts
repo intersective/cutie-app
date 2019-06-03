@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
-import { NavbarComponent } from './components/navbar/navbar.component';
-import { ElsaGhostComponent } from './components/elsa-ghost/elsa-ghost.component';
+import { NavbarComponent } from '@components/navbar/navbar.component';
+import { ElsaGhostComponent } from '@components/elsa-ghost/elsa-ghost.component';
 import { StorageService } from '@services/storage.service';
 
 @NgModule({

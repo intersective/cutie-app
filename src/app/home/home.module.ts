@@ -6,8 +6,7 @@ import { HomeComponent } from './home.component';
 import { MetricPaneComponent } from './components/metric-pane/metric-pane.component';
 import { MetricGridComponent } from './components/metric-grid/metric-grid.component';
 import { ElsaBarComponent } from './components/elsa-bar/elsa-bar.component';
-import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-import { ProgressPopoverComponent } from './components/progress-popover/progress-popover.component';
+import { ProgressTableModule } from '@components/progress-table/progress-table.module';
 
 @NgModule({
   imports: [
@@ -18,17 +17,13 @@ import { ProgressPopoverComponent } from './components/progress-popover/progress
         component: HomeComponent
       }
     ]),
-    NgxDatatableModule
+    ProgressTableModule
   ],
   declarations: [
     HomeComponent,
     MetricPaneComponent,
     MetricGridComponent,
     ElsaBarComponent,
-    ProgressPopoverComponent
-  ],
-  entryComponents: [
-    ProgressPopoverComponent
   ]
 })
 export class HomeModule {}
