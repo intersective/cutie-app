@@ -159,7 +159,8 @@ export class RequestService {
     const oldEndPoints = [
       'auth',
       'message/notify/pusher_auth',
-      'message/notify/channels'
+      'message/notify/channels',
+      'api/users',
     ];
     for (let i = 0; i <= oldEndPoints.length; i++) {
       if (endPoint.indexOf(oldEndPoints[i]) >= 0) {

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { StorageService } from '@services/storage.service';
 
 @Component({
   selector: 'app-menu',
@@ -7,8 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MenuComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private storage: StorageService
+  ) { }
 
   ngOnInit() {}
+
+  getMyImage() {
+    return this.storage.getUser().image ? this.storage.getUser().image : 'https://my.practera.com/img/user-512.png';
+  }
 
 }

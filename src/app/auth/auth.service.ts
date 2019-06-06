@@ -4,6 +4,7 @@ import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { HttpParams } from '@angular/common/http';
 import { StorageService } from '@services/storage.service';
+import { UtilsService } from '@services/utils.service';
 
 /**
  * @name api
@@ -12,6 +13,7 @@ import { StorageService } from '@services/storage.service';
  */
 const api = {
   login: 'api/auths.json',
+  me: 'api/users.json',
 };
 
 @Injectable({
@@ -21,7 +23,8 @@ export class AuthService {
 
   constructor(
     private request: RequestService,
-    private storage: StorageService
+    private storage: StorageService,
+    private utils: UtilsService
   ) { }
 
   /**
@@ -51,7 +54,31 @@ export class AuthService {
       });
       this.storage.set('programs', programs);
     }
+    this.getMyInfo().subscribe();
     return response;
   }
 
+  /**
+   * @name getMyInfo
+   * @description get user info
+   */
+  getMyInfo(): Observable<any> {
+    return this.request.get(api.me).pipe(map(response => {
+      if (response.data) {
+        if (!this.utils.has(response, 'data.User')) {
+          return this.request.apiResponseFormatError('User format error');
+        }
+        const apiData = response.data.User;
+        this.storage.setUser({
+          name: apiData.name,
+          contactNumber: apiData.contact_number,
+          email: apiData.email,
+          role: apiData.role,
+          image: apiData.image,
+          userHash: apiData.userhash
+        });
+      }
+      return response;
+    }));
+  }
 }

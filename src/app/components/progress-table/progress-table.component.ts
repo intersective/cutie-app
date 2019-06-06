@@ -11,7 +11,7 @@ import { ProgressPopoverComponent } from '@components/progress-popover/progress-
   styleUrls: ['./progress-table.component.scss'],
 })
 export class ProgressTableComponent implements OnInit {
-enrolments: Array<Enrolment> = [];
+  enrolments: Array<Enrolment> = [];
   rows = [];
   selected = [];
   limit = 10;
