@@ -1,10 +1,14 @@
 import { Injectable } from '@angular/core';
 import { RequestService } from '@shared/request/request.service';
 import { Observable, of } from 'rxjs';
+import { delay } from 'rxjs/internal/operators';
 import { map } from 'rxjs/operators';
 import { HttpParams } from '@angular/common/http';
 import { StorageService } from '@services/storage.service';
 import { UtilsService } from '@services/utils.service';
+import { environment } from '@environments/environment';
+import { DemoService } from '@services/demo.service';
+
 
 /**
  * @name api
@@ -24,7 +28,8 @@ export class AuthService {
   constructor(
     private request: RequestService,
     private storage: StorageService,
-    private utils: UtilsService
+    private utils: UtilsService,
+    private demo: DemoService
   ) { }
 
   /**
@@ -33,6 +38,11 @@ export class AuthService {
    *              so must convert them into compatible formdata before submission
    */
   directLogin(token: string): Observable<any> {
+    if (environment.demo) {
+      const response = this.demo.directLogin();
+      this._handleLoginResponse(response);
+      return of(response).pipe(delay(2000));
+    }
     const body = new HttpParams()
       .set('auth_token', token);
     return this.request.post(api.login, body.toString(), {
@@ -63,22 +73,29 @@ export class AuthService {
    * @description get user info
    */
   getMyInfo(): Observable<any> {
-    return this.request.get(api.me).pipe(map(response => {
-      if (response.data) {
-        if (!this.utils.has(response, 'data.User')) {
-          return this.request.apiResponseFormatError('User format error');
-        }
-        const apiData = response.data.User;
-        this.storage.setUser({
-          name: apiData.name,
-          contactNumber: apiData.contact_number,
-          email: apiData.email,
-          role: apiData.role,
-          image: apiData.image,
-          userHash: apiData.userhash
-        });
+    if (environment.demo) {
+      const response = this.demo.getMyInfo();
+      this._handleMyInfo(response);
+      return of(response);
+    }
+    return this.request.get(api.me).pipe(map(this._handleMyInfo, this));
+  }
+
+  private _handleMyInfo(response) {
+    if (response.data) {
+      if (!this.utils.has(response, 'data.User')) {
+        return this.request.apiResponseFormatError('User format error');
       }
-      return response;
-    }));
+      const apiData = response.data.User;
+      this.storage.setUser({
+        name: apiData.name,
+        contactNumber: apiData.contact_number,
+        email: apiData.email,
+        role: apiData.role,
+        image: apiData.image,
+        userHash: apiData.userhash
+      });
+    }
+    return response;
   }
 }

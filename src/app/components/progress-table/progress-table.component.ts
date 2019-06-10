@@ -81,6 +81,7 @@ export class ProgressTableComponent implements OnInit {
         uid: enrolment.userUid,
         student: {
           name: enrolment.name,
+          email: enrolment.email,
           image: enrolment.image
         },
         team: enrolment.teamName,

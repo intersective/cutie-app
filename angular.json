@@ -110,6 +110,9 @@
             "production": {
               "browserTarget": "app:build:production"
             },
+            "demo": {
+              "browserTarget": "app:build:demo"
+            },
             "ci": {
               "progress": false
             }

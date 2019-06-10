@@ -43,6 +43,11 @@ export class PusherService {
   ) { }
 
   initialisePusher() {
+    // demo
+    if (environment.demo) {
+      this.channels.notification = 'demo';
+      return;
+    }
     if (this.pusher) {
       return;
     }
