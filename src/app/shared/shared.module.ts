@@ -4,13 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { NavbarComponent } from '@components/navbar/navbar.component';
-import { ElsaGhostComponent } from '@components/elsa-ghost/elsa-ghost.component';
 import { StorageService } from '@services/storage.service';
 
 @NgModule({
   declarations: [
-    NavbarComponent,
-    ElsaGhostComponent
+    NavbarComponent
   ],
   imports: [
     CommonModule,
@@ -21,8 +19,7 @@ import { StorageService } from '@services/storage.service';
     CommonModule,
     IonicModule,
     FormsModule,
-    NavbarComponent,
-    ElsaGhostComponent
+    NavbarComponent
   ],
   providers: [
     StorageService

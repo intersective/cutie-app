@@ -35,8 +35,18 @@
   ion-avatar {
     max-width: 30px;
     max-height: 30px;
-    vertical-align: middle;
     display: inline-block;
+  }
+  div {
+    display: inline-block;
+    margin-left: 5px;
+  }
+  .name {
+    margin: 0;
+  }
+  .email {
+    margin: 0;
+    font-size: 12px;
   }
 }
 

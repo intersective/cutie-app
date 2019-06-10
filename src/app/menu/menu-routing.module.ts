@@ -8,6 +8,7 @@ const routes: Routes = [{
   component: MenuComponent,
   children: [
     { path: '', loadChildren: '../home/home.module#HomeModule' },
+    { path: 'progress', loadChildren: '../progress/progress.module#ProgressModule' },
   ]
 }];
 

@@ -11,13 +11,10 @@
       <ion-content>
         <ion-list>
           <ion-item lines="none">
-            <ion-button fill="clear" size="large" color="dark">Dashboard</ion-button>
+            <ion-button fill="clear" size="large" color="dark" (click)="goTo()">Dashboard</ion-button>
           </ion-item>
           <ion-item lines="none">
-            <ion-button fill="clear" size="large" color="medium">Enrolments</ion-button>
-          </ion-item>
-          <ion-item lines="none">
-            <ion-button fill="clear" size="large" color="medium">Team</ion-button>
+            <ion-button fill="clear" size="large" color="medium" (click)="goTo('progress')">Progress</ion-button>
           </ion-item>
         </ion-list>
       </ion-content>
