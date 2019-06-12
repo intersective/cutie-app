@@ -1,43 +1,41 @@
-<ion-app>
-  <ion-split-pane>
-    <!--  our side menu  -->
-    <ion-menu class="drawer">
-      <ion-header>
-        <ion-toolbar>
-          <img src="./assets/practera-mark.svg" alt="Practera">
+<ion-split-pane>
+  <!--  our side menu  -->
+  <ion-menu class="drawer">
+    <ion-header>
+      <ion-toolbar>
+        <img src="./assets/practera-mark.svg" alt="Practera">
 
-        </ion-toolbar>
-      </ion-header>
-      <ion-content>
-        <ion-list>
-          <ion-item lines="none">
-            <ion-button fill="clear" size="large" [color]="currentPage === 'dashboard' ? 'dark' : 'medium'" (click)="goTo('')">Dashboard</ion-button>
-          </ion-item>
-          <ion-item lines="none">
-            <ion-button fill="clear" size="large" [color]="currentPage === 'progress' ? 'dark' : 'medium'" (click)="goTo('progress')">Progress</ion-button>
-          </ion-item>
-        </ion-list>
-      </ion-content>
-      <ion-footer>
-        <ion-toolbar>
-          <ion-buttons>
-            <ion-button color="medium" fill="clear" shape="round">
-              <ion-avatar>
-                <img [src]="getMyImage()" alt="Admin">
-              </ion-avatar>
-            </ion-button>
-            <!-- <ion-button color="medium" fill="clear" shape="round">
-              <ion-icon slot="icon-only" name="chatbubbles"></ion-icon>
-            </ion-button>
-            <ion-button color="medium" fill="clear" shape="round">
-              <ion-icon slot="icon-only" name="phone-portrait"></ion-icon>
-            </ion-button> -->
-          </ion-buttons>
-        </ion-toolbar>
-      </ion-footer>
-    </ion-menu>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-list>
+        <ion-item lines="none">
+          <ion-button fill="clear" size="large" [color]="currentPage === 'dashboard' ? 'dark' : 'medium'" (click)="goTo('')">Dashboard</ion-button>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-button fill="clear" size="large" [color]="currentPage === 'progress' ? 'dark' : 'medium'" (click)="goTo('progress')">Progress</ion-button>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+    <ion-footer>
+      <ion-toolbar>
+        <ion-buttons>
+          <ion-button color="medium" fill="clear" shape="round">
+            <ion-avatar>
+              <img [src]="getMyImage()" alt="Admin">
+            </ion-avatar>
+          </ion-button>
+          <!-- <ion-button color="medium" fill="clear" shape="round">
+            <ion-icon slot="icon-only" name="chatbubbles"></ion-icon>
+          </ion-button>
+          <ion-button color="medium" fill="clear" shape="round">
+            <ion-icon slot="icon-only" name="phone-portrait"></ion-icon>
+          </ion-button> -->
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-footer>
+  </ion-menu>
 
-    <!-- the main content -->
-    <ion-router-outlet main></ion-router-outlet>
-  </ion-split-pane>
-</ion-app>
+  <!-- the main content -->
+  <ion-router-outlet main></ion-router-outlet>
+</ion-split-pane>

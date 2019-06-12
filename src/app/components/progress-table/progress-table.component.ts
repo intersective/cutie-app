@@ -1,9 +1,10 @@
-import { Component, OnInit, ViewChildren, ElementRef, QueryList } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewChildren, ElementRef, QueryList } from '@angular/core';
 import { ProgressTableService, Enrolment } from './progress-table.service';
 import { PusherService } from '@shared/pusher/pusher.service';
 import { UtilsService } from '@services/utils.service';
 import { PopoverController } from '@ionic/angular';
 import { ProgressPopoverComponent } from '@components/progress-popover/progress-popover.component';
+import { IonInput } from '@ionic/angular';
 
 @Component({
   selector: 'app-progress-table',
@@ -13,13 +14,23 @@ import { ProgressPopoverComponent } from '@components/progress-popover/progress-
 export class ProgressTableComponent implements OnInit {
   enrolments: Array<Enrolment> = [];
   rows = [];
-  selected = [];
   limit = 10;
   offset = 0;
+  // sorted by progress
   sorted = null;
+  // total number of records
   count = 0;
+  // is getting data or not
   loading = false;
+  // type of progress table
+  type = 'student';
+  // progress array
   progresses = [];
+  // whether display search bar or not
+  searching = false;
+  // the value of the search bar
+  filter = '';
+  @ViewChild('searchRef') searchRef: IonInput;
   @ViewChildren('progressRef', {read: ElementRef}) progressRefs: QueryList<ElementRef>;
 
   constructor(
@@ -92,6 +103,34 @@ export class ProgressTableComponent implements OnInit {
     this.rows = rows;
   }
 
+  switchType() {
+    if (this.type === 'student') {
+      this.type = 'project';
+    } else {
+      this.type = 'student';
+    }
+  }
+
+  // toggle the search bar
+  onSearch() {
+    this.searching = !this.searching;
+    if (this.searching) {
+      setTimeout(
+        () => {
+          this.searchRef.setFocus();
+        },
+        500
+      );
+    }
+  }
+
+  /**
+   * filter the data based on value in search bar
+   */
+  search() {
+    this.getEnrolments();
+  }
+
   /**
    * Go to the next/any page
    */
@@ -122,6 +161,7 @@ export class ProgressTableComponent implements OnInit {
   }
 
   async presentPopover(ev: any, progress) {
+
     const popover = await this.popoverController.create({
       component: ProgressPopoverComponent,
       event: ev,

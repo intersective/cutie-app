@@ -5,6 +5,17 @@
   margin-left: 0;
   overflow: hidden;
 }
+ion-title {
+  ion-button {
+    vertical-align: middle;
+  }
+  ion-item {
+    display: inline-block;
+    background: transparent;
+    --background: transparent;
+    width: 100%;
+  }
+}
 .cell {
   position: relative;
   padding-right: 20px;

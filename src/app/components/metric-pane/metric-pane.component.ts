@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-metric-pane',
@@ -6,7 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./metric-pane.component.scss']
 })
 export class MetricPaneComponent implements OnInit {
-
+  @Input() value;
+  @Input() text;
   constructor() { }
 
   ngOnInit() {

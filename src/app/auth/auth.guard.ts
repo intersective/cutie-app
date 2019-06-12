@@ -16,8 +16,19 @@ export class AuthGuard implements CanActivate, CanActivateChild {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     // demo data
-    if (environment.demo && (!this.storage.getUser().apikey || this.storage.getUser().apikey !== 'demo-apikey')) {
-      this.router.navigate(['auth', 'demo']);
+    if (environment.demo) {
+      if (!this.storage.getUser().apikey || this.storage.getUser().apikey !== 'demo-apikey' || !this.storage.get('expire')) {
+        // the first time go to the app, demo direct login page
+        this.router.navigate(['auth', 'demo']);
+      } else {
+        // if it expired, demo direct login page
+        const expire = new Date(this.storage.get('expire'));
+        const now = new Date();
+        if (now > expire) {
+          this.router.navigate(['auth', 'demo']);
+        }
+      }
+      return true;
     }
     return true;
   }

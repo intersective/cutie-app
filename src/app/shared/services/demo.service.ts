@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { UtilsService } from '@services/utils.service';
+import { StorageService } from '@services/storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,11 +11,15 @@ export class DemoService {
   allStatus = ['not started', 'in progress', 'done', 'pending review', 'pending approval', 'published'];
 
   constructor(
-    private utils: UtilsService
+    private utils: UtilsService,
+    private storage: StorageService
   ) {}
 
   // auth.service
   directLogin() {
+    const expire = new Date();
+    expire.setHours(expire.getHours() + 1);
+    this.storage.set('expire', expire.toString());
     return {
       data: {
         apikey: 'demo-apikey',
@@ -63,7 +68,7 @@ export class DemoService {
 
   private _studentNames() {
     const enrolments = [];
-    this.students.forEach((st, i) => {
+    this._shuffle(this.students).forEach((st, i) => {
       enrolments.push({
         name: st,
         participant_email: 'user' + i + '@practera.com',
@@ -77,12 +82,12 @@ export class DemoService {
 
   private _randomTeam() {
     if (Math.random() < 0.4) {
-      return 'Team 1';
+      return 'Project 1';
     }
     if (Math.random() < 0.6) {
-      return 'Team 2';
+      return 'Project 2';
     }
-    return null;
+    return 'Project 3';
   }
 
   private _getProgress() {
@@ -111,6 +116,25 @@ export class DemoService {
       status: status,
       overdue: Math.random() > 0.7
     };
+  }
+
+  private _shuffle(array) {
+    let currentIndex = array.length, temporaryValue, randomIndex;
+
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+
+      // And swap it with the current element.
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+
+    return array;
   }
 
 }

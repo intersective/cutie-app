@@ -1,8 +1,31 @@
 <div class="people-list">
   <ion-toolbar>
-    <ion-title>Student progress</ion-title>
+    <ion-title *ngIf="!searching">
+      <ng-container *ngIf="type === 'student'">Student progress</ng-container>
+      <ng-container *ngIf="type === 'project'">Project progress</ng-container>
+      <ion-button color="primary" fill="clear" (click)="switchType()">
+        <ion-icon slot="icon-only" name="switch"></ion-icon>
+      </ion-button>
+      <ng-container *ngIf="type === 'project'">Student progress</ng-container>
+      <ng-container *ngIf="type === 'student'">Project progress</ng-container>
+    </ion-title>
+    <ion-title *ngIf="searching">
+      <ion-button color="primary" fill="clear" (click)="searching = false">
+        <ion-icon slot="icon-only" name="arrow-round-back"></ion-icon>
+      </ion-button>
+      <ion-item>
+        <ion-input
+          #searchRef
+          clearInput
+          debounce=1000
+          placeholder="searching"
+          (ionChange)="search()"
+          [(ngModel)]="filter"
+        ></ion-input>
+      </ion-item>
+    </ion-title>
     <ion-buttons slot="primary">
-      <ion-button color="primary">
+      <ion-button color="primary" (click)="onSearch()">
         <ion-icon slot="icon-only" name="search"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -13,8 +36,6 @@
     [headerHeight]="48"
     [footerHeight]="48"
     [rowHeight]="48"
-    [selected]="selected"
-    [selectionType]="'checkbox'"
     [limit]="limit"
     [offset]="offset"
     [count]="count"
@@ -36,6 +57,7 @@
     </ngx-datatable-column> -->
     <ngx-datatable-column
       name="Student"
+      [width]="200"
       [sortable]="false"
       [canAutoResize]="false"
       [draggable]="false"
@@ -51,7 +73,8 @@
       </ng-template>
     </ngx-datatable-column>
     <ngx-datatable-column
-      name="Team"
+      name="Project"
+      prop="team"
       [width]="90"
       [sortable]="false"
       [canAutoResize]="false"
