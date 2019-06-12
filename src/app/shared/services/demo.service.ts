@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { UtilsService } from '@services/utils.service';
 
 @Injectable({
   providedIn: 'root'
@@ -6,8 +7,11 @@ import { Injectable } from '@angular/core';
 
 export class DemoService {
   students = ['Caramel Dundee', 'Gosinder Shah', 'Mein Black', 'Gos Baxter', 'Monday Blighton', 'Joreis Park', 'Dimitry Ricks', 'Desean Ning'];
+  allStatus = ['not started', 'in progress', 'done', 'pending review', 'pending approval', 'published'];
 
-  constructor() {}
+  constructor(
+    private utils: UtilsService
+  ) {}
 
   // auth.service
   directLogin() {
@@ -44,6 +48,12 @@ export class DemoService {
 
   // progress-table.service
   getEnrolments() {
+    setTimeout(
+      () => {
+        this._getProgress();
+      },
+      2000
+    );
     return {
       total: 20,
       data: this._studentNames()
@@ -73,39 +83,33 @@ export class DemoService {
     }
     return null;
   }
-/*
-  getProgress() {
-    let index = this.rows.findIndex(row => {
-      return row.progress.length === 0;
-    });
-    this.rows[index].progress = Array(10).fill({}).map(this._randomProgress).concat(Array(5).fill({
-      name: 'assessment name',
-      dueDate: '08 Sept 2019 07:00:00',
-      submissionDate: '01 Sept 2019 07:00:00',
-      status: 'not started',
-      overdue: false
-    }));
-    this.rows = [...this.rows];
-    index = this.rows.findIndex(row => {
-      return row.progress.length === 0;
-    });
-    if (index >= 0) {
+
+  private _getProgress() {
+    this.students.forEach((st, i) => {
       setTimeout(() => {
-        this.getProgress();
-      }, 1000);
-    }
+        this.utils.broadcastEvent('student-progress', {
+          user_uid: 'demo-uid-' + i,
+          progress: Array(10).fill({}).map(this._randomProgress, this).concat(Array(5).fill({
+            name: 'assessment name',
+            due_date: '08 Sept 2019 07:00:00',
+            submitted: '',
+            status: 'not started',
+            overdue: false
+          }))
+        });
+      }, 1000 * i);
+    });
   }
 
-
   private _randomProgress(x) {
-    const status = ['not started', 'in progress', 'done', 'pending review', 'pending approval', 'published'];
+    const status = this.allStatus[Math.floor( Math.random() * this.allStatus.length )];
     return {
       name: 'assessment name',
-      dueDate: '01 Aug 2019 07:00:00',
-      submissionDate: Math.random() > 0.3 ? '01 Sept 2019 07:00:00' : '',
-      status: status[Math.floor( Math.random() * status.length )],
+      due_date: '01 Aug 2019 07:00:00',
+      submitted: ['not started', 'in progress'].includes(status) ? '' : '01 Sept 2019 07:00:00',
+      status: status,
       overdue: Math.random() > 0.7
     };
   }
-*/
+
 }

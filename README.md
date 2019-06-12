@@ -11,7 +11,14 @@
 
 Run `npm install` to install necessary packages
 
-Run `npm run start` to start a development server on your local, and calling stage-test.practera.com for API
+Run `npm run start` to start a development server on your local, and calling sandbox.practera.com for API
+
+## Demo
+
+To run the demo version of CUTIE on local
+
+1. Go to `src/environments/environments.ts`, change `demo: false` to `demo: true`
+1. Run `npm run start` to start a local server on `localhost:4202`
 
 ## Capacitor
 
