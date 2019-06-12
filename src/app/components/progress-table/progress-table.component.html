@@ -35,7 +35,7 @@
     [columnMode]="'force'"
     [headerHeight]="48"
     [footerHeight]="48"
-    [rowHeight]="48"
+    [rowHeight]="52"
     [limit]="limit"
     [offset]="offset"
     [count]="count"
@@ -57,7 +57,7 @@
     </ngx-datatable-column> -->
     <ngx-datatable-column
       name="Student"
-      [width]="200"
+      [width]="240"
       [sortable]="false"
       [canAutoResize]="false"
       [draggable]="false"
@@ -66,8 +66,8 @@
         <div class="student">
           <ion-avatar><img [src]="value.image"></ion-avatar>
           <div>
-            <p class="name">{{ value.name }}</p>
-            <p class="email">{{ value.email }}</p>
+            <p class="name body-2">{{ value.name }}</p>
+            <p class="email caption">{{ value.email }}</p>
           </div>
         </div>
       </ng-template>
