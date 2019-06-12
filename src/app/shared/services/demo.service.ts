@@ -50,6 +50,7 @@ export class DemoService {
   getEnrolments() {
     setTimeout(
       () => {
+        // get progress after 2 seconds
         this._getProgress();
       },
       2000
@@ -106,7 +107,7 @@ export class DemoService {
     return {
       name: 'assessment name',
       due_date: '01 Aug 2019 07:00:00',
-      submitted: ['not started', 'in progress'].includes(status) ? '' : '01 Sept 2019 07:00:00',
+      submitted: ['not started', 'in progress'].includes(status) ? '' : '01 Jun 2019 07:00:00',
       status: status,
       overdue: Math.random() > 0.7
     };

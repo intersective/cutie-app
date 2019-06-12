@@ -8,13 +8,23 @@ import { Router } from '@angular/router';
   styleUrls: ['./menu.component.scss'],
 })
 export class MenuComponent implements OnInit {
-
+  currentPage: string;
   constructor(
     private storage: StorageService,
     private router: Router
   ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    switch (this.router.url) {
+      case '/progress':
+        this.currentPage = 'progress';
+        break;
+
+      default:
+        this.currentPage = 'dashboard';
+        break;
+    }
+  }
 
   getMyImage() {
     return this.storage.getUser().image ? this.storage.getUser().image : 'https://my.practera.com/img/user-512.png';
@@ -23,10 +33,12 @@ export class MenuComponent implements OnInit {
   goTo(url) {
     switch (url) {
       case 'progress':
+        this.currentPage = 'progress';
         return this.router.navigate(['progress']);
         break;
 
       default:
+        this.currentPage = 'dashboard';
         return this.router.navigate(['dashboard']);
         break;
     }
