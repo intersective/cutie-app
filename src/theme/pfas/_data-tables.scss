@@ -8,6 +8,7 @@
 .ngx-datatable.material {
   box-shadow: none;
   background-color: transparent;
+  margin-right: 0;
 }
 
 .ngx-datatable.material .datatable-header {
@@ -15,19 +16,19 @@
 }
 
 .ngx-datatable.material .datatable-header .datatable-header-cell {
-  padding: .75rem 1.5rem;
+  padding: .75rem 1.5rem .75rem 0;
   color: var(--ion-text-color);
   font-size: 14px;
   line-height: 24px;
 }
 
 .ngx-datatable.material .datatable-body .datatable-body-row .datatable-body-cell {
-  padding: .75rem 1.5rem;
+  padding: .5rem 1.5rem .5rem 0;
   color: var(--ion-text-color);
   line-height: 20px;
 }
 .ngx-datatable.material .datatable-body .datatable-body-row .datatable-body-group-cell {
-  padding: .75rem 1.5rem;
+  padding: .5rem 1.5rem .5rem 0;
   color: var(--ion-text-color);
   line-height: 20px;
 }

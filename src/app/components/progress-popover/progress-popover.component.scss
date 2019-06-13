@@ -1,0 +1,28 @@
+.progress-popover {
+  padding: 12px 16px 20px;
+  min-width: 224px;
+}
+
+h4 {
+  margin: 0 0 4px;
+  text-transform: capitalize;
+}
+
+dl {
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+
+  dt {
+    width: 80px;
+    display: inline-block;
+    font-weight: var(--font-weight-medium);
+  }
+
+  dd {
+    width: 96px;
+    display: inline-block;
+    margin: 0;
+    color: var(--ion-color-medium-shade);
+  }
+}
