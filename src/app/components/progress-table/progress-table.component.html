@@ -102,22 +102,22 @@
             <div *ngFor="let progress of value; let i = index" [style.width]="progressWidth(value.length) + '%'" #iconRef>
 
               <ng-container *ngIf="progress.status === 'not started' || progress.status === 'in progress'">
-                <ion-button *ngIf="progress.overdue" color="danger" fill="clear" (click)="presentPopover($event, progress)">
+                <ion-button *ngIf="progress.overdue" color="danger" fill="clear" (click)="prgressPopover($event, progress)">
                   <ion-icon name="information-circle-outline"></ion-icon>
                 </ion-button>
-                <ion-button *ngIf="!progress.overdue" color="medium" fill="clear" (click)="presentPopover($event, progress)">
+                <ion-button *ngIf="!progress.overdue" color="medium" fill="clear" (click)="prgressPopover($event, progress)">
                   <ion-icon name="radio-button-off"></ion-icon>
                 </ion-button>
               </ng-container>
 
               <ng-container *ngIf="progress.status === 'done' || progress.status === 'published'">
-                <ion-button [color]="progress.overdue ? 'warning' : 'success'" fill="clear" (click)="presentPopover($event, progress)">
+                <ion-button [color]="progress.overdue ? 'warning' : 'success'" fill="clear" (click)="prgressPopover($event, progress)">
                   <ion-icon name="checkmark-circle-outline"></ion-icon>
                 </ion-button>
               </ng-container>
 
               <ng-container *ngIf="progress.status === 'pending review' || progress.status === 'pending approval'">
-                <ion-button [color]="progress.overdue ? 'warning' : 'success'" fill="clear" (click)="presentPopover($event, progress)">
+                <ion-button [color]="progress.overdue ? 'warning' : 'success'" fill="clear" (click)="prgressPopover($event, progress)">
                   <ion-icon name="hourglass"></ion-icon>
                 </ion-button>
               </ng-container>
@@ -145,8 +145,8 @@
       [canAutoResize]="false"
       [draggable]="false"
       [resizeable]="false">
-      <ng-template ngx-datatable-cell-template>
-        <ion-button color="medium" fill="clear" size="small">
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <ion-button color="medium" fill="clear" size="small" (click)="actionPopover($event, row.uid)">
           <ion-icon slot="icon-only" name="more"></ion-icon>
         </ion-button>
       </ng-template>

@@ -160,8 +160,10 @@ export class ProgressTableComponent implements OnInit {
     return this.utils.timeComparer(date) <= 0;
   }
 
-  async presentPopover(ev: any, progress) {
-
+  /**
+   * When user click on an assessment progress
+   */
+  async prgressPopover(ev: any, progress) {
     const popover = await this.popoverController.create({
       component: ProgressPopoverComponent,
       event: ev,
@@ -171,6 +173,10 @@ export class ProgressTableComponent implements OnInit {
       mode: 'ios'
     });
     return await popover.present();
+  }
+
+  async actionPopover(ev: any, uid) {
+    console.log(uid);
   }
 
   /**
