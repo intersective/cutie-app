@@ -4,6 +4,7 @@ import { PusherService } from '@shared/pusher/pusher.service';
 import { UtilsService } from '@services/utils.service';
 import { PopoverController } from '@ionic/angular';
 import { ProgressPopoverComponent } from '@components/progress-popover/progress-popover.component';
+import { ActionPopoverComponent } from '@components/action-popover/action-popover.component';
 import { IonInput } from '@ionic/angular';
 
 @Component({
@@ -74,7 +75,7 @@ export class ProgressTableComponent implements OnInit {
       }, 500);
       return ;
     }
-    this.service.getEnrolments(this.offset, this.limit, this.sorted).subscribe(response => {
+    this.service.getEnrolments(this.offset, this.limit, this.sorted, this.filter).subscribe(response => {
       this.enrolments = response.data;
       this.count = response.total;
       this._updateEnrolments();
@@ -114,6 +115,7 @@ export class ProgressTableComponent implements OnInit {
   // toggle the search bar
   onSearch() {
     this.searching = !this.searching;
+    this.filter = '';
     if (this.searching) {
       setTimeout(
         () => {
@@ -175,8 +177,33 @@ export class ProgressTableComponent implements OnInit {
     return await popover.present();
   }
 
+  /**
+   * When user click on the action button
+   */
   async actionPopover(ev: any, uid) {
-    console.log(uid);
+    const popover = await this.popoverController.create({
+      component: ActionPopoverComponent,
+      event: ev,
+      componentProps: {
+        actions: [
+          {
+            text: 'impersonate',
+            data: {
+              uid: uid
+            }
+          }
+        ]
+      },
+      cssClass: 'popover-action'
+    });
+    // handle actions
+    popover.onWillDismiss().then(data => {
+      if (!data.data) {
+        return;
+      }
+      console.log(data);
+    });
+    return await popover.present();
   }
 
   /**

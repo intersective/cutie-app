@@ -37,7 +37,7 @@ export class ProgressTableService {
     private demo: DemoService
   ) { }
 
-  getEnrolments(offset = 0, limit = 10, sort = null) {
+  getEnrolments(offset = 0, limit = 10, sort = null, filter = null) {
     if (environment.demo) {
       const response = this.demo.getEnrolments();
       return of(this._handleEnrolmentResponse(response)).pipe(delay(1000));
@@ -51,6 +51,9 @@ export class ProgressTableService {
     };
     if (sort) {
       params['sort'] = sort;
+    }
+    if (filter) {
+      params['filter'] = filter;
     }
     return this.request.get(api.get.enrolments, {params: params})
       .pipe(map(this._handleEnrolmentResponse));

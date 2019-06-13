@@ -10,7 +10,7 @@
       <ng-container *ngIf="type === 'student'">Project progress</ng-container>
     </ion-title>
     <ion-title *ngIf="searching">
-      <ion-button color="primary" fill="clear" (click)="searching = false">
+      <ion-button color="primary" fill="clear" (click)="searching = false; filter = ''">
         <ion-icon slot="icon-only" name="arrow-round-back"></ion-icon>
       </ion-button>
       <ion-item>

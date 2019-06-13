@@ -1,0 +1,10 @@
+<ion-list>
+  <ion-item
+    lines="none"
+    *ngFor="let action of actions"
+    (click)="click(action)"
+  >
+  <ion-icon *ngIf="action.icon" [name]="action.icon"></ion-icon>
+  {{ action.text }}
+  </ion-item>
+</ion-list>
