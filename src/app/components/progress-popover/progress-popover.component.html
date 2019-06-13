@@ -1,14 +1,10 @@
-<div padding>
-  <div>
-    <b>{{ progress.name }}</b>
-  </div>
-  <div>
-    <b>Due Date:</b> {{ progress.due_date }}
-  </div>
-  <div>
-    <b>Submission Date:</b> {{ progress.submitted }}
-  </div>
-  <div>
-    <b>Status:</b> {{ progress.status }}
-  </div>
-</div>
+<div class="progress-popover">
+  <h4 class="subtitle-2">{{ progress.name }}</h4>
+  <dl>
+    <dt>Due</dt>
+    <dd>{{ progress.due_date }}</dd>
+    <dt>Submitted</dt>
+    <dd>{{ progress.submitted }}</dd>
+    <dt>Status</dt>
+    <dd>{{ progress.status }}</dd>
+  </dl>
