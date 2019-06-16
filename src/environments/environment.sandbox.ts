@@ -1,5 +1,5 @@
 export const environment = {
-  production: false,
+  production: true,
   demo: false,
   appkey: 'b11e7c189b',
   pusherKey: '255f010d210933ca7675',
