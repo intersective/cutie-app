@@ -15,8 +15,9 @@ dl {
 
   dt {
     width: 80px;
-    display: inline-block;
     font-weight: var(--font-weight-medium);
+    float: left;
+    clear: left;
   }
 
   dd {
