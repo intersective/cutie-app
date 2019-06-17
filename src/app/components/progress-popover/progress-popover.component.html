@@ -2,9 +2,14 @@
   <h4 class="subtitle-2">{{ progress.name }}</h4>
   <dl>
     <dt>Due</dt>
-    <dd>{{ progress.due_date }}</dd>
-    <dt>Submitted</dt>
-    <dd>{{ progress.submitted }}</dd>
+    <dd *ngIf="progress.status === 'not started' || progress.status === 'in progress' else submittedTmp" [ngClass]="{'danger': progress.overdue}">{{ progress.due_date }}</dd>
+    <ng-template #submittedTmp>
+      <dd [ngClass]="{'warning': progress.overdue}">{{ progress.due_date }}</dd>
+    </ng-template>
+    <ng-container *ngIf="progress.submitted">
+      <dt>Submitted</dt>
+      <dd>{{ progress.submitted }}</dd>
+    </ng-container>
     <dt>Status</dt>
     <dd>{{ progress.status }}</dd>
   </dl>
