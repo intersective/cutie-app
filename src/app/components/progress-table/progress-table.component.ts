@@ -66,6 +66,14 @@ export class ProgressTableComponent implements OnInit {
     this.getEnrolments();
   }
 
+  initialise() {
+    this.limit = 10;
+    this.offset = 0;
+    this.sorted = null;
+    this.filter = '';
+    this.rows = [];
+  }
+
   getEnrolments() {
     this.loading = true;
     // try to get the enrolment data only if pusher is ready
@@ -132,14 +140,15 @@ export class ProgressTableComponent implements OnInit {
   switchType() {
     if (this.type === 'student') {
       this.type = 'team';
-      this.rows = [];
+      this.initialise();
       this.getTeams();
     } else {
       this.type = 'student';
-      this.rows = [];
+      this.initialise();
       this.getEnrolments();
     }
   }
+
 
   // toggle the search bar
   onSearch() {
@@ -210,6 +219,9 @@ export class ProgressTableComponent implements OnInit {
    * When user click on the action button
    */
   async actionPopover(ev: any, uid) {
+    if (this.type !== 'student') {
+      return;
+    }
     const popover = await this.popoverController.create({
       component: ActionPopoverComponent,
       event: ev,
