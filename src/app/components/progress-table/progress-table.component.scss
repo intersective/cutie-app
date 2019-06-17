@@ -41,18 +41,21 @@ ion-title {
     display: none;  // Safari and Chrome
   }
 }
+@mixin avatar() {
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
+  img {
+    display: block;
+  }
+}
 .student {
   @include scroll-bar();
   display: flex;
   align-items: center;
   ion-avatar {
     display: block;
-    width: 32px;
-    height: 32px;
-    flex: 0 0 32px;
-    img {
-      display: block;
-    }
+    @include avatar();
   }
   div {
     margin-left: 16px;
@@ -65,7 +68,13 @@ ion-title {
     color: var( --ion-color-medium-shade);
   }
 }
-
+.members {
+  ion-avatar {
+    display: inline-block;
+    @include avatar();
+    margin-right: 5px;
+  }
+}
 .progress {
   @include scroll-bar();
   div {

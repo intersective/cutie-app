@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ViewChildren, ElementRef, QueryList } from '@angular/core';
-import { ProgressTableService, Enrolment } from './progress-table.service';
+import { ProgressTableService, Enrolment, Team } from './progress-table.service';
 import { PusherService } from '@shared/pusher/pusher.service';
 import { UtilsService } from '@services/utils.service';
 import { PopoverController } from '@ionic/angular';
@@ -13,7 +13,6 @@ import { IonInput } from '@ionic/angular';
   styleUrls: ['./progress-table.component.scss'],
 })
 export class ProgressTableComponent implements OnInit {
-  enrolments: Array<Enrolment> = [];
   rows = [];
   limit = 10;
   offset = 0;
@@ -63,6 +62,7 @@ export class ProgressTableComponent implements OnInit {
 
   ngOnInit() {
     this.pusher.initialisePusher();
+    this.type = 'student';
     this.getEnrolments();
   }
 
@@ -76,9 +76,8 @@ export class ProgressTableComponent implements OnInit {
       return ;
     }
     this.service.getEnrolments(this.offset, this.limit, this.sorted, this.filter).subscribe(response => {
-      this.enrolments = response.data;
       this.count = response.total;
-      this._updateEnrolments();
+      this._updateEnrolments(response.data);
       this.loading = false;
     });
   }
@@ -86,9 +85,9 @@ export class ProgressTableComponent implements OnInit {
   /**
    * Update the datatable row based on enrolment data
    */
-  private _updateEnrolments() {
+  private _updateEnrolments(enrolments: Array<Enrolment>) {
     const rows = [];
-    this.enrolments.forEach(enrolment => {
+    enrolments.forEach(enrolment => {
       rows.push({
         uid: enrolment.userUid,
         student: {
@@ -104,11 +103,41 @@ export class ProgressTableComponent implements OnInit {
     this.rows = rows;
   }
 
+  getTeams() {
+    this.loading = true;
+    this.service.getTeams(this.offset, this.limit, this.sorted, this.filter).subscribe(response => {
+      this.count = response.total;
+      this._updateTeams(response.data);
+      this.loading = false;
+    });
+  }
+
+  /**
+   * Update the datatable row based on enrolment data
+   */
+  private _updateTeams(teams: Array<Team>) {
+    const rows = [];
+    teams.forEach(team => {
+      rows.push({
+        uid: team.uid,
+        name: team.name,
+        members: team.members,
+        progress: team.progress
+      });
+    });
+    // trigger the data table detection
+    this.rows = rows;
+  }
+
   switchType() {
     if (this.type === 'student') {
-      this.type = 'project';
+      this.type = 'team';
+      this.rows = [];
+      this.getTeams();
     } else {
       this.type = 'student';
+      this.rows = [];
+      this.getEnrolments();
     }
   }
 
@@ -165,7 +194,7 @@ export class ProgressTableComponent implements OnInit {
   /**
    * When user click on an assessment progress
    */
-  async prgressPopover(ev: any, progress) {
+  async progressPopover(ev: any, progress) {
     const popover = await this.popoverController.create({
       component: ProgressPopoverComponent,
       event: ev,

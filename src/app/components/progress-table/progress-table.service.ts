@@ -14,6 +14,7 @@ import { DemoService } from '@services/demo.service';
 const api = {
   get: {
     enrolments: 'enrolments',
+    teams: 'teams'
   },
   post: {
   }
@@ -25,6 +26,13 @@ export interface Enrolment {
   teamName?: string;
   userUid: string;
   image?: string;
+}
+
+export interface Team {
+  uid: string;
+  name: string;
+  members: Array<any>;
+  progress: Array<any>;
 }
 
 @Injectable({
@@ -75,4 +83,25 @@ export class ProgressTableService {
       total: response.total
     };
   }
+
+  getTeams(offset = 0, limit = 10, sort = null, filter = null) {
+    if (environment.demo) {
+      const response = this.demo.getTeams();
+      return of(response).pipe(delay(1000));
+    }
+    const params = {
+      offset: offset,
+      limit: limit,
+      fields: 'name',
+      progress: true
+    };
+    if (sort) {
+      params['sort'] = sort;
+    }
+    if (filter) {
+      params['filter'] = filter;
+    }
+    return this.request.get(api.get.teams, {params: params});
+  }
+
 }

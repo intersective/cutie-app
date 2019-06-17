@@ -2,11 +2,11 @@
   <ion-toolbar>
     <ion-title *ngIf="!searching">
       <ng-container *ngIf="type === 'student'">Student progress</ng-container>
-      <ng-container *ngIf="type === 'project'">Project progress</ng-container>
+      <ng-container *ngIf="type === 'team'">Project progress</ng-container>
       <ion-button color="primary" fill="clear" (click)="switchType()">
         <ion-icon slot="icon-only" name="switch"></ion-icon>
       </ion-button>
-      <ng-container *ngIf="type === 'project'">Student progress</ng-container>
+      <ng-container *ngIf="type === 'team'">Student progress</ng-container>
       <ng-container *ngIf="type === 'student'">Project progress</ng-container>
     </ion-title>
     <ion-title *ngIf="searching">
@@ -55,32 +55,61 @@
       [headerCheckboxable]="true"
       [checkboxable]="true">
     </ngx-datatable-column> -->
-    <ngx-datatable-column
-      name="Student"
-      [width]="240"
-      [sortable]="false"
-      [canAutoResize]="false"
-      [draggable]="false"
-      [resizeable]="false">
-      <ng-template let-value="value" ngx-datatable-cell-template>
-        <div class="student">
-          <ion-avatar><img [src]="value.image"></ion-avatar>
-          <div>
-            <p class="name body-2">{{ value.name }}</p>
-            <p class="email caption">{{ value.email }}</p>
+    <ng-container *ngIf="type === 'student'">
+      <ngx-datatable-column
+        name="Student"
+        [width]="240"
+        [sortable]="false"
+        [canAutoResize]="false"
+        [draggable]="false"
+        [resizeable]="false">
+        <ng-template let-value="value" ngx-datatable-cell-template>
+          <div class="student">
+            <ion-avatar><img [src]="value.image"></ion-avatar>
+            <div>
+              <p class="name body-2">{{ value.name }}</p>
+              <p class="email caption">{{ value.email }}</p>
+            </div>
           </div>
-        </div>
-      </ng-template>
-    </ngx-datatable-column>
-    <ngx-datatable-column
-      name="Project"
-      prop="team"
-      [width]="90"
-      [sortable]="false"
-      [canAutoResize]="false"
-      [draggable]="false"
-      [resizeable]="false">
-    </ngx-datatable-column>
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column
+        name="Project"
+        prop="team"
+        [width]="90"
+        [sortable]="false"
+        [canAutoResize]="false"
+        [draggable]="false"
+        [resizeable]="false">
+      </ngx-datatable-column>
+    </ng-container>
+
+    <ng-container *ngIf="type === 'team'">
+      <ngx-datatable-column
+        name="Project"
+        prop="name"
+        [width]="90"
+        [sortable]="false"
+        [canAutoResize]="false"
+        [draggable]="false"
+        [resizeable]="false">
+      </ngx-datatable-column>
+      <ngx-datatable-column
+        name="Team"
+        prop="members"
+        [width]="240"
+        [sortable]="false"
+        [canAutoResize]="false"
+        [draggable]="false"
+        [resizeable]="false">
+        <ng-template let-value="value" ngx-datatable-cell-template>
+          <div class="members">
+            <ion-avatar *ngFor="let member of value"><img [src]="member.image"></ion-avatar>
+          </div>
+        </ng-template>
+      </ngx-datatable-column>
+    </ng-container>
+
     <ngx-datatable-column
       name="Progress"
       [sortable]="true"
@@ -94,7 +123,7 @@
             color="medium"
             fill="clear"
             (click)="scroll(progressRef.scrollLeft - 100)"
-            *ngIf="progressRef.scrollWidth > progressRef.offsetWidth">
+            *ngIf="progressRef.scrollWidth > progressRef.offsetWidth + 5">
             <ion-icon name="arrow-dropleft"></ion-icon>
           </ion-button>
 
@@ -102,22 +131,22 @@
             <div *ngFor="let progress of value; let i = index" [style.width]="progressWidth(value.length) + '%'" #iconRef>
 
               <ng-container *ngIf="progress.status === 'not started' || progress.status === 'in progress'">
-                <ion-button *ngIf="progress.overdue" color="danger" fill="clear" (click)="prgressPopover($event, progress)">
+                <ion-button *ngIf="progress.overdue" color="danger" fill="clear" (click)="progressPopover($event, progress)">
                   <ion-icon name="information-circle-outline"></ion-icon>
                 </ion-button>
-                <ion-button *ngIf="!progress.overdue" color="medium" fill="clear" (click)="prgressPopover($event, progress)">
+                <ion-button *ngIf="!progress.overdue" color="medium" fill="clear" (click)="progressPopover($event, progress)">
                   <ion-icon name="radio-button-off"></ion-icon>
                 </ion-button>
               </ng-container>
 
               <ng-container *ngIf="progress.status === 'done' || progress.status === 'published'">
-                <ion-button [color]="progress.overdue ? 'warning' : 'success'" fill="clear" (click)="prgressPopover($event, progress)">
+                <ion-button [color]="progress.overdue ? 'warning' : 'success'" fill="clear" (click)="progressPopover($event, progress)">
                   <ion-icon name="checkmark-circle-outline"></ion-icon>
                 </ion-button>
               </ng-container>
 
               <ng-container *ngIf="progress.status === 'pending review' || progress.status === 'pending approval'">
-                <ion-button [color]="progress.overdue ? 'warning' : 'success'" fill="clear" (click)="prgressPopover($event, progress)">
+                <ion-button [color]="progress.overdue ? 'warning' : 'success'" fill="clear" (click)="progressPopover($event, progress)">
                   <ion-icon name="hourglass"></ion-icon>
                 </ion-button>
               </ng-container>
@@ -132,7 +161,7 @@
             color="medium"
             fill="clear"
             (click)="scroll(progressRef.scrollLeft + 100)"
-            *ngIf="progressRef.scrollWidth > progressRef.offsetWidth">
+            *ngIf="progressRef.scrollWidth > progressRef.offsetWidth + 5">
             <ion-icon name="arrow-dropright"></ion-icon>
           </ion-button>
         </div>

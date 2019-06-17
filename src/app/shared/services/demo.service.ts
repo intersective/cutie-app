@@ -9,6 +9,7 @@ import { StorageService } from '@services/storage.service';
 export class DemoService {
   students = ['Caramel Dundee', 'Gosinder Shah', 'Mein Black', 'Gos Baxter', 'Monday Blighton', 'Joreis Park', 'Dimitry Ricks', 'Desean Ning'];
   allStatus = ['not started', 'in progress', 'done', 'pending review', 'pending approval', 'published'];
+  teams = ['Project1', 'Project2', 'Project3'];
 
   constructor(
     private utils: UtilsService,
@@ -107,7 +108,7 @@ export class DemoService {
     });
   }
 
-  private _randomProgress(x) {
+  private _randomProgress(x = null) {
     const status = this.allStatus[Math.floor( Math.random() * this.allStatus.length )];
     return {
       name: 'assessment name',
@@ -135,6 +136,41 @@ export class DemoService {
     }
 
     return array;
+  }
+
+  // progress-table.service
+  getTeams() {
+    let data = [];
+    this.teams.forEach((team, i) => {
+      data.push({
+        uid: 'team' + i,
+        name: team,
+        progress: Array(3).fill({}).map(this._randomProgress, this).concat(Array(2).fill({
+          name: 'assessment name',
+          due_date: '08 Sept 2019 07:00:00',
+          submitted: '',
+          status: 'not started',
+          overdue: false
+        })),
+        members: this._getMembers(i)
+      });
+    });
+    return {
+      data: data,
+      total: 10
+    }
+  }
+
+  private _getMembers(i) {
+    let members = [];
+    const n = Math.random() > 0.5 ? 3 : 2;
+    Array(n).fill(1).forEach((x, i) => {
+      members.push({
+        name: this.students[i],
+        image: './assets/demo/avatar.png'
+      })
+    });
+    return members;
   }
 
 }
