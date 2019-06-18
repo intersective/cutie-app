@@ -210,7 +210,8 @@ export class ProgressTableComponent implements OnInit {
       componentProps: {
         progress: progress
       },
-      mode: 'ios'
+      mode: 'ios',
+      cssClass: 'popover-progress'
     });
     return await popover.present();
   }
