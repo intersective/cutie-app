@@ -2,7 +2,7 @@
   <ion-toolbar>
     <ion-title *ngIf="!searching" class="heading-5">{{title}}</ion-title>
     <ion-title *ngIf="searching">
-      <ion-button color="primary" fill="clear" shape="round" (click)="searching = false; searchValue = ''">
+      <ion-button color="primary" fill="clear" shape="round" (click)="doSearch()">
         <ion-icon slot="icon-only" name="arrow-round-back"></ion-icon>
       </ion-button>
       <ion-item>

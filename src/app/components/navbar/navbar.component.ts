@@ -25,12 +25,16 @@ export class NavbarComponent implements OnInit {
     this.searching = !this.searching;
     this.searchValue = '';
     if (this.searching) {
+      // start searching
       setTimeout(
         () => {
           this.searchRef.setFocus();
         },
         500
       );
+    } else {
+      // finish searching
+      this.onSearch();
     }
   }
 
