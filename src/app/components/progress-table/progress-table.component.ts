@@ -141,20 +141,17 @@ export class ProgressTableComponent implements OnInit {
   switchType() {
     if (this.type === 'student') {
       this.type = 'team';
-      this.initialise();
-      this.getTeams();
     } else {
       this.type = 'student';
-      this.initialise();
-      this.getEnrolments();
     }
+    this.initialise();
+    this._updateData();
   }
 
   /**
-   * filter the data based on value in search bar, will be invoked from outside of this component (navbar)
+   * Update data based on the type of the progress table
    */
-  search(value) {
-    this.filter = value;
+  private _updateData() {
     if (this.type === 'student') {
       this.getEnrolments();
     } else {
@@ -163,12 +160,20 @@ export class ProgressTableComponent implements OnInit {
   }
 
   /**
+   * filter the data based on value in search bar, will be invoked from outside of this component (navbar)
+   */
+  search(value) {
+    this.filter = value;
+    this._updateData();
+  }
+
+  /**
    * Go to the next/any page
    */
   page(event) {
     this.offset = event.offset * event.limit;
     this.limit = event.limit;
-    this.getEnrolments();
+    this._updateData();
   }
 
   /**
@@ -181,7 +186,7 @@ export class ProgressTableComponent implements OnInit {
       this.sorted = '-progress';
     }
     this.offset = 0;
-    this.getEnrolments();
+    this._updateData();
   }
 
   /**

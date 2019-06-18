@@ -92,7 +92,6 @@ export class ProgressTableService {
     const params = {
       offset: offset,
       limit: limit,
-      fields: 'name',
       progress: true
     };
     if (sort) {
