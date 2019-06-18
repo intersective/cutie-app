@@ -10,3 +10,15 @@ ion-toolbar {
   display: flex;
   align-items: center;
 }
+
+ion-title {
+  ion-button {
+    vertical-align: middle;
+  }
+  ion-item {
+    display: inline-block;
+    background: transparent;
+    --background: transparent;
+    width: 100%;
+  }
+}

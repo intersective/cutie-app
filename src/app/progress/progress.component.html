@@ -1,5 +1,9 @@
-<app-navbar title="Progress"></app-navbar>
+<app-navbar
+  title="Progress"
+  hasSearch=true
+  (search)="progressTable.search($event)"
+></app-navbar>
 
 <ion-content>
-  <app-progress-table></app-progress-table>
+  <app-progress-table #progressTable></app-progress-table>
 </ion-content>

@@ -1,11 +1,25 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title class="heading-5">{{title}}</ion-title>
-    <!-- <ion-buttons slot="end">
-      <ion-button color="primary" fill="clear">Edit</ion-button>
-      <ion-button color="primary" fill="clear" shape="round">
+    <ion-title *ngIf="!searching" class="heading-5">{{title}}</ion-title>
+    <ion-title *ngIf="searching">
+      <ion-button color="primary" fill="clear" shape="round" (click)="searching = false; searchValue = ''">
+        <ion-icon slot="icon-only" name="arrow-round-back"></ion-icon>
+      </ion-button>
+      <ion-item>
+        <ion-input
+          #searchRef
+          clearInput
+          debounce=1000
+          placeholder="searching"
+          (ionChange)="onSearch()"
+          [(ngModel)]="searchValue"
+        ></ion-input>
+      </ion-item>
+    </ion-title>
+    <ion-buttons slot="primary">
+      <ion-button *ngIf="hasSearch" color="primary" fill="clear" shape="round" (click)="doSearch()">
         <ion-icon slot="icon-only" name="search"></ion-icon>
       </ion-button>
-    </ion-buttons> -->
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>

@@ -5,7 +5,6 @@ import { UtilsService } from '@services/utils.service';
 import { PopoverController } from '@ionic/angular';
 import { ProgressPopoverComponent } from '@components/progress-popover/progress-popover.component';
 import { ActionPopoverComponent } from '@components/action-popover/action-popover.component';
-import { IonInput } from '@ionic/angular';
 
 @Component({
   selector: 'app-progress-table',
@@ -30,7 +29,6 @@ export class ProgressTableComponent implements OnInit {
   searching = false;
   // the value of the search bar
   filter = '';
-  @ViewChild('searchRef') searchRef: IonInput;
   @ViewChildren('progressRef', {read: ElementRef}) progressRefs: QueryList<ElementRef>;
 
   constructor(
@@ -137,6 +135,9 @@ export class ProgressTableComponent implements OnInit {
     this.rows = rows;
   }
 
+  /**
+   * switch between student progress and project progress
+   */
   switchType() {
     if (this.type === 'student') {
       this.type = 'team';
@@ -149,26 +150,16 @@ export class ProgressTableComponent implements OnInit {
     }
   }
 
-
-  // toggle the search bar
-  onSearch() {
-    this.searching = !this.searching;
-    this.filter = '';
-    if (this.searching) {
-      setTimeout(
-        () => {
-          this.searchRef.setFocus();
-        },
-        500
-      );
-    }
-  }
-
   /**
-   * filter the data based on value in search bar
+   * filter the data based on value in search bar, will be invoked from outside of this component (navbar)
    */
-  search() {
-    this.getEnrolments();
+  search(value) {
+    this.filter = value;
+    if (this.type === 'student') {
+      this.getEnrolments();
+    } else {
+      this.getTeams();
+    }
   }
 
   /**

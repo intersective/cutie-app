@@ -1,35 +1,4 @@
 <div class="people-list">
-  <ion-toolbar>
-    <ion-title *ngIf="!searching">
-      <ng-container *ngIf="type === 'student'">Student progress</ng-container>
-      <ng-container *ngIf="type === 'team'">Project progress</ng-container>
-      <ion-button color="primary" fill="clear" (click)="switchType()">
-        <ion-icon slot="icon-only" name="switch"></ion-icon>
-      </ion-button>
-      <ng-container *ngIf="type === 'team'">Student progress</ng-container>
-      <ng-container *ngIf="type === 'student'">Project progress</ng-container>
-    </ion-title>
-    <ion-title *ngIf="searching">
-      <ion-button color="primary" fill="clear" (click)="searching = false; filter = ''">
-        <ion-icon slot="icon-only" name="arrow-round-back"></ion-icon>
-      </ion-button>
-      <ion-item>
-        <ion-input
-          #searchRef
-          clearInput
-          debounce=1000
-          placeholder="searching"
-          (ionChange)="search()"
-          [(ngModel)]="filter"
-        ></ion-input>
-      </ion-item>
-    </ion-title>
-    <ion-buttons slot="primary">
-      <ion-button color="primary" (click)="onSearch()">
-        <ion-icon slot="icon-only" name="search"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
   <ngx-datatable
     [rows]="rows"
     [columnMode]="'force'"
@@ -181,4 +150,8 @@
       </ng-template>
     </ngx-datatable-column>
   </ngx-datatable>
+
+  <ion-button color="primary" fill="clear" (click)="switchType()">
+    SWITCH TO PROJECT VIEW
+  </ion-button>
 </div>

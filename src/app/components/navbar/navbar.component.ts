@@ -1,4 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
+import { IonInput } from '@ionic/angular';
 
 @Component({
   selector: 'app-navbar',
@@ -6,10 +7,34 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
-  @Input() title:string;
+  searching: boolean;
+  searchValue: string;
+  @Input() title: string;
+  @Input() hasSearch = false;
+  @Output() search = new EventEmitter<string>();
+  @ViewChild('searchRef') searchRef: IonInput;
   constructor() { }
 
   ngOnInit() {
+    this.searching = false;
+    this.searchValue = '';
   }
 
+  // toggle the search bar
+  doSearch() {
+    this.searching = !this.searching;
+    this.searchValue = '';
+    if (this.searching) {
+      setTimeout(
+        () => {
+          this.searchRef.setFocus();
+        },
+        500
+      );
+    }
+  }
+
+  onSearch() {
+    this.search.emit(this.searchValue);
+  }
 }
