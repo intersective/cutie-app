@@ -27,7 +27,19 @@ export class DemoService {
         Timelines: [
           {
             Enrolment: {},
-            Program: {},
+            Program: {name: 'Program 1'},
+            Project: {},
+            Timeline: {}
+          },
+          {
+            Enrolment: {},
+            Program: {name: 'Program 2'},
+            Project: {},
+            Timeline: {}
+          },
+          {
+            Enrolment: {},
+            Program: {name: 'Program 3'},
             Project: {},
             Timeline: {}
           }
