@@ -30,6 +30,10 @@ export class AuthGuard implements CanActivate, CanActivateChild {
       }
       return true;
     }
+    // not allow any page if there's no apikey
+    if (!this.storage.getUser().apikey) {
+      this.router.navigate(['error']);
+    }
     return true;
   }
 

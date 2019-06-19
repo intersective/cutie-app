@@ -7,6 +7,10 @@ const routes: Routes = [
     loadChildren: './auth/auth.module#AuthModule'
   },
   {
+    path: 'error',
+    loadChildren: './error/error.module#ErrorModule'
+  },
+  {
     path: '',
     loadChildren: './menu/menu.module#MenuModule'
   }

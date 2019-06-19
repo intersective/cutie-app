@@ -40,7 +40,7 @@ export class AuthComponent implements OnInit {
           text: 'OK',
           role: 'cancel',
           handler: () => {
-            this.router.navigate(['/auth/error']);
+            this.router.navigate(['/error']);
           }
         }
       ]
