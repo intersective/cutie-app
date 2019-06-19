@@ -1,16 +1,19 @@
 <div class="progress-popover">
   <h4 class="subtitle-2">{{ progress.name }}</h4>
   <dl>
-    <dt>Due</dt>
-    <dd *ngIf="progress.status === 'not started' || progress.status === 'in progress' else submittedTmp" [ngClass]="{'danger': progress.overdue}">{{ progress.due_date }}</dd>
-    <ng-template #submittedTmp>
-      <dd [ngClass]="{'warning': progress.overdue}">{{ progress.due_date }}</dd>
-    </ng-template>
+    <dt class="status">Status</dt>
+    <dd class="status">{{ status }}</dd>
     <ng-container *ngIf="progress.submitted">
       <dt>Submitted</dt>
-      <dd>{{ progress.submitted }}</dd>
+      <dd *ngIf="progress.status !== 'not started' || progress.status !== 'in progress' else submittedTmp" [ngClass]="{'warning': progress.overdue}">{{ progress.submitted }}</dd>
+      <ng-template #submittedTmp>
+        <dd>{{ progress.submitted }}</dd>
+      </ng-template>
     </ng-container>
-    <dt>Status</dt>
-    <dd>{{ status }}</dd>
+    <dt>Due</dt>
+    <dd *ngIf="progress.status === 'not started' || progress.status === 'in progress' else duedateTmp" [ngClass]="{'danger': progress.overdue}">{{ progress.due_date }}</dd>
+    <ng-template #duedateTmp>
+      <dd>{{ progress.due_date }}</dd>
+    </ng-template>
   </dl>
 </div>

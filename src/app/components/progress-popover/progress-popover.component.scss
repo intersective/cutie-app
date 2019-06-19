@@ -1,37 +1,41 @@
 .progress-popover {
   padding: 12px 16px 20px;
   min-width: 224px;
-}
 
-h4 {
-  margin: 0 0 4px;
-  text-transform: capitalize;
-}
-
-dl {
-  margin: 0;
-  font-size: 14px;
-  line-height: 20px;
-
-  dt {
-    width: 80px;
-    font-weight: var(--font-weight-medium);
-    float: left;
-    clear: left;
+  h4 {
+    margin: 0 0 4px;
+    text-transform: capitalize;
   }
-
-  dd {
-    width: 96px;
-    display: inline-block;
+  
+  dl {
     margin: 0;
-    color: var(--ion-color-medium-shade);
-
-    &.danger {
-      color: var(--ion-color-danger);
+    font-size: 14px;
+    line-height: 20px;
+  
+    dt {
+      width: 80px;
+      font-weight: var(--font-weight-medium);
+      float: left;
+      clear: left;
     }
-
-    &.warning {
-      color: var(--ion-color-warning);
+  
+    dd {
+      width: fit-content;
+      display: inline-block;
+      margin: 0;
+      color: var(--ion-color-medium-shade);
+      
+      &.status {
+        margin-bottom: 16px;
+      }
+      &.danger {
+        color: var(--ion-color-danger);
+      }
+  
+      &.warning {
+        color: var(--ion-color-warning);
+      }
     }
   }
+
 }

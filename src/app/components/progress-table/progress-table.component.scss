@@ -69,15 +69,25 @@
   div {
     display: inline-block;
     min-width: 32px;
+    vertical-align: -webkit-baseline-middle;
+    height: 36px;
   }
   ion-button {
     width: 100%;
     vertical-align: middle;
     --padding-start: 0;
     --padding-end: 0;
+    height: inherit;
   }
   span {
     color: var(--ion-color-medium);
     vertical-align: middle;
+  }
+}
+
+.project {
+  p {
+    margin: 0;
+    line-height: 36px;
   }
 }
