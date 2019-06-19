@@ -74,7 +74,7 @@ export class DemoService {
       2000
     );
     return {
-      total: 20,
+      total: 50,
       data: this._studentNames()
     }
   }
