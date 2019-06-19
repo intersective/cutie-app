@@ -51,7 +51,7 @@ export class ProgressTableService {
       return of(this._handleEnrolmentResponse(response)).pipe(delay(1000));
     }
     const params = {
-      offset: offset,
+      offset: offset * limit,
       limit: limit,
       role: 'participant',
       fields: 'name,user_uid,team_name,participant_email',

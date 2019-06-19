@@ -171,7 +171,7 @@ export class ProgressTableComponent implements OnInit {
    * Go to the next/any page
    */
   page(event) {
-    this.offset = event.offset * event.limit;
+    this.offset = event.offset;
     this.limit = event.limit;
     this._updateData();
   }
