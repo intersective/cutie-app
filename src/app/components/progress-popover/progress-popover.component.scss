@@ -24,7 +24,10 @@
       display: inline-block;
       margin: 0;
       color: var(--ion-color-medium-shade);
-  
+      
+      &.status {
+        margin-bottom: 16px;
+      }
       &.danger {
         color: var(--ion-color-danger);
       }
