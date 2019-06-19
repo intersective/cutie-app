@@ -39,7 +39,7 @@ export class ProgressTableComponent implements OnInit {
   ) {
     this.utils.getEvent('student-progress').subscribe(event => {
       let index = this.rows.findIndex(row => {
-        return row.uid === event.user_uid
+        return row.uid === event.user_uid;
       });
       // store the progress if the row data is not ready yet
       if (index < 0) {
@@ -49,7 +49,7 @@ export class ProgressTableComponent implements OnInit {
       // retrive any stored progress data and display them
       this.progresses.forEach(progress => {
         index = this.rows.findIndex(row => {
-          return row.uid === progress.user_uid
+          return row.uid === progress.user_uid;
         });
         this.rows[index].progress = progress.progress;
       });
@@ -249,7 +249,7 @@ export class ProgressTableComponent implements OnInit {
    * @param number x number of progress cells
    */
   progressWidth(x) {
-    return (100/x - 0.1).toFixed(2);
+    return (100 / x - 0.1).toFixed(2);
   }
 
   /**

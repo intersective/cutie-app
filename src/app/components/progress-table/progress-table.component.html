@@ -50,6 +50,11 @@
         [canAutoResize]="false"
         [draggable]="false"
         [resizeable]="false">
+        <ng-template let-value="value" ngx-datatable-cell-template>
+            <div class="project">
+              <p>{{value}}</p>
+            </div>
+          </ng-template>
       </ngx-datatable-column>
     </ng-container>
 
@@ -62,6 +67,11 @@
         [canAutoResize]="false"
         [draggable]="false"
         [resizeable]="false">
+        <ng-template let-value="value" ngx-datatable-cell-template>
+            <div class="project">
+              <p>{{value}}</p>
+            </div>
+          </ng-template>
       </ngx-datatable-column>
       <ngx-datatable-column
         name="Team"
