@@ -177,7 +177,7 @@ export class DemoService {
 
   private _getMembers(i) {
     let members = [];
-    const n = Math.random() > 0.5 ? 10 : 5;
+    const n = Math.floor(Math.random() * 5 + 5);
     Array(n).fill(1).forEach((x, i) => {
       members.push({
         name: this.students[i],
