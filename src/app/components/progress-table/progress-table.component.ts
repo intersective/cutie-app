@@ -102,7 +102,7 @@ export class ProgressTableComponent implements OnInit {
           image: enrolment.image
         },
         team: enrolment.teamName,
-        progress: [],
+        progress: enrolment.progress ? enrolment.progress : [],
       });
     });
     // trigger the data table detection

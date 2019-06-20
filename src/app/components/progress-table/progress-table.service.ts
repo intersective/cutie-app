@@ -26,13 +26,14 @@ export interface Enrolment {
   teamName?: string;
   userUid: string;
   image?: string;
+  progress?: any[];
 }
 
 export interface Team {
   uid: string;
   name: string;
-  members: Array<any>;
-  progress: Array<any>;
+  members: any[];
+  progress: any[];
 }
 
 @Injectable({
@@ -75,7 +76,8 @@ export class ProgressTableService {
         email: enrolment.participant_email,
         teamName: enrolment.team_name,
         userUid: enrolment.user_uid,
-        image: enrolment.image ? enrolment.image : ''
+        image: enrolment.image ? enrolment.image : '',
+        progress: enrolment.progress ? enrolment.progress : []
       });
     });
     return {
