@@ -9,7 +9,7 @@ import { StorageService } from '@services/storage.service';
 export class DemoService {
   students = ['Caramel Dundee', 'Gosinder Shah', 'Mein Black', 'Gos Baxter', 'Monday Blighton', 'Joreis Park', 'Dimitry Ricks', 'Desean Ning'];
   allStatus = ['not started', 'in progress', 'done', 'pending review', 'pending approval', 'published'];
-  teams = ['Project1', 'Project2', 'Project3', 'Project4'];
+  teams = ['team 1 - market research analysis project', 'team 2 - market research analysis project', 'team 3 - market research analysis project', 'team 4 - market research analysis project'];
 
   constructor(
     private utils: UtilsService,
