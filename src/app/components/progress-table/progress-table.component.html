@@ -162,6 +162,11 @@
   </ngx-datatable>
 
   <ion-button color="primary" fill="clear" (click)="switchType()">
-    SWITCH TO PROJECT VIEW
+    <ng-container *ngIf="type === 'team'">
+      SWITCH TO STUDENT VIEW
+    </ng-container>
+    <ng-container *ngIf="type === 'student'">
+      SWITCH TO PROJECT VIEW
+    </ng-container>
   </ion-button>
 </div>
