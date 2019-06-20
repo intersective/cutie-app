@@ -90,7 +90,8 @@
     </ng-container>
 
     <ngx-datatable-column
-      name="Progress"
+      [name]="type === 'student' ? 'Team And Individual Submissions' : 'Team Submissions Only'"
+      prop="progress"
       [sortable]="true"
       [canAutoResize]="true"
       [draggable]="false"
