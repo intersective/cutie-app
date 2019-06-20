@@ -9,7 +9,7 @@ import { StorageService } from '@services/storage.service';
 export class DemoService {
   students = ['Caramel Dundee', 'Gosinder Shah', 'Mein Black', 'Gos Baxter', 'Monday Blighton', 'Joreis Park', 'Dimitry Ricks', 'Desean Ning'];
   allStatus = ['not started', 'in progress', 'done', 'pending review', 'pending approval', 'published'];
-  teams = ['Project1', 'Project2', 'Project3'];
+  teams = ['Project1', 'Project2', 'Project3', 'Project4'];
 
   constructor(
     private utils: UtilsService,
@@ -177,7 +177,7 @@ export class DemoService {
 
   private _getMembers(i) {
     let members = [];
-    const n = Math.random() > 0.5 ? 3 : 2;
+    const n = Math.random() > 0.5 ? 10 : 5;
     Array(n).fill(1).forEach((x, i) => {
       members.push({
         name: this.students[i],
