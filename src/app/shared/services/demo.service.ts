@@ -24,24 +24,26 @@ export class DemoService {
     return {
       data: {
         apikey: 'demo-apikey',
+        timeline_id: 2,
+        program_id: 2,
         Timelines: [
           {
             Enrolment: {},
             Program: {name: 'Program 1'},
             Project: {},
-            Timeline: {}
+            Timeline: {id: 1}
           },
           {
             Enrolment: {},
             Program: {name: 'Program 2'},
             Project: {},
-            Timeline: {}
+            Timeline: {id: 2}
           },
           {
             Enrolment: {},
             Program: {name: 'Program 3'},
             Project: {},
-            Timeline: {}
+            Timeline: {id: 3}
           }
         ]
       }

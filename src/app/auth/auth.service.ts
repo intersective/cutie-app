@@ -53,7 +53,11 @@ export class AuthService {
   private _handleLoginResponse(response) {
     const data = response.data;
     if (data) {
-      this.storage.setUser({apikey: data.apikey});
+      this.storage.setUser({
+        apikey: data.apikey,
+        timelineId: data.timeline_id ? data.timeline_id : null,
+        programId: data.program_id ? data.program_id : null
+      });
       const programs = data.Timelines.map(function(timeline) {
         return {
           enrolment: timeline.Enrolment,

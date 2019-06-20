@@ -10,6 +10,9 @@
     <ion-content>
       <ion-list>
         <ion-item lines="none">
+          <ion-button fill="clear" size="large" color="dark" disabled>{{ program }}</ion-button>
+        </ion-item>
+        <ion-item lines="none">
           <ion-button fill="clear" size="large" [color]="currentPage === 'dashboard' ? 'dark' : 'medium'" (click)="goTo('')">Dashboard</ion-button>
         </ion-item>
         <ion-item lines="none">

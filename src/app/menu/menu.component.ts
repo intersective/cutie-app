@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 })
 export class MenuComponent implements OnInit {
   currentPage: string;
+  program = '';
   constructor(
     private storage: StorageService,
     private router: Router
@@ -24,6 +25,9 @@ export class MenuComponent implements OnInit {
         this.currentPage = 'dashboard';
         break;
     }
+    this.program = this.storage.get('programs').find(value => {
+      return value.timeline.id === this.storage.getUser().timelineId;
+    }).program.name;
   }
 
   getMyImage() {
