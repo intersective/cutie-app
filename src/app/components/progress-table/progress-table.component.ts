@@ -59,7 +59,8 @@ export class ProgressTableComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.pusher.initialisePusher();
+    // don't need Pusher anymore
+    // this.pusher.initialisePusher();
     this.type = 'student';
     this.getEnrolments();
   }
@@ -74,13 +75,14 @@ export class ProgressTableComponent implements OnInit {
 
   getEnrolments() {
     this.loading = true;
+    // don't need Pusher anymore
     // try to get the enrolment data only if pusher is ready
-    if (!this.pusher.channels.notification) {
-      setTimeout(() => {
-        this.getEnrolments();
-      }, 500);
-      return ;
-    }
+    // if (!this.pusher.channels.notification) {
+    //   setTimeout(() => {
+    //     this.getEnrolments();
+    //   }, 500);
+    //   return ;
+    // }
     this.service.getEnrolments(this.offset, this.limit, this.sorted, this.filter).subscribe(response => {
       this.count = response.total;
       this._updateEnrolments(response.data);
