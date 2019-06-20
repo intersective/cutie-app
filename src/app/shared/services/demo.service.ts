@@ -123,7 +123,7 @@ export class DemoService {
   private _randomProgress(x = null) {
     const status = this.allStatus[Math.floor( Math.random() * this.allStatus.length )];
     return {
-      name: 'assessment name',
+      name: 'Project Findings Report - Draft, Project Findings Report - Draft',
       due_date: '01 Aug 2019 07:00:00',
       submitted: ['not started', 'in progress'].includes(status) ? '' : '01 Jun 2019 07:00:00',
       status: status,
