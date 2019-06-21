@@ -8,7 +8,7 @@ import { environment } from '@environments/environment';
 import { DemoService } from '@services/demo.service';
 
 const api = {
-  jwt: 'api/jwt.json',
+  jwt: 'jwt',
 };
 
 @Injectable({
