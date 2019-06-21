@@ -1,19 +1,55 @@
 <div class="progress-popover">
-  <h4 class="subtitle-2">{{ progress.name }}</h4>
-  <dl>
-    <dt class="status">Status</dt>
-    <dd class="status">{{ status }}</dd>
-    <ng-container *ngIf="progress.submitted">
-      <dt>Submitted</dt>
-      <dd *ngIf="progress.status !== 'not started' || progress.status !== 'in progress' else submittedTmp" [ngClass]="{'warning': progress.overdue}">{{ progress.submitted }}</dd>
-      <ng-template #submittedTmp>
-        <dd>{{ progress.submitted }}</dd>
-      </ng-template>
-    </ng-container>
-    <dt>Due</dt>
-    <dd *ngIf="progress.status === 'not started' || progress.status === 'in progress' else duedateTmp" [ngClass]="{'danger': progress.overdue}">{{ progress.due_date }}</dd>
-    <ng-template #duedateTmp>
-      <dd>{{ progress.due_date }}</dd>
-    </ng-template>
-  </dl>
+  <ion-grid>
+    <ion-row class="assessment-name">
+      <ion-col>
+        <ion-label text-wrap class="subtitle-2">{{ progress.name }}</ion-label>
+      </ion-col>
+    </ion-row>
+    <ion-row class="status-container">
+      <ion-col size="3">
+        <ion-label class="title">Status</ion-label>
+      </ion-col>
+      <ion-col class="container-body">
+        <ion-label>{{ status }}</ion-label>
+      </ion-col>
+    </ion-row>
+    <ion-row class="submit-container">
+      <ion-col size="3">
+        <ion-label class="title">Submitted</ion-label>
+      </ion-col>
+      <ion-col class="container-body">
+        <ng-container *ngIf="progress.submitted">
+          <ion-label [ngClass]="{'warning': progress.overdue}"
+            *ngIf="progress.status !== 'not started' || progress.status !== 'in progress' else submittedTmp">
+            {{ progress.submitted }}
+          </ion-label>
+          <ng-template #submittedTmp>
+            <ion-label>{{ progress.submitted }}</ion-label>
+          </ng-template>
+        </ng-container>
+        <ng-container *ngIf="!progress.submitted">
+          <ion-label>N/A</ion-label>
+        </ng-container>
+      </ion-col>
+    </ion-row>
+    <ion-row class="due-container">
+      <ion-col size="3">
+        <ion-label class="title">Due</ion-label>
+      </ion-col>
+      <ion-col class="container-body">
+        <ng-container *ngIf="progress.due_date">
+          <ion-label [ngClass]="{'danger': progress.overdue}"
+            *ngIf="progress.status === 'not started' || progress.status === 'in progress' else duedateTmp">
+            {{ progress.due_date }}
+          </ion-label>
+          <ng-template #duedateTmp>
+            <ion-label>{{ progress.due_date }}</ion-label>
+          </ng-template>
+        </ng-container>
+        <ng-container *ngIf="!progress.due_date">
+          <ion-label>N/A</ion-label>
+        </ng-container>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </div>
