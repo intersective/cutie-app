@@ -170,4 +170,14 @@ export class DemoService {
     return members;
   }
 
+  public getJwt(timelineId) {
+    return {
+      data: {
+        apikey: 'demo-apikey-' + timelineId,
+        timeline_id: timelineId,
+        program_id: timelineId
+      }
+    }
+  }
+
 }

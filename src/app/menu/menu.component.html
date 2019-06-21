@@ -10,7 +10,13 @@
     <ion-content>
       <ion-list>
         <ion-item lines="none">
-          <ion-button fill="clear" size="large" color="dark" disabled>{{ program }}</ion-button>
+          <ion-select
+            interface="popover"
+            (ionChange)="changeTimeline()"
+            [(ngModel)]="timelineId"
+          >
+            <ion-select-option *ngFor="let program of programs" [value]="program.id">{{program.name}}</ion-select-option>
+          </ion-select>
         </ion-item>
         <ion-item lines="none">
           <ion-button fill="clear" size="large" [color]="currentPage === 'dashboard' ? 'dark' : 'medium'" (click)="goTo('')">Dashboard</ion-button>

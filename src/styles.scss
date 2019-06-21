@@ -4,3 +4,9 @@
 .popover-progress {
   --width: auto;
 }
+
+// ion-item in popover select options don't need underline
+ion-item.sc-ion-select-popover {
+  --border-width: 0;
+  --inner-border-width: 0;
+}

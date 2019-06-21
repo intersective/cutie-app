@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { StorageService } from '@services/storage.service';
 import { Router } from '@angular/router';
+import { LoadingController } from '@ionic/angular';
+import { MenuService } from './menu.service';
 
 @Component({
   selector: 'app-menu',
@@ -9,10 +11,13 @@ import { Router } from '@angular/router';
 })
 export class MenuComponent implements OnInit {
   currentPage: string;
-  program = '';
+  timelineId = '';
+  programs = [];
   constructor(
     private storage: StorageService,
-    private router: Router
+    private router: Router,
+    public loadingController: LoadingController,
+    private service: MenuService
   ) { }
 
   ngOnInit() {
@@ -25,9 +30,25 @@ export class MenuComponent implements OnInit {
         this.currentPage = 'dashboard';
         break;
     }
-    this.program = this.storage.get('programs').find(value => {
-      return value.timeline.id === this.storage.getUser().timelineId;
-    }).program.name;
+    this.timelineId = this.storage.getUser().timelineId;
+    this.programs = [];
+    this.storage.get('programs').forEach(program => {
+      this.programs.push({
+        id: program.timeline.id,
+        name: program.program.name
+      });
+    });
+  }
+
+  async changeTimeline() {
+    const loading = await this.loadingController.create({
+      message: 'switching...'
+    });
+    await loading.present();
+    this.service.switchTimeline(this.timelineId).subscribe(response => {
+      loading.dismiss();
+      location.reload();
+    });
   }
 
   getMyImage() {

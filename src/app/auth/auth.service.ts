@@ -95,7 +95,6 @@ export class AuthService {
         name: apiData.name,
         contactNumber: apiData.contact_number,
         email: apiData.email,
-        role: apiData.role,
         image: apiData.image,
         userHash: apiData.userhash
       });
