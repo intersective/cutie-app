@@ -1,10 +1,44 @@
 .progress-popover {
   padding: 12px 16px 20px;
   min-width: 224px;
+  min-height: 164px;
+  max-height: fit-content;
 
-  h4 {
-    margin: 0 0 4px;
-    text-transform: capitalize;
+  .assessment-name {
+    ion-label {
+      text-transform: capitalize;
+      font-size: 14px;
+    }
+  }
+
+  .status-container {
+    margin-bottom: 16px;
+    .status {
+      color: var(--ion-color-medium-shade);
+    }
+  }
+
+  .status-container, .submit-container, .due-container {
+    ion-label {
+      font-size: 14px;
+      line-height: 20px;
+      &.title {
+        min-width: 80px;
+        font-weight: var(--font-weight-medium);
+      }
+    }
+    .container-body {
+      ion-label {
+        color: var(--ion-color-medium-shade);
+        &.danger {
+          color: var(--ion-color-danger);
+        }
+    
+        &.warning {
+          color: var(--ion-color-warning);
+        }
+      }
+    }
   }
   
   dl {
@@ -17,6 +51,9 @@
       font-weight: var(--font-weight-medium);
       float: left;
       clear: left;
+      &.status {
+        margin-bottom: 16px;
+      }
     }
   
     dd {
