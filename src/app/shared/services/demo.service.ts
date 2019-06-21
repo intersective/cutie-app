@@ -68,20 +68,13 @@ export class DemoService {
 
   // progress-table.service
   getEnrolments() {
-    setTimeout(
-      () => {
-        // get progress after 2 seconds
-        this._getProgress();
-      },
-      2000
-    );
     return {
       total: 50,
-      data: this._studentNames()
+      data: this._getStudents()
     }
   }
 
-  private _studentNames() {
+  private _getStudents() {
     const enrolments = [];
     this._shuffle(this.students).forEach((st, i) => {
       enrolments.push({
@@ -89,7 +82,14 @@ export class DemoService {
         participant_email: 'user' + i + '@practera.com',
         user_uid: 'demo-uid-' + i,
         team_name: this._randomTeam(),
-        image: './assets/demo/avatar.png'
+        image: './assets/demo/avatar.png',
+        progress: Array(10).fill({}).map(this._randomProgress, this).concat(Array(5).fill({
+          name: 'assessment name',
+          due_date: '08 Sept 2019 07:00:00',
+          submitted: '',
+          status: 'not started',
+          overdue: false
+        }))
       });
     });
     return enrolments;
@@ -103,23 +103,6 @@ export class DemoService {
       return 'Project 2';
     }
     return 'Project 3';
-  }
-
-  private _getProgress() {
-    this.students.forEach((st, i) => {
-      setTimeout(() => {
-        this.utils.broadcastEvent('student-progress', {
-          user_uid: 'demo-uid-' + i,
-          progress: Array(10).fill({}).map(this._randomProgress, this).concat(Array(5).fill({
-            name: 'assessment name',
-            due_date: '08 Sept 2019 07:00:00',
-            submitted: '',
-            status: 'not started',
-            overdue: false
-          }))
-        });
-      }, 1000 * i);
-    });
   }
 
   private _randomProgress(x = null) {
