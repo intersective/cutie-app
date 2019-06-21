@@ -1,8 +1,12 @@
 .popover-action {
   --width: auto;
+  --height: fit-content;
 }
 .popover-progress {
-  --width: auto;
+  .popover-content {
+    --width: auto;
+    --height: fit-content;
+  }
 }
 
 // ion-item in popover select options don't need underline
