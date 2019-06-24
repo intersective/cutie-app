@@ -170,6 +170,7 @@ export class DemoService {
     return members;
   }
 
+  // menu.service
   public getJwt(timelineId) {
     return {
       data: {
@@ -180,4 +181,14 @@ export class DemoService {
     }
   }
 
+  // metric-grid.service
+  public getStatistics() {
+    return {
+      data: {
+        total_submissions: Math.floor(Math.random() * 50 + 100),
+        feedback_loops: Math.floor(Math.random() * 40 + 40),
+        helpfulness_rating: Math.floor(Math.random() * 5 + 5).toFixed(1)
+      }
+    };
+  }
 }
