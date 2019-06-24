@@ -97,12 +97,12 @@ export class DemoService {
 
   private _randomTeam() {
     if (Math.random() < 0.4) {
-      return 'Project 1';
+      return this.teams[0];
     }
     if (Math.random() < 0.6) {
-      return 'Project 2';
+      return this.teams[1];
     }
-    return 'Project 3';
+    return this.teams[2];
   }
 
   private _randomProgress(x = null) {
