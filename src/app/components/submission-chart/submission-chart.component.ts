@@ -9,6 +9,7 @@ import { SubmissionChartService } from './submission-chart.service';
 export class SubmissionChartComponent implements OnInit {
   // the data used to generate the chart
   data: any[];
+  total: number;
   constructor(
     private service: SubmissionChartService
   ) { }
@@ -18,7 +19,10 @@ export class SubmissionChartComponent implements OnInit {
       const series = [];
       response.data.forEach(d => {
         series.push({
-          name: d.date,
+          name: new Intl.DateTimeFormat('en-GB', {
+            month: 'short',
+            day: 'numeric'
+          }).format(new Date(d.date)),
           value: d.value
         });
       });
@@ -26,6 +30,7 @@ export class SubmissionChartComponent implements OnInit {
         name: 'No. of submissions',
         series: series
       }];
+      this.total = response.total;
     });
   }
 

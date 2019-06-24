@@ -10,6 +10,7 @@ export class DemoService {
   students = ['Caramel Dundee', 'Gosinder Shah', 'Mein Black', 'Gos Baxter', 'Monday Blighton', 'Joreis Park', 'Dimitry Ricks', 'Desean Ning'];
   allStatus = ['not started', 'in progress', 'done', 'pending review', 'pending approval', 'published'];
   teams = ['team 1 - market research analysis project', 'team 2 - market research analysis project', 'team 3 - market research analysis project', 'team 4 - market research analysis project'];
+  totalSubmission;
 
   constructor(
     private utils: UtilsService,
@@ -183,9 +184,10 @@ export class DemoService {
 
   // metric-grid.service
   public getStatistics() {
+    this.totalSubmission = Math.floor(Math.random() * 50 + 80);
     return {
       data: {
-        total_submissions: Math.floor(Math.random() * 50 + 100),
+        total_submissions: this.totalSubmission,
         feedback_loops: Math.floor(Math.random() * 40 + 40),
         helpfulness_rating: Math.floor(Math.random() * 5 + 5).toFixed(1)
       }
@@ -195,18 +197,21 @@ export class DemoService {
   // submission-chart.service
   public getSubmissions() {
     let date = new Date('2019-04-01');
-    let value = 10;
+    let value = 0;
     let data = [];
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 7; i++) {
+      const month = date.getMonth() + 1;
       data.push({
-        date: date.toDateString(),
+        date: date.getFullYear() + '-' + month + '-' + date.getDate(),
         value: value
       });
-      value += Math.floor(Math.random() * 10 + 10);
+      value += Math.floor(Math.random() * 20 + 5);
       date.setDate(date.getDate() + 7);
     }
+    data[data.length - 1].value = this.totalSubmission;
     return {
-      data: data
+      data: data,
+      total: 140
     };
   }
 }
