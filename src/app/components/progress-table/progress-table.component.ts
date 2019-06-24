@@ -264,4 +264,8 @@ export class ProgressTableComponent implements OnInit {
     });
   }
 
+  showTooltip(projectName: string) {
+    return projectName.length > 13 ? projectName : '';
+  }
+
 }

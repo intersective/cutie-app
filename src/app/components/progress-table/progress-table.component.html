@@ -27,7 +27,7 @@
     <ng-container *ngIf="type === 'student'">
       <ngx-datatable-column
         name="Student"
-        [width]="240"
+        [width]="220"
         [sortable]="false"
         [canAutoResize]="false"
         [draggable]="false"
@@ -45,14 +45,14 @@
       <ngx-datatable-column
         name="Project"
         prop="team"
-        [width]="90"
+        [width]="120"
         [sortable]="false"
         [canAutoResize]="false"
         [draggable]="false"
         [resizeable]="false">
         <ng-template let-value="value" ngx-datatable-cell-template>
             <div class="project">
-              <p>{{value}}</p>
+              <p title="{{showTooltip(value)}}">{{ value }}</p>
             </div>
           </ng-template>
       </ngx-datatable-column>
@@ -62,14 +62,14 @@
       <ngx-datatable-column
         name="Project"
         prop="name"
-        [width]="90"
+        [width]="120"
         [sortable]="false"
         [canAutoResize]="false"
         [draggable]="false"
         [resizeable]="false">
         <ng-template let-value="value" ngx-datatable-cell-template>
             <div class="project">
-              <p>{{value}}</p>
+              <p title="{{showTooltip(value)}}">{{ value }}</p>
             </div>
           </ng-template>
       </ngx-datatable-column>

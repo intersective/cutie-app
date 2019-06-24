@@ -89,5 +89,9 @@
   p {
     margin: 0;
     line-height: 36px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
   }
 }
