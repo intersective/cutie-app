@@ -191,4 +191,22 @@ export class DemoService {
       }
     };
   }
+
+  // submission-chart.service
+  public getSubmissions() {
+    let date = new Date('2019-04-01');
+    let value = 10;
+    let data = [];
+    for (let i = 0; i < 5; i++) {
+      data.push({
+        date: date.toDateString(),
+        value: value
+      });
+      value += Math.floor(Math.random() * 10 + 10);
+      date.setDate(date.getDate() + 7);
+    }
+    return {
+      data: data
+    };
+  }
 }
