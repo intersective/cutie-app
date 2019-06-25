@@ -24,11 +24,16 @@ export class SubmissionChartService {
 
   getSubmissions() {
     if (environment.demo) {
-      return of(this.demo.getSubmissions()).pipe(delay(1000));
+      const response = this.demo.getSubmissions();
+      return of(this._handleSubmissionsResponse(response)).pipe(delay(1000));
     }
     return this.request.get(api.get.statistics, {params: {
       submissions: true
-    }});
+    }}).pipe(map(this._handleSubmissionsResponse));
+  }
+
+  private _handleSubmissionsResponse(response) {
+    return response.data.submissions;
   }
 
 }

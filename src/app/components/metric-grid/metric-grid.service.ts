@@ -37,9 +37,9 @@ export class MetricGridService {
 
   private _handleStatisticsResponse(response) {
     return {
-      submissions: response.data.total_submissions ? response.data.total_submissions : null,
-      feedbackLoops: response.data.feedback_loops ? response.data.feedback_loops : null,
-      helpfulnessRating: response.data.helpfulness_rating ? response.data.helpfulness_rating : null
+      submissions: response.data.total_submissions ? response.data.total_submissions : 0,
+      feedbackLoops: response.data.feedback_loops ? response.data.feedback_loops : 0,
+      helpfulnessRating: response.data.helpfulness_rating ? response.data.helpfulness_rating : 'N/A'
     }
   }
 }

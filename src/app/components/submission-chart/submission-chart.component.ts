@@ -9,7 +9,7 @@ import { SubmissionChartService } from './submission-chart.service';
 export class SubmissionChartComponent implements OnInit {
   // the data used to generate the chart
   data: any[];
-  total: number;
+  max: number;
   constructor(
     private service: SubmissionChartService
   ) { }
@@ -30,7 +30,7 @@ export class SubmissionChartComponent implements OnInit {
         name: 'No. of submissions',
         series: series
       }];
-      this.total = response.total;
+      this.max = response.max;
     });
   }
 

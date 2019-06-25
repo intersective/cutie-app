@@ -210,8 +210,12 @@ export class DemoService {
     }
     data[data.length - 1].value = this.totalSubmission;
     return {
-      data: data,
-      total: 140
+      data: {
+        submissions: {
+          data: data,
+          max: 140
+        }
+      }
     };
   }
 }
