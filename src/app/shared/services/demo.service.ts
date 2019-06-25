@@ -199,7 +199,7 @@ export class DemoService {
     let date = new Date('2019-04-01');
     let value = 0;
     let data = [];
-    for (let i = 0; i < 7; i++) {
+    for (let i = 0; i < 8; i++) {
       const month = date.getMonth() + 1;
       data.push({
         date: date.getFullYear() + '-' + month + '-' + date.getDate(),
