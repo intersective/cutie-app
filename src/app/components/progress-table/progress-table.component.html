@@ -62,7 +62,7 @@
       <ngx-datatable-column
         name="Project"
         prop="name"
-        [width]="120"
+        [width]="240"
         [sortable]="false"
         [canAutoResize]="false"
         [draggable]="false"
@@ -76,14 +76,24 @@
       <ngx-datatable-column
         name="Team"
         prop="members"
-        [width]="240"
+        [width]="130"
         [sortable]="false"
         [canAutoResize]="false"
         [draggable]="false"
         [resizeable]="false">
         <ng-template let-value="value" ngx-datatable-cell-template>
           <div class="members">
-            <ion-avatar *ngFor="let member of value"><img [src]="member.image"></ion-avatar>
+            <div class="more-members" *ngIf="value.length > 5">
+              <p>+ {{value.length - 4}}</p>
+            </div>
+            <ng-container *ngFor="let member of value; index as i">
+              <ng-container *ngIf="value.length <=5">
+                  <ion-avatar><img [src]="member.image"></ion-avatar>
+              </ng-container>
+              <ng-container *ngIf="value.length > 5">
+                  <ion-avatar *ngIf="i < 4"><img [src]="member.image"></ion-avatar>
+              </ng-container>
+            </ng-container>
           </div>
         </ng-template>
       </ngx-datatable-column>
