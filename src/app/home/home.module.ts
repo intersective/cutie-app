@@ -7,6 +7,7 @@ import { MetricPaneComponent } from '@components/metric-pane/metric-pane.compone
 import { MetricGridComponent } from '@components/metric-grid/metric-grid.component';
 import { ElsaBarComponent } from '@components/elsa-bar/elsa-bar.component';
 import { ElsaGhostComponent } from '@components/elsa-ghost/elsa-ghost.component';
+import { SubmissionChartModule } from '@components/submission-chart/submission-chart.module';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { ElsaGhostComponent } from '@components/elsa-ghost/elsa-ghost.component'
         path: '',
         component: HomeComponent
       }
-    ])
+    ]),
+    SubmissionChartModule
   ],
   declarations: [
     HomeComponent,

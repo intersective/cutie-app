@@ -1,0 +1,13 @@
+<div class="chart">
+  <ngx-charts-area-chart
+    *ngIf="type === 'area'"
+    [scheme]="colorScheme"
+    [results]="data"
+    [legend]="false"
+    [xAxis]="true"
+    [yAxis]="true"
+    [yScaleMax]="yScaleMax"
+    [curve]="curve"
+  >
+  </ngx-charts-area-chart>
+</div>
