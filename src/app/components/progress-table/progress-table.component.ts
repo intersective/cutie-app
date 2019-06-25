@@ -268,8 +268,4 @@ export class ProgressTableComponent implements OnInit {
     return projectName.length > 13 ? projectName : '';
   }
 
-  checkTeamMemberCount(count) {
-
-  }
-
 }
