@@ -166,6 +166,7 @@ export class ProgressTableComponent implements OnInit {
    */
   search(value) {
     this.filter = value;
+    this.offset = 0;
     this._updateData();
   }
 
