@@ -11,9 +11,7 @@ import { DemoService } from '@services/demo.service';
 
 
 /**
- * @name api
- * @description list of api endpoint involved in this service
- * @type {Object}
+ * list of api endpoint involved in this service
  */
 const api = {
   login: 'api/auths.json',
@@ -33,9 +31,8 @@ export class AuthService {
   ) { }
 
   /**
-   * @name directLogin
-   * @description login API specifically only accept request data in encodedUrl formdata,
-   *              so must convert them into compatible formdata before submission
+   * login API specifically only accept request data in encodedUrl formdata,
+   * so must convert them into compatible formdata before submission
    */
   directLogin(token: string): Observable<any> {
     if (environment.demo) {
@@ -73,8 +70,7 @@ export class AuthService {
   }
 
   /**
-   * @name getMyInfo
-   * @description get user info
+   * get user info
    */
   getMyInfo(): Observable<any> {
     if (environment.demo) {

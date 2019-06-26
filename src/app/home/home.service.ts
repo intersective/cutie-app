@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 
 /**
- * @name api
- * @description list of api endpoint involved in this service
- * @type {Object}
+ * list of api endpoint involved in this service
  */
 const api = {
   get: {

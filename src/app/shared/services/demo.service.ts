@@ -64,7 +64,7 @@ export class DemoService {
           userHash: 'demo-hash'
         }
       }
-    }
+    };
   }
 
   // progress-table.service
@@ -72,7 +72,7 @@ export class DemoService {
     return {
       total: 50,
       data: this._getStudents()
-    }
+    };
   }
 
   private _getStudents() {
@@ -138,7 +138,7 @@ export class DemoService {
 
   // progress-table.service
   getTeams() {
-    let data = [];
+    const data = [];
     this.teams.forEach((team, i) => {
       data.push({
         uid: 'team' + i,
@@ -150,23 +150,23 @@ export class DemoService {
           status: 'not started',
           overdue: false
         })),
-        members: this._getMembers(i)
+        members: this._getMembers()
       });
     });
     return {
       data: data,
       total: 10
-    }
+    };
   }
 
-  private _getMembers(i) {
-    let members = [];
+  private _getMembers() {
+    const members = [];
     const n = Math.floor(Math.random() * 5 + 5);
     Array(n).fill(1).forEach((x, i) => {
       members.push({
         name: this.students[i],
         image: './assets/demo/avatar.png'
-      })
+      });
     });
     return members;
   }
@@ -179,7 +179,7 @@ export class DemoService {
         timeline_id: timelineId,
         program_id: timelineId
       }
-    }
+    };
   }
 
   // metric-grid.service
@@ -196,9 +196,9 @@ export class DemoService {
 
   // submission-chart.service
   public getSubmissions() {
-    let date = new Date('2019-04-01');
+    const date = new Date('2019-04-01');
     let value = 0;
-    let data = [];
+    const data = [];
     for (let i = 0; i < 8; i++) {
       const month = date.getMonth() + 1;
       data.push({

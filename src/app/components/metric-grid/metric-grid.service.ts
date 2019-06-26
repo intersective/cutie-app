@@ -40,6 +40,6 @@ export class MetricGridService {
       submissions: response.data.total_submissions ? response.data.total_submissions : 0,
       feedbackLoops: response.data.feedback_loops ? response.data.feedback_loops : 0,
       helpfulnessRating: response.data.helpfulness_rating ? response.data.helpfulness_rating : 'N/A'
-    }
+    };
   }
 }

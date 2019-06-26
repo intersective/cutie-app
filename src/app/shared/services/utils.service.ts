@@ -105,8 +105,8 @@ export class UtilsService {
    * Any time before yesterday(one day before 'compareWith') will return 'Yesterday'
    * Any time today(the same day as 'compareWith') will return the time
    * Any other time will just return the date in "3 May" format
-   * @param {string} time        [The time string going to be formatted (In UTC timezone)]
-   * @param {string} compareWith [The time string used to compare with]
+   * @param time        [The time string going to be formatted (In UTC timezone)]
+   * @param compareWith [The time string used to compare with]
    */
   timeFormatter(time: string, compareWith?: string) {
     if (!time) {

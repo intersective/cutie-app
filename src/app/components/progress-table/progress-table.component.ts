@@ -249,7 +249,7 @@ export class ProgressTableComponent implements OnInit {
 
   /**
    * Calculate the width percentage for each progress cell
-   * @param number x number of progress cells
+   * @param x number of progress cells
    */
   progressWidth(x) {
     return (100 / x - 0.1).toFixed(2);
@@ -257,7 +257,7 @@ export class ProgressTableComponent implements OnInit {
 
   /**
    * When scrolling the progress left/right
-   * @param number scrollLeft Scrolled to which position
+   * @param scrollLeft Scrolled to which position
    */
   scroll(scrollLeft) {
     this.progressRefs.toArray().forEach(progressRef => {

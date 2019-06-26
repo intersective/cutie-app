@@ -18,8 +18,7 @@ export class NotificationService {
   }
 
   /**
-   * @name modalConfig
-   * @description futher customised filter
+   * futher customised filter
    */
   private modalConfig({ component, componentProps }, options = {}) {
     const config = Object.assign(

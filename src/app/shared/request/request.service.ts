@@ -41,9 +41,7 @@ export class RequestService {
   ) {}
 
   /**
-   *
-   * @param {'Content-Type': string } header
-   * @returns {HttpHeaders}
+   * @param header header values
    */
   appendHeaders(header = {'Content-Type': 'application/json'}) {
     const headers = new HttpHeaders(header);
@@ -52,8 +50,7 @@ export class RequestService {
 
   /**
    *
-   * @param options
-   * @returns {any}
+   * @param options parameters
    */
   setParams(options) {
     let params: any;
@@ -68,10 +65,9 @@ export class RequestService {
 
   /**
    *
-   * @param {string} endPoint
-   * @param options
-   * @param headers
-   * @returns {Observable<any>}
+   * @param endPoint endpoint url
+   * @param options  http options
+   * @param headers  additional header values
    */
   get(endPoint: string = '', httpOptions?: any): Observable<any> {
     if (!httpOptions) {
@@ -152,8 +148,7 @@ export class RequestService {
   }
 
   /**
-   *
-   * @returns {string}
+   * Get the api prefix based on api endpoint name
    */
   public getPrefixUrl(endPoint: string) {
     const oldEndPoints = [
@@ -170,10 +165,6 @@ export class RequestService {
     return this.apiUrl;
   }
 
-  /**
-   *
-   * @returns {string}
-   */
   public getAppkey() {
     return this.appkey;
   }
