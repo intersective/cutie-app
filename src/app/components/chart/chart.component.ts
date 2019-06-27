@@ -8,7 +8,10 @@ import * as shape from 'd3-shape';
 })
 export class ChartComponent implements OnInit {
   @Input() type: string;
+  @Input() maxHeight: string;
   @Input() data: any[];
+  @Input() xAxisTicks: any[];
+  @Input() yAxisTicks: any[];
   @Input() legendTitle: string;
   @Input() yScaleMax: string;
   curve = shape.curveBasis;
