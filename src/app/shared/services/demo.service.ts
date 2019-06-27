@@ -200,15 +200,22 @@ export class DemoService {
     const date = new Date('2019-04-01');
     let value = 0;
     const data = [];
+    let month;
     for (let i = 0; i < 8; i++) {
-      const month = date.getMonth() + 1;
+      month = date.getMonth() + 1;
       data.push({
         date: date.getFullYear() + '-' + month + '-' + date.getDate(),
         value: value
       });
-      value += Math.floor(Math.random() * 20 + 5);
+      value += Math.floor(Math.random() * 15 + 5);
       date.setDate(date.getDate() + 7);
     }
+    const today = new Date();
+    month = today.getMonth() + 1;
+    data.push({
+      date: today.getFullYear() + '-' + month + '-' + today.getDate(),
+      value: value
+    });
     data[data.length - 1].value = this.totalSubmission;
     return {
       data: {

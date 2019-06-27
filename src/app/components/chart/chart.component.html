@@ -1,4 +1,4 @@
-<div class="chart">
+<div class="chart" [ngStyle]="{'max-height': maxHeight}">
   <ngx-charts-area-chart
     *ngIf="type === 'area'"
     [scheme]="colorScheme"
@@ -6,6 +6,8 @@
     [legend]="false"
     [xAxis]="true"
     [yAxis]="true"
+    [xAxisTicks]="xAxisTicks"
+    [yAxisTicks]="yAxisTicks"
     [yScaleMax]="yScaleMax"
     [curve]="curve"
   >

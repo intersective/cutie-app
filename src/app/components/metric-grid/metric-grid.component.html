@@ -1,12 +1,20 @@
-<app-metric-pane
-  [value]="submissions"
-  [text]="'Submissions'"
-></app-metric-pane>
-<app-metric-pane
-  [value]="feedbackLoops"
-  [text]="'Feedback Loops Completed'"
-></app-metric-pane>
-<app-metric-pane
-  [value]="helpfulnessRating"
-  [text]="'Helpfulness Rating'"
-></app-metric-pane>
+<ion-grid>
+  <ion-row>
+    <ion-col size="4">
+      <h3 class="title">Submissions</h3>
+      <app-submission-chart></app-submission-chart>
+    </ion-col>
+    <ion-col size="4">
+      <app-metric-pane
+        [value]="feedbackLoops"
+        [text]="'Feedback Loops Completed'"
+      ></app-metric-pane>
+    </ion-col>
+    <ion-col size="4">
+      <app-metric-pane
+        [value]="helpfulnessRating"
+        [text]="'Helpfulness Rating'"
+      ></app-metric-pane>
+    </ion-col>
+  </ion-row>
+</ion-grid>
