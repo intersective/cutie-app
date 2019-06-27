@@ -11,6 +11,7 @@ export class DemoService {
   allStatus = ['not started', 'in progress', 'done', 'pending review', 'pending approval', 'published'];
   teams = ['team 1 - market research analysis project', 'team 2 - market research analysis project', 'team 3 - market research analysis project', 'team 4 - market research analysis project'];
   totalSubmission;
+  todoItemTypes = ['overdueSubmission', 'overdueReview', 'unpublishedReview', 'unassignedReview', 'notAssignedTeam']
 
   constructor(
     private utils: UtilsService,
@@ -216,6 +217,154 @@ export class DemoService {
           max: 140
         }
       }
+    };
+  }
+
+  public getTodoItems() {
+    const data = [];
+    // generate 5 - 10 todo items
+    Array(Math.floor(Math.random() * 5 + 5)).fill(1).forEach(i => {
+      data.push(this._getRandomTodoItem());
+    });
+    return {
+      data: data
+    };
+  }
+
+  private _getRandomTodoItem() {
+    const id = Math.floor(Math.random() * 10);
+    let name, identifier = '';
+    let meta = {};
+    const count = Math.floor(Math.random() * 5 + 1);
+    switch (this.todoItemTypes[Math.floor(Math.random() * this.todoItemTypes.length)]) {
+      case 'overdueSubmission':
+        name = 'Overdue Submission for Assessment ' + id;
+        identifier = 'AssessmentSubmissionDue-' + id;
+        meta = {
+          count: count,
+          action: 'message',
+          action_title: 'remind students',
+          users: Array(count).fill({}).map((x, i) => {
+            return {
+              user_id: i + 1,
+              user_name: this.students[i],
+              user_email: 'user' + i + '@practera.com',
+              action_taken: false
+            };
+          }, this)
+        };
+        break;
+      case 'overdueReview':
+        name = 'Overdue Review for Assessment ' + id;
+        identifier = 'AssessmentReviewRemind-' + id;
+        meta = {
+          count: count,
+          action: 'message',
+          action_title: 'remind reviewers',
+          users: Array(count).fill({}).map((x, i) => {
+            return {
+              user_id: i + 1,
+              user_name: this.students[i],
+              user_email: 'user' + i + '@practera.com',
+              action_taken: false
+            };
+          }, this)
+        };
+        break;
+      case 'unpublishedReview':
+        name = 'Unpublished Review for Assessment ' + id;
+        identifier = 'AssessmentReviewPublish-' + id;
+        meta = {
+          count: count,
+          action: 'go',
+          action_title: 'publish reviews',
+          action_target: '/admin/assess/assessment_reviews/index/' + id + '#ready-to-publish',
+          users: Array(count).fill({}).map((x, i) => {
+            return {
+              user_id: i + 1,
+            };
+          }, this)
+        };
+        break;
+      case 'unassignedReview':
+        name = 'Unassigned Review for Assessment ' + id;
+        identifier = 'AssessmentReviewAssign-' + id;
+        meta = {
+          count: count,
+          action: 'go',
+          action_title: 'assign reviews',
+          action_target: '/admin/assess/assessment_reviews/index/' + id + '#unassigned',
+          users: Array(count).fill({}).map((x, i) => {
+            return {
+              user_id: i + 1,
+            };
+          }, this)
+        };
+        break;
+      case 'notAssignedTeam':
+        name = 'Students not assigned to a team';
+        identifier = 'CohortTeamStudent';
+        meta = {
+          count: count,
+          action: 'go',
+          action_title: 'manage teams',
+          action_target: '/admin/teams/add',
+          users: Array(count).fill({}).map((x, i) => {
+            return {
+              user_id: i + 1,
+            };
+          }, this)
+        };
+        break;
+    }
+    return {
+      id: id,
+      name: name,
+      is_done: false,
+      meta: meta
+    }
+  }
+
+  public getTodoMessageTemplateNames(identifier) {
+    if (identifier.includes('AssessmentSubmissionDue')) {
+      return {
+        data: ['default', 'student submission nudge']
+      };
+    }
+    if (identifier.includes('AssessmentReviewRemind')) {
+      return {
+        data: ['default', 'review submission nudge']
+      };
+    }
+  }
+
+  public getTodoMessageTemplateContent(identifier, name) {
+    if (name === 'student submission nudge') {
+      return {
+        data: {
+          sms: 'Quick reminder to submit work for [project_name].',
+          email: `Hi [first_name],
+We noticed you have not yet submitted work for [project_name]. Please log in and complete the assignment as soon as you can.
+Need help? Drop us a line [help_email]`
+         }
+      };
+    }
+    if (name === 'review submission nudge') {
+      return {
+        data: {
+          sms: 'Quick reminder to submit review for [project_name].',
+          email: `Hi [first_name],
+We noticed you have not yet submitted your assigned reviews for [project_name]. Please log in and complete the review as soon as you can.
+Need help? Drop us a line [help_email]`
+         }
+      };
+    }
+    return {
+      data: {
+        sms: `Your [project_name] could be going better. Here's how to improve right now:`,
+        email: `Hi [first_name],
+We've noticed a few things with your [project_name] that could be improved.`
+       }
     };
   }
 }
