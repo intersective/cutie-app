@@ -4,7 +4,7 @@ ion-content, .user-list, .user-item {
 }
 
 .user-label {
-  margin-left: 70px;
+  margin-left: 35px;
   font-size: 20px;
   color: var(--ion-color-medium-shade);
   font-weight: bold;
@@ -18,6 +18,9 @@ ion-content, .user-list, .user-item {
   ion-label {
     padding-left: 16px;
     color: var(--ion-color-medium-shade);
+  }
+  ion-textarea {
+    padding-left: 8px;
   }
 }
 
