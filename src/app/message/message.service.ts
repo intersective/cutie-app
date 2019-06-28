@@ -1,0 +1,46 @@
+import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { delay } from 'rxjs/internal/operators';
+import { RequestService } from '@shared/request/request.service';
+import { environment } from '@environments/environment';
+import { DemoService } from '@services/demo.service';
+import { UtilsService } from '@services/utils.service';
+
+/**
+ * list of api endpoint involved in this service
+ */
+const api = {
+  get: {
+    messageTemplate: 'api/v2/motivations/todo_item/message_template.json'
+  },
+  post: {
+    act: 'api/v2/motivations/todo_item/act.json'
+  }
+};
+
+@Injectable({
+  providedIn: 'root'
+})
+export class MessageService {
+
+  constructor(
+    private request: RequestService,
+    private demo: DemoService,
+    private utils: UtilsService
+  ) { }
+
+  getMessageTemplates(identifier) {
+    if (environment.demo) {
+      const response = this.demo.getMessageTemplates(identifier);
+      return of(this._handleMessageTemplatesResponse(response)).pipe(delay(1000));
+    }
+    return this.request.get(api.get.messageTemplate)
+      .pipe(map(this._handleMessageTemplatesResponse));
+  }
+
+  private _handleMessageTemplatesResponse(response) {
+    return response.data;
+  }
+
+}

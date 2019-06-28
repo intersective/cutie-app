@@ -231,6 +231,7 @@ export class DemoService {
     };
   }
 
+  // elsa-todo-list.service
   public getTodoItems() {
     const data = [];
     // generate 5 - 10 todo items
@@ -349,46 +350,45 @@ export class DemoService {
     return type;
   }
 
-  public getTodoMessageTemplateNames(identifier) {
+  // message.service
+  public getMessageTemplates(identifier) {
+    const data = [];
+    let templates = [];
     if (identifier.includes('AssessmentSubmissionDue')) {
-      return {
-        data: ['default', 'student submission nudge']
-      };
+      templates = ['default', 'student submission nudge'];
     }
     if (identifier.includes('AssessmentReviewRemind')) {
-      return {
-        data: ['default', 'review submission nudge']
-      };
+      templates = ['default', 'review submission nudge'];
     }
+    templates.forEach(template => {
+      data.push(this._getMessageContent(template))
+    });
+    return {
+      data: data
+    };
   }
 
-  public getTodoMessageTemplateContent(identifier, name) {
-    if (name === 'student submission nudge') {
-      return {
-        data: {
+  private _getMessageContent(name) {
+    switch (name) {
+      case 'student submission nudge':
+        return {
+          name: name,
           sms: 'Quick reminder to submit work for [project_name].',
-          email: `Hi [first_name],
-We noticed you have not yet submitted work for [project_name]. Please log in and complete the assignment as soon as you can.
-Need help? Drop us a line [help_email]`
-         }
-      };
-    }
-    if (name === 'review submission nudge') {
-      return {
-        data: {
+          email: `Hi [first_name],\nWe noticed you have not yet submitted work for [project_name]. Please log in and complete the assignment as soon as you can.\nNeed help? Drop us a line [help_email]`
+        };
+      case 'review submission nudge':
+        return {
+          name: name,
           sms: 'Quick reminder to submit review for [project_name].',
-          email: `Hi [first_name],
-We noticed you have not yet submitted your assigned reviews for [project_name]. Please log in and complete the review as soon as you can.
-Need help? Drop us a line [help_email]`
-         }
-      };
+          email: `Hi [first_name],\nWe noticed you have not yet submitted your assigned reviews for [project_name]. Please log in and complete the review as soon as you can.\nNeed help? Drop us a line [help_email]`
+        };
+      default:
+        return {
+          name: name,
+          sms: `Your [project_name] could be going better. Here's how to improve right now:`,
+          email: `Hi [first_name],\nWe've noticed a few things with your [project_name] that could be improved.`
+        };
     }
-    return {
-      data: {
-        sms: `Your [project_name] could be going better. Here's how to improve right now:`,
-        email: `Hi [first_name],
-We've noticed a few things with your [project_name] that could be improved.`
-       }
-    };
+
   }
 }

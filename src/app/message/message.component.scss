@@ -1,0 +1,40 @@
+ion-content, .user-list, .user-item {
+  --background: var(--ion-background-color);
+  background: var(--ion-background-color);
+}
+
+.user-label {
+  margin-left: 70px;
+  font-size: 20px;
+  color: var(--ion-color-medium-shade);
+  font-weight: bold;
+}
+
+.tmp-wrapper {
+  background: var(--ion-color-light);
+  margin-right: 30px;
+  border-radius: 10px;
+  padding: 10px 10px 5px;
+  ion-label {
+    padding-left: 16px;
+    color: var(--ion-color-medium-shade);
+  }
+}
+
+.sms-wrapper {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+i {
+  color: var(--ion-color-medium-shade);
+  font-size: 14px;
+}
+
+code {
+  color: var(--ion-color-medium-shade);
+  background: var(--ion-color-light);
+  margin-right: 10px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+}

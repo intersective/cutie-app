@@ -17,6 +17,10 @@ const routes: Routes = [{
       loadChildren: '../progress/progress.module#ProgressModule'
     },
     {
+      path: 'message',
+      loadChildren: '../message/message.module#MessageModule'
+    },
+    {
       path: '',
       redirectTo: 'dashboard'
     }

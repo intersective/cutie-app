@@ -1,0 +1,50 @@
+<app-navbar
+  [title]="title"
+  hasBack=true
+  hasSend=true
+  (back)="back()"
+  (send)="send()"
+></app-navbar>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="4">
+        <ion-label class="user-label">Select Students</ion-label>
+        <ion-list class="user-list">
+          <ion-item class="user-item" *ngFor="let user of users" lines="none">
+            <ion-checkbox slot="start" [(ngModel)]="user.checked"></ion-checkbox>
+            <ion-label>{{ user.name }}</ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+
+      <ion-col size="8">
+        <div class="tmp-wrapper">
+          <ion-label>Templates</ion-label>
+          <ion-select
+            interface="popover"
+            (ionChange)="changeTemplate()"
+            [(ngModel)]="template"
+          >
+            <ion-select-option *ngFor="let t of templates" [value]="t.name">{{t.name}}</ion-select-option>
+          </ion-select>
+        </div>
+
+        <div class="tmp-wrapper sms-wrapper">
+          <ion-label>SMS Content</ion-label>
+          <ion-textarea [(ngModel)]="smsContent" rows=3></ion-textarea>
+        </div>
+
+        <div class="tmp-wrapper">
+          <ion-label>Email Content</ion-label>
+          <ion-textarea [(ngModel)]="emailContent" rows=10></ion-textarea>
+        </div>
+
+        <p><i>A direct login link will be added to your message. Use these codes to insert personalized information:</i></p>
+
+        <code>[first_name]</code> <code>[last_name]</code> <code>[email]</code> <code>[mobile]</code> <code>[cohort_name]</code> <code>[project_name]</code> <code>[program_name]</code> <code>[experience_name]</code> <code>[help_email]</code>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

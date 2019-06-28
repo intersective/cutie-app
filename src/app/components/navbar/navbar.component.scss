@@ -12,13 +12,19 @@ ion-toolbar {
 }
 
 ion-title {
-  ion-button {
-    vertical-align: middle;
-  }
   ion-item {
     display: inline-block;
     background: transparent;
     --background: transparent;
     width: 100%;
   }
+}
+ion-button {
+  vertical-align: middle;
+}
+
+.title {
+  display: inline-block;
+  vertical-align: middle;
+  text-transform: capitalize;
 }

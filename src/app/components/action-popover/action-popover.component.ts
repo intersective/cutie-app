@@ -11,7 +11,7 @@ export class ActionPopoverComponent implements OnInit {
   @Input() actions: Array<{
     icon?: string;
     text: string;
-    data: any;
+    data?: any;
   }>;
   @Input() onClick;
   constructor(

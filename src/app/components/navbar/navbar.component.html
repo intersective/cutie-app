@@ -1,6 +1,11 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title *ngIf="!searching" class="heading-5">{{title}}</ion-title>
+    <ion-button *ngIf="hasBack" color="primary" fill="clear" shape="round" (click)="goBack()">
+      <ion-icon slot="icon-only" name="arrow-round-back"></ion-icon>
+    </ion-button>
+
+    <ion-title *ngIf="!searching" class="heading-5 title">{{title}}</ion-title>
+
     <ion-title *ngIf="searching">
       <ion-button color="primary" fill="clear" shape="round" (click)="doSearch()">
         <ion-icon slot="icon-only" name="arrow-round-back"></ion-icon>
@@ -16,10 +21,13 @@
         ></ion-input>
       </ion-item>
     </ion-title>
+
     <ion-buttons slot="primary">
       <ion-button *ngIf="hasSearch" color="primary" fill="clear" shape="round" (click)="doSearch()">
         <ion-icon slot="icon-only" name="search"></ion-icon>
       </ion-button>
+
+      <ion-button *ngIf="hasSend" color="primary" fill="solid" shape="round" (click)="onSend()">send message</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>

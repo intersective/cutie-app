@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ElsaTodoListService, TodoItem } from './elsa-todo-list.service';
 import { PusherService } from '@shared/pusher/pusher.service';
 import { UtilsService } from '@services/utils.service';
+import { Router } from '@angular/router';
+import { StorageService } from '@services/storage.service';
 
 @Component({
   selector: 'app-elsa-todo-list',
@@ -17,6 +19,8 @@ export class ElsaTodoListComponent implements OnInit {
     private service: ElsaTodoListService,
     private pusher: PusherService,
     public utils: UtilsService,
+    private router: Router,
+    private storage: StorageService
   ) {
   }
 
@@ -59,14 +63,12 @@ export class ElsaTodoListComponent implements OnInit {
   action(value) {
     switch (value.action) {
       case 'go':
-        window.open(value.target);
-        return;
+        return window.open(value.target);
 
       case 'message':
-        // code...
-        break;
+        this.storage.set('todoItem', value);
+        return this.router.navigate(['message']);
     }
-    console.log(value);
   }
 
 }

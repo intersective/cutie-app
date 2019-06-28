@@ -13,10 +13,6 @@ import { UtilsService } from '@services/utils.service';
 const api = {
   get: {
     todoItem: 'api/v2/motivations/todo_item/list.json',
-    messageTemplate: 'api/v2/motivations/todo_item/message_template.json'
-  },
-  post: {
-    act: 'api/v2/motivations/todo_item/act.json'
   }
 };
 

@@ -10,10 +10,21 @@ export class NavbarComponent implements OnInit {
   searching: boolean;
   searchValue: string;
   @Input() title: string;
+  // has search button
   @Input() hasSearch = false;
+  // has go back button
+  @Input() hasBack = false;
+  // has send message button
+  @Input() hasSend = false;
+  // search event
   @Output() search = new EventEmitter<string>();
+  // go back event
+  @Output() back = new EventEmitter<null>();
+  // send message event
+  @Output() send = new EventEmitter<null>();
   @ViewChild('searchRef') searchRef: IonInput;
-  constructor() { }
+  constructor(
+  ) { }
 
   ngOnInit() {
     this.searching = false;
@@ -40,5 +51,13 @@ export class NavbarComponent implements OnInit {
 
   onSearch() {
     this.search.emit(this.searchValue);
+  }
+
+  goBack() {
+    this.back.emit();
+  }
+
+  onSend() {
+    this.send.emit();
   }
 }
