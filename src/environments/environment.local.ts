@@ -6,4 +6,5 @@ export const environment = {
   env: 'develop',
   APIEndpoint: 'http://127.0.0.1:8081/',
   APIEndpointOld: 'http://127.0.0.1:8080/',
+  Practera: 'http://127.0.0.1:8080'
 };

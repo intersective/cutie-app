@@ -151,16 +151,8 @@ export class RequestService {
    * Get the api prefix based on api endpoint name
    */
   public getPrefixUrl(endPoint: string) {
-    const oldEndPoints = [
-      'auth',
-      'message/notify/pusher_auth',
-      'message/notify/channels',
-      'api/users',
-    ];
-    for (let i = 0; i <= oldEndPoints.length; i++) {
-      if (endPoint.indexOf(oldEndPoints[i]) >= 0) {
-        return this.apiUrlOld;
-      }
+    if (endPoint.includes('api/')) {
+      return this.apiUrlOld;
     }
     return this.apiUrl;
   }

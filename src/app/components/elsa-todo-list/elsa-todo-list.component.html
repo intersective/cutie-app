@@ -1,0 +1,57 @@
+<ng-container *ngIf="!loading && !rows; else todoTmp">
+  <div class="title">Issues</div>
+  <div class="no-issue">
+    <app-elsa-ghost></app-elsa-ghost>
+    <div class="message-1">You are all caught up!</div>
+    <div class="message-2">You have no issues pending</div>
+  </div>
+</ng-container>
+
+<ng-template #todoTmp>
+  <div class="todo-list">
+    <ngx-datatable
+      [rows]="rows"
+      [columnMode]="'force'"
+      [headerHeight]="64"
+      [rowHeight]="64"
+      [loadingIndicator]="loading"
+      class="material"
+      margin-horizontal>
+
+      <ngx-datatable-column
+        name="Issues"
+        prop="issue"
+        headerClass="header-issue"
+        [sortable]="false"
+        [draggable]="false"
+        [resizeable]="false">
+        <ng-template let-value="value" ngx-datatable-cell-template>
+          <div class="issue-col">
+            <ion-badge class="issue-badge" mode="ios" slot="start" color="medium">{{ value.count }}</ion-badge>
+            <ion-label class="issue-name">{{ value.name }}</ion-label>
+          </div>
+        </ng-template>
+      </ngx-datatable-column>
+
+      <ngx-datatable-column
+        name=""
+        prop="action"
+        [width]="250"
+        [sortable]="false"
+        [canAutoResize]="false"
+        [draggable]="false"
+        [resizeable]="false">
+        <ng-template let-value="value" ngx-datatable-cell-template>
+          <div class="action-col">
+            <ion-button fill="clear" (click)="action(value)">
+              <ion-icon name="mail" *ngIf="value.action === 'message'"></ion-icon>
+              <ion-icon name="open" *ngIf="value.action === 'go'"></ion-icon>
+              <ion-label>{{ value.title }}</ion-label>
+            </ion-button>
+          </div>
+        </ng-template>
+      </ngx-datatable-column>
+
+    </ngx-datatable>
+  </div>
+</ng-template>

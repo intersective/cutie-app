@@ -1,0 +1,50 @@
+.title {
+  font-size: 20px;
+  font-weight: 500;
+  padding-bottom: 20px;
+  border-bottom: 0.5px solid #C7CBE1;;
+  margin-left: 32px;
+}
+.no-issue {
+  text-align: center;
+  color: #8089B2;
+  padding-top: 5%;
+  .message-1 {
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: 0.15px;
+    opacity: 0.87;
+  }
+  .message-2 {
+    font-size: 16px;
+    line-height: 28px;
+    letter-spacing: 0.44px;
+  }
+}
+.todo-list {
+  margin-bottom: 50px;
+  .issue-col {
+    line-height: 48px;
+    .issue-badge {
+      margin-left: 32px;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+    .issue-name {
+      font-size: 16px;
+    }
+  }
+  .action-col {
+    line-height: 48px;
+    ion-button {
+      vertical-align: middle;
+      ion-icon {
+        font-size: 1.8em;
+      }
+      ion-label {
+        margin-left: 5px;
+      }
+    }
+  }
+}

@@ -6,4 +6,5 @@ export const environment = {
   env: 'live',
   APIEndpoint: 'https://cutie.api.practera.com/',
   APIEndpointOld: 'https://api.practera.com/',
+  Practera: 'https://my.practera.com',
 };

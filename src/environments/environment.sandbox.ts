@@ -6,4 +6,5 @@ export const environment = {
   env: 'sandbox',
   APIEndpoint: 'https://sandbox-cutie.api.practera.com/',
   APIEndpointOld: 'https://sandbox.practera.com/',
+  Practera: 'https://sandbox.practera.com',
 };

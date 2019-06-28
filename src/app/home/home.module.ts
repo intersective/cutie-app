@@ -5,9 +5,8 @@ import { RouterModule } from '@angular/router';
 import { HomeComponent } from './home.component';
 import { MetricPaneComponent } from '@components/metric-pane/metric-pane.component';
 import { MetricGridComponent } from '@components/metric-grid/metric-grid.component';
-import { ElsaBarComponent } from '@components/elsa-bar/elsa-bar.component';
-import { ElsaGhostComponent } from '@components/elsa-ghost/elsa-ghost.component';
 import { SubmissionChartModule } from '@components/submission-chart/submission-chart.module';
+import { ElsaTodoListModule } from '@components/elsa-todo-list/elsa-todo-list.module';
 
 @NgModule({
   imports: [
@@ -18,14 +17,13 @@ import { SubmissionChartModule } from '@components/submission-chart/submission-c
         component: HomeComponent
       }
     ]),
-    SubmissionChartModule
+    SubmissionChartModule,
+    ElsaTodoListModule
   ],
   declarations: [
     HomeComponent,
     MetricPaneComponent,
     MetricGridComponent,
-    ElsaBarComponent,
-    ElsaGhostComponent
   ]
 })
 export class HomeModule {}

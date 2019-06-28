@@ -11,7 +11,12 @@ export class DemoService {
   allStatus = ['not started', 'in progress', 'done', 'pending review', 'pending approval', 'published'];
   teams = ['team 1 - market research analysis project', 'team 2 - market research analysis project', 'team 3 - market research analysis project', 'team 4 - market research analysis project'];
   totalSubmission;
-  todoItemTypes = ['overdueSubmission', 'overdueReview', 'unpublishedReview', 'unassignedReview', 'notAssignedTeam']
+  todoItemTypes = ['overdueSubmission', 'overdueReview', 'unpublishedReview', 'unassignedReview', 'notAssignedTeam'];
+  todoItemTypeCounts = {
+    notAssignedTeam: 0,
+    unassignedReview: 0,
+    unpublishedReview: 0
+  }
 
   constructor(
     private utils: UtilsService,
@@ -216,7 +221,6 @@ export class DemoService {
       date: today.getFullYear() + '-' + month + '-' + today.getDate(),
       value: value
     });
-    data[data.length - 1].value = this.totalSubmission;
     return {
       data: {
         submissions: {
@@ -230,7 +234,7 @@ export class DemoService {
   public getTodoItems() {
     const data = [];
     // generate 5 - 10 todo items
-    Array(Math.floor(Math.random() * 5 + 5)).fill(1).forEach(i => {
+    Array(Math.floor(Math.random() * 10 + 5)).fill(1).forEach(i => {
       data.push(this._getRandomTodoItem());
     });
     return {
@@ -243,7 +247,7 @@ export class DemoService {
     let name, identifier = '';
     let meta = {};
     const count = Math.floor(Math.random() * 5 + 1);
-    switch (this.todoItemTypes[Math.floor(Math.random() * this.todoItemTypes.length)]) {
+    switch (this._getRandomTodoItemType()) {
       case 'overdueSubmission':
         name = 'Overdue Submission for Assessment ' + id;
         identifier = 'AssessmentSubmissionDue-' + id;
@@ -327,9 +331,22 @@ export class DemoService {
     return {
       id: id,
       name: name,
+      identifier: identifier,
       is_done: false,
       meta: meta
     }
+  }
+
+  private _getRandomTodoItemType() {
+    const type = this.todoItemTypes[Math.floor(Math.random() * this.todoItemTypes.length)];
+    // only return those type of todo item once
+    if (this.utils.has(this.todoItemTypeCounts, type)) {
+      if (this.todoItemTypeCounts[type]) {
+        return this._getRandomTodoItemType();
+      }
+      this.todoItemTypeCounts[type] = 1;
+    }
+    return type;
   }
 
   public getTodoMessageTemplateNames(identifier) {
