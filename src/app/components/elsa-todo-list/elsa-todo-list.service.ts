@@ -47,7 +47,7 @@ export class ElsaTodoListService {
       return of(this._handleTodoItemResponse(response)).pipe(delay(1000));
     }
     return this.request.get(api.get.todoItem)
-      .pipe(map(this._handleTodoItemResponse));
+      .pipe(map(this._handleTodoItemResponse, this));
   }
 
   private _handleTodoItemResponse(response) {

@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { StorageService } from '@services/storage.service';
 import { Router } from '@angular/router';
+import { LoadingController } from '@ionic/angular';
 import { MessageService } from './message.service';
+import { NotificationService } from '@services/notification.service';
 
 @Component({
   selector: 'app-message',
@@ -30,6 +32,8 @@ export class MessageComponent implements OnInit {
     private router: Router,
     private storage: StorageService,
     private service: MessageService,
+    private loadingController: LoadingController,
+    private notification: NotificationService
   ) { }
 
   ngOnInit() {
@@ -44,7 +48,7 @@ export class MessageComponent implements OnInit {
     });
     this.title = this.todoItem.title;
     this.service.getMessageTemplates(this.todoItem.identifier).subscribe(templates => {
-      this.templates = templates;console.log(this.templates);
+      this.templates = templates;
       // display the last template as the default template
       const defaultTmp = templates[templates.length - 1];
       this.template = defaultTmp.name;
@@ -57,7 +61,7 @@ export class MessageComponent implements OnInit {
    * Go back to dashboard
    */
   back() {
-    this.router.navigate(['']);
+    this.router.navigate(['/dashboard']);
   }
 
   changeTemplate() {
@@ -69,7 +73,12 @@ export class MessageComponent implements OnInit {
   /**
    * Send message
    */
-  send() {
+  async send() {
+    const loading = await this.loadingController.create({
+      message: 'sending...'
+    });
+    await loading.present();
+
     const users = [];
     this.users.forEach(user => {
       if (user.checked) {
@@ -83,7 +92,35 @@ export class MessageComponent implements OnInit {
       sms: this.smsContent,
       email: this.emailContent
     }
-    console.log(data);
+    this.service.sendMessage(data).subscribe(
+      response => {
+        loading.dismiss();
+        this.notification.alert({
+          message: 'Messages have been sent successfully.',
+          buttons: [
+            {
+              text: 'OK',
+              role: 'cancel',
+              handler: () => {
+                this.router.navigate(['/dashboard']);
+              }
+            }
+          ]
+        });
+      },
+      err => {
+        loading.dismiss();
+        this.notification.alert({
+          message: 'Sending messages failed, please try again later.',
+          buttons: [
+            {
+              text: 'OK',
+              role: 'cancel'
+            }
+          ]
+        });
+      }
+    );
   }
 
 }

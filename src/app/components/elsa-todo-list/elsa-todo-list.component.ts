@@ -67,7 +67,7 @@ export class ElsaTodoListComponent implements OnInit {
 
       case 'message':
         this.storage.set('todoItem', value);
-        return this.router.navigate(['message']);
+        return this.router.navigate(['/message']);
     }
   }
 

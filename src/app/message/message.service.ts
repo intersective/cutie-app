@@ -35,12 +35,27 @@ export class MessageService {
       const response = this.demo.getMessageTemplates(identifier);
       return of(this._handleMessageTemplatesResponse(response)).pipe(delay(1000));
     }
-    return this.request.get(api.get.messageTemplate)
+    return this.request.get(api.get.messageTemplate, {params: {
+      identifier: identifier
+    }})
       .pipe(map(this._handleMessageTemplatesResponse));
   }
 
   private _handleMessageTemplatesResponse(response) {
     return response.data;
+  }
+
+  sendMessage(data) {
+    if (environment.demo) {
+      return of(true).pipe(delay(1000));
+    }
+    return this.request.post(api.post.act, {
+      id: data.id,
+      entities: data.entities,
+      type: 'message',
+      sms: data.sms,
+      email: data.email
+    });
   }
 
 }

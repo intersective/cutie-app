@@ -24,7 +24,7 @@ export class AuthComponent implements OnInit {
     }
     this.authService.directLogin(token).subscribe(
       res => {
-        this.router.navigate(['dashboard']);
+        this.router.navigate(['/dashboard']);
       },
       err => {
         this._error();

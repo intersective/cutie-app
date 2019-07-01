@@ -59,12 +59,12 @@ export class MenuComponent implements OnInit {
     switch (url) {
       case 'progress':
         this.currentPage = 'progress';
-        return this.router.navigate(['progress']);
+        return this.router.navigate(['/progress']);
         break;
 
       default:
         this.currentPage = 'dashboard';
-        return this.router.navigate(['dashboard']);
+        return this.router.navigate(['/dashboard']);
         break;
     }
 

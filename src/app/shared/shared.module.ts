@@ -5,10 +5,12 @@ import { IonicModule } from '@ionic/angular';
 
 import { NavbarComponent } from '@components/navbar/navbar.component';
 import { StorageService } from '@services/storage.service';
+import { ActionPopoverComponent } from '@components/action-popover/action-popover.component';
 
 @NgModule({
   declarations: [
-    NavbarComponent
+    NavbarComponent,
+    ActionPopoverComponent
   ],
   imports: [
     CommonModule,
@@ -19,10 +21,14 @@ import { StorageService } from '@services/storage.service';
     CommonModule,
     IonicModule,
     FormsModule,
-    NavbarComponent
+    NavbarComponent,
+    ActionPopoverComponent
   ],
   providers: [
     StorageService
+  ],
+  entryComponents: [
+    ActionPopoverComponent
   ]
 })
 export class SharedModule { }

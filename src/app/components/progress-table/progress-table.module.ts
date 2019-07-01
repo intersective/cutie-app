@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { SharedModule } from '@shared/shared.module';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { ProgressPopoverComponent } from '@components/progress-popover/progress-popover.component';
-import { ActionPopoverComponent } from '@components/action-popover/action-popover.component';
 import { ProgressTableComponent } from './progress-table.component';
 
 @NgModule({
@@ -15,12 +14,10 @@ import { ProgressTableComponent } from './progress-table.component';
   ],
   declarations: [
     ProgressPopoverComponent,
-    ActionPopoverComponent,
     ProgressTableComponent
   ],
   entryComponents: [
     ProgressPopoverComponent,
-    ActionPopoverComponent
   ]
 })
 export class ProgressTableModule { }

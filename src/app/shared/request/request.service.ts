@@ -172,7 +172,7 @@ export class RequestService {
     }
     // log the user out if jwt expired
     if (this.utils.has(error, 'error.message') && error.error.message === 'Session expired') {
-      this.router.navigate(['logout']);
+      this.router.navigate(['/logout']);
     }
     // Return the error response data
     return throwError(error.error);

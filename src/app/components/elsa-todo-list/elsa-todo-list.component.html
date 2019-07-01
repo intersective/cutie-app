@@ -1,13 +1,15 @@
-<ng-container *ngIf="!loading && !rows; else todoTmp">
+<ng-container *ngIf="loading">
   <div class="title">Issues</div>
   <div class="no-issue">
     <app-elsa-ghost></app-elsa-ghost>
-    <div class="message-1">You are all caught up!</div>
-    <div class="message-2">You have no issues pending</div>
+    <ng-container *ngIf="!rows">
+      <div class="message-1">You are all caught up!</div>
+      <div class="message-2">You have no issues pending</div>
+    </ng-container>
   </div>
 </ng-container>
 
-<ng-template #todoTmp>
+<ng-container *ngIf="!loading && rows">
   <div class="todo-list">
     <ngx-datatable
       [rows]="rows"
@@ -54,4 +56,4 @@
 
     </ngx-datatable>
   </div>
-</ng-template>
+</ng-container>
