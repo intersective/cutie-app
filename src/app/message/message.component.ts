@@ -1,16 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { StorageService } from '@services/storage.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
 import { MessageService } from './message.service';
 import { NotificationService } from '@services/notification.service';
+import { RouterEnter } from '@services/router-enter.service';
 
 @Component({
   selector: 'app-message',
   templateUrl: './message.component.html',
   styleUrls: ['./message.component.scss'],
 })
-export class MessageComponent implements OnInit {
+export class MessageComponent extends RouterEnter {
+  routeUrl = '/message';
   title: string;
   todoItem: any;
   // users list
@@ -29,14 +31,17 @@ export class MessageComponent implements OnInit {
   smsContent: string;
   emailContent: string;
   constructor(
-    private router: Router,
+    public router: Router,
+    private route: ActivatedRoute,
     private storage: StorageService,
     private service: MessageService,
     private loadingController: LoadingController,
     private notification: NotificationService
-  ) { }
+  ) {
+    super(router);
+  }
 
-  ngOnInit() {
+  onEnter() {
     this.users = [];
     this.todoItem = this.storage.get('todoItem');
     this.todoItem.users.forEach(user => {

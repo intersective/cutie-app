@@ -43,6 +43,13 @@
         [canAutoResize]="false"
         [draggable]="false"
         [resizeable]="false">
+        <ng-template ngx-datatable-header-template>
+          <div class="action-header">
+            <ion-button fill="clear" (click)="getTodoItems()">
+              <ion-icon name="refresh"></ion-icon>
+            </ion-button>
+          </div>
+        </ng-template>
         <ng-template let-value="value" ngx-datatable-cell-template>
           <div class="action-col">
             <ion-button fill="clear" (click)="action(value)">
