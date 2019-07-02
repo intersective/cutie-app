@@ -94,6 +94,7 @@ export class MessageComponent extends RouterEnter {
       id: this.todoItem.id,
       type: 'message',
       entities: users,
+      toTeam: this.todoItem.isTeam,
       sms: this.smsContent,
       email: this.emailContent
     }

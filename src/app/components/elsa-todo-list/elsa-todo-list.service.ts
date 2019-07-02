@@ -27,6 +27,7 @@ export interface TodoItem {
     actionTitle: string;
     actionTarget: string;
     users: any;
+    isTeam: boolean;
   }
 }
 
@@ -67,7 +68,14 @@ export class ElsaTodoListService {
           action: todoItem.meta.action,
           actionTitle: todoItem.meta.action_title,
           actionTarget: this.utils.has(todoItem, 'meta.action_target') ? environment.Practera + todoItem.meta.action_target : null,
-          users: todoItem.meta.users
+          isTeam: todoItem.meta.is_team,
+          users: todoItem.meta.is_team ? todoItem.meta.teams.map(team => {
+            return {
+              user_id: team.team_id,
+              user_name: team.team_name,
+              action_taken: team.action_taken
+            }
+          }) : todoItem.meta.users,
         }
       });
     });

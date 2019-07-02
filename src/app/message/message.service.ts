@@ -47,11 +47,13 @@ export class MessageService {
 
   sendMessage(data) {
     if (environment.demo) {
+      console.log(data);
       return of(true).pipe(delay(1000));
     }
     return this.request.post(api.post.act, {
       id: data.id,
       entities: data.entities,
+      to_team: data.toTeam,
       type: 'message',
       sms: data.sms,
       email: data.email

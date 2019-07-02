@@ -50,6 +50,7 @@ export class ElsaTodoListComponent implements OnInit {
             title: todoItem.meta.actionTitle,
             action: todoItem.meta.action,
             target: todoItem.meta.actionTarget,
+            isTeam: todoItem.meta.isTeam,
             users: todoItem.meta.users
           }
         });

@@ -248,6 +248,7 @@ export class DemoService {
     let name, identifier = '';
     let meta = {};
     const count = Math.floor(Math.random() * 5 + 1);
+    const isTeam = Math.random() > 0.7;
     switch (this._getRandomTodoItemType()) {
       case 'overdueSubmission':
         name = 'Overdue Submission for Assessment ' + id;
@@ -256,15 +257,26 @@ export class DemoService {
           count: count,
           action: 'message',
           action_title: 'remind students',
-          users: Array(count).fill({}).map((x, i) => {
+          is_team: isTeam,
+        };
+        if (isTeam) {
+          meta['teams'] = Array(count).fill({}).map((x, i) => {
+            return {
+              team_id: i + 1,
+              team_name: 'Team ' + this.students[i],
+              action_taken: false
+            };
+          }, this);
+        } else {
+          meta['users'] = Array(count).fill({}).map((x, i) => {
             return {
               user_id: i + 1,
               user_name: this.students[i],
               user_email: 'user' + i + '@practera.com',
               action_taken: false
             };
-          }, this)
-        };
+          }, this);
+        }
         break;
       case 'overdueReview':
         name = 'Overdue Review for Assessment ' + id;
