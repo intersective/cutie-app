@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ElsaTodoListService, TodoItem } from './elsa-todo-list.service';
-import { PusherService } from '@shared/pusher/pusher.service';
-import { UtilsService } from '@services/utils.service';
 import { Router } from '@angular/router';
 import { StorageService } from '@services/storage.service';
 
@@ -17,8 +15,6 @@ export class ElsaTodoListComponent implements OnInit {
 
   constructor(
     private service: ElsaTodoListService,
-    private pusher: PusherService,
-    public utils: UtilsService,
     private router: Router,
     private storage: StorageService
   ) {
