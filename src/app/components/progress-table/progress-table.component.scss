@@ -128,3 +128,12 @@
     max-width: 200px;
   }
 }
+
+  ion-button, .count {
+    &.footer-content {
+      text-align: center;
+      -webkit-box-flex: 1;
+      -ms-flex: 1 1 80%;
+      flex: 1 1 80%;
+    }
+  }
