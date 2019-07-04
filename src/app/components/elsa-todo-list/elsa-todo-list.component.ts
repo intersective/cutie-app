@@ -11,7 +11,7 @@ import { StorageService } from '@services/storage.service';
 export class ElsaTodoListComponent implements OnInit {
   rows = [];
   // is getting data or not
-  loading = false;
+  loading = true;
 
   constructor(
     private service: ElsaTodoListService,
