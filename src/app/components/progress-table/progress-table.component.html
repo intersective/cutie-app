@@ -11,10 +11,8 @@
     externalPaging=true
     externalSorting=true
     [loadingIndicator]="loading"
-    (page)="page($event)"
     (sort)="sort($event)"
     class="material"
-    style="height: -webkit-fill-available;"
     margin-horizontal>
     <!-- <ngx-datatable-column
       [width]="48"
@@ -172,14 +170,11 @@
       </ng-template>
     </ngx-datatable-column>
 
-    <ngx-datatable-footer style="position: fixed; bottom: 0px;" *ngIf="true">
+    <ngx-datatable-footer>
       <ng-template
         ngx-datatable-footer-template
-        let-rowCount="rowCount"
         let-pageSize="pageSize"
-        let-selectedCount="selectedCount"
-        let-curPage="curPage"
-        let-offset="offset">
+        let-curPage="curPage">
         <ion-button class="footer-content" color="primary" fill="clear" (click)="switchType()">
           <ng-container *ngIf="type === 'team'">
             VIEW PROGRESS BY STUDENT
@@ -189,7 +184,7 @@
           </ng-container>
         </ion-button>
         <div class="count footer-content">
-          {{ rowCount }} Total
+          {{ count }} Total
         </div>
         <datatable-pager
           [pagerLeftArrowIcon]="'datatable-icon-left'"
@@ -198,8 +193,8 @@
           [pagerNextIcon]="'datatable-icon-skip'"
           [page]="curPage"
           [size]="pageSize"
-          [count]="rowCount"
-          [hidden]="!((rowCount / pageSize) > 1)"
+          [count]="count"
+          [hidden]="!((count / pageSize) > 1)"
           (change)="page($event)">
         </datatable-pager>
       </ng-template>

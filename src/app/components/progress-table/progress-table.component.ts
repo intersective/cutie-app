@@ -183,6 +183,7 @@ export class ProgressTableComponent implements OnInit {
     } else {
       this.offset = event.page - 1;
     }
+    this.pageNumber = event.page;
     this._updateData();
   }
 
