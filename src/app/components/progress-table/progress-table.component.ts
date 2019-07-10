@@ -31,9 +31,6 @@ export class ProgressTableComponent implements OnInit {
   filter = '';
   @ViewChildren('progressRef', {read: ElementRef}) progressRefs: QueryList<ElementRef>;
 
-  // current page number
-  pageNumber = 1;
-
   constructor(
     private service: ProgressTableService,
     private pusher: PusherService,
@@ -74,7 +71,6 @@ export class ProgressTableComponent implements OnInit {
     this.sorted = null;
     this.filter = '';
     this.rows = [];
-    this.pageNumber = 1;
   }
 
   getEnrolments() {
@@ -178,12 +174,7 @@ export class ProgressTableComponent implements OnInit {
    * Go to the next/any page
    */
   page(event) {
-    if (event.page > this.pageNumber) {
-      this.offset = event.page - this.pageNumber;
-    } else {
-      this.offset = event.page - 1;
-    }
-    this.pageNumber = event.page;
+    this.offset = event.page - 1;
     this._updateData();
   }
 
