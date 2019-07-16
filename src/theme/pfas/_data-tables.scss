@@ -9,6 +9,18 @@
   box-shadow: none;
   background-color: transparent;
   margin-right: 0;
+  margin-left: 0;
+  height: 86vh;
+  max-height: 89vh;
+}
+
+.ngx-datatable.material .datatable-footer {
+  position: fixed;
+  bottom: 0px;
+}
+
+.ngx-datatable.material .datatable-body, .ngx-datatable.material .datatable-header {
+  margin-left: 24px !important;
 }
 
 .ngx-datatable.material .datatable-header {
