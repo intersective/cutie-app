@@ -200,6 +200,10 @@ export class DemoService {
     };
   }
 
+  private _numberFormatter(number: number) {
+    return number < 10 ? '0' + number : number;
+  }
+
   // submission-chart.service
   public getSubmissions() {
     const date = new Date('2019-04-01');
@@ -209,7 +213,7 @@ export class DemoService {
     for (let i = 0; i < 8; i++) {
       month = date.getMonth() + 1;
       data.push({
-        date: date.getFullYear() + '-' + month + '-' + date.getDate(),
+        date: date.getFullYear() + '-' + this._numberFormatter(month) + '-' + this._numberFormatter(date.getDate()),
         value: value
       });
       value += Math.floor(Math.random() * 15 + 5);
@@ -218,7 +222,7 @@ export class DemoService {
     const today = new Date();
     month = today.getMonth() + 1;
     data.push({
-      date: today.getFullYear() + '-' + month + '-' + today.getDate(),
+      date: today.getFullYear() + '-' + this._numberFormatter(month) + '-' + this._numberFormatter(today.getDate()),
       value: value
     });
     return {

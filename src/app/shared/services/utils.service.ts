@@ -115,13 +115,9 @@ export class UtilsService {
     // if no compareWith provided, compare with today
     let compareDate = new Date();
     if (compareWith) {
-      compareWith = compareWith.replace(' ', 'T');
-      compareDate = new Date(compareWith + 'Z');
+      compareDate = new Date(this.timeStringFormatter(compareWith));
     }
-    // add "T" between date and time, so that it works on Safari
-    time = time.replace(' ', 'T');
-    // add "Z" to declare that it is UTC time, it will automatically convert to local time
-    const date = new Date(time + 'Z');
+    const date = new Date(this.timeStringFormatter(time));
     if (date.getFullYear() === compareDate.getFullYear() && date.getMonth() === compareDate.getMonth()) {
       if (date.getDate() === compareDate.getDate() - 1) {
         return 'Yesterday';
@@ -147,10 +143,7 @@ export class UtilsService {
     if (!time) {
       return '';
     }
-    // add "T" between date and time, so that it works on Safari
-    time = time.replace(' ', 'T');
-    // add "Z" to declare that it is UTC time, it will automatically convert to local time
-    const date = new Date(time + 'Z');
+    const date = new Date(this.timeStringFormatter(time));
     switch (display) {
       case 'date':
         const today = new Date();
@@ -191,10 +184,10 @@ export class UtilsService {
   }
 
   timeComparer(timeString: string, comparedString?: string) {
-    const time = new Date(timeString + 'Z');
+    const time = new Date(this.timeStringFormatter(timeString) + 'Z');
     let compared = new Date();
     if (comparedString) {
-      compared = new Date(comparedString + 'Z');
+      compared = new Date(this.timeStringFormatter(comparedString) + 'Z');
     }
     if (time.getTime() < compared.getTime()) {
       return -1;
@@ -205,5 +198,23 @@ export class UtilsService {
     if (time.getTime() > compared.getTime()) {
       return 1;
     }
+  }
+
+  /**
+   * Format the time string
+   * 1. Add 'T' between date and time, for compatibility with Safari
+   * 2. Add 'Z' at last to indicate that it is UTC time, browser will automatically convert the time to local time
+   *
+   * Example time string: '2019-08-06 15:03:00'
+   * After formatter: '2019-08-06T15:03:00Z'
+   */
+  timeStringFormatter(time: string) {
+    if (!time.includes(':')) {
+      return time;
+    }
+    // add "T" between date and time, so that it works on Safari
+    time = time.replace(' ', 'T');
+    // add "Z" to indicate that it is UTC time, it will automatically convert to local time
+    return time + 'Z';
   }
 }
