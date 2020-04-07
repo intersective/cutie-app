@@ -11,6 +11,10 @@ const routes: Routes = [
     loadChildren: './error/error.module#ErrorModule'
   },
   {
+    path: 'progress-only',
+    loadChildren: './progress/progress.module#ProgressModule'
+  },
+  {
     path: '',
     loadChildren: './menu/menu.module#MenuModule'
   }

@@ -16,7 +16,7 @@ ion-title {
     display: inline-block;
     background: transparent;
     --background: transparent;
-    width: 100%;
+    width: calc(100% - 90px);
   }
 }
 ion-button {
