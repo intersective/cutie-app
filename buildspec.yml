@@ -1,0 +1,41 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 10
+    commands:
+      - apt-get update -y
+      - apt-get install -y apt-transport-https
+      - echo Installing source NPM dependencies...
+      - npm install forever -g
+      - npm install -g @angular/cli
+      - npm install
+      - node node_modules/node-sass/scripts/install.js
+      - npm rebuild node-sass
+      - printf '' > src/environments/environment.ts
+  build:
+    commands:
+      - chmod +x ./env.sh
+      - ./env.sh
+      - echo Build started on `date`
+      - ng build --configuration=$BUILD_CONFIG
+  post_build:
+    commands:
+      - aws s3 sync www/ s3://$S3_BUCKET/ --delete
+      - aws cloudfront create-invalidation --distribution-id $CF_DIST_ID --paths '/*'
+      - echo Build completed on `date`
+artifacts:
+  type: zip
+  files:
+    - package.json
+    - package-lock.json
+    - tsconfig.json
+    - tslint.json
+    - angular.json
+    - ionic.config.json
+    - src/**/*
+    - www/**/*
+    - node_modules/**/*
+    - android/**/*
+    - ios/**/*
