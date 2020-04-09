@@ -24,7 +24,15 @@ export class AuthComponent implements OnInit {
     }
     this.authService.directLogin(token).subscribe(
       res => {
-        this.router.navigate(['/dashboard']);
+        const redirect = this.route.snapshot.paramMap.get('redirect');
+        switch (redirect) {
+          case 'progress-only':
+            this.router.navigate(['progress-only']);
+            break;
+          default:
+            this.router.navigate(['dashboard']);
+            break;
+        }
       },
       err => {
         this._error();

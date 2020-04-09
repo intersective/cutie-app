@@ -48,6 +48,7 @@ export class AuthService {
   }
 
   private _handleLoginResponse(response) {
+    this.storage.clear();
     const data = response.data;
     if (data) {
       this.storage.setUser({
