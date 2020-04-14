@@ -221,6 +221,8 @@ export class ProgressTableComponent implements OnInit {
     if (this.type !== 'student') {
       return;
     }
+    // no action needed for now
+    return;
     const popover = await this.popoverController.create({
       component: ActionPopoverComponent,
       event: ev,
