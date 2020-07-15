@@ -42,7 +42,7 @@
         </ng-template>
       </ngx-datatable-column>
       <ngx-datatable-column
-        name="Project"
+        name="Team"
         prop="team"
         [width]="120"
         [sortable]="false"
@@ -59,7 +59,7 @@
 
     <ng-container *ngIf="type === 'team'">
       <ngx-datatable-column
-        name="Project"
+        name="Team"
         prop="name"
         [width]="240"
         [sortable]="false"
@@ -156,7 +156,7 @@
         </div>
       </ng-template>
     </ngx-datatable-column>
-    <ngx-datatable-column
+    <!-- <ngx-datatable-column
       name="Action"
       [width]="90"
       [sortable]="false"
@@ -168,7 +168,7 @@
           <ion-icon slot="icon-only" name="more"></ion-icon>
         </ion-button>
       </ng-template>
-    </ngx-datatable-column>
+    </ngx-datatable-column> -->
 
     <ngx-datatable-footer>
       <ng-template
@@ -180,7 +180,7 @@
             VIEW PROGRESS BY STUDENT
           </ng-container>
           <ng-container *ngIf="type === 'student'">
-            VIEW PROGRESS BY PROJECT
+            VIEW PROGRESS BY TEAM
           </ng-container>
         </ion-button>
         <div class="count footer-content">
