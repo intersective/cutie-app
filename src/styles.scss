@@ -22,3 +22,25 @@ ion-item.sc-ion-select-popover {
     font-size: 20px !important;
   }
 }
+
+.ion-toolbar-absolute {
+  height: 60px;
+}
+.ion-content-absolute {
+  position: absolute;
+  top: 60px;
+  z-index: 20;
+  height: calc(100% - 60px);
+}
+.ion-content-absolute-with-footer {
+  position: absolute;
+  top: 60px;
+  z-index: 20;
+  height: calc(100% - 120px);
+}
+.ion-footer-absolute {
+  position: absolute;
+  height: 60px;
+  bottom: 0;
+  z-index: 30;
+}

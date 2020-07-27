@@ -15,6 +15,10 @@ const routes: Routes = [
     loadChildren: './progress/progress.module#ProgressModule'
   },
   {
+    path: 'chat-only',
+    loadChildren: './chat/chat.module#ChatModule'
+  },
+  {
     path: '',
     loadChildren: './menu/menu.module#MenuModule'
   }

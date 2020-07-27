@@ -16,7 +16,63 @@ export class DemoService {
     notAssignedTeam: 0,
     unassignedReview: 0,
     unpublishedReview: 0
-  }
+  };
+  chatChannels = [
+    {
+      team_id: 1384,
+      channel_id: 1,
+      team_name: 'Team 1',
+      team_member_id: null,
+      name: 'Team',
+      role: null,
+      unread_messages: 1,
+      last_message_created: '2020-07-14 06:20:37',
+      last_message: '123',
+      is_team: true,
+      participants_only: false
+    },
+    {
+      team_id: 1384,
+      channel_id: 2,
+      team_name: 'Team 1',
+      team_member_id: null,
+      name: 'Team',
+      role: null,
+      unread_messages: 1,
+      last_message_created: '2020-07-14 06:20:37',
+      last_message: 'abc',
+      is_team: true,
+      participants_only: true
+    },
+    {
+      team_id: 1384,
+      channel_id: 3,
+      team_name: 'Team 1',
+      team_member_id: 31748,
+      name: 'sasanga+student01',
+      role: 'participant',
+      participants_only: false,
+      last_message: 'test 01',
+      last_message_created: '2020-07-10 06:20:37',
+      unread_messages: null,
+      is_team: false,
+      team_member_image: 'https://www.gravatar.com/avatar/d139e8674543137eaa55012cbbb4d2cb?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50'
+    },
+    {
+      team_id: 1384,
+      channel_id: 3,
+      team_name: 'Team 1',
+      team_member_id: 31748,
+      name: 'sasanga+mentor',
+      role: 'mentor',
+      participants_only: false,
+      last_message: 'test 0_1',
+      last_message_created: '2020-06-14 06:20:37',
+      unread_messages: null,
+      is_team: false,
+      team_member_image: 'https://www.gravatar.com/avatar/d139e8674543137eaa55012cbbb4d2cb?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50'
+    }
+  ];
 
   constructor(
     private utils: UtilsService,
@@ -351,7 +407,7 @@ export class DemoService {
       identifier: identifier,
       is_done: false,
       meta: meta
-    }
+    };
   }
 
   private _getRandomTodoItemType() {
@@ -377,7 +433,7 @@ export class DemoService {
       templates = ['default', 'review submission nudge'];
     }
     templates.forEach(template => {
-      data.push(this._getMessageContent(template))
+      data.push(this._getMessageContent(template));
     });
     return {
       data: data
@@ -390,13 +446,15 @@ export class DemoService {
         return {
           name: name,
           sms: 'Quick reminder to submit work for [project_name].',
-          email: `Hi [first_name],\nWe noticed you have not yet submitted work for [project_name]. Please log in and complete the assignment as soon as you can.\nNeed help? Drop us a line [help_email]`
+          email: `Hi [first_name],\nWe noticed you have not yet submitted work for [project_name].
+           Please log in and complete the assignment as soon as you can.\nNeed help? Drop us a line [help_email]`
         };
       case 'review submission nudge':
         return {
           name: name,
           sms: 'Quick reminder to submit review for [project_name].',
-          email: `Hi [first_name],\nWe noticed you have not yet submitted your assigned reviews for [project_name]. Please log in and complete the review as soon as you can.\nNeed help? Drop us a line [help_email]`
+          email: `Hi [first_name],\nWe noticed you have not yet submitted your assigned reviews for [project_name].
+           Please log in and complete the review as soon as you can.\nNeed help? Drop us a line [help_email]`
         };
       default:
         return {
@@ -407,4 +465,15 @@ export class DemoService {
     }
 
   }
+
+// chat.service
+getchats() {
+  return {
+    'success': true,
+    'status': 'success',
+    'cache': false,
+    data: this.chatChannels
+  };
+}
+
 }
