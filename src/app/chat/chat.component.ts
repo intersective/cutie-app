@@ -11,6 +11,7 @@ export class ChatComponent implements OnInit {
   participantsOnly: boolean;
   teamId: Number;
   chatName: string;
+  channelId: number;
 
   @ViewChild('chatList') chatList;
   @ViewChild('chatRoom') chatRoom;
@@ -27,6 +28,7 @@ export class ChatComponent implements OnInit {
     this.participantsOnly = null;
     this.teamId = null;
     this.chatName = null;
+    this.channelId = null;
   }
 
   goto(event) {
@@ -34,6 +36,7 @@ export class ChatComponent implements OnInit {
     this.teamMemberId = event.teamMemberId ? event.teamMemberId : null;
     this.participantsOnly = event.participantsOnly ? event.participantsOnly : false;
     this.chatName = event.chatName;
+    this.channelId = event.channelId;
     setTimeout(() => {
       this.chatRoom.onEnter();
     });
@@ -44,7 +47,8 @@ export class ChatComponent implements OnInit {
       teamId: this.teamId,
       chatName: this.chatName,
       teamMemberId: this.teamMemberId,
-      participantsOnly: this.participantsOnly
+      participantsOnly: this.participantsOnly,
+      channelId: this.channelId
     };
   }
 
@@ -64,7 +68,8 @@ export class ChatComponent implements OnInit {
       teamId: chats[0].team_id,
       teamMemberId: chats[0].team_member_id,
       participantsOnly: chats[0].participants_only,
-      chatName: chats[0].name
+      chatName: chats[0].name,
+      channelId: chats[0].channel_id
     });
   }
 }

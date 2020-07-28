@@ -73,6 +73,111 @@ export class DemoService {
       team_member_image: 'https://www.gravatar.com/avatar/d139e8674543137eaa55012cbbb4d2cb?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50'
     }
   ];
+  IndividualChatMessages = [
+    {
+      id: 507,
+      sender_name: 'sasanga+student01',
+      sender_image: 'https://www.gravatar.com/avatar/d139e8674543137eaa55012cbbb4d2cb?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50',
+      message: null,
+      file: {
+        filename: 'Landscape-Nature-Sunset-Trees-HD-Free-Background.png',
+        handle: 'Hg8rGSbSRTyki09DiM7G',
+        mimetype: 'image/png',
+        originalPath: 'Landscape-Nature-Sunset-Trees-HD-Free-Background.png',
+        size: 330150,
+        source: 'local_file_system',
+        url: 'https://cdn.filestackcontent.com/Hg8rGSbSRTyki09DiM7G',
+        uploadId: 'gM0t331cHi3YfoyM',
+        originalFile: {
+            name: 'Landscape-Nature-Sunset-Trees-HD-Free-Background.png',
+            type: 'image/png',
+            size: 330150
+        },
+        status: 'Stored',
+        key: 'appv2/stage/uploads/37ad733fdf20adf0de20effcbbf6f120/dPRBB7c2QhaqsUuO64T9_Landscape-Nature-Sunset-Trees-HD-Free-Background.png',
+        container: 'practera-aus'
+      },
+      sent_time: '2020-07-28 03:51:35',
+      receiver_name: 'sasanga+mentor',
+      receiver_image: 'https://www.gravatar.com/avatar/6557b83887f5a40fde3749bd6c79af7a?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50',
+      is_sender: true,
+      sender_role: 'Participant'
+    },
+    {
+      id: 506,
+      sender_name: 'sasanga+student01',
+      sender_image: 'https://www.gravatar.com/avatar/d139e8674543137eaa55012cbbb4d2cb?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50',
+      message: 'all good, how are you?',
+      file: null,
+      sent_time: '2020-07-28 03:51:35',
+      receiver_name: 'sasanga+mentor',
+      receiver_image: 'https://www.gravatar.com/avatar/6557b83887f5a40fde3749bd6c79af7a?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50',
+      is_sender: false,
+      sender_role: 'Participant'
+    },
+    {
+      id: 505,
+      sender_name: 'sasanga+mentor',
+      sender_image: 'https://www.gravatar.com/avatar/6557b83887f5a40fde3749bd6c79af7a?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50',
+      message: 'how are you?',
+      file: null,
+      sent_time: '2020-07-28 03:51:32',
+      receiver_name: 'sasanga+student01',
+      receiver_image: 'https://www.gravatar.com/avatar/d139e8674543137eaa55012cbbb4d2cb?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50',
+      is_sender: true,
+      sender_role: 'Mentor'
+    },
+    {
+      id: 504,
+      sender_name: 'sasanga+mentor',
+      sender_image: 'https://www.gravatar.com/avatar/6557b83887f5a40fde3749bd6c79af7a?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50',
+      message: 'hi sasanga+student01',
+      file: null,
+      sent_time: '2020-07-28 03:51:20',
+      receiver_name: 'sasanga+student01',
+      receiver_image: 'https://www.gravatar.com/avatar/d139e8674543137eaa55012cbbb4d2cb?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50',
+      is_sender: true,
+      sender_role: 'Mentor'
+    }
+  ];
+  TeamChatMessages = [
+    {
+      id: 508,
+      sender_name: 'Admin+01',
+      sender_image: 'https://www.gravatar.com/avatar/d139e8674543137eaa55012cbbb4d2cb?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50',
+      message: 'hi',
+      file: null,
+      sent_time: '2020-07-28 04:09:11',
+      receiver_name: '',
+      receiver_image: '',
+      is_sender: false,
+      sender_role: 'Admin'
+    },
+    {
+      id: 507,
+      sender_name: 'sasanga+student01',
+      sender_image: 'https://www.gravatar.com/avatar/d139e8674543137eaa55012cbbb4d2cb?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50',
+      message: 'hi all',
+      file: null,
+      sent_time: '2020-07-28 04:09:10',
+      receiver_name: '',
+      receiver_image: '',
+      is_sender: false,
+      sender_role: 'Participant'
+    },
+    {
+      id: 506,
+      sender_name: 'sasanga+mentor',
+      sender_image: 'https://www.gravatar.com/avatar/6557b83887f5a40fde3749bd6c79af7a?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50',
+      message: 'hi team',
+      file: null,
+      sent_time: '2020-07-28 04:09:07',
+      receiver_name: '',
+      receiver_image: '',
+      is_sender: true,
+      sender_role: 'Mentor'
+    },
+  ];
 
   constructor(
     private utils: UtilsService,
@@ -467,12 +572,42 @@ export class DemoService {
   }
 
 // chat.service
-getchats() {
+getChats() {
   return {
     'success': true,
     'status': 'success',
     'cache': false,
     data: this.chatChannels
+  };
+}
+
+getMessages(data) {
+  let returndata = this.TeamChatMessages;
+  if (data.team_member_id) {
+    returndata = this.IndividualChatMessages;
+  }
+  return {
+    'success': true,
+    'status': 'success',
+    'cache': false,
+    data: returndata
+  };
+}
+
+getTeamsForChat() {
+  return {
+    'success': true,
+    'status': 'success',
+    'cache': false,
+    data: {
+      Team: {
+        can_join: true,
+        designator: 'Team 1',
+        id: 1384,
+        joincode: 'YDY9Y',
+        name: 'Team 1'
+      }
+    }
   };
 }
 

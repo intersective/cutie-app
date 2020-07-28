@@ -21,6 +21,7 @@ export class ChatRoomComponent extends RouterEnter {
   @Input() teamMemberId: number;
   @Input() participantsOnly: boolean;
   @Input() chatName: string;
+  @Input() channelId: number;
 
   routeUrl = '/chat-room/';
   message: string;
@@ -30,7 +31,8 @@ export class ChatRoomComponent extends RouterEnter {
     is_team: false,
     team_id: null,
     team_member_id: null,
-    participants_only: false
+    participants_only: false,
+    channel_id: null
   };
   messagePageNumber = 0;
   messagePagesize = 20;
@@ -40,7 +42,7 @@ export class ChatRoomComponent extends RouterEnter {
   typingMessage: string;
   // this use to show/hide bottom section of text field which have attachment buttons and send button,
   // when user typing text messages
-  showBottomAttachmentButtons = false;
+  showBottomAttachmentButtons = true;
 
   constructor(
     private chatService: ChatService,
@@ -124,14 +126,15 @@ export class ChatRoomComponent extends RouterEnter {
       is_team: false,
       team_id: null,
       team_member_id: null,
-      participants_only: false
+      participants_only: false,
+      channel_id: null
     };
     this.messagePageNumber = 0;
     this.messagePagesize = 20;
     this.loadingMesageSend = false;
     this.isTyping = false;
     this.typingMessage = '';
-    this.showBottomAttachmentButtons = false;
+    this.showBottomAttachmentButtons = true;
   }
 
   private _validateRouteParams() {
@@ -160,6 +163,13 @@ export class ChatRoomComponent extends RouterEnter {
     } else {
       this.selectedChat.participants_only = JSON.parse(this.route.snapshot.paramMap.get('participantsOnly'));
     }
+    // if channelId pass as @Input parameter get team id from it
+    // if not get it from route params.
+    if (this.channelId) {
+      this.selectedChat.channel_id = this.channelId;
+    } else {
+      this.selectedChat.channel_id = JSON.parse(this.route.snapshot.paramMap.get('channelId'));
+    }
   }
 
   private _loadMessages() {
@@ -183,7 +193,7 @@ export class ChatRoomComponent extends RouterEnter {
       };
     }
     this.chatService
-      .getMessageList(data, this.selectedChat.is_team)
+      .getMessageList(data)
       .subscribe(
         messages => {
           if (messages) {
@@ -298,11 +308,11 @@ export class ChatRoomComponent extends RouterEnter {
         this.messageList.push(response.data);
         this.loadingMesageSend = false;
         this._scrollToBottom();
-        this.showBottomAttachmentButtons = false;
+        // this.showBottomAttachmentButtons = false;
       },
       error => {
         this.loadingMesageSend = false;
-        this.showBottomAttachmentButtons = false;
+        // this.showBottomAttachmentButtons = false;
       }
     );
   }
@@ -582,12 +592,12 @@ export class ChatRoomComponent extends RouterEnter {
 
         this.messageList.push(message);
         this.loadingMesageSend = false;
-        this.showBottomAttachmentButtons = false;
+        // this.showBottomAttachmentButtons = false;
         this._scrollToBottom();
       },
       error => {
         this.loadingMesageSend = false;
-        this.showBottomAttachmentButtons = false;
+        // this.showBottomAttachmentButtons = false;
         // error feedback to user for failed upload
       }
     );

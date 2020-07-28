@@ -23,6 +23,7 @@ export interface ChatListObject {
   team_id: number;
   team_name: string;
   team_member_id?: number;
+  channel_id: number;
   name: string;
   role?: string;
   unread_messages?: number;
@@ -40,6 +41,7 @@ export interface ChatRoomObject {
   team_id: number;
   team_member_id: number;
   participants_only?: boolean;
+  channel_id: number;
 }
 
 export interface Message {
@@ -53,6 +55,7 @@ export interface Message {
   file?: object;
   preview?: string;
   sender_image: string;
+  sender_role: string;
 }
 interface NewMessage {
   to: number | string;
@@ -61,6 +64,7 @@ interface NewMessage {
   env?: string;
   participants_only?: boolean;
   file?: object;
+  channel_id: number;
 }
 
 interface MessageListPrams {
@@ -69,6 +73,8 @@ interface MessageListPrams {
   page: number;
   size: number;
   participants_only?: boolean;
+  channel_id: number;
+  sender_role: string;
 }
 
 interface MarkAsSeenPrams {
@@ -98,7 +104,7 @@ export class ChatService {
    */
   getchatList(): Observable<any> {
     if (environment.demo) {
-      const response = this.demo.getchats();
+      const response = this.demo.getChats();
       return of(this._normaliseeChatListResponse(response.data)).pipe(delay(1000));
     }
     return this.request.get(api.getChatList).pipe(
@@ -121,7 +127,11 @@ export class ChatService {
    *  size:20
    * }
    */
-  getMessageList(data: MessageListPrams, isTeam: boolean): Observable<any> {
+  getMessageList(data: MessageListPrams): Observable<any> {
+    if (environment.demo) {
+      const response = this.demo.getMessages(data);
+      return of(this._normaliseeMessageListResponse(response.data)).pipe(delay(1000));
+    }
     return this.request
       .get(api.getChatMessages, {
         params: data
@@ -130,8 +140,7 @@ export class ChatService {
         map(response => {
           if (response.success && response.data) {
             return this._normaliseeMessageListResponse(
-              response.data,
-              isTeam
+              response.data
             );
           }
         })
@@ -185,6 +194,10 @@ export class ChatService {
   }
 
   getTeamName(id: number): Observable<any> {
+    if (environment.demo) {
+      const response = this.demo.getTeamsForChat();
+      return of(this._normaliseTeamResponse(response.data)).pipe(delay(1000));
+    }
     const data = {
       team_id: id
     };
@@ -287,7 +300,8 @@ export class ChatService {
   /**
    * modify the message list response
    */
-  private _normaliseeMessageListResponse(data, isTeam) {
+  private _normaliseeMessageListResponse(data) {
+    console.log('_normaliseeMessageListResponse', data);
     if (!Array.isArray(data)) {
       return this.request.apiResponseFormatError('Message array format error');
     }

@@ -10,7 +10,7 @@
       <ion-spinner></ion-spinner>
     </div>
   </ng-container>
-  <ion-list lines="none" color="light" class="chat-list desktop-view">
+  <ion-list lines="none" color="light" class="chat-list desktop-view ion-no-padding">
     <ng-container *ngFor="let message of messageList">
       <ion-item color="light">
         <ng-container *ngIf="checkIsLastMessage(message)">
@@ -25,13 +25,12 @@
               <p>{{getMessageDate(message.sent_time)}}</p>
             </div>
             <div class="message-body">
-              <p class="message-text subtitle-1" [innerHTML]="message.message"></p>
+              <ng-container *ngIf="!message.noAvatar && selectedChat.is_team">
+                <p class="seen-text subtitle-1 black">{{message.sender_name}}</p>
+                <p class="seen-text caption gray-2">{{message.sender_role}}</p>
+              </ng-container>
+              <p class="message-text subtitle-1 black" [innerHTML]="message.message"></p>
             </div>
-            <ng-container *ngIf="!message.noAvatar && selectedChat.is_team">
-              <div class="seen-text caption gray-2">
-                <p>{{message.sender_name}}</p>
-              </div>
-            </ng-container>
           </ion-label>
         </ng-container>
 
@@ -67,7 +66,7 @@
             )">
               <ion-item class="message-body general-attachment" (click)="previewFile(message.file)">
                 <ion-ripple-effect></ion-ripple-effect>
-                <ion-icon name="document-outline" slot="start"></ion-icon>
+                <ion-icon name="document" slot="start"></ion-icon>
                 <ion-label color="primary">
                   {{ message.file.filename }}
                 </ion-label>
@@ -136,7 +135,7 @@
       <ng-container *ngTemplateOutlet="attachmentButtons; context: { offset: 8 }"></ng-container>
       <ion-col class="ion-no-padding ion-text-center">
         <ion-button (click)="sendMessage()" type="submit" fill="clear" class="ion-no-padding">
-          <ion-icon name="send-outline" slot="icon-only"></ion-icon>
+          <ion-icon name="send" slot="icon-only"></ion-icon>
         </ion-button>
       </ion-col>
     </ion-row>
@@ -146,17 +145,17 @@
 <ng-template #attachmentButtons let-offset="offset">
   <ion-col [offset]="offset" class="ion-no-padding ion-text-center">
     <ion-button (click)="attach('video')" fill="clear" class="ion-no-padding">
-      <ion-icon name="film-outline" slot="icon-only"></ion-icon>
+      <ion-icon name="film" slot="icon-only"></ion-icon>
     </ion-button>
   </ion-col>
   <ion-col class="ion-no-padding ion-text-center">
     <ion-button (click)="attach('image')" fill="clear" class="ion-no-padding">
-      <ion-icon name="images-outline" slot="icon-only"></ion-icon>
+      <ion-icon name="images" slot="icon-only"></ion-icon>
     </ion-button>
   </ion-col>
   <ion-col class="ion-no-padding ion-text-center">
     <ion-button (click)="attach('any')" fill="clear" class="ion-no-padding">
-      <ion-icon name="attach-outline" slot="icon-only"></ion-icon>
+      <ion-icon name="attach" slot="icon-only"></ion-icon>
     </ion-button>
   </ion-col>
 </ng-template>

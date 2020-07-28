@@ -24,7 +24,8 @@ ion-item.sc-ion-select-popover {
 }
 
 .ion-toolbar-absolute {
-  height: 60px;
+  height: 60px !important;
+  --background: white;
 }
 .ion-content-absolute {
   position: absolute;

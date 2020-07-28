@@ -10,13 +10,19 @@
       <ion-spinner></ion-spinner>
     </div>
   </ng-container>
-  <ion-list class="desktop-view">
-    <ion-item
+  <ion-list class="desktop-view ion-no-padding">
+    <clickable-item
       *ngFor="let chat of chatList; let i = index"
+      (click)="navigateToChatRoom(chat)"
+      [active]="currentChat &&
+      (currentChat.teamId == chat.team_id) &&
+      (currentChat.teamMemberId == chat.team_member_id) &&
+      (currentChat.participantsOnly == chat.participants_only) &&
+      (currentChat.chatName == chat.name)"
       [ngClass]="{'unread': chat.unread_messages > 0}"
       [lines]="'none'">
       <ion-avatar [ngClass]="{'color-team': chat.is_team}" slot="start" text-center>
-        <ng-container *ngIf="chat.is_team; else avatarElseBlock"><ion-icon name="people-outline"></ion-icon></ng-container>
+        <ng-container *ngIf="chat.is_team; else avatarElseBlock"><ion-icon name="people"></ion-icon></ng-container>
         <ng-template #avatarElseBlock><img [src]="chat.team_member_image"></ng-template>
       </ion-avatar>
       <ion-label>
@@ -45,6 +51,6 @@
           <ion-badge class="caption">{{chat.unread_messages}}</ion-badge>
         </ng-container>
       </div>
-    </ion-item>
+    </clickable-item>
   </ion-list>
 </ion-content>

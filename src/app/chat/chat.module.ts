@@ -1,17 +1,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '@shared/shared.module';
-import { ProgressTableModule } from '@components/progress-table/progress-table.module';
 import { ChatComponent } from './chat.component';
 import { ChatListComponent } from './chat-list/chat-list.component';
 import { ChatRoomComponent } from './chat-room/chat-room.component';
+import { ClickableItemComponent } from '../components/clickable-item/clickable-item.component';
 import { ChatService } from './chat.service';
 
 @NgModule({
   declarations: [
     ChatComponent,
     ChatListComponent,
-    ChatRoomComponent
+    ChatRoomComponent,
+    ClickableItemComponent
   ],
   imports: [
     SharedModule,
@@ -20,8 +21,7 @@ import { ChatService } from './chat.service';
         path: '',
         component: ChatComponent
       }
-    ]),
-    ProgressTableModule,
+    ])
   ],
   providers: [ChatService],
 })

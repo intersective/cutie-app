@@ -69,7 +69,6 @@ export class ChatListComponent {
 
   private _loadChatData(): void {
     this.chatService.getchatList().subscribe(chats => {
-      console.log('chats', chats);
       this.chatList = chats;
       this._checkHaveMoreTeam();
       this.chatListReady.emit(this.chatList);
