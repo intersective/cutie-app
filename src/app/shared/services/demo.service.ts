@@ -43,41 +43,42 @@ export class DemoService {
       last_message: 'abc',
       is_team: true,
       participants_only: true
-    },
-    {
-      team_id: 1384,
-      channel_id: 3,
-      team_name: 'Team 1',
-      team_member_id: 31748,
-      name: 'sasanga+student01',
-      role: 'participant',
-      participants_only: false,
-      last_message: 'test 01',
-      last_message_created: '2020-07-10 06:20:37',
-      unread_messages: null,
-      is_team: false,
-      team_member_image: 'https://www.gravatar.com/avatar/d139e8674543137eaa55012cbbb4d2cb?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50'
-    },
-    {
-      team_id: 1384,
-      channel_id: 3,
-      team_name: 'Team 1',
-      team_member_id: 31748,
-      name: 'sasanga+mentor',
-      role: 'mentor',
-      participants_only: false,
-      last_message: 'test 0_1',
-      last_message_created: '2020-06-14 06:20:37',
-      unread_messages: null,
-      is_team: false,
-      team_member_image: 'https://www.gravatar.com/avatar/d139e8674543137eaa55012cbbb4d2cb?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50'
     }
   ];
-  IndividualChatMessages = [
+  TeamChatMessages = [
     {
-      id: 507,
+      id: 510,
       sender_name: 'sasanga+student01',
       sender_image: 'https://www.gravatar.com/avatar/d139e8674543137eaa55012cbbb4d2cb?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50',
+      message: null,
+      file: {
+        container: 'practera-aus',
+        filename: 'file-sample_150kB.pdf',
+        handle: 'VcVHlY1SzSC8VKNuXFBt',
+        key: 'appv2/stage/uploads/37ad733fdf20adf0de20effcbbf6f120/THPhHZoRCiUscy4hrXvQ_file-sample_150kB.pdf',
+        mimetype: 'application/pdf',
+        originalFile: {
+          name: 'file-sample_150kB.pdf',
+          size: 142786,
+          type: 'application/pdf'
+        },
+        originalPath: 'file-sample_150kB.pdf',
+        size: 142786,
+        source: 'local_file_system',
+        status: 'Stored',
+        uploadId: '2ZaurtAztrY45d4S',
+        url: 'https://cdn.filestackcontent.com/VcVHlY1SzSC8VKNuXFBt'
+      },
+      sent_time: '2020-07-28 03:51:35',
+      receiver_name: '',
+      receiver_image: '',
+      is_sender: false,
+      sender_role: 'Participant'
+    },
+    {
+      id: 509,
+      sender_name: 'sasanga+mentor',
+      sender_image: 'https://www.gravatar.com/avatar/6557b83887f5a40fde3749bd6c79af7a?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50',
       message: null,
       file: {
         filename: 'Landscape-Nature-Sunset-Trees-HD-Free-Background.png',
@@ -89,63 +90,25 @@ export class DemoService {
         url: 'https://cdn.filestackcontent.com/Hg8rGSbSRTyki09DiM7G',
         uploadId: 'gM0t331cHi3YfoyM',
         originalFile: {
-            name: 'Landscape-Nature-Sunset-Trees-HD-Free-Background.png',
-            type: 'image/png',
-            size: 330150
+          name: 'Landscape-Nature-Sunset-Trees-HD-Free-Background.png',
+          type: 'image/png',
+          size: 330150
         },
         status: 'Stored',
         key: 'appv2/stage/uploads/37ad733fdf20adf0de20effcbbf6f120/dPRBB7c2QhaqsUuO64T9_Landscape-Nature-Sunset-Trees-HD-Free-Background.png',
         container: 'practera-aus'
       },
       sent_time: '2020-07-28 03:51:35',
-      receiver_name: 'sasanga+mentor',
-      receiver_image: 'https://www.gravatar.com/avatar/6557b83887f5a40fde3749bd6c79af7a?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50',
-      is_sender: true,
-      sender_role: 'Participant'
-    },
-    {
-      id: 506,
-      sender_name: 'sasanga+student01',
-      sender_image: 'https://www.gravatar.com/avatar/d139e8674543137eaa55012cbbb4d2cb?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50',
-      message: 'all good, how are you?',
-      file: null,
-      sent_time: '2020-07-28 03:51:35',
-      receiver_name: 'sasanga+mentor',
-      receiver_image: 'https://www.gravatar.com/avatar/6557b83887f5a40fde3749bd6c79af7a?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50',
-      is_sender: false,
-      sender_role: 'Participant'
-    },
-    {
-      id: 505,
-      sender_name: 'sasanga+mentor',
-      sender_image: 'https://www.gravatar.com/avatar/6557b83887f5a40fde3749bd6c79af7a?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50',
-      message: 'how are you?',
-      file: null,
-      sent_time: '2020-07-28 03:51:32',
-      receiver_name: 'sasanga+student01',
-      receiver_image: 'https://www.gravatar.com/avatar/d139e8674543137eaa55012cbbb4d2cb?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50',
+      receiver_name: '',
+      receiver_image: '',
       is_sender: true,
       sender_role: 'Mentor'
     },
-    {
-      id: 504,
-      sender_name: 'sasanga+mentor',
-      sender_image: 'https://www.gravatar.com/avatar/6557b83887f5a40fde3749bd6c79af7a?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50',
-      message: 'hi sasanga+student01',
-      file: null,
-      sent_time: '2020-07-28 03:51:20',
-      receiver_name: 'sasanga+student01',
-      receiver_image: 'https://www.gravatar.com/avatar/d139e8674543137eaa55012cbbb4d2cb?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50',
-      is_sender: true,
-      sender_role: 'Mentor'
-    }
-  ];
-  TeamChatMessages = [
     {
       id: 508,
       sender_name: 'Admin+01',
       sender_image: 'https://www.gravatar.com/avatar/d139e8674543137eaa55012cbbb4d2cb?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50',
-      message: 'hi',
+      message: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
       file: null,
       sent_time: '2020-07-28 04:09:11',
       receiver_name: '',
@@ -166,23 +129,53 @@ export class DemoService {
       sender_role: 'Participant'
     },
     {
+      id: 509,
+      sender_name: 'sasanga+student01',
+      sender_image: 'https://www.gravatar.com/avatar/d139e8674543137eaa55012cbbb4d2cb?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50',
+      message: null,
+      file: {
+        filename: 'Landscape-Nature-Sunset-Trees-HD-Free-Background.png',
+        handle: 'Hg8rGSbSRTyki09DiM7G',
+        mimetype: 'image/png',
+        originalPath: 'Landscape-Nature-Sunset-Trees-HD-Free-Background.png',
+        size: 330150,
+        source: 'local_file_system',
+        url: 'https://cdn.filestackcontent.com/Hg8rGSbSRTyki09DiM7G',
+        uploadId: 'gM0t331cHi3YfoyM',
+        originalFile: {
+          name: 'Landscape-Nature-Sunset-Trees-HD-Free-Background.png',
+          type: 'image/png',
+          size: 330150
+        },
+        status: 'Stored',
+        key: 'appv2/stage/uploads/37ad733fdf20adf0de20effcbbf6f120/dPRBB7c2QhaqsUuO64T9_Landscape-Nature-Sunset-Trees-HD-Free-Background.png',
+        container: 'practera-aus'
+      },
+      sent_time: '2020-07-28 03:51:35',
+      receiver_name: '',
+      receiver_image: '',
+      is_sender: false,
+      sender_role: 'Participant'
+    },
+    {
       id: 506,
       sender_name: 'sasanga+mentor',
       sender_image: 'https://www.gravatar.com/avatar/6557b83887f5a40fde3749bd6c79af7a?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50',
-      message: 'hi team',
+      message: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.' +
+      ' Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
       file: null,
       sent_time: '2020-07-28 04:09:07',
       receiver_name: '',
       receiver_image: '',
       is_sender: true,
       sender_role: 'Mentor'
-    },
+    }
   ];
 
   constructor(
     private utils: UtilsService,
     private storage: StorageService
-  ) {}
+  ) { }
 
   // auth.service
   directLogin() {
@@ -197,21 +190,21 @@ export class DemoService {
         Timelines: [
           {
             Enrolment: {},
-            Program: {name: 'Program 1'},
+            Program: { name: 'Program 1' },
             Project: {},
-            Timeline: {id: 1}
+            Timeline: { id: 1 }
           },
           {
             Enrolment: {},
-            Program: {name: 'Program 2'},
+            Program: { name: 'Program 2' },
             Project: {},
-            Timeline: {id: 2}
+            Timeline: { id: 2 }
           },
           {
             Enrolment: {},
-            Program: {name: 'Program 3'},
+            Program: { name: 'Program 3' },
             Project: {},
-            Timeline: {id: 3}
+            Timeline: { id: 3 }
           }
         ]
       }
@@ -274,7 +267,7 @@ export class DemoService {
   }
 
   private _randomProgress(x = null) {
-    const status = this.allStatus[Math.floor( Math.random() * this.allStatus.length )];
+    const status = this.allStatus[Math.floor(Math.random() * this.allStatus.length)];
     return {
       name: 'Project Findings Report - Draft, Project Findings Report - Draft',
       due_date: '01 Aug 2019 07:00:00',
@@ -571,44 +564,40 @@ export class DemoService {
 
   }
 
-// chat.service
-getChats() {
-  return {
-    'success': true,
-    'status': 'success',
-    'cache': false,
-    data: this.chatChannels
-  };
-}
-
-getMessages(data) {
-  let returndata = this.TeamChatMessages;
-  if (data.team_member_id) {
-    returndata = this.IndividualChatMessages;
+  // chat.service
+  getChats() {
+    return {
+      'success': true,
+      'status': 'success',
+      'cache': false,
+      data: this.chatChannels
+    };
   }
-  return {
-    'success': true,
-    'status': 'success',
-    'cache': false,
-    data: returndata
-  };
-}
 
-getTeamsForChat() {
-  return {
-    'success': true,
-    'status': 'success',
-    'cache': false,
-    data: {
-      Team: {
-        can_join: true,
-        designator: 'Team 1',
-        id: 1384,
-        joincode: 'YDY9Y',
-        name: 'Team 1'
+  getMessages() {
+    return {
+      'success': true,
+      'status': 'success',
+      'cache': false,
+      data: this.TeamChatMessages
+    };
+  }
+
+  getTeamsForChat() {
+    return {
+      'success': true,
+      'status': 'success',
+      'cache': false,
+      data: {
+        Team: {
+          can_join: true,
+          designator: 'Team 1',
+          id: 1384,
+          joincode: 'YDY9Y',
+          name: 'Team 1'
+        }
       }
-    }
-  };
-}
+    };
+  }
 
 }

@@ -129,7 +129,7 @@ export class ChatService {
    */
   getMessageList(data: MessageListPrams): Observable<any> {
     if (environment.demo) {
-      const response = this.demo.getMessages(data);
+      const response = this.demo.getMessages();
       return of(this._normaliseeMessageListResponse(response.data)).pipe(delay(1000));
     }
     return this.request

@@ -42,6 +42,10 @@
 
             <ng-container *ngIf="message.file && message.file.mimetype.includes('video')">
               <div  class="message-body video-attachment-container">
+                <ng-container *ngIf="!message.noAvatar && selectedChat.is_team">
+                  <p class="seen-text subtitle-1 black">{{message.sender_name}}</p>
+                  <p class="seen-text caption gray-2">{{message.sender_role}}</p>
+                </ng-container>
                 <div id="inner-box" (click)="preview(message.file)">
                   <p><ion-icon name="play-circle"></ion-icon></p>
                 </div>
@@ -57,6 +61,10 @@
 
             <ng-container *ngIf="message.file && message.file.mimetype.includes('image')">
               <div class="message-body image" (click)="preview(message.file)">
+                <ng-container *ngIf="!message.noAvatar && selectedChat.is_team">
+                  <p class="seen-text subtitle-1 black">{{message.sender_name}}</p>
+                  <p class="seen-text caption gray-2">{{message.sender_role}}</p>
+                </ng-container>
                 <div [innerHTML]="message.preview"></div>
               </div>
             </ng-container>
@@ -64,7 +72,12 @@
             <ng-container *ngIf="message.file && (
               !message.file.mimetype.includes('image') && !message.file.mimetype.includes('video')
             )">
-              <ion-item class="message-body general-attachment" (click)="previewFile(message.file)">
+            <div class="message-body">
+              <ng-container *ngIf="!message.noAvatar && selectedChat.is_team">
+                <p class="seen-text subtitle-1 black">{{message.sender_name}}</p>
+                <p class="seen-text caption gray-2">{{message.sender_role}}</p>
+              </ng-container>
+              <ion-item class="general-attachment" (click)="previewFile(message.file)">
                 <ion-ripple-effect></ion-ripple-effect>
                 <ion-icon name="document" slot="start"></ion-icon>
                 <ion-label color="primary">
@@ -74,12 +87,7 @@
                   {{ getTypeByMime(message.file.mimetype) }}
                 </ion-note>
               </ion-item>
-            </ng-container>
-
-            <ng-container *ngIf="!message.noAvatar && selectedChat.is_team">
-              <div class="seen-text caption gray-2">
-                <p>{{message.sender_name}}</p>
-              </div>
+            </div>
             </ng-container>
           </ion-label>
         </ng-template>

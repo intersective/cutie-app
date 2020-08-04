@@ -65,4 +65,8 @@ export class StorageService {
     this.set('me', Object.assign(this.getUser(), user));
     return true;
   }
+
+  getCountry() {
+    return this.get('country');
+  }
 }

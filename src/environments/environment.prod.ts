@@ -7,4 +7,22 @@ export const environment = {
   APIEndpoint: 'https://cutie.api.practera.com/',
   APIEndpointOld: 'https://api.practera.com/',
   Practera: 'https://my.practera.com',
+  filestack: {
+    key: 'AO6F4C72uTPGRywaEijdLz',
+    s3Config: {
+      location: 's3',
+      container: 'practera-aus',
+      containerChina: 'practera-kr',
+      region: 'ap-southeast-2',
+      regionChina: 'ap-northeast-2',
+      paths: {
+        any: '/appv2/live/uploads/',
+        image: '/appv2/live/uploads/',
+        video: '/media/fpvideo/upload/'
+      },
+      workflows: [
+        '3c38ef53-a9d0-4aa4-9234-617d9f03c0de',
+      ],
+    }
+  }
 };

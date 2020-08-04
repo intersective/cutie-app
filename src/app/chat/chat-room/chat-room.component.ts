@@ -1,19 +1,20 @@
-import { Component, Input, ViewChild, NgZone, AfterContentInit, AfterViewInit, ElementRef } from '@angular/core';
+import { Component, Input, ViewChild, NgZone, AfterContentInit, AfterViewInit, ElementRef, ViewEncapsulation } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IonContent, ModalController } from '@ionic/angular';
 import { StorageService } from '@services/storage.service';
 import { RouterEnter } from '@services/router-enter.service';
 import { UtilsService } from '@services/utils.service';
 import { PusherService } from '@shared/pusher/pusher.service';
-// import { FilestackService } from '@shared/filestack/filestack.service';
+import { FilestackService } from '@shared/filestack/filestack.service';
 
 import { ChatService, ChatRoomObject, Message } from '../chat.service';
-// import { ChatPreviewComponent } from '../chat-preview/chat-preview.component';
+import { ChatPreviewComponent } from '../chat-preview/chat-preview.component';
 
 @Component({
   selector: 'app-chat-room',
   templateUrl: './chat-room.component.html',
-  styleUrls: ['./chat-room.component.scss']
+  styleUrls: ['./chat-room.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class ChatRoomComponent extends RouterEnter {
   @ViewChild(IonContent) content: IonContent;
@@ -51,7 +52,7 @@ export class ChatRoomComponent extends RouterEnter {
     private route: ActivatedRoute,
     public utils: UtilsService,
     public pusherService: PusherService,
-    // private filestackService: FilestackService,
+    private filestackService: FilestackService,
     private modalController: ModalController,
     private ngZone: NgZone,
     public element: ElementRef
@@ -546,23 +547,24 @@ export class ChatRoomComponent extends RouterEnter {
   async attach(type: string) {
     const options: any = {};
 
-    // if (this.filestackService.getFileTypes(type)) {
-    //   options.accept = this.filestackService.getFileTypes(type);
-    //   options.storeTo = this.filestackService.getS3Config(type);
-    // }
-    // await this.filestackService.open(
-    //   options,
-    //   res => {
-    //     return this.postAttachment(res);
-    //   },
-    //   err => {
-    //     console.log(err);
-    //   }
-    // );
+    if (this.filestackService.getFileTypes(type)) {
+      options.accept = this.filestackService.getFileTypes(type);
+      options.storeTo = this.filestackService.getS3Config(type);
+    }
+    await this.filestackService.open(
+      options,
+      res => {
+        return this.postAttachment(res);
+      },
+      err => {
+        console.log(err);
+      }
+    );
   }
 
   async previewFile(file) {
-    // return await this.filestackService.previewFile(file);
+    console.log('log');
+    return await this.filestackService.previewFile(file);
   }
 
   private postAttachment(file) {
@@ -707,13 +709,13 @@ export class ChatRoomComponent extends RouterEnter {
   }
 
   async preview(file) {
-    // const modal = await this.modalController.create({
-    //   component: ChatPreviewComponent,
-    //   componentProps: {
-    //     file,
-    //   }
-    // });
-    // return await modal.present();
+    const modal = await this.modalController.create({
+      component: ChatPreviewComponent,
+      componentProps: {
+        file,
+      }
+    });
+    return await modal.present();
   }
 
   createThumb(video, w, h) {

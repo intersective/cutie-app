@@ -1,4 +1,4 @@
-$message-body-size: 300px;
+$message-body-size: 60%;
 
 .not-started-empty-status {
   position: absolute;
@@ -53,17 +53,26 @@ $message-body-size: 300px;
       }
 
       .message-body {
-        padding: 8px 16px;
+        padding: 16px;
         min-width: 48px;
         max-width: $message-body-size;
         border-radius: 25px;
         width: fit-content;
 
         &.image {
-          background: none !important;
+          // background: none !important;
           line-height: 0;
-          padding: 0;
+          // padding: 0;
           cursor: pointer;
+
+          img {
+            border-radius: 25px;
+          }
+        }
+        // consistent colour to make attachment standout
+        .general-attachment {
+          background: white;
+          --background: white;
         }
 
         p {
@@ -160,11 +169,6 @@ $message-body-size: 300px;
 
         .message-body {
           background-color: var(--ion-color-primary);
-
-          // consistent colour to make attachment standout
-          &.general-attachment {
-            background: white;
-          }
 
           // margin-left: calc(100% - 150px) !important;
           float: right;
