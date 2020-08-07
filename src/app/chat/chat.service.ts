@@ -20,28 +20,34 @@ const api = {
 };
 
 export interface ChatListObject {
-  team_id: number;
-  team_name: string;
-  team_member_id?: number;
-  channel_id: number;
-  name: string;
-  role?: string;
+  channel_id: number | string;
+  channel_name: string;
+  channel_avatar: string;
+  pusher_channel_name: string;
+  readonly: boolean;
+  roles: [''];
+  members: [{
+    name: string;
+    role: string;
+    avatar: string;
+  }];
   unread_messages?: number;
   last_message_created?: string;
   last_message?: string;
-  is_team: boolean;
-  participants_only: boolean;
-  team_member_image: string;
 }
 
 export interface ChatRoomObject {
-  name: string;
-  team_name?: string;
-  is_team?: boolean;
-  team_id: number;
-  team_member_id: number;
-  participants_only?: boolean;
-  channel_id: number;
+  channel_id: number | string;
+  channel_name: string;
+  channel_avatar: string;
+  pusher_channel_name: string;
+  readonly: boolean;
+  roles: [''];
+  members: [{
+    name: string;
+    role: string;
+    avatar: string;
+  }];
 }
 
 export interface Message {
@@ -78,7 +84,7 @@ interface MessageListPrams {
 }
 
 interface MarkAsSeenPrams {
-  team_id: number;
+  channel_id: number;
   id: string | number;
   action?: string;
 }
@@ -149,7 +155,7 @@ export class ChatService {
 
   markMessagesAsSeen(prams: MarkAsSeenPrams): Observable<any> {
     const body = {
-      team_id: prams.team_id,
+      channel_id: prams.channel_id,
       id: prams.id,
       action: 'mark_seen'
     };
@@ -272,29 +278,19 @@ export class ChatService {
     }
     const chats = [];
     data.forEach(chat => {
-      if (!this.utils.has(chat, 'team_id') ||
-          !this.utils.has(chat, 'is_team') ||
-          !this.utils.has(chat, 'participants_only') ||
-          !this.utils.has(chat, 'name') ||
-          !this.utils.has(chat, 'team_name')
+      if (!this.utils.has(chat, 'channel_id') ||
+          !this.utils.has(chat, 'channel_name') ||
+          !this.utils.has(chat, 'channel_avatar') ||
+          !this.utils.has(chat, 'pusher_channel_name') ||
+          !this.utils.has(chat, 'readonly') ||
+          !this.utils.has(chat, 'roles') ||
+          !this.utils.has(chat, 'members')
         ) {
         return this.request.apiResponseFormatError('Chat object format error');
       }
-      chat.name = this._getChatName(chat);
       chats.push(chat);
     });
     return chats;
-  }
-
-  private _getChatName(chat) {
-    if (!chat.is_team) {
-      return chat.name;
-    }
-    if (chat.participants_only) {
-      return chat.team_name;
-    } else {
-      return chat.team_name + ' + Mentor';
-    }
   }
 
   /**

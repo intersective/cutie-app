@@ -1,4 +1,4 @@
-import * as filestack from 'filestack-js';
+// import * as filestack from 'filestack-js';
 import { Injectable } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { PreviewComponent } from './preview/preview.component';
@@ -45,10 +45,10 @@ export class FilestackService {
     private utils: UtilsService
   ) {
     const { policy, signature } = environment.filestack;
-    this.filestack = filestack.init(this.getFilestackConfig(), {
-      policy,
-      signature,
-    });
+    // this.filestack = filestack.init(this.getFilestackConfig(), {
+    //   policy,
+    //   signature,
+    // });
 
     if (!this.filestack) {
       throw new Error('Filestack module not found.');

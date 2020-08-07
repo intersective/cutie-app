@@ -1,5 +1,9 @@
 .ion-toolbar-absolute {
   text-align: center;
+  --overflow: none;
+  .scroll-y {
+    overflow-y: none;
+  }
 }
 ion-avatar {
   text-align: center;
@@ -16,89 +20,60 @@ ion-avatar {
 
 }
 
-clickable-item {
-  .bold {
-    font-weight: bold;
-  }
-  .item-inner {
-    border: none !important;
-  }
+.subtitle-1 {
+  font-weight: var(--font-weight-medium);
+}
 
-  ion-label {
-    margin: 10px 0 10px 0 !important;
+.details-container, .member-container {
+  padding: 28px 24px;
+  height: calc(100vh - 60px);
+}
 
-    .chat-name-container {
-      display: inline-flex !important;
-      flex-wrap: wrap;
-      text-overflow: inherit;
-      overflow: inherit;
-      width: 100% !important;
-
-      span {
-        border: 1px solid var(--ion-color-primary);
-        padding: 1px 5px 0 5px;
-        border-radius: 10px;
-        vertical-align: baseline;
-        text-align: center;
-        white-space: nowrap;
-        max-width: 70% !important;
-        text-overflow: inherit;
-        overflow: inherit;
-        color: var(--ion-color-primary);
-      }
-
-      .chat-name {
-        text-overflow: inherit;
-        overflow: inherit;
-        max-width: 90%;
-        width: fit-content;
-        margin-right: 3px;
-
-        &.team-channel {
-          margin-right: 3px;
-          max-width: -webkit-fill-available !important;
-          width: auto !important;
-          .chat-name-container {
-            display: block !important;
-          }
-        }
-      }
-
+.details-container {
+  .channel-name-container {
+    .channel-name-input {
+      --background: white;
+      border: 1px solid var(--practera-30-Percent-gray);
+      border-radius: 5px;
+      margin-top: 16px;
     }
   }
 
-  .time-container {
-    width: 22% !important;
-    display: grid;
-    justify-items: end;
-    margin-left: 4px !important;
-
-    ion-badge {
-      margin-top: 2px;
-      max-width: 43px !important;
-      max-height: 20px;
-      min-width: 20px;
-      min-height: 20px;
-      border-radius: 8px !important;
-      width: fit-content;
+  .who-in-chat-container {
+    margin-top: 24px;
+    .chat-role-container {
+      margin-top: 12px;
+      display: -webkit-box;
+      .chat-role {
+        padding: 12px;
+        border: 1px solid var(--practera-60-Percent-gray);
+        border-radius: 24px;
+        margin: 0;
+        margin-right: 10px;
+      }
     }
+  }
 
+  .enable-chat-container {
+    margin-top: 24px;
+    .content {
+      margin-top: 16px;
+      display: -webkit-box;
+      p {
+        margin: 12px;
+        margin-left: 16px;
+      }
+    }
   }
 }
-.desktop-view {
-  .time-container {
-    width: auto !important;
-    height: 100%;
-    padding-bottom: 10px;
-    padding-top: 10px;
-  }
-  clickable-item {
-    ion-label {
-      .chat-name-container {
-        span {
-          max-width: none !important;
-        }
-      }
+
+.member-container {
+  border-left: 1px solid var(--practera-30-Percent-gray);
+  .member-list {
+    height: calc(100vh - 160px);
+    overflow-y: auto;
+    .subtitle-1 {
+      font-weight: var(--font-weight-regular);
     }
   }
 }

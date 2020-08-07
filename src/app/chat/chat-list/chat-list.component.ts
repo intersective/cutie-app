@@ -81,15 +81,15 @@ export class ChatListComponent {
   private _checkHaveMoreTeam(): void {
     if (this.chatList.length > 0) {
       const myRole = this.storage.getUser().role;
-      let index = 0;
-      let teamCount = 0;
-      for (index = 0; index < this.chatList.length; index++) {
-        if (this.chatList[index].is_team) {
-          if (myRole === 'mentor' || !this.chatList[index].participants_only) {
-            teamCount++;
-          }
-        }
-      }
+      // let index = 0;
+      const teamCount = 0;
+      // for (index = 0; index < this.chatList.length; index++) {
+      //   if (this.chatList[index].is_team) {
+      //     if (myRole === 'mentor' || !this.chatList[index].participants_only) {
+      //       teamCount++;
+      //     }
+      //   }
+      // }
       if (teamCount > 1) {
         this.haveMoreTeam = true;
       } else {

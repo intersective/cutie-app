@@ -9,12 +9,14 @@
     <ion-content color="light" id="main">
       <app-chat-room 
         #chatRoom 
-        *ngIf="teamId"
-        [teamId]="teamId"
-        [teamMemberId]="teamMemberId"
-        [participantsOnly]="participantsOnly"
-        [chatName]="chatName"
+        *ngIf="channelId"
         [channelId]="channelId"
+        [channelName]="channelName"
+        [channelAvatar]="channelAvatar"
+        [pusherChannelName]="pusherChannelName"
+        [readonly]="readonly"
+        [roles]="roles"
+        [members]="members"
         ></app-chat-room>
     </ion-content>
   </ion-split-pane>

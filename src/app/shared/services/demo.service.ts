@@ -19,30 +19,105 @@ export class DemoService {
   };
   chatChannels = [
     {
-      team_id: 1384,
       channel_id: 1,
-      team_name: 'Team 1',
-      team_member_id: null,
-      name: 'Team',
-      role: null,
+      channel_name: 'Team 1',
+      channel_avatar: 'https://flaticons.net/icon.php?slug_category=people&slug_icon=user-group',
+      pusher_channel_name: 'private-develop-team-1447-322-20',
+      readonly: false,
+      roles: ['participant', 'mentor'],
+      members: [
+        {
+             name: 'student1',
+             role: 'participant',
+             avatar: 'https://image.flaticon.com/icons/png/512/194/194938.png'
+        },
+        {
+          name: 'student2',
+          role: 'participant',
+          avatar: 'https://cdn1.iconfinder.com/data/icons/user-pictures/101/malecostume-512.png'
+        },
+        {
+          name: 'mentor1',
+          role: 'mentor',
+          avatar: 'https://cdn3.iconfinder.com/data/icons/avatars-round-flat/33/avat-01-512.png'
+        },
+        {
+          name: 'student1',
+          role: 'participant',
+          avatar: 'https://image.flaticon.com/icons/png/512/194/194938.png'
+        },
+        {
+          name: 'student2',
+          role: 'participant',
+          avatar: 'https://cdn1.iconfinder.com/data/icons/user-pictures/101/malecostume-512.png'
+        },
+        {
+          name: 'mentor1',
+          role: 'mentor',
+          avatar: 'https://cdn3.iconfinder.com/data/icons/avatars-round-flat/33/avat-01-512.png'
+        },
+        {
+          name: 'student1',
+          role: 'participant',
+          avatar: 'https://image.flaticon.com/icons/png/512/194/194938.png'
+        },
+        {
+          name: 'student2',
+          role: 'participant',
+          avatar: 'https://cdn1.iconfinder.com/data/icons/user-pictures/101/malecostume-512.png'
+        },
+        {
+          name: 'mentor1',
+          role: 'mentor',
+          avatar: 'https://cdn3.iconfinder.com/data/icons/avatars-round-flat/33/avat-01-512.png'
+        },
+        {
+          name: 'student1',
+          role: 'participant',
+          avatar: 'https://image.flaticon.com/icons/png/512/194/194938.png'
+        },
+        {
+          name: 'student2',
+          role: 'participant',
+          avatar: 'https://cdn1.iconfinder.com/data/icons/user-pictures/101/malecostume-512.png'
+        },
+        {
+          name: 'mentor1',
+          role: 'mentor',
+          avatar: 'https://cdn3.iconfinder.com/data/icons/avatars-round-flat/33/avat-01-512.png'
+        }
+      ],
       unread_messages: 1,
       last_message_created: '2020-07-14 06:20:37',
-      last_message: '123',
-      is_team: true,
-      participants_only: false
+      last_message: '123'
     },
     {
-      team_id: 1384,
       channel_id: 2,
-      team_name: 'Team 1',
-      team_member_id: null,
-      name: 'Team',
-      role: null,
-      unread_messages: 1,
-      last_message_created: '2020-07-14 06:20:37',
-      last_message: 'abc',
-      is_team: true,
-      participants_only: true
+      channel_name: 'Timeline 01',
+      channel_avatar: 'https://flaticons.net/icon.php?slug_category=people&slug_icon=user-group',
+      pusher_channel_name: 'private-develop-team-1447-322-20',
+      readonly: false,
+      roles: ['participant', 'mentor'],
+      members: [
+        {
+             name: 'student1',
+             role: 'participant',
+             avatar: 'https://image.flaticon.com/icons/png/512/194/194938.png'
+        },
+        {
+          name: 'student2',
+          role: 'participant',
+          avatar: 'https://cdn1.iconfinder.com/data/icons/user-pictures/101/malecostume-512.png'
+        },
+        {
+          name: 'mentor1',
+          role: 'mentor',
+          avatar: 'https://cdn3.iconfinder.com/data/icons/avatars-round-flat/33/avat-01-512.png'
+        }
+      ],
+      unread_messages: 0,
+      last_message_created: '2020-07-14 04:20:37',
+      last_message: 'ABC'
     }
   ];
   TeamChatMessages = [

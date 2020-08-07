@@ -5,6 +5,7 @@ import { ChatComponent } from './chat.component';
 import { ChatListComponent } from './chat-list/chat-list.component';
 import { ChatRoomComponent } from './chat-room/chat-room.component';
 import { ChatPreviewComponent } from './chat-preview/chat-preview.component';
+import { ChatInfoComponent } from './chat-info/chat-info.component';
 import { ClickableItemComponent } from '../components/clickable-item/clickable-item.component';
 import { ChatService } from './chat.service';
 
@@ -14,6 +15,7 @@ import { ChatService } from './chat.service';
     ChatListComponent,
     ChatRoomComponent,
     ChatPreviewComponent,
+    ChatInfoComponent,
     ClickableItemComponent
   ],
   imports: [
@@ -25,7 +27,7 @@ import { ChatService } from './chat.service';
       }
     ])
   ],
-  entryComponents: [ChatPreviewComponent],
+  entryComponents: [ChatPreviewComponent, ChatInfoComponent],
   providers: [ChatService],
 })
 export class ChatModule { }
