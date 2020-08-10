@@ -19,77 +19,56 @@ const api = {
   getTeam: 'api/teams.json'
 };
 
-export interface ChatListObject {
-  channel_id: number | string;
-  channel_name: string;
-  channel_avatar: string;
-  pusher_channel_name: string;
+export interface ChatChannel {
+  channelId: number | string;
+  channelName: string;
+  channelAvatar: string;
+  pusherChannelName: string;
   readonly: boolean;
-  roles: [''];
-  members: [{
+  roles: string[];
+  members: {
     name: string;
     role: string;
     avatar: string;
-  }];
-  unread_messages?: number;
-  last_message_created?: string;
-  last_message?: string;
-}
-
-export interface ChatRoomObject {
-  channel_id: number | string;
-  channel_name: string;
-  channel_avatar: string;
-  pusher_channel_name: string;
-  readonly: boolean;
-  roles: [''];
-  members: [{
-    name: string;
-    role: string;
-    avatar: string;
-  }];
+  }[];
+  unreadMessages: number;
+  lastMessage: string;
+  lastMessageCreated: string;
 }
 
 export interface Message {
   id?: number;
-  sender_name?: string;
-  receiver_name?: string;
-  message?: string;
-  sent_time?: string;
-  is_sender?: boolean;
-  noAvatar?: boolean;
+  senderName?: string;
+  senderRole?: string;
+  senderAvatar?: string;
+  isSender?: boolean;
+  message: string;
+  sentTime?: string;
+  channelId?: number | string;
   file?: object;
   preview?: string;
-  sender_image: string;
-  sender_role: string;
+  noAvatar?: boolean;
 }
-interface NewMessage {
-  to: number | string;
+interface NewMessageParam {
+  channel_id: number | string;
   message: string;
-  team_id: number;
   env?: string;
-  participants_only?: boolean;
   file?: object;
-  channel_id: number;
 }
 
-interface MessageListPrams {
-  team_id: number;
-  team_member_id?: number;
+interface MessageListParams {
+  channel_id: number | string;
   page: number;
   size: number;
-  participants_only?: boolean;
-  channel_id: number;
-  sender_role: string;
 }
 
-interface MarkAsSeenPrams {
-  channel_id: number;
-  id: string | number;
+interface MarkAsSeenParams {
+  channel_id: number | string;
+  ids: number[];
   action?: string;
 }
 
-interface UnreadMessagePrams {
+interface UnreadMessageParams {
   filter: string;
 }
 
@@ -108,18 +87,44 @@ export class ChatService {
   /**
    * this method return chat list data.
    */
-  getchatList(): Observable<any> {
+  getChatList(): Observable<ChatChannel[]> {
     if (environment.demo) {
       const response = this.demo.getChats();
-      return of(this._normaliseeChatListResponse(response.data)).pipe(delay(1000));
+      return of(this._normaliseChatListResponse(response.data)).pipe(delay(1000));
     }
     return this.request.get(api.getChatList).pipe(
       map(response => {
         if (response.success && response.data) {
-          return this._normaliseeChatListResponse(response.data);
+          return this._normaliseChatListResponse(response.data);
         }
       })
     );
+  }
+
+  private _normaliseChatListResponse(data): ChatChannel[] {
+    if (!Array.isArray(data)) {
+      this.request.apiResponseFormatError('Chat format error');
+      return [];
+    }
+    if (data.length === 0) {
+      return [];
+    }
+    const chats = [];
+    data.forEach(chat => {
+      chats.push({
+        channelId: chat.channel_id,
+        channelName: chat.channel_name,
+        channelAvatar: chat.channel_avatar,
+        pusherChannelName: chat.pusher_channel_name,
+        readonly: chat.readonly,
+        roles: chat.roles,
+        members: chat.members,
+        unreadMessages: chat.unread_messages,
+        lastMessage: chat.last_message,
+        lastMessageCreated: chat.last_message_created
+      });
+    });
+    return chats;
   }
 
   /**
@@ -127,16 +132,15 @@ export class ChatService {
    * @param prams
    *  prams is a json object
    * {
-   *  team_id: 1234,
-   *  team_member_id: 4567,
+   *  channel_id: 1234,
    *  page: 1,
    *  size:20
    * }
    */
-  getMessageList(data: MessageListPrams): Observable<any> {
+  getMessageList(data: MessageListParams): Observable<Message[]> {
     if (environment.demo) {
       const response = this.demo.getMessages();
-      return of(this._normaliseeMessageListResponse(response.data)).pipe(delay(1000));
+      return of(this._normaliseMessageListResponse(response.data)).pipe(delay(1000));
     }
     return this.request
       .get(api.getChatMessages, {
@@ -145,18 +149,43 @@ export class ChatService {
       .pipe(
         map(response => {
           if (response.success && response.data) {
-            return this._normaliseeMessageListResponse(
-              response.data
-            );
+            return this._normaliseMessageListResponse(response.data);
           }
         })
       );
   }
 
-  markMessagesAsSeen(prams: MarkAsSeenPrams): Observable<any> {
+  /**
+   * modify the message list response
+   */
+  private _normaliseMessageListResponse(data): Message[] {
+    if (!Array.isArray(data)) {
+      this.request.apiResponseFormatError('Message array format error');
+      return [];
+    }
+    if (data.length === 0) {
+      return [];
+    }
+    const messageList = [];
+    data.forEach(message => {
+      messageList.push({
+        id: message.id,
+        senderName: message.sender.name,
+        senderRole: message.sender.role,
+        senderAvatar: message.sender.avatar,
+        isSender: message.is_sender,
+        message: message.message,
+        sentTime: message.sent_time,
+        file: message.file
+      });
+    });
+    return messageList;
+  }
+
+  markMessagesAsSeen(prams: MarkAsSeenParams): Observable<any> {
     const body = {
       channel_id: prams.channel_id,
-      id: prams.id,
+      id: prams.ids,
       action: 'mark_seen'
     };
     return this.request.post(api.markAsSeen, body, {
@@ -168,153 +197,19 @@ export class ChatService {
   //  * @name postNewMessage
    * @description post new text message (with text) or attachment (with file)
    */
-  postNewMessage(data: NewMessage): Observable<any> {
-    const reqData = {
-      to: data.to,
+  postNewMessage(data: NewMessageParam): Observable<any> {
+    return this.request.post(api.createMessage, {
+      channel_id: data.channel_id,
       message: data.message,
-      team_id: data.team_id,
       env: environment.env,
-      participants_only: '',
       file: data.file,
-    };
-    if (data.participants_only) {
-      reqData.participants_only = data.participants_only.toString();
-    } else {
-      delete reqData.participants_only;
-    }
-    return this.request.post(api.createMessage, reqData);
+    });
   }
 
-  postAttachmentMessage(data: NewMessage): Observable<any> {
+  postAttachmentMessage(data: NewMessageParam): Observable<any> {
     if (!data.file) {
       throw new Error('Fatal: File value must not be empty.');
     }
     return this.postNewMessage(data);
-  }
-
-  unreadMessageCout(data: UnreadMessagePrams): Observable<any> {
-    const body = {
-      unread_count_for: data.filter
-    };
-    return this.request.get(api.getChatMessages, body);
-  }
-
-  getTeamName(id: number): Observable<any> {
-    if (environment.demo) {
-      const response = this.demo.getTeamsForChat();
-      return of(this._normaliseTeamResponse(response.data)).pipe(delay(1000));
-    }
-    const data = {
-      team_id: id
-    };
-    return this.request
-      .get(api.getTeam, {
-        params: data
-      })
-      .pipe(
-        map(response => {
-          if (response.success && response.data) {
-            return this._normaliseTeamResponse(response.data);
-          }
-        })
-      );
-  }
-
-  /**
-   * @description listen to pusher event from new/incoming message
-   */
-  getMessageFromEvent(data): Message | null {
-    // const presenceChannelId = this.pusherService.getMyPresenceChannelId();
-    // // don't show the message if it is from the current user,
-    // // or it is not to this user and not a team message
-    // if ((presenceChannelId === data.event.from) ||
-    //     (presenceChannelId !== data.event.to && data.event.to !== 'team')
-    //   ) {
-    //   return null;
-    // }
-    // // show the message if it is team message, and participants_only match
-    // // or it is individual message and sender match
-    // if (!(
-    //       (data.isTeam && data.event.to === 'team' &&
-    //         data.participants_only === data.event.participants_only) ||
-    //       (data.event.sender_name === data.chatName &&
-    //         data.event.to !== 'team')
-    //   )) {
-    //   return null;
-    // }
-    // const message = {
-    //   id: data.event.id,
-    //   is_sender: data.event.is_sender,
-    //   message: data.event.message,
-    //   sender_name: data.event.sender_name,
-    //   sent_time: data.event.sent_time,
-    //   file: data.event.file,
-    //   sender_image: data.event.sender_image
-    // };
-    // return message;
-    return null;
-  }
-
-  private _normaliseTeamResponse(data) {
-    if (!this.utils.has(data, 'Team')) {
-      return this.request.apiResponseFormatError('Team format error');
-    }
-    return data.Team.name;
-  }
-
-  /**
-   * modify the Chat list response
-   *  - set chat avatar color
-   *  - set chat name
-  //  * @param {Array} response
-   */
-  private _normaliseeChatListResponse(data) {
-    console.log('_normaliseeChatListResponse', data);
-    if (!Array.isArray(data)) {
-      return this.request.apiResponseFormatError('Chat format error');
-    }
-    if (data.length === 0) {
-      return [];
-    }
-    const chats = [];
-    data.forEach(chat => {
-      if (!this.utils.has(chat, 'channel_id') ||
-          !this.utils.has(chat, 'channel_name') ||
-          !this.utils.has(chat, 'channel_avatar') ||
-          !this.utils.has(chat, 'pusher_channel_name') ||
-          !this.utils.has(chat, 'readonly') ||
-          !this.utils.has(chat, 'roles') ||
-          !this.utils.has(chat, 'members')
-        ) {
-        return this.request.apiResponseFormatError('Chat object format error');
-      }
-      chats.push(chat);
-    });
-    return chats;
-  }
-
-  /**
-   * modify the message list response
-   */
-  private _normaliseeMessageListResponse(data) {
-    console.log('_normaliseeMessageListResponse', data);
-    if (!Array.isArray(data)) {
-      return this.request.apiResponseFormatError('Message array format error');
-    }
-    if (data.length === 0) {
-      return [];
-    }
-    const messageList = [];
-    data.forEach(message => {
-      if (!this.utils.has(message, 'id') ||
-          !this.utils.has(message, 'sender_name') ||
-          !this.utils.has(message, 'receiver_name') ||
-          !this.utils.has(message, 'message') ||
-          !this.utils.has(message, 'is_sender')) {
-        return this.request.apiResponseFormatError('Message format error');
-      }
-      messageList.push(message);
-    });
-    return messageList;
   }
 }

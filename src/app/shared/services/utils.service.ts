@@ -126,7 +126,7 @@ export class UtilsService {
         return 'Tomorrow';
       }
       if (date.getDate() === compareDate.getDate()) {
-        return new Intl.DateTimeFormat('en-GB', {
+        return new Intl.DateTimeFormat('en-US', {
           hour12: true,
           hour: 'numeric',
           minute: 'numeric'
@@ -165,7 +165,7 @@ export class UtilsService {
         }).format(date);
 
       case 'time':
-        return new Intl.DateTimeFormat('en-GB', {
+        return new Intl.DateTimeFormat('en-US', {
           hour12: true,
           hour: 'numeric',
           minute: 'numeric'

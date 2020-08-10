@@ -13,33 +13,31 @@
   <ion-list class="desktop-view ion-no-padding">
     <clickable-item
       *ngFor="let chat of chatList; let i = index"
-      (click)="navigateToChatRoom(chat)"
-      [active]="currentChat &&
-      (currentChat.channelId == chat.channel_id) &&
-      (currentChat.channelName == chat.channel_name)"
-      [ngClass]="{'unread': chat.unread_messages > 0}"
+      (click)="goToChatRoom(chat)"
+      [active]="currentChat && currentChat.channelId == chat.channelId"
+      [ngClass]="{'unread': chat.unreadMessages > 0}"
       [lines]="'none'">
       <ion-avatar slot="start" text-center>
-        <img [src]="chat.channel_avatar" alt="{{chat.channel_name}}">
+        <img [src]="chat.channelAvatar" alt="{{chat.channelName}}">
       </ion-avatar>
       <ion-label>
         <div class="chat-name-container caption">
-          <p class="chat-name subtitle-1" [ngClass]="{'team-channel': chat.is_team, 'bold': chat.unread_messages > 0}">{{chat.channel_name}}</p>
+          <p class="chat-name subtitle-1" [ngClass]="{'bold': chat.unreadMessages > 0}">{{chat.channelName}}</p>
           <ng-container *ngIf="(chat.roles.length === 1) && (chat.roles.includes('mentor'))">
             <span>mentor</span>
           </ng-container>
         </div>
-        <ng-container *ngIf="chat.last_message; else messgeElseBlock">
-          <p class="body-2">{{chat.last_message}}</p>
+        <ng-container *ngIf="chat.lastMessage; else messgeElseBlock">
+          <p class="body-2">{{chat.lastMessage}}</p>
         </ng-container>
         <ng-template #messgeElseBlock><p class="body-2 gray-2">No messages.</p></ng-template>
       </ion-label>
       <div slot="end" class="time-container">
         <div class="caption gray-2">
-          <span>{{getChatDate(chat.last_message_created)}}</span>
+          <span>{{getChatDate(chat.lastMessageCreated)}}</span>
         </div>
-        <ng-container *ngIf="chat.unread_messages > 0">
-          <ion-badge class="caption">{{chat.unread_messages}}</ion-badge>
+        <ng-container *ngIf="chat.unreadMessages > 0">
+          <ion-badge class="caption">{{chat.unreadMessages}}</ion-badge>
         </ng-container>
       </div>
     </clickable-item>

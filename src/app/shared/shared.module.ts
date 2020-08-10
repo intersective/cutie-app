@@ -29,7 +29,7 @@ import { PreviewComponent } from './filestack/preview/preview.component';
   ],
   providers: [
     StorageService,
-    // FilestackService
+    FilestackService
   ],
   entryComponents: [
     ActionPopoverComponent,

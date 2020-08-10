@@ -7,7 +7,7 @@ import { UtilsService } from '@services/utils.service';
 import { PusherService } from '@shared/pusher/pusher.service';
 import { FilestackService } from '@shared/filestack/filestack.service';
 
-import { ChatService, ChatRoomObject, Message } from '../chat.service';
+import { ChatService, ChatChannel, Message } from '../chat.service';
 import { ChatPreviewComponent } from '../chat-preview/chat-preview.component';
 import { ChatInfoComponent } from '../chat-info/chat-info.component';
 
@@ -19,34 +19,21 @@ import { ChatInfoComponent } from '../chat-info/chat-info.component';
 })
 export class ChatRoomComponent extends RouterEnter {
   @ViewChild(IonContent) content: IonContent;
-  @Input() channelId: number;
-  @Input() channelName: string;
-  @Input() channelAvatar: string;
-  @Input() pusherChannelName: string;
-  @Input() readonly: boolean;
-  @Input() roles: any;
-  @Input() members: any;
+  @Input() chatChannel: ChatChannel;
 
   routeUrl = '/chat-room/';
+  channelId: number | string;
+  // message history list
+  messageList: Message[] = [];
+  // the message that the current user is typing
   message: string;
-  messageList: Array<Message> = new Array;
-  selectedChat: ChatRoomObject = {
-    channel_id: null,
-    channel_name: null,
-    channel_avatar: null,
-    pusher_channel_name: null,
-    readonly: false,
-    roles: null,
-    members: null
-  };
   messagePageNumber = 0;
-  messagePagesize = 20;
+  messagePageSize = 20;
   loadingChatMessages = true;
-  loadingMesageSend = false;
-  isTyping = false;
-  typingMessage: string;
-  // this use to show/hide bottom section of text field which have attachment buttons and send button,
-  // when user typing text messages
+  sendingMessage = false;
+  // display "someone is typing" when received a typing event
+  whoIsTyping: string;
+  // this use to show/hide bottom section of text field which have attachment buttons and send button, when user start typing text messages
   showBottomAttachmentButtons = true;
 
   constructor(
@@ -56,7 +43,7 @@ export class ChatRoomComponent extends RouterEnter {
     private route: ActivatedRoute,
     public utils: UtilsService,
     public pusherService: PusherService,
-    // private filestackService: FilestackService,
+    private filestackService: FilestackService,
     private modalController: ModalController,
     private ngZone: NgZone,
     public element: ElementRef
@@ -66,66 +53,26 @@ export class ChatRoomComponent extends RouterEnter {
     const role = this.storage.getUser().role;
 
     // message by team
-    this.utils.getEvent('team-message').subscribe(event => {
-      const param = {
-        event: event,
-        channel_id: this.selectedChat.channel_id,
-        channel_name: this.selectedChat.channel_name,
-        channel_avatar: this.selectedChat.channel_avatar,
-        pusher_channel_name: this.selectedChat.pusher_channel_name,
-        readonly: this.selectedChat.readonly,
-        roles: this.selectedChat.roles,
-        members: this.selectedChat.members
-      };
-      const receivedMessage = this.chatService.getMessageFromEvent(param);
+    this.utils.getEvent('chat:new-message').subscribe(event => {
+      const receivedMessage = this.getMessageFromEvent(event);
+      if (receivedMessage.channelId !== this.channelId) {
+        // only display message for the current channel
+        return;
+      }
       if (receivedMessage && receivedMessage.file) {
         receivedMessage.preview = this.attachmentPreview(receivedMessage.file);
       }
-
       if (!this.utils.isEmpty(receivedMessage)) {
         this.messageList.push(receivedMessage);
         this._markAsSeen();
         this._scrollToBottom();
       }
     });
-
-    // singal by team typing
-    this.utils.getEvent('team-typing').subscribe(event => {
-      this._showTyping(event);
-    });
-
-    // message by non-mentor
-    if (role !== 'mentor') {
-      this.utils.getEvent('team-no-mentor-message').subscribe(event => {
-        const param = {
-          event: event,
-          channel_id: this.selectedChat.channel_id,
-          channel_name: this.selectedChat.channel_name,
-          channel_avatar: this.selectedChat.channel_avatar,
-          pusher_channel_name: this.selectedChat.pusher_channel_name,
-          readonly: this.selectedChat.readonly,
-          roles: this.selectedChat.roles,
-          members: this.selectedChat.members
-        };
-        const receivedMessage =  this.chatService.getMessageFromEvent(param);
-        if (receivedMessage && receivedMessage.file) {
-          receivedMessage.preview = this.attachmentPreview(receivedMessage.file);
-        }
-
-        if (!this.utils.isEmpty(receivedMessage)) {
-          this._markAsSeen();
-          this.messageList.push(receivedMessage);
-        }
-      });
-      this.utils.getEvent('team-no-mentor-typing').subscribe(event => {
-        this._showTyping(event);
-      });
-    }
   }
 
   onEnter() {
     this._initialise();
-    this._validateRouteParams();
+    // this._subscribeToPusherChannel();
     this._loadMessages();
     this._scrollToBottom();
   }
@@ -134,117 +81,70 @@ export class ChatRoomComponent extends RouterEnter {
     this.message = '';
     this.messageList = [];
     this.loadingChatMessages = true;
-    this.selectedChat = {
-      channel_id: null,
-      channel_name: null,
-      channel_avatar: null,
-      pusher_channel_name: null,
-      readonly: false,
-      roles: null,
-      members: null
-    };
     this.messagePageNumber = 0;
-    this.messagePagesize = 20;
-    this.loadingMesageSend = false;
-    this.isTyping = false;
-    this.typingMessage = '';
+    this.messagePageSize = 20;
+    this.sendingMessage = false;
+    this.whoIsTyping = '';
     this.showBottomAttachmentButtons = true;
   }
 
-  private _validateRouteParams() {
-    // if teamId pass as @Input parameter get team id from it
-    // if not get it from route params.
-    if (this.channelId) {
-      this.selectedChat.channel_id = this.channelId;
-    } else {
-      this.selectedChat.channel_id = Number(this.route.snapshot.paramMap.get('channelId'));
+  private _subscribeToPusherChannel() {
+    if (!this.chatChannel) {
+      this.chatChannel = this.storage.getCurrentChatChannel();
     }
-    // if teamMemberId pass as @Input parameter get team id from it
-    // if not get it from route params.
-    if (this.channelName) {
-      this.selectedChat.channel_name = this.channelName;
-    } else {
-      this.selectedChat.channel_name = JSON.parse(this.route.snapshot.paramMap.get('channelName'));
-    }
-    // if participantsOnly pass as @Input parameter get team id from it
-    // if not get it from route params.
-    if (this.channelAvatar) {
-      this.selectedChat.channel_avatar = this.channelAvatar;
-    } else {
-      this.selectedChat.channel_avatar = JSON.parse(this.route.snapshot.paramMap.get('channelAvatar'));
-    }
-    // if channelId pass as @Input parameter get team id from it
-    // if not get it from route params.
-    if (this.pusherChannelName) {
-      this.selectedChat.pusher_channel_name = this.pusherChannelName;
-    } else {
-      this.selectedChat.pusher_channel_name = JSON.parse(this.route.snapshot.paramMap.get('pusherChannelName'));
-    }
+    this.channelId = this.chatChannel.channelId;
+    // subscribe to the Pusher channel for the current chat channel
+    this.pusherService.subscribeChannel('chat', this.chatChannel.pusherChannelName);
+    // subscribe to typing event
+    this.utils.getEvent('typing-' + this.chatChannel.pusherChannelName).subscribe(event => this._showTyping(event));
+  }
 
-    if (this.readonly) {
-      this.selectedChat.readonly = this.readonly;
-    } else {
-      this.selectedChat.readonly = JSON.parse(this.route.snapshot.paramMap.get('readonly'));
-    }
-
-    if (this.roles) {
-      this.selectedChat.roles = this.roles;
-    } else {
-      this.selectedChat.roles = JSON.parse(this.route.snapshot.paramMap.get('roles'));
-    }
-
-    if (this.members) {
-      this.selectedChat.members = this.members;
-    } else {
-      this.selectedChat.members = JSON.parse(this.route.snapshot.paramMap.get('members'));
-    }
+  /**
+   * @description listen to pusher event for new message
+   */
+  getMessageFromEvent(data): Message {
+    return {
+      senderName: data.sender.name,
+      senderRole: data.sender.role,
+      senderAvatar: data.sender.avatar,
+      isSender: false,
+      message: data.message,
+      sentTime: data.sent_time,
+      channelId: data.channel_id,
+      file: data.file
+    };
   }
 
   private _loadMessages() {
     this.loadingChatMessages = true;
-    let data: any;
     this.messagePageNumber += 1;
-    // creating params need to load messages.
-    data = {
-      // team_id: this.selectedChat.team_id,
-      page: this.messagePageNumber,
-      size: this.messagePagesize,
-      // participants_only: this.selectedChat.participants_only
-    };
-    // else {
-    //   data = {
-    //     team_id: this.selectedChat.team_id,
-    //     page: this.messagePageNumber,
-    //     size: this.messagePagesize,
-    //     team_member_id: this.selectedChat.team_member_id
-    //   };
-    // }
     this.chatService
-      .getMessageList(data)
+      .getMessageList({
+        channel_id: this.channelId,
+        page: this.messagePageNumber,
+        size: this.messagePageSize
+      })
       .subscribe(
-        messages => {
-          if (messages) {
-            if (messages.length > 0) {
-              messages.forEach((msg, i) => {
-                if (msg.file) {
-                  messages[i].preview = this.attachmentPreview(msg.file);
-                }
-              });
-
-              messages = Object.assign([], messages);
-              messages.reverse();
-              if (this.messageList.length > 0) {
-                this.messageList = messages.concat(this.messageList);
-              } else {
-                this.messageList = messages;
-                this._scrollToBottom();
-              }
-              this._markAsSeen();
-            } else {
-              this.messagePageNumber -= 1;
-            }
-          }
+        (messages: Message[]) => {
           this.loadingChatMessages = false;
+          if (messages.length === 0) {
+            this.messagePageNumber -= 1;
+            return;
+          }
+          messages = messages.map(msg => {
+            if (msg.file) {
+              msg.preview = this.attachmentPreview(msg.file);
+            }
+            return msg;
+          });
+          messages.reverse();
+          if (this.messageList.length > 0) {
+            this.messageList = messages.concat(this.messageList);
+          } else {
+            this.messageList = messages;
+            this._scrollToBottom();
+          }
+          this._markAsSeen();
         },
         error => {
           this.loadingChatMessages = false;
@@ -267,68 +167,52 @@ export class ChatRoomComponent extends RouterEnter {
     if (!this.message) {
       return;
     }
-    this.loadingMesageSend = true;
-    const message = this.message;
+    this.sendingMessage = true;
+    this.chatService.postNewMessage({
+      channel_id: this.channelId,
+      message: this.message
+    }).subscribe(
+      response => {
+        this.messageList.push(response.data);
+        this._scrollToBottom();
+        this._afterSendMessage();
+      },
+      error => {
+        this._afterSendMessage();
+      }
+    );
+  }
+
+  private _afterSendMessage() {
     // remove typed message from text area and shrink text area.
     this.message = '';
     this.element.nativeElement.querySelector('textarea').style.height = 'auto';
-    // createing prams need to send message
-    // let data: any;
-    // if (this.selectedChat.is_team) {
-    //   data = {
-    //     message: message,
-    //     team_id: this.selectedChat.team_id,
-    //     to: 'team',
-    //     participants_only: this.selectedChat.participants_only
-    //   };
-    // } else {
-    //   data = {
-    //     message: message,
-    //     team_id: this.selectedChat.team_id,
-    //     to: this.selectedChat.team_member_id
-    //   };
-    // }
-    // this.chatService.postNewMessage(data).subscribe(
-    //   response => {
-    //     this.messageList.push(response.data);
-    //     this.loadingMesageSend = false;
-    //     this._scrollToBottom();
-    //     // this.showBottomAttachmentButtons = false;
-    //   },
-    //   error => {
-    //     this.loadingMesageSend = false;
-    //     // this.showBottomAttachmentButtons = false;
-    //   }
-    // );
+    this.sendingMessage = false;
+    this.showBottomAttachmentButtons = false;
   }
 
   // call chat api to mark message as seen messages
   private _markAsSeen() {
-    const messageIdList = [];
-    let index = 0;
-    // createing id array to mark as read.
-    for (index = 0; index < this.messageList.length; index++) {
-      messageIdList.push(this.messageList[index].id);
-    }
-    // this.chatService
-    //   .markMessagesAsSeen({
-    //     channel_id: this.selectedChat.channel_id,
-    //     id: JSON.stringify(messageIdList)
-    //   })
-    //   .subscribe (
-    //     response => {
-    //       // if (!this.utils.isMobile()) {
-    //       //   this.utils.broadcastEvent('chat-badge-update', {
-    //       //     teamID : this.selectedChat.team_id,
-    //       //     teamMemberId: this.selectedChat.team_member_id ? this.selectedChat.team_member_id : null,
-    //       //     chatName: this.chatName,
-    //       //     participantsOnly : this.selectedChat.participants_only ? this.selectedChat.participants_only : false,
-    //       //     readcount: messageIdList.length
-    //       //   });
-    //       // }
-    //     },
-    //     err => {}
-    //   );
+    const messageIds = this.messageList.map(m => m.id);
+    this.chatService
+      .markMessagesAsSeen({
+        ids: messageIds,
+        channel_id: this.channelId
+      })
+      .subscribe (
+        res => {
+          // if (!this.utils.isMobile()) {
+          //   this.utils.broadcastEvent('chat-badge-update', {
+          //     teamID : this.selectedChat.team_id,
+          //     teamMemberId: this.selectedChat.team_member_id ? this.selectedChat.team_member_id : null,
+          //     chatName: this.chatName,
+          //     participantsOnly : this.selectedChat.participants_only ? this.selectedChat.participants_only : false,
+          //     readcount: messageIdList.length
+          //   });
+          // }
+        },
+        err => {}
+      );
   }
 
   getMessageDate(date) {
@@ -349,14 +233,8 @@ export class ChatRoomComponent extends RouterEnter {
    */
   getAvatarClass(message) {
     if (!this.checkToShowMessageTime(message)) {
-      return 'no-time-team';
-    }
-    if (!this.checkToShowMessageTime(message)) {
       return 'no-time';
     }
-    // if (!this.utils.isMobile() && (this.checkToShowMessageTime(message) && this.selectedChat.is_team)) {
-    //   return 'with-time-team';
-    // }
     return '';
   }
 
@@ -364,7 +242,7 @@ export class ChatRoomComponent extends RouterEnter {
    * check same user have messages inline
   //  * @param {int} message
    */
-  checkIsLastMessage(message) {
+  isLastMessage(message) {
     const index = this.messageList.indexOf(message);
     if (index === -1) {
       this.messageList[index].noAvatar = true;
@@ -372,7 +250,7 @@ export class ChatRoomComponent extends RouterEnter {
     }
     const currentMessage = this.messageList[index];
     const nextMessage = this.messageList[index + 1];
-    if (currentMessage.is_sender) {
+    if (currentMessage.isSender) {
       this.messageList[index].noAvatar = true;
       return false;
     }
@@ -380,9 +258,9 @@ export class ChatRoomComponent extends RouterEnter {
       this.messageList[index].noAvatar = false;
       return true;
     }
-    const currentMessageTime = new Date(this.messageList[index].sent_time);
-    const nextMessageTime = new Date(this.messageList[index + 1].sent_time);
-    if (currentMessage.sender_name !== nextMessage.sender_name) {
+    const currentMessageTime = new Date(this.messageList[index].sentTime);
+    const nextMessageTime = new Date(this.messageList[index + 1].sentTime);
+    if (currentMessage.senderName !== nextMessage.senderName) {
       this.messageList[index].noAvatar = false;
       return true;
     }
@@ -403,13 +281,13 @@ export class ChatRoomComponent extends RouterEnter {
   //  * @param {object} message
    */
   getClassForMessageBubble(message) {
-    if (!message.is_sender && message.noAvatar) {
-      return 'received-messages no-avatar';
-    } else if (!message.is_sender && !message.noAvatar) {
-      return 'received-messages';
-    } else {
+    if (message.isSender) {
       return 'send-messages';
     }
+    if (message.noAvatar) {
+      return 'received-messages no-avatar';
+    }
+    return 'received-messages';
   }
 
   /**
@@ -425,8 +303,8 @@ export class ChatRoomComponent extends RouterEnter {
     if (!this.messageList[index - 1]) {
       return true;
     }
-    const currentMessageTime = new Date(this.messageList[index].sent_time);
-    const oldMessageTime = new Date(this.messageList[index - 1].sent_time);
+    const currentMessageTime = new Date(this.messageList[index].sentTime);
+    const oldMessageTime = new Date(this.messageList[index - 1].sentTime);
     if ((currentMessageTime.getDate() - oldMessageTime.getDate()) === 0) {
       return this._checkmessageOldThan5Min(
         currentMessageTime,
@@ -455,53 +333,28 @@ export class ChatRoomComponent extends RouterEnter {
    * Trigger typing event when user is typing
    */
   typing() {
-    // if (!this.utils.isEmpty(this.message)) {
-    //   this.showBottomAttachmentButtons = true;
-    //   this._scrollToBottom();
-    // } else {
-    //   this.showBottomAttachmentButtons = false;
-    // }
-    // this.pusherService.triggerTyping(
-    //   {
-    //     from: this.pusherService.getMyPresenceChannelId(),
-    //     to: this.selectedChat.name,
-    //     is_team: this.selectedChat.is_team,
-    //     team_id: this.selectedChat.team_id,
-    //     participants_only: this.selectedChat.participants_only,
-    //     sender_name: this.storage.getUser().name
-    //   },
-    //   this.selectedChat.participants_only
-    // );
+    if (!this.utils.isEmpty(this.message)) {
+      this.showBottomAttachmentButtons = true;
+      this._scrollToBottom();
+    } else {
+      this.showBottomAttachmentButtons = false;
+    }
+    this.pusherService.triggerTyping(this.chatChannel.pusherChannelName);
   }
 
   private _showTyping(event) {
-    // const presenceChannelId = this.pusherService.getMyPresenceChannelId();
-    // // do not display typing message if it is yourself typing, or it is not for your team
-    // if (presenceChannelId === event.from || this.selectedChat.team_id !== event.team_id) {
-    //   return ;
-    // }
-    // // show the typing message if it is team message and the current page is the team message
-    // // or it is individual message and it is for the current user
-    // if ((
-    //       event.is_team && this.selectedChat.is_team &&
-    //       this.selectedChat.participants_only === event.participants_only
-    //     ) ||
-    //     (
-    //       !event.is_team && !this.selectedChat.is_team &&
-    //       event.to === this.storage.getUser().name
-    //     )
-    //   ) {
-    //   this.typingMessage = event.sender_name + ' is typing';
-    //   this._scrollToBottom();
-    //   this.isTyping = true;
-    //   setTimeout(
-    //     () => {
-    //       this.typingMessage = '';
-    //       this.isTyping = false;
-    //     },
-    //     3000
-    //   );
-    // }
+    // don't need to show typing message if the current user is the one who is typing
+    if (event.user === this.storage.getUser().name) {
+      return;
+    }
+    this.whoIsTyping = event.user + ' is typing';
+    this._scrollToBottom();
+    setTimeout(
+      () => {
+        this.whoIsTyping = '';
+      },
+      3000
+    );
   }
 
   private _scrollToBottom() {
@@ -531,60 +384,44 @@ export class ChatRoomComponent extends RouterEnter {
   async attach(type: string) {
     const options: any = {};
 
-    // if (this.filestackService.getFileTypes(type)) {
-    //   options.accept = this.filestackService.getFileTypes(type);
-    //   options.storeTo = this.filestackService.getS3Config(type);
-    // }
-    // await this.filestackService.open(
-    //   options,
-    //   res => {
-    //     return this.postAttachment(res);
-    //   },
-    //   err => {
-    //     console.log(err);
-    //   }
-    // );
+    if (this.filestackService.getFileTypes(type)) {
+      options.accept = this.filestackService.getFileTypes(type);
+      options.storeTo = this.filestackService.getS3Config(type);
+    }
+    await this.filestackService.open(
+      options,
+      res => {
+        return this._postAttachment(res);
+      },
+      err => {
+        console.log(err);
+      }
+    );
   }
 
-  async previewFile(file) {
-    console.log('log');
-    // return await this.filestackService.previewFile(file);
+  previewFile(file) {
+    return this.filestackService.previewFile(file);
   }
 
-  private postAttachment(file) {
-    if (this.loadingMesageSend) {
+  private _postAttachment(file) {
+    if (this.sendingMessage) {
       return;
     }
-
-    this.loadingMesageSend = true;
-
-    const data: any = {
-      message: null,
-      file,
-      // team_id: this.selectedChat.team_id,
-      to: null,
-      // participants_only: this.selectedChat.participants_only,
-    };
-    // if (this.selectedChat.is_team) {
-    //   data.to = 'team';
-    // } else {
-    //   data.to = this.selectedChat.team_member_id;
-    // }
-
-    this.chatService.postAttachmentMessage(data).subscribe(
+    this.sendingMessage = true;
+    this.chatService.postAttachmentMessage({
+      channel_id: this.channelId,
+      message: this.message,
+      file
+    }).subscribe(
       response => {
         const message = response.data;
         message.preview = this.attachmentPreview(file);
-
         this.messageList.push(message);
-        this.loadingMesageSend = false;
-        // this.showBottomAttachmentButtons = false;
         this._scrollToBottom();
+        this._afterSendMessage();
       },
       error => {
-        this.loadingMesageSend = false;
-        // this.showBottomAttachmentButtons = false;
-        // error feedback to user for failed upload
+        this._afterSendMessage();
       }
     );
   }
@@ -716,7 +553,7 @@ export class ChatRoomComponent extends RouterEnter {
       component: ChatInfoComponent,
       cssClass: 'chat-info-page',
       componentProps: {
-        selectedChat: this.selectedChat,
+        selectedChat: this.chatChannel,
       }
     });
     return await modal.present();

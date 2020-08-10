@@ -1,6 +1,6 @@
 <ion-header mode="ios">
   <ion-toolbar class="ion-toolbar-absolute">
-    <ion-title class="heading-6 black">{{ selectedChat.channel_name }}</ion-title>
+    <ion-title class="heading-6 black">{{ selectedChat.channelName }}</ion-title>
     <ion-button slot="end" fill="clear" size="small" (click)="close()">
       <ion-icon color="primary" slot="icon-only" name="close-circle"></ion-icon>
     </ion-button>
@@ -18,7 +18,7 @@
       <ion-col class="details-container">
         <div class="channel-name-container">
           <ion-label class="subtitle-1 gray-2">Name</ion-label>
-          <ion-input class="channel-name-input" [(ngModel)]="selectedChat.channel_name"></ion-input>
+          <ion-input class="channel-name-input" [(ngModel)]="selectedChat.channelName"></ion-input>
         </div>
         <div class="who-in-chat-container">
           <ion-label class="subtitle-1 gray-2">Who is in this chat</ion-label>

@@ -5,6 +5,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Router } from '@angular/router';
 import { UtilsService } from '@services/utils.service';
 import { StorageService } from '@services/storage.service';
+import { PusherService } from '@shared/pusher/pusher.service';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +18,8 @@ export class AppComponent implements OnInit {
     public utils: UtilsService,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private storage: StorageService
+    private storage: StorageService,
+    private pusherService: PusherService,
   ) {
     this.initializeApp();
   }
@@ -45,9 +47,11 @@ export class AppComponent implements OnInit {
   }
 
   initializeApp() {
-    this.platform.ready().then(() => {
+    this.platform.ready().then(async() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+      // initialise Pusher
+      // await this.pusherService.initialise();
     });
   }
 }

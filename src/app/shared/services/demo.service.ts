@@ -85,6 +85,46 @@ export class DemoService {
           name: 'mentor1',
           role: 'mentor',
           avatar: 'https://cdn3.iconfinder.com/data/icons/avatars-round-flat/33/avat-01-512.png'
+        },
+        {
+          name: 'mentor1',
+          role: 'mentor',
+          avatar: 'https://cdn3.iconfinder.com/data/icons/avatars-round-flat/33/avat-01-512.png'
+        },
+        {
+          name: 'student1',
+          role: 'participant',
+          avatar: 'https://image.flaticon.com/icons/png/512/194/194938.png'
+        },
+        {
+          name: 'student2',
+          role: 'participant',
+          avatar: 'https://cdn1.iconfinder.com/data/icons/user-pictures/101/malecostume-512.png'
+        },
+        {
+          name: 'mentor1',
+          role: 'mentor',
+          avatar: 'https://cdn3.iconfinder.com/data/icons/avatars-round-flat/33/avat-01-512.png'
+        },
+        {
+          name: 'mentor1',
+          role: 'mentor',
+          avatar: 'https://cdn3.iconfinder.com/data/icons/avatars-round-flat/33/avat-01-512.png'
+        },
+        {
+          name: 'student1',
+          role: 'participant',
+          avatar: 'https://image.flaticon.com/icons/png/512/194/194938.png'
+        },
+        {
+          name: 'student2',
+          role: 'participant',
+          avatar: 'https://cdn1.iconfinder.com/data/icons/user-pictures/101/malecostume-512.png'
+        },
+        {
+          name: 'mentor1',
+          role: 'mentor',
+          avatar: 'https://cdn3.iconfinder.com/data/icons/avatars-round-flat/33/avat-01-512.png'
         }
       ],
       unread_messages: 1,
@@ -123,8 +163,11 @@ export class DemoService {
   TeamChatMessages = [
     {
       id: 510,
-      sender_name: 'sasanga+student01',
-      sender_image: 'https://www.gravatar.com/avatar/d139e8674543137eaa55012cbbb4d2cb?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50',
+      sender: {
+        name: 'sasanga+student01',
+        role: 'Participant',
+        avatar: 'https://www.gravatar.com/avatar/d139e8674543137eaa55012cbbb4d2cb?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50'
+      },
       message: null,
       file: {
         container: 'practera-aus',
@@ -145,15 +188,15 @@ export class DemoService {
         url: 'https://cdn.filestackcontent.com/VcVHlY1SzSC8VKNuXFBt'
       },
       sent_time: '2020-07-28 03:51:35',
-      receiver_name: '',
-      receiver_image: '',
       is_sender: false,
-      sender_role: 'Participant'
     },
     {
       id: 509,
-      sender_name: 'sasanga+mentor',
-      sender_image: 'https://www.gravatar.com/avatar/6557b83887f5a40fde3749bd6c79af7a?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50',
+      sender: {
+        name: 'sasanga+mentor',
+        role: 'Mentor',
+        avatar: 'https://www.gravatar.com/avatar/6557b83887f5a40fde3749bd6c79af7a?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50'
+      },
       message: null,
       file: {
         filename: 'Landscape-Nature-Sunset-Trees-HD-Free-Background.png',
@@ -174,39 +217,39 @@ export class DemoService {
         container: 'practera-aus'
       },
       sent_time: '2020-07-28 03:51:35',
-      receiver_name: '',
-      receiver_image: '',
       is_sender: true,
-      sender_role: 'Mentor'
     },
     {
       id: 508,
-      sender_name: 'Admin+01',
-      sender_image: 'https://www.gravatar.com/avatar/d139e8674543137eaa55012cbbb4d2cb?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50',
+      sender: {
+        name: 'Admin+01',
+        role: 'Admin',
+        avatar: 'https://www.gravatar.com/avatar/d139e8674543137eaa55012cbbb4d2cb?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50'
+      },
       message: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
       file: null,
       sent_time: '2020-07-28 04:09:11',
-      receiver_name: '',
-      receiver_image: '',
-      is_sender: false,
-      sender_role: 'Admin'
+      is_sender: false
     },
     {
       id: 507,
-      sender_name: 'sasanga+student01',
-      sender_image: 'https://www.gravatar.com/avatar/d139e8674543137eaa55012cbbb4d2cb?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50',
+      sender: {
+        name: 'sasanga+student01',
+        role: 'Participant',
+        avatar: 'https://www.gravatar.com/avatar/d139e8674543137eaa55012cbbb4d2cb?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50'
+      },
       message: 'hi all',
       file: null,
       sent_time: '2020-07-28 04:09:10',
-      receiver_name: '',
-      receiver_image: '',
       is_sender: false,
-      sender_role: 'Participant'
     },
     {
       id: 509,
-      sender_name: 'sasanga+student01',
-      sender_image: 'https://www.gravatar.com/avatar/d139e8674543137eaa55012cbbb4d2cb?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50',
+      sender: {
+        name: 'sasanga+student01',
+        role: 'Participant',
+        avatar: 'https://www.gravatar.com/avatar/d139e8674543137eaa55012cbbb4d2cb?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50'
+      },
       message: null,
       file: {
         filename: 'Landscape-Nature-Sunset-Trees-HD-Free-Background.png',
@@ -227,23 +270,20 @@ export class DemoService {
         container: 'practera-aus'
       },
       sent_time: '2020-07-28 03:51:35',
-      receiver_name: '',
-      receiver_image: '',
-      is_sender: false,
-      sender_role: 'Participant'
+      is_sender: false
     },
     {
       id: 506,
-      sender_name: 'sasanga+mentor',
-      sender_image: 'https://www.gravatar.com/avatar/6557b83887f5a40fde3749bd6c79af7a?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50',
+      sender: {
+        name: 'sasanga+mentor',
+        role: 'Mentor',
+        avatar: 'https://www.gravatar.com/avatar/6557b83887f5a40fde3749bd6c79af7a?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50'
+      },
       message: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.' +
       ' Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
       file: null,
       sent_time: '2020-07-28 04:09:07',
-      receiver_name: '',
-      receiver_image: '',
       is_sender: true,
-      sender_role: 'Mentor'
     }
   ];
 

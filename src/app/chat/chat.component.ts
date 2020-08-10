@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChatChannel } from './chat.service';
 
 @Component({
   selector: 'app-chat',
@@ -7,13 +8,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 })
 export class ChatComponent implements OnInit {
 
-  channelId: number;
-  channelName: string;
-  channelAvatar: string;
-  pusherChannelName: string;
-  readonly: boolean;
-  roles: any;
-  members: any;
+  chatChannel: ChatChannel;
 
   @ViewChild('chatList') chatList;
   @ViewChild('chatRoom') chatRoom;
@@ -26,38 +21,14 @@ export class ChatComponent implements OnInit {
     });
   }
   private _initialise() {
-    this.channelId = null;
-    this.channelName = null;
-    this.channelAvatar = null;
-    this.pusherChannelName = null;
-    this.readonly = null;
-    this.roles = [];
-    this.members = [];
+    this.chatChannel = null;
   }
 
   goto(event) {
-    this.channelId = event.channelId;
-    this.channelName = event.channelName;
-    this.channelAvatar = event.channelAvatar;
-    this.pusherChannelName = event.pusherChannelName;
-    this.readonly = event.readonly;
-    this.roles = event.roles;
-    this.members = event.members;
+    this.chatChannel = event;
     setTimeout(() => {
       this.chatRoom.onEnter();
     });
-  }
-
-  getCurrentChat() {
-    return {
-      channelId: this.channelId,
-      channelName: this.channelName,
-      channelAvatar: this.channelAvatar,
-      pusherChannelName: this.pusherChannelName,
-      readonly: this.readonly,
-      roles: this.roles,
-      members: this.members,
-    };
   }
 
   /**
@@ -68,18 +39,10 @@ export class ChatComponent implements OnInit {
    * if we didn't have teamId we will goto() method by passing first chat channel data. to load chat.
    */
   selectFirstChat(chats) {
-    if (this.channelId) {
-      return;
+    if (this.chatChannel) {
+      return ;
     }
     // navigate to the first chat
-    this.goto({
-      channelId: chats[0].channel_id,
-      channelName: chats[0].channel_name,
-      channelAvatar: chats[0].channel_avatar,
-      pusherChannelName: chats[0].pusher_channel_name,
-      readonly: chats[0].readonly,
-      roles: chats[0].roles,
-      members: chats[0].members
-    });
+    this.goto(chats[0]);
   }
 }

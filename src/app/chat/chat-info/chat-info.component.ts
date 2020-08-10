@@ -3,7 +3,7 @@ import { Router, NavigationExtras } from '@angular/router';
 import { StorageService } from '@app/shared/services/storage.service';
 import { RouterEnter } from '@app/shared/services/router-enter.service';
 import { UtilsService } from '@app/shared/services/utils.service';
-import { ChatService, ChatListObject, ChatRoomObject } from '@app/chat/chat.service';
+import { ChatService, ChatChannel } from '@app/chat/chat.service';
 import { ModalController } from '@ionic/angular';
 
 @Component({
@@ -13,7 +13,7 @@ import { ModalController } from '@ionic/angular';
 })
 export class ChatInfoComponent {
 
-  @Input() selectedChat: ChatRoomObject;
+  @Input() selectedChat: ChatChannel;
 
   constructor(
     private chatService: ChatService,
