@@ -10,8 +10,8 @@ export class ChatComponent implements OnInit {
 
   chatChannel: ChatChannel;
 
-  @ViewChild('chatList') chatList;
-  @ViewChild('chatRoom') chatRoom;
+  @ViewChild('chatList', { static: true }) chatList;
+  @ViewChild('chatRoom', { static: false }) chatRoom;
   constructor() { }
 
   ngOnInit() {
