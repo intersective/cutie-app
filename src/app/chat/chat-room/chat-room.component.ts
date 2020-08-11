@@ -18,7 +18,7 @@ import { ChatInfoComponent } from '../chat-info/chat-info.component';
   encapsulation: ViewEncapsulation.None,
 })
 export class ChatRoomComponent extends RouterEnter {
-  @ViewChild(IonContent, { static: true }) content: IonContent;
+  @ViewChild(IonContent) content: IonContent;
   @Input() chatChannel: ChatChannel;
 
   routeUrl = '/chat-room/';

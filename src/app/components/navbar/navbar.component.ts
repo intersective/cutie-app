@@ -22,7 +22,7 @@ export class NavbarComponent implements OnInit {
   @Output() back = new EventEmitter<null>();
   // send message event
   @Output() send = new EventEmitter<null>();
-  @ViewChild('searchRef', { static: false }) searchRef: IonInput;
+  @ViewChild('searchRef') searchRef: IonInput;
   constructor(
   ) { }
 
