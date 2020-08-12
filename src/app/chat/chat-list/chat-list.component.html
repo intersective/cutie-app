@@ -11,6 +11,14 @@
     </div>
   </ng-container>
   <ion-list class="desktop-view ion-no-padding">
+    <ion-item [lines]="'none'">
+      <ion-label>
+        <p class="chat-name subtitle-1 black">Create cohort chat</p>
+      </ion-label>
+      <ion-button slot="end" fill="clear" size="small" (click)="createChatChannel()">
+        <ion-icon color="primary" slot="icon-only" name="add-outline"></ion-icon>
+      </ion-button>
+    </ion-item>
     <clickable-item
       *ngFor="let chat of chatList; let i = index"
       (click)="goToChatRoom(chat)"

@@ -86,6 +86,8 @@ export class ChatRoomComponent extends RouterEnter {
     this.sendingMessage = false;
     this.whoIsTyping = '';
     this.showBottomAttachmentButtons = true;
+    // need to remove after enable pusher
+    this.channelId = this.chatChannel.channelId;
   }
 
   private _subscribeToPusherChannel() {

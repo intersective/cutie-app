@@ -689,7 +689,16 @@ export class DemoService {
     };
   }
 
-  getMessages() {
+  getMessages(data) {
+    console.log(data);
+    if (data.channel_id === 13459) {
+      return {
+        'success': true,
+        'status': 'success',
+        'cache': false,
+        data: []
+      };
+    }
     return {
       'success': true,
       'status': 'success',
@@ -698,19 +707,35 @@ export class DemoService {
     };
   }
 
-  getTeamsForChat() {
+  getNewChannel() {
     return {
       'success': true,
       'status': 'success',
       'cache': false,
       data: {
-        Team: {
-          can_join: true,
-          designator: 'Team 1',
-          id: 1384,
-          joincode: 'YDY9Y',
-          name: 'Team 1'
-        }
+        channel_id: 13459,
+        channel_name: 'cohort channel name',
+        channel_avatar: 'https://flaticons.net/icon.php?slug_category=people&slug_icon=user-group',
+        pusher_channel_name: 'private-develop-team-1447-322-20',
+        announcement: false,
+        roles: ['participant', 'mentor'],
+        members: [
+          {
+            name: 'student1',
+            role: 'participant',
+            avatar: 'https://image.flaticon.com/icons/png/512/194/194938.png'
+          },
+          {
+            name: 'student2',
+            role: 'participant',
+            avatar: 'https://cdn1.iconfinder.com/data/icons/user-pictures/101/malecostume-512.png'
+          },
+          {
+            name: 'mentor1',
+            role: 'mentor',
+            avatar: 'https://cdn3.iconfinder.com/data/icons/avatars-round-flat/33/avat-01-512.png'
+          }
+        ]
       }
     };
   }

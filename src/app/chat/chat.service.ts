@@ -7,6 +7,7 @@ import { PusherService } from '@shared/pusher/pusher.service';
 import { environment } from '@environments/environment';
 import { DemoService } from '@services/demo.service';
 import { delay } from 'rxjs/internal/operators';
+import { StorageService } from '@services/storage.service';
 
 /**
  * @description list of api endpoint involved in this service
@@ -16,7 +17,8 @@ const api = {
   getChatMessages: 'api/v2/message/chat/list_messages.json',
   createMessage: 'api/v2/message/chat/create_message',
   markAsSeen: 'api/v2/message/chat/edit_message',
-  getTeam: 'api/teams.json'
+  createChannel: 'api/v2/message/chat/create_channel',
+  deleteChannel: 'api/v2/message/chat/delete_channel'
 };
 
 export interface ChatChannel {
@@ -24,16 +26,17 @@ export interface ChatChannel {
   channelName: string;
   channelAvatar: string;
   pusherChannelName: string;
-  readonly: boolean;
+  readonly?: boolean;
+  announcement?: boolean;
   roles: string[];
   members: {
     name: string;
     role: string;
     avatar: string;
   }[];
-  unreadMessages: number;
-  lastMessage: string;
-  lastMessageCreated: string;
+  unreadMessages?: number;
+  lastMessage?: string;
+  lastMessageCreated?: string;
 }
 
 export interface Message {
@@ -49,6 +52,7 @@ export interface Message {
   preview?: string;
   noAvatar?: boolean;
 }
+
 interface NewMessageParam {
   channel_id: number | string;
   message: string;
@@ -81,7 +85,8 @@ export class ChatService {
     private request: RequestService,
     private utils: UtilsService,
     private pusherService: PusherService,
-    private demo: DemoService
+    private demo: DemoService,
+    public storage: StorageService,
   ) {}
 
   /**
@@ -117,6 +122,7 @@ export class ChatService {
         channelAvatar: chat.channel_avatar,
         pusherChannelName: chat.pusher_channel_name,
         readonly: chat.readonly,
+        announcement: chat.announcement,
         roles: chat.roles,
         members: chat.members,
         unreadMessages: chat.unread_messages,
@@ -139,7 +145,7 @@ export class ChatService {
    */
   getMessageList(data: MessageListParams): Observable<Message[]> {
     if (environment.demo) {
-      const response = this.demo.getMessages();
+      const response = this.demo.getMessages(data);
       return of(this._normaliseMessageListResponse(response.data)).pipe(delay(1000));
     }
     return this.request
@@ -212,4 +218,57 @@ export class ChatService {
     }
     return this.postNewMessage(data);
   }
+
+    /**
+   * this method create new cohort channel.
+   */
+  createChannel(data): Observable<ChatChannel> {
+    if (environment.demo) {
+      const response = this.demo.getNewChannel();
+      return of(this._normaliseCreateChannelResponse(response.data)).pipe(delay(1000));
+    }
+    return this.request.post(api.createChannel, {
+      name: data.name,
+      announcement: data.announcement,
+      roles: data.roles,
+      members: data.members
+    }).pipe(
+      map(response => {
+        if (response.success && response.data) {
+          return this._normaliseCreateChannelResponse(response.data);
+        }
+      })
+    );
+  }
+
+  private _normaliseCreateChannelResponse(data): ChatChannel {
+    if (!this.utils.has(data, 'channel_id') ||
+        !this.utils.has(data, 'channel_name') ||
+        !this.utils.has(data, 'channel_avatar') ||
+        !this.utils.has(data, 'pusher_channel_name') ||
+        !this.utils.has(data, 'roles') ||
+        !this.utils.has(data, 'members')) {
+      this.request.apiResponseFormatError('chat channel format error');
+      return null;
+    }
+    return {
+      channelId: data.channel_id,
+      channelName: data.channel_name,
+      channelAvatar: data.channel_avatar,
+      pusherChannelName: data.pusher_channel_name,
+      announcement: data.announcement,
+      roles: data.roles,
+      members: data.members
+    };
+  }
+
+  deleteChatChannel(channelId) {
+    if (environment.demo) {
+      return of({}).pipe(delay(1000));
+    }
+    return this.request.delete(api.deleteChannel, {
+      id: channelId
+    });
+  }
+
 }

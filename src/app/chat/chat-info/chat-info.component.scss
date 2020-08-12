@@ -20,13 +20,25 @@ ion-avatar {
 
 }
 
+ion-grid {
+  width: 100%;
+}
+
 .subtitle-1 {
   font-weight: var(--font-weight-medium);
 }
 
 .details-container, .member-container {
-  padding: 28px 24px;
   height: calc(100vh - 60px);
+}
+
+.member-container {
+  padding: 28px 0;
+  padding-left: 24px;
+}
+
+.details-container {
+  padding: 28px 24px;
 }
 
 .details-container {
@@ -46,7 +58,8 @@ ion-avatar {
       display: -webkit-box;
       .chat-role {
         padding: 12px;
-        border: 1px solid var(--practera-60-Percent-gray);
+        color: white;
+        background: var(--ion-color-primary);
         border-radius: 24px;
         margin: 0;
         margin-right: 10px;
@@ -56,6 +69,14 @@ ion-avatar {
 
   .enable-chat-container {
     margin-top: 24px;
+    ion-button {
+      --background: #fce4ec !important;
+      color: var(--ion-color-danger-shade);
+      &:hover {
+        --background-hover: #fce4ec !important;
+        color: var(--ion-color-danger-shade);
+      }
+    }
     .content {
       margin-top: 16px;
       display: -webkit-box;

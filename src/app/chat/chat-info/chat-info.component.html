@@ -15,7 +15,7 @@
   </ng-container>
   <ion-grid slot="fixed" class="ion-no-padding">
     <ion-row>
-      <ion-col class="details-container">
+      <ion-col size="6" class="details-container">
         <div class="channel-name-container">
           <ion-label class="subtitle-1 gray-2">Name</ion-label>
           <ion-input class="channel-name-input" [(ngModel)]="selectedChat.channelName"></ion-input>
@@ -24,19 +24,15 @@
           <ion-label class="subtitle-1 gray-2">Who is in this chat</ion-label>
           <div class="chat-role-container">
             <ng-container *ngFor="let role of selectedChat.roles">
-              <p class="chat-role">{{ role }}</p>
+              <p class="chat-role">{{ role }}s</p>
             </ng-container>
           </div>
         </div>
         <div class="enable-chat-container">
-          <ion-label class="subtitle-1 gray-2">Enable chat?</ion-label>
-          <div class="content">
-            <ion-toggle color="primary"></ion-toggle>
-            <p>*Tutning off the chat will erase the chat history</p>
-          </div>
+          <ion-button size="large" mode="ios" (click)="deleteChannel()">DELETE</ion-button>
         </div>
       </ion-col>
-      <ion-col class="member-container">
+      <ion-col size="6" class="member-container">
         <p class="subtitle-1 gray-2">{{ selectedChat.members.length }} Members</p>
         <div class="member-list">
           <ion-list lines="none" color="light" class="ion-no-padding">

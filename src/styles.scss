@@ -53,3 +53,19 @@ ion-item.sc-ion-select-popover {
   --min-width: 100%;
   --min-height: 100%;
 }
+
+// alert/notification
+.chat-conformation {
+  .alert-wrapper {
+    --max-width: 350px;
+    --width: 350px;
+    .alert-button {
+      color: white;
+      background: var(--ion-color-primary);
+      &.alert-button-role-cancel {
+        color: var(--ion-color-primary);
+        background: transparent;
+      }
+    }
+  }
+}

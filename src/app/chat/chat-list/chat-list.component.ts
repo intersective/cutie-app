@@ -3,8 +3,8 @@ import { Router, NavigationExtras } from '@angular/router';
 import { StorageService } from '@services/storage.service';
 import { RouterEnter } from '@services/router-enter.service';
 import { UtilsService } from '@services/utils.service';
-// import { FastFeedbackService } from '../../fast-feedback/fast-feedback.service';
 import { ChatService, ChatChannel } from '../chat.service';
+import { NotificationService } from '@services/notification.service';
 
 @Component({
   selector: 'app-chat-list',
@@ -23,8 +23,8 @@ export class ChatListComponent {
     public router: Router,
     public storage: StorageService,
     public utils: UtilsService,
-    // public fastFeedbackService: FastFeedbackService,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private notification: NotificationService
   ) {
     this.utils.getEvent('chat:new-message').subscribe(event => this._loadChatData());
   }
@@ -32,7 +32,6 @@ export class ChatListComponent {
   onEnter() {
     this._initialise();
     this._loadChatData();
-    // this.fastFeedbackService.pullFastFeedback().subscribe();
   }
 
   private _initialise() {
@@ -60,6 +59,42 @@ export class ChatListComponent {
 
   getChatDate(date) {
     return this.utils.timeFormatter(date);
+  }
+
+  createChatChannel() {
+    this.notification.alert({
+      cssClass: 'chat-conformation',
+      backdropDismiss: false,
+      subHeader: 'Create cohort channel?',
+      message: 'Are you sure you want to create cohort channel?',
+      buttons: [
+        {
+          text: 'Create',
+          handler: () => {
+            const timeLineId = this.storage.getUser().timelineId;
+            const currentProgram = this.storage.get('programs').find(program => {
+              return program.timeline.id === timeLineId;
+            });
+            this.chatService.createChannel({
+              name: currentProgram.title,
+              announcement: false,
+              roles: ['participant', 'mentor'],
+              members: [{
+                member_type: 'Timeline',
+                member_id: timeLineId
+              }]
+            }). subscribe(chat => {
+            this.chatList.push(chat);
+            this.chatListReady.emit(this.chatList);
+            });
+          }
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        }
+      ]
+    });
   }
 
 }
