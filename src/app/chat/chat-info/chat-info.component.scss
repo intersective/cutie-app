@@ -49,6 +49,12 @@ ion-grid {
       border-radius: 5px;
       margin-top: 16px;
     }
+    ion-button {
+      margin-top: 12px;
+      &:hover {
+        color: var(--ion-color-primary);
+      }
+    }
   }
 
   .who-in-chat-container {

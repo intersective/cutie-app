@@ -175,7 +175,8 @@ export class ChatRoomComponent extends RouterEnter {
       message: this.message
     }).subscribe(
       response => {
-        this.messageList.push(response.data);
+        // this.messageList.push(response.data);
+        this.messageList.push(response);
         this._scrollToBottom();
         this._afterSendMessage();
       },
@@ -203,15 +204,9 @@ export class ChatRoomComponent extends RouterEnter {
       })
       .subscribe (
         res => {
-          // if (!this.utils.isMobile()) {
-          //   this.utils.broadcastEvent('chat-badge-update', {
-          //     teamID : this.selectedChat.team_id,
-          //     teamMemberId: this.selectedChat.team_member_id ? this.selectedChat.team_member_id : null,
-          //     chatName: this.chatName,
-          //     participantsOnly : this.selectedChat.participants_only ? this.selectedChat.participants_only : false,
-          //     readcount: messageIdList.length
-          //   });
-          // }
+          this.utils.broadcastEvent('chat:update-unread', {
+            channelId : this.channelId
+          });
         },
         err => {}
       );
@@ -558,7 +553,12 @@ export class ChatRoomComponent extends RouterEnter {
         selectedChat: this.chatChannel,
       }
     });
-    return await modal.present();
+    await modal.present();
+    modal.onWillDismiss().then((data) => {
+      if (data.data && (data.data.type === 'channelDeleted' || data.data.channelName !== this.chatChannel.channelName)) {
+        this.utils.broadcastEvent('chat:info-update', true);
+      }
+    });
   }
 
 }

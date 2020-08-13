@@ -18,7 +18,8 @@
       <ion-col size="6" class="details-container">
         <div class="channel-name-container">
           <ion-label class="subtitle-1 gray-2">Name</ion-label>
-          <ion-input class="channel-name-input" [(ngModel)]="selectedChat.channelName"></ion-input>
+          <ion-input class="channel-name-input" (keyup)="checkNamechanged($event)" [disabled]="!selectedChat.canEdit" [(ngModel)]="channelName"></ion-input>
+          <ion-button *ngIf="enableSave" size="large" mode="ios" (click)="editChannelDetail()">SAVE</ion-button>
         </div>
         <div class="who-in-chat-container">
           <ion-label class="subtitle-1 gray-2">Who is in this chat</ion-label>
@@ -29,7 +30,7 @@
           </div>
         </div>
         <div class="enable-chat-container">
-          <ion-button size="large" mode="ios" (click)="deleteChannel()">DELETE</ion-button>
+          <ion-button size="large" mode="ios" [disabled]="!selectedChat.canEdit" (click)="deleteChannel()">DELETE</ion-button>
         </div>
       </ion-col>
       <ion-col size="6" class="member-container">

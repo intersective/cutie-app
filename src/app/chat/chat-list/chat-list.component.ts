@@ -27,6 +27,8 @@ export class ChatListComponent {
     private notification: NotificationService
   ) {
     this.utils.getEvent('chat:new-message').subscribe(event => this._loadChatData());
+    this.utils.getEvent('chat:info-update').subscribe(event => this._loadChatData());
+    this.utils.getEvent('chat:update-unread').subscribe(event => this._updateUnread(event));
   }
 
   onEnter() {
@@ -45,6 +47,15 @@ export class ChatListComponent {
       this.loadingChatList = false;
       this.chatListReady.emit(this.chatList);
     });
+  }
+
+  private _updateUnread(event) {
+    const chatIndex = this.chatList.findIndex((data, index) => {
+      return event.channelId === data.channelId;
+    });
+    if (chatIndex > -1) {
+      this.chatList[chatIndex].unreadMessages = 0;
+    }
   }
 
   goToChatRoom(chat: ChatChannel) {
@@ -71,22 +82,7 @@ export class ChatListComponent {
         {
           text: 'Create',
           handler: () => {
-            const timeLineId = this.storage.getUser().timelineId;
-            const currentProgram = this.storage.get('programs').find(program => {
-              return program.timeline.id === timeLineId;
-            });
-            this.chatService.createChannel({
-              name: currentProgram.title,
-              announcement: false,
-              roles: ['participant', 'mentor'],
-              members: [{
-                member_type: 'Timeline',
-                member_id: timeLineId
-              }]
-            }). subscribe(chat => {
-            this.chatList.push(chat);
-            this.chatListReady.emit(this.chatList);
-            });
+            this._createChannelHandler();
           }
         },
         {
@@ -94,6 +90,38 @@ export class ChatListComponent {
           role: 'cancel'
         }
       ]
+    });
+  }
+
+  private _createChannelHandler() {
+    const timeLineId = this.storage.getUser().timelineId;
+    const currentProgram = this.storage.get('programs').find(program => {
+      return program.timeline.id === timeLineId;
+    });
+    this.chatService.createChannel({
+      name: currentProgram.title,
+      announcement: false,
+      roles: ['participant', 'mentor'],
+      members: [{
+        member_type: 'Timeline',
+        member_id: timeLineId
+      }]
+    }).subscribe(chat => {
+      this.chatList.push(chat);
+      this.chatListReady.emit(this.chatList);
+    }, err => {
+      if (err.message && err.message.includes('already exists')) {
+        this.notification.alert({
+          backdropDismiss: false,
+          message: 'You can only create one cohort channel',
+          buttons: [
+            {
+              text: 'Ok',
+              role: 'cancel'
+            }
+          ]
+        });
+      }
     });
   }
 

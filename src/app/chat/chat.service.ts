@@ -18,7 +18,8 @@ const api = {
   createMessage: 'api/v2/message/chat/create_message',
   markAsSeen: 'api/v2/message/chat/edit_message',
   createChannel: 'api/v2/message/chat/create_channel',
-  deleteChannel: 'api/v2/message/chat/delete_channel'
+  deleteChannel: 'api/v2/message/chat/delete_channel',
+  editChannel: 'api/v2/message/chat/edit_channel'
 };
 
 export interface ChatChannel {
@@ -34,6 +35,7 @@ export interface ChatChannel {
     role: string;
     avatar: string;
   }[];
+  canEdit: boolean;
   unreadMessages?: number;
   lastMessage?: string;
   lastMessageCreated?: string;
@@ -74,6 +76,13 @@ interface MarkAsSeenParams {
 
 interface UnreadMessageParams {
   filter: string;
+}
+
+interface EditChannelParams {
+  channel_id: number | string;
+  channel_name?: string;
+  announcement?: boolean;
+  roles?: string[];
 }
 
 @Injectable({
@@ -125,6 +134,7 @@ export class ChatService {
         announcement: chat.announcement,
         roles: chat.roles,
         members: chat.members,
+        canEdit: chat.can_edit,
         unreadMessages: chat.unread_messages,
         lastMessage: chat.last_message,
         lastMessageCreated: chat.last_message_created
@@ -189,6 +199,9 @@ export class ChatService {
   }
 
   markMessagesAsSeen(prams: MarkAsSeenParams): Observable<any> {
+    if (environment.demo) {
+      return of({}).pipe(delay(1000));
+    }
     const body = {
       channel_id: prams.channel_id,
       id: prams.ids,
@@ -204,12 +217,47 @@ export class ChatService {
    * @description post new text message (with text) or attachment (with file)
    */
   postNewMessage(data: NewMessageParam): Observable<any> {
+    if (environment.demo) {
+      const response = this.demo.getNewMessage(data);
+      return of(this._normalisePostMessageResponse(response.data)).pipe(delay(1000));
+    }
     return this.request.post(api.createMessage, {
       channel_id: data.channel_id,
       message: data.message,
       env: environment.env,
       file: data.file,
-    });
+    })
+    .pipe(
+      map(response => {
+        if (response.success && response.data) {
+          return this._normalisePostMessageResponse(response.data);
+        }
+      })
+    );
+  }
+
+  private _normalisePostMessageResponse(data): Message {
+    if (!this.utils.has(data, 'id') ||
+        !this.utils.has(data, 'sender.name') ||
+        !this.utils.has(data, 'sender.role') ||
+        !this.utils.has(data, 'sender.avatar') ||
+        !this.utils.has(data, 'is_sender') ||
+        !this.utils.has(data, 'message') ||
+        !this.utils.has(data, 'sent_time') ||
+        !this.utils.has(data, 'file')) {
+      this.request.apiResponseFormatError('chat channel format error');
+      return null;
+    }
+    return {
+      id: data.id,
+      senderName: data.sender.name,
+      senderRole: data.sender.role,
+      senderAvatar: data.sender.avatar,
+      isSender: data.is_sender,
+      message: data.message,
+      sentTime: data.sent_time,
+      file: data.file
+    };
   }
 
   postAttachmentMessage(data: NewMessageParam): Observable<any> {
@@ -247,7 +295,8 @@ export class ChatService {
         !this.utils.has(data, 'channel_avatar') ||
         !this.utils.has(data, 'pusher_channel_name') ||
         !this.utils.has(data, 'roles') ||
-        !this.utils.has(data, 'members')) {
+        !this.utils.has(data, 'members') ||
+        !this.utils.has(data, 'can_edit')) {
       this.request.apiResponseFormatError('chat channel format error');
       return null;
     }
@@ -258,7 +307,8 @@ export class ChatService {
       pusherChannelName: data.pusher_channel_name,
       announcement: data.announcement,
       roles: data.roles,
-      members: data.members
+      members: data.members,
+      canEdit: data.can_edit
     };
   }
 
@@ -268,6 +318,19 @@ export class ChatService {
     }
     return this.request.delete(api.deleteChannel, {
       id: channelId
+    });
+  }
+
+  editChatChannel(data: EditChannelParams) {
+    if (environment.demo) {
+      const response = this.demo.getEditedChannel(data);
+      return of(response.data).pipe(delay(1000));
+    }
+    return this.request.post(api.editChannel, {
+      id: data.channel_id,
+      name: data.channel_name,
+      announcement: data.announcement,
+      roles: data.roles
     });
   }
 

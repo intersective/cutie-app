@@ -25,6 +25,7 @@ export class DemoService {
       pusher_channel_name: 'private-develop-team-1447-322-20',
       readonly: false,
       roles: ['participant', 'mentor'],
+      can_edit: false,
       members: [
         {
              name: 'student1',
@@ -138,6 +139,7 @@ export class DemoService {
       pusher_channel_name: 'private-develop-team-1447-322-20',
       readonly: false,
       roles: ['participant', 'mentor'],
+      can_edit: true,
       members: [
         {
              name: 'student1',
@@ -690,7 +692,6 @@ export class DemoService {
   }
 
   getMessages(data) {
-    console.log(data);
     if (data.channel_id === 13459) {
       return {
         'success': true,
@@ -719,6 +720,7 @@ export class DemoService {
         pusher_channel_name: 'private-develop-team-1447-322-20',
         announcement: false,
         roles: ['participant', 'mentor'],
+        can_edit: true,
         members: [
           {
             name: 'student1',
@@ -736,6 +738,38 @@ export class DemoService {
             avatar: 'https://cdn3.iconfinder.com/data/icons/avatars-round-flat/33/avat-01-512.png'
           }
         ]
+      }
+    };
+  }
+
+  getEditedChannel(data) {
+    return {
+      'success': true,
+      'status': 'success',
+      'cache': false,
+      data: {
+        channel_id: data.channel_id,
+        channel_name: data.channel_name
+      }
+    };
+  }
+
+  getNewMessage(data) {
+    return {
+      'success': true,
+      'status': 'success',
+      'cache': false,
+      data: {
+        id: 507,
+        sender: {
+          name: 'sasanga+student01',
+          role: 'Participant',
+          avatar: 'https://www.gravatar.com/avatar/d139e8674543137eaa55012cbbb4d2cb?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50'
+        },
+        message: data.message,
+        file: null,
+        sent_time: '2020-08-13 08:10:10',
+        is_sender: true,
       }
     };
   }

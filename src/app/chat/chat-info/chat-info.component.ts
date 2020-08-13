@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, NgZone, Input } from '@angular/core';
+import { Component, Output, EventEmitter, NgZone, Input, OnInit } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
 import { StorageService } from '@app/shared/services/storage.service';
 import { RouterEnter } from '@app/shared/services/router-enter.service';
@@ -12,9 +12,11 @@ import { NotificationService } from '@services/notification.service';
   templateUrl: 'chat-info.component.html',
   styleUrls: ['chat-info.component.scss']
 })
-export class ChatInfoComponent {
+export class ChatInfoComponent implements OnInit {
 
   @Input() selectedChat: ChatChannel;
+  channelName: string;
+  enableSave: boolean;
 
   constructor(
     private chatService: ChatService,
@@ -23,22 +25,29 @@ export class ChatInfoComponent {
     public utils: UtilsService,
     public modalController: ModalController,
     private notification: NotificationService
-  ) {
-  }
+  ) {}
 
-  onEnter() {
+  ngOnInit() {
     this._initialise();
   }
 
   private _initialise() {
-  }
-
-  getChatDate(date) {
-    return this.utils.timeFormatter(date);
+    this.channelName = this.selectedChat.channelName;
+    this.enableSave = false;
   }
 
   close() {
-    this.modalController.dismiss();
+    this.modalController.dismiss({
+      channelName: this.channelName
+    });
+  }
+
+  checkNamechanged(event) {
+    if (event.target.value !== this.selectedChat.channelName) {
+      this.enableSave = true;
+    } else {
+      this.enableSave = false;
+    }
   }
 
   deleteChannel() {
@@ -53,7 +62,9 @@ export class ChatInfoComponent {
           handler: () => {
             this.chatService.deleteChatChannel(this.selectedChat.channelId)
             . subscribe(() => {
-              this.modalController.dismiss();
+              this.modalController.dismiss({
+                type: 'channelDeleted'
+              });
             });
           }
         },
@@ -62,6 +73,18 @@ export class ChatInfoComponent {
           role: 'cancel'
         }
       ]
+    });
+  }
+
+  editChannelDetail() {
+    this.chatService.editChatChannel({
+      channel_id: this.selectedChat.channelId,
+      channel_name: this.channelName
+    })
+    .subscribe((response) => {
+      this.selectedChat.channelName = response.channel_name;
+      this.channelName = response.channel_name;
+      this.enableSave = false;
     });
   }
 
