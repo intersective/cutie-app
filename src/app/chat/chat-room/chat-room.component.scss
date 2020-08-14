@@ -223,23 +223,15 @@ $message-body-size: 60%;
   text-align: left !important;
 }
 .ion-content-absolute-with-footer {
-  height: calc(100% - 155px);
+  height: calc(100% - 175px);
 }
 
 .footer {
-  min-height: 48px;
+  min-height: 115px;
   padding: 0;
 
   &.ion-footer-absolute {
-    height: 96px;
-    ion-grid {
-      padding: 0;
-      min-height: 96px;
-    }
-  }
-
-  &.focus {
-    min-height: 96px;
+    height: 115px;
     ion-grid {
       padding: 0;
       min-height: 96px;
@@ -247,12 +239,16 @@ $message-body-size: 60%;
   }
 
   ion-grid {
+    padding: 0;
     background-color: white;
-    min-height: 48px;
+    min-height: 96px;
+    max-height: 114px;
     ion-row {
       min-height: 48px;
+      max-height: 66px;
       ion-col {
         min-height: 48px;
+        max-height: 66px;
         ion-button {
           padding-top: 6px;
           min-height: 24px;
@@ -263,6 +259,7 @@ $message-body-size: 60%;
           }
         }
         ion-textarea {
+          max-height: 48px;
           --padding-top: 0;
           --padding-end: 0;
           --padding-bottom: 0;

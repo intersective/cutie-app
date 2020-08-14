@@ -34,7 +34,7 @@ export class ChatRoomComponent extends RouterEnter {
   // display "someone is typing" when received a typing event
   whoIsTyping: string;
   // this use to show/hide bottom section of text field which have attachment buttons and send button, when user start typing text messages
-  showBottomAttachmentButtons = true;
+  // showBottomAttachmentButtons = true;
 
   constructor(
     private chatService: ChatService,
@@ -85,7 +85,7 @@ export class ChatRoomComponent extends RouterEnter {
     this.messagePageSize = 20;
     this.sendingMessage = false;
     this.whoIsTyping = '';
-    this.showBottomAttachmentButtons = true;
+    // this.showBottomAttachmentButtons = true;
     // need to remove after enable pusher
     this.channelId = this.chatChannel.channelId;
   }
@@ -191,7 +191,7 @@ export class ChatRoomComponent extends RouterEnter {
     this.message = '';
     this.element.nativeElement.querySelector('textarea').style.height = 'auto';
     this.sendingMessage = false;
-    this.showBottomAttachmentButtons = false;
+    // this.showBottomAttachmentButtons = false;
   }
 
   // call chat api to mark message as seen messages
@@ -331,10 +331,10 @@ export class ChatRoomComponent extends RouterEnter {
    */
   typing() {
     if (!this.utils.isEmpty(this.message)) {
-      this.showBottomAttachmentButtons = true;
+      // this.showBottomAttachmentButtons = true;
       this._scrollToBottom();
     } else {
-      this.showBottomAttachmentButtons = false;
+      // this.showBottomAttachmentButtons = false;
     }
     this.pusherService.triggerTyping(this.chatChannel.pusherChannelName);
   }
