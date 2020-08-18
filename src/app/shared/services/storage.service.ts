@@ -69,12 +69,4 @@ export class StorageService {
   getCountry() {
     return this.get('country');
   }
-
-  setCurrentChatChannel(channel) {
-    this.set('chatChannel', channel);
-  }
-
-  getCurrentChatChannel() {
-    return this.get('chatChannel');
-  }
 }

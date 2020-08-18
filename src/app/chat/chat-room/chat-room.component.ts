@@ -48,8 +48,6 @@ export class ChatRoomComponent extends RouterEnter {
   ) {
     super(router);
 
-    const role = this.storage.getUser().role;
-
     // message by team
     this.utils.getEvent('chat:new-message').subscribe(event => {
       const receivedMessage = this.getMessageFromEvent(event);
@@ -86,9 +84,6 @@ export class ChatRoomComponent extends RouterEnter {
   }
 
   private _subscribeToPusherChannel() {
-    if (!this.chatChannel) {
-      this.chatChannel = this.storage.getCurrentChatChannel();
-    }
     this.channelId = this.chatChannel.channelId;
     // subscribe to the Pusher channel for the current chat channel
     this.pusherService.subscribeChannel('chat', this.chatChannel.pusherChannelName);
