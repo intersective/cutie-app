@@ -66,6 +66,10 @@ export class StorageService {
     return true;
   }
 
+  setCountry(country: string) {
+    this.set('country', country);
+  }
+
   getCountry() {
     return this.get('country');
   }

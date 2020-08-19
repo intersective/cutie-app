@@ -25,6 +25,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.utils.getIpLocation();
     let searchParams = null;
     let queryString = '';
     if (window.location.search) {
@@ -51,7 +52,7 @@ export class AppComponent implements OnInit {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
       // initialise Pusher
-      // await this.pusherService.initialise();
+      await this.pusherService.initialise();
     });
   }
 }
