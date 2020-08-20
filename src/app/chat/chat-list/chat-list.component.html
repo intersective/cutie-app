@@ -1,0 +1,53 @@
+<ion-header mode="ios">
+  <ion-toolbar class="ion-toolbar-absolute">
+    <ion-title>Chat</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-content-absolute" color="light">
+  <ng-container *ngIf="loadingChatList">
+    <div class="ion-text-center">
+      <ion-spinner></ion-spinner>
+    </div>
+  </ng-container>
+  <ion-list class="desktop-view ion-no-padding">
+    <ion-item [lines]="'none'" class="create-channel-container">
+      <ion-label>
+        <p class="chat-name subtitle-1 black">Create cohort chat</p>
+      </ion-label>
+      <ion-button slot="end" fill="clear" size="small" (click)="createChatChannel()">
+        <ion-icon color="primary" slot="icon-only" name="add-outline"></ion-icon>
+      </ion-button>
+    </ion-item>
+    <clickable-item
+      *ngFor="let chat of chatList; let i = index"
+      (click)="goToChatRoom(chat)"
+      [active]="currentChat && currentChat.channelId == chat.channelId"
+      [ngClass]="{'unread': chat.unreadMessages > 0}"
+      [lines]="'none'">
+      <ion-avatar slot="start" text-center>
+        <img [src]="chat.channelAvatar" alt="{{chat.channelName}}">
+      </ion-avatar>
+      <ion-label>
+        <div class="chat-name-container caption">
+          <p class="chat-name subtitle-1" [ngClass]="{'bold': chat.unreadMessages > 0}">{{chat.channelName}}</p>
+          <ng-container *ngIf="(chat.roles.length === 1) && (chat.roles.includes('mentor'))">
+            <span>mentor</span>
+          </ng-container>
+        </div>
+        <ng-container *ngIf="chat.lastMessage; else messgeElseBlock">
+          <p class="body-2">{{chat.lastMessage}}</p>
+        </ng-container>
+        <ng-template #messgeElseBlock><p class="body-2 gray-2">No messages.</p></ng-template>
+      </ion-label>
+      <div slot="end" class="time-container">
+        <div class="caption gray-2">
+          <span>{{getChatDate(chat.lastMessageCreated)}}</span>
+        </div>
+        <ng-container *ngIf="chat.unreadMessages > 0">
+          <ion-badge class="caption">{{chat.unreadMessages}}</ion-badge>
+        </ng-container>
+      </div>
+    </clickable-item>
+  </ion-list>
+</ion-content>

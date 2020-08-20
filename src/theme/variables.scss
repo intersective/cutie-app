@@ -8,8 +8,8 @@
   --ion-color-primary-rgb: 43, 193, 217;
   --ion-color-primary-contrast: #ffffff;
   --ion-color-primary-contrast-rgb: 255, 255, 255;
-  --ion-color-primary-shade: #26aabf;
-  --ion-color-primary-tint: #40c7dd;
+  --ion-color-primary-shade: #114C54;
+  --ion-color-primary-tint: #D5F2F6;
 
   /** secondary **/
   --ion-color-secondary: #ADF82D;
@@ -83,4 +83,12 @@
   --ion-text-color: #000000;
   --ion-text-color-rgb: 0, 0, 0;
   --ion-placeholder-color: var( --ion-color-medium-shade);
+
+    /** practera gray colors **/
+    --practera-surface-light: #FAFAFC;
+    --practera-surface: #F5F6FA;
+    --practera-30-Percent-gray: rgba(0, 0, 0, 0.3);
+    --practera-40-Percent-gray: rgba(0, 0, 0, 0.4);
+    --practera-60-Percent-gray: rgba(0, 0, 0, 0.6);
+    --practera-80-Percent-gray: rgba(0, 0, 0, 0.8);
 }

@@ -6,11 +6,14 @@ import { IonicModule } from '@ionic/angular';
 import { NavbarComponent } from '@components/navbar/navbar.component';
 import { StorageService } from '@services/storage.service';
 import { ActionPopoverComponent } from '@components/action-popover/action-popover.component';
+import { FilestackService } from './filestack/filestack.service';
+import { PreviewComponent } from './filestack/preview/preview.component';
 
 @NgModule({
   declarations: [
     NavbarComponent,
-    ActionPopoverComponent
+    ActionPopoverComponent,
+    PreviewComponent
   ],
   imports: [
     CommonModule,
@@ -25,10 +28,12 @@ import { ActionPopoverComponent } from '@components/action-popover/action-popove
     ActionPopoverComponent
   ],
   providers: [
-    StorageService
+    StorageService,
+    FilestackService
   ],
   entryComponents: [
-    ActionPopoverComponent
+    ActionPopoverComponent,
+    PreviewComponent
   ]
 })
 export class SharedModule { }

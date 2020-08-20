@@ -3,6 +3,8 @@ import * as _ from 'lodash';
 import { DOCUMENT } from '@angular/common';
 import { Observable, Subject } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { StorageService } from '@services/storage.service';
 
 // @TODO: enhance Window reference later, we shouldn't refer directly to browser's window object like this
 declare var window: any;
@@ -17,6 +19,8 @@ export class UtilsService {
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
+    public storage: StorageService,
+    private http: HttpClient,
   ) {
     if (_) {
       this.lodash = _;
@@ -126,7 +130,7 @@ export class UtilsService {
         return 'Tomorrow';
       }
       if (date.getDate() === compareDate.getDate()) {
-        return new Intl.DateTimeFormat('en-GB', {
+        return new Intl.DateTimeFormat('en-US', {
           hour12: true,
           hour: 'numeric',
           minute: 'numeric'
@@ -165,7 +169,7 @@ export class UtilsService {
         }).format(date);
 
       case 'time':
-        return new Intl.DateTimeFormat('en-GB', {
+        return new Intl.DateTimeFormat('en-US', {
           hour12: true,
           hour: 'numeric',
           minute: 'numeric'
@@ -216,5 +220,19 @@ export class UtilsService {
     time = time.replace(' ', 'T');
     // add "Z" to indicate that it is UTC time, it will automatically convert to local time
     return time + 'Z';
+  }
+
+    /**
+   * Get the user's current location from IP
+   */
+  getIpLocation() {
+    this._ipAPI().subscribe(
+      res => this.storage.setCountry(res.country_name),
+      err => console.log(err)
+    );
+  }
+
+  private _ipAPI(): Observable<any> {
+    return this.http.get('https://ipapi.co/json');
   }
 }

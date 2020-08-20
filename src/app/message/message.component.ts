@@ -97,7 +97,7 @@ export class MessageComponent extends RouterEnter {
       toTeam: this.todoItem.isTeam,
       sms: this.smsContent,
       email: this.emailContent
-    }
+    };
     this.service.sendMessage(data).subscribe(
       response => {
         loading.dismiss();

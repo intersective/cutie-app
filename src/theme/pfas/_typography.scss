@@ -51,9 +51,9 @@
 }
 
 .subtitle-1 {
-  font-size: 16px;
-  line-height: 24px;
-  letter-spacing: 0.15px;
+  font-size: 16px !important;
+  line-height: 24px !important;
+  letter-spacing: 0.15px !important;
   font-weight: var(--font-weight-regular);
 }
 
@@ -65,10 +65,10 @@
 }
 
 .body-1 {
-  font-size: 16px;
-  line-height: 28px;
-  letter-spacing: 0.44px;
-  font-weight: var(--font-weight-regular);
+  font-size: 16px !important;
+  line-height: 28px !important;
+  letter-spacing: 0.44px !important;
+  font-weight: var(--font-weight-regular) !important;
 }
 
 .body-2 {
@@ -86,10 +86,10 @@
 }
 
 .caption {
-  font-size: 12px;
-  line-height: 16px;
-  letter-spacing: 0.4px;
-  font-weight: var(--font-weight-regular);
+  font-size: 12px !important;
+  line-height: 16px !important;
+  letter-spacing: 0.4px !important;
+  font-weight: var(--font-weight-regular) !important;
 }
 
 .overline {
@@ -100,3 +100,24 @@
 }
 
 // Add roboto mono for monospaced fonts
+
+ion-textarea, ion-input, input, textarea {
+  @extend .subtitle-1;
+  --placeholder-color: var(--practera-40-Percent-gray);
+  --placeholder-opacity: 1;
+  &::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: var(--practera-40-Percent-gray) !important;
+    opacity: 1 !important; /* Firefox */
+  }
+
+  &:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: var(--practera-40-Percent-gray) !important;
+    opacity: 1 !important;
+  }
+
+  &::-ms-input-placeholder { /* Microsoft Edge */
+    color: var(--practera-40-Percent-gray) !important;
+    opacity: 1 !important;
+  }
+  @extend .black;
+}
