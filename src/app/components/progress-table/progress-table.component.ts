@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild, ViewChildren, ElementRef, QueryList } from '@angular/core';
 import { ProgressTableService, Enrolment, Team } from './progress-table.service';
-import { PusherService } from '@shared/pusher/pusher.service';
 import { UtilsService } from '@services/utils.service';
 import { PopoverController } from '@ionic/angular';
 import { ProgressPopoverComponent } from '@components/progress-popover/progress-popover.component';
@@ -33,7 +32,6 @@ export class ProgressTableComponent implements OnInit {
 
   constructor(
     private service: ProgressTableService,
-    private pusher: PusherService,
     public utils: UtilsService,
     public popoverController: PopoverController
   ) {
@@ -59,8 +57,6 @@ export class ProgressTableComponent implements OnInit {
   }
 
   ngOnInit() {
-    // don't need Pusher anymore
-    // this.pusher.initialisePusher();
     this.type = 'student';
     this.getEnrolments();
   }
@@ -75,14 +71,6 @@ export class ProgressTableComponent implements OnInit {
 
   getEnrolments() {
     this.loading = true;
-    // don't need Pusher anymore
-    // try to get the enrolment data only if pusher is ready
-    // if (!this.pusher.channels.notification) {
-    //   setTimeout(() => {
-    //     this.getEnrolments();
-    //   }, 500);
-    //   return ;
-    // }
     this.service.getEnrolments(this.offset, this.limit, this.sorted, this.filter).subscribe(response => {
       this.count = response.total;
       this._updateEnrolments(response.data);

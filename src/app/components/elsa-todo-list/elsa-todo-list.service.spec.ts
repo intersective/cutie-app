@@ -1,12 +1,18 @@
-import { TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
+import { TestBed, tick, fakeAsync } from '@angular/core/testing';
+import { of, async } from 'rxjs';
+import { delay, map } from 'rxjs/internal/operators';
 import { RequestService } from '@shared/request/request.service';
+import { DemoService } from '@services/demo.service';
+import { UtilsService } from '@services/utils.service';
+import { environment } from '@environments/environment';
 
 import { ElsaTodoListService } from './elsa-todo-list.service';
 
 describe('ElsaTodoListService', () => {
   let service: ElsaTodoListService;
   let requestServiceSpy: jasmine.SpyObj<RequestService>;
+  let demoServiceSpy: jasmine.SpyObj<DemoService>;
+  let utilSpy: jasmine.SpyObj<UtilsService>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -15,18 +21,28 @@ describe('ElsaTodoListService', () => {
         {
           provide: RequestService,
           useValue: jasmine.createSpyObj('RequestService', ['get'])
+        },
+        {
+          provide: DemoService,
+          useValue: jasmine.createSpyObj('DemoService', ['getTodoItems'])
+        },
+        {
+          provide: UtilsService,
+          useValue: jasmine.createSpyObj('UtilsService', ['has'])
         }
       ]
     });
-    service = TestBed.get(ElsaTodoListService);
-    requestServiceSpy = TestBed.get(RequestService);
+    service = TestBed.inject(ElsaTodoListService);
+    requestServiceSpy = TestBed.inject(RequestService) as jasmine.SpyObj<RequestService>;
+    demoServiceSpy = TestBed.inject(DemoService) as jasmine.SpyObj<DemoService>;
+    utilSpy = TestBed.inject(UtilsService) as jasmine.SpyObj<UtilsService>;
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should return expected todoItems', async() => {
+  it('should return expected todoItems', fakeAsync(() => {
     const todoItemsResponse = {
       data: [
         {
@@ -67,13 +83,25 @@ describe('ElsaTodoListService', () => {
         }
       }
     ];
-    requestServiceSpy.get.and.returnValue(of(todoItemsResponse));
-
-    service.getTodoItems().subscribe(
-      todoItems => expect(todoItems).toEqual(expectedReturn, 'expected todoItems'),
-      fail
-    );
-    expect(requestServiceSpy.get.calls.count()).toBe(1, 'one call');
-  });
+    if (environment.demo) {
+      let todoItemsRes;
+      demoServiceSpy.getTodoItems.and.returnValue(todoItemsResponse);
+      service.getTodoItems().subscribe((todoItems) => {
+        todoItemsRes = todoItems;
+      });
+      tick(1000);
+      expect(todoItemsRes).toEqual(expectedReturn);
+      expect(demoServiceSpy.getTodoItems.calls.count()).toBe(1, 'one call');
+    } else {
+      let todoItemsRes;
+      requestServiceSpy.get.and.returnValue(of(todoItemsResponse));
+      service.getTodoItems().subscribe((todoItems) => {
+        todoItemsRes = todoItems;
+      });
+      tick(1000);
+      expect(todoItemsRes).toEqual(expectedReturn, 'expected todoItems');
+      expect(requestServiceSpy.get.calls.count()).toBe(1, 'one call');
+    }
+  }));
 
 });

@@ -7,7 +7,10 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class ProgressPopoverComponent implements OnInit {
 
-  @Input() progress: any;
+  @Input() progress = {
+    status: '',
+    overdue: false
+  };
   status: string;
   constructor() { }
 

@@ -19,7 +19,7 @@ export class UtilsService {
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
-    public storage: StorageService,
+    private storage: StorageService,
     private http: HttpClient,
   ) {
     if (_) {
