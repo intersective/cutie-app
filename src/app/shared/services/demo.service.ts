@@ -760,16 +760,19 @@ export class DemoService {
       'status': 'success',
       'cache': false,
       data: {
-        id: 507,
-        sender: {
-          name: 'sasanga+student01',
-          role: 'Participant',
-          avatar: 'https://www.gravatar.com/avatar/d139e8674543137eaa55012cbbb4d2cb?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50'
+        message: {
+          id: 507,
+          sender: {
+            name: 'sasanga+student01',
+            role: 'Participant',
+            avatar: 'https://www.gravatar.com/avatar/d139e8674543137eaa55012cbbb4d2cb?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50'
+          },
+          message: data.message,
+          file: null,
+          sent_time: '2020-08-13 08:10:10',
+          is_sender: true,
         },
-        message: data.message,
-        file: null,
-        sent_time: '2020-08-13 08:10:10',
-        is_sender: true,
+        channelId: 123
       }
     };
   }

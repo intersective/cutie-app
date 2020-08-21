@@ -29,6 +29,12 @@ export class ChatListComponent {
     this.utils.getEvent('chat:new-message').subscribe(event => this._loadChatData());
     this.utils.getEvent('chat:info-update').subscribe(event => this._loadChatData());
     this.utils.getEvent('chat:update-unread').subscribe(event => this._updateUnread(event));
+    this.utils.getEvent('channel-id-update').subscribe(event => {
+      const channelIndex = this.chatList.findIndex(c => c.channelId === event.previousId);
+      if (channelIndex) {
+        this.chatList[channelIndex].channelId = event.currentId;
+      }
+    });
   }
 
   onEnter() {
