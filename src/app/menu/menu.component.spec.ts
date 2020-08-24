@@ -39,10 +39,10 @@ describe('MenuComponent', () => {
       ]
     })
     .compileComponents();
-    serviceSpy = TestBed.get(MenuService);
-    routerSpy = TestBed.get(Router);
-    loadingControllerSpy = TestBed.get(LoadingController);
-    storageSpy = TestBed.get(StorageService);
+    serviceSpy = TestBed.inject(MenuService);
+    routerSpy = TestBed.inject(Router);
+    loadingControllerSpy = TestBed.inject(LoadingController);
+    storageSpy = TestBed.inject(StorageService);
   }));
 
   beforeEach(() => {

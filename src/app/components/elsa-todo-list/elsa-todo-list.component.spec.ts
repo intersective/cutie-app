@@ -14,9 +14,8 @@ describe('ElsaTodoListComponent', () => {
   let serviceSpy: jasmine.SpyObj<ElsaTodoListService>;
 
   beforeEach(async(() => {
-    let storageStub: Partial<StorageService>;
-    let storage: StorageService;
-    let routerStub: Partial<Router>;
+    const storageStub: Partial<StorageService>;
+    const routerStub: Partial<Router>;
     TestBed.configureTestingModule({
       declarations: [ ElsaTodoListComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -42,7 +41,7 @@ describe('ElsaTodoListComponent', () => {
     fixture = TestBed.createComponent(ElsaTodoListComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    serviceSpy = TestBed.get(ElsaTodoListService);
+    serviceSpy = TestBed.inject(ElsaTodoListService) as jasmine.SpyObj<ElsaTodoListService>;
   });
 
   it('should create', () => {

@@ -22,8 +22,8 @@ describe('MenuService', () => {
         }
       ]
     });
-    service = TestBed.get(MenuService);
-    requestServiceSpy = TestBed.get(RequestService);
+    service = TestBed.inject(MenuService);
+    requestServiceSpy = TestBed.inject(RequestService) as jasmine.SpyObj<RequestService>;
     demoServiceSpy = TestBed.inject(DemoService) as jasmine.SpyObj<DemoService>;
   });
 

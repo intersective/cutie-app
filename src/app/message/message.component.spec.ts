@@ -103,11 +103,11 @@ describe('MessageComponent', () => {
       ]
     })
     .compileComponents();
-    storageSpy = TestBed.get(StorageService);
-    routerSpy = TestBed.get(Router);
-    LoadingControllerSpy = TestBed.get(LoadingController);
-    serviceSpy = TestBed.get(MessageService);
-    notificationSpy = TestBed.get(NotificationService);
+    storageSpy = TestBed.inject(StorageService);
+    routerSpy = TestBed.inject(Router);
+    LoadingControllerSpy = TestBed.inject(LoadingController);
+    serviceSpy = TestBed.inject(MessageService);
+    notificationSpy = TestBed.inject(NotificationService);
   }));
 
   beforeEach(() => {

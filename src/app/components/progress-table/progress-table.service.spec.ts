@@ -24,8 +24,8 @@ describe('ProgressTableService', () => {
         }
       ]
     });
-    service = TestBed.get(ProgressTableService);
-    requestServiceSpy = TestBed.get(RequestService);
+    service = TestBed.inject(ProgressTableService);
+    requestServiceSpy = TestBed.inject(RequestService) as jasmine.SpyObj<RequestService>;
     demoServiceSpy = TestBed.inject(DemoService) as jasmine.SpyObj<DemoService>;
   });
 

@@ -22,8 +22,8 @@ describe('SubmissionChartService', () => {
         }
       ]
     });
-    service = TestBed.get(SubmissionChartService);
-    requestServiceSpy = TestBed.get(RequestService);
+    service = TestBed.inject(SubmissionChartService);
+    requestServiceSpy = TestBed.inject(RequestService) as jasmine.SpyObj<RequestService>;
     demoServiceSpy = TestBed.inject(DemoService) as jasmine.SpyObj<DemoService>;
   });
 

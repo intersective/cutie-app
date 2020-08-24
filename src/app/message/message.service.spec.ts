@@ -22,8 +22,8 @@ describe('MessageService', () => {
         }
       ]
     });
-    service = TestBed.get(MessageService);
-    requestServiceSpy = TestBed.get(RequestService);
+    service = TestBed.inject(MessageService);
+    requestServiceSpy = TestBed.inject(RequestService) as jasmine.SpyObj<RequestService>;
     demoServiceSpy = TestBed.inject(DemoService) as jasmine.SpyObj<DemoService>;
   });
 
