@@ -29,6 +29,9 @@ export class AuthComponent implements OnInit {
           case 'progress-only':
             this.router.navigate(['progress-only']);
             break;
+          case 'chat-only':
+            this.router.navigate(['chat-only']);
+            break;
           default:
             this.router.navigate(['dashboard']);
             break;

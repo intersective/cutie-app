@@ -1,6 +1,6 @@
-import { NgModule, Optional, SkipSelf } from '@angular/core';
+import { NgModule, Optional, SkipSelf, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PusherService } from './pusher.service';
+import { PusherConfig, PusherService } from './pusher.service';
 
 @NgModule({
   declarations: [],
@@ -15,6 +15,15 @@ export class PusherModule {
       throw new Error(
         'PusherModule is already loaded. Import it in the AppModule only');
     }
+  }
+
+  static forRoot(config: PusherConfig): ModuleWithProviders {
+    return {
+      ngModule: PusherModule,
+      providers: [
+        { provide: PusherConfig, useValue: config }
+      ]
+    };
   }
 
 }
