@@ -9,7 +9,10 @@ export class ProgressPopoverComponent implements OnInit {
 
   @Input() progress = {
     status: '',
-    overdue: false
+    overdue: false,
+    submitted: '',
+    due_date: '',
+    name: ''
   };
   status: string;
   constructor() { }
