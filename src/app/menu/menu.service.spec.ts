@@ -1,12 +1,33 @@
 import { TestBed } from '@angular/core/testing';
 
 import { MenuService } from './menu.service';
+import { RequestService } from '@shared/request/request.service';
+import { DemoService } from '@services/demo.service';
 
 describe('MenuService', () => {
-  beforeEach(() => TestBed.configureTestingModule({}));
+  let service: MenuService;
+  let requestServiceSpy: jasmine.SpyObj<RequestService>;
+  let demoServiceSpy: jasmine.SpyObj<DemoService>;
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [
+        MenuService,
+        {
+          provide: RequestService,
+          useValue: jasmine.createSpyObj('RequestService', ['get'])
+        },
+        {
+          provide: DemoService,
+          useValue: jasmine.createSpyObj('DemoService', ['getEnrolments', 'getTeams'])
+        }
+      ]
+    });
+    service = TestBed.inject(MenuService);
+    requestServiceSpy = TestBed.inject(RequestService) as jasmine.SpyObj<RequestService>;
+    demoServiceSpy = TestBed.inject(DemoService) as jasmine.SpyObj<DemoService>;
+  });
 
   it('should be created', () => {
-    const service: MenuService = TestBed.get(MenuService);
     expect(service).toBeTruthy();
   });
 });

@@ -26,8 +26,7 @@ export class MessageService {
 
   constructor(
     private request: RequestService,
-    private demo: DemoService,
-    private utils: UtilsService
+    private demo: DemoService
   ) { }
 
   getMessageTemplates(identifier) {

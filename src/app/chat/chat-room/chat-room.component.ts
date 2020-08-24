@@ -52,8 +52,14 @@ export class ChatRoomComponent extends RouterEnter {
     this.utils.getEvent('chat:new-message').subscribe(event => {
       const receivedMessage = this.getMessageFromEvent(event);
       if (receivedMessage.channelId !== this.channelId) {
-        // only display message for the current channel
-        return;
+        if (receivedMessage.channelIdAlias !== this.channelId) {
+          // only display message for the current channel
+          return;
+        }
+        this.utils.broadcastEvent('channel-id-update', {
+          previousId: this.channelId,
+          currentId: receivedMessage.channelId
+        });
       }
       if (receivedMessage && receivedMessage.file) {
         receivedMessage.preview = this.attachmentPreview(receivedMessage.file);
@@ -89,6 +95,11 @@ export class ChatRoomComponent extends RouterEnter {
     this.pusherService.subscribeChannel('chat', this.chatChannel.pusherChannelName);
     // subscribe to typing event
     this.utils.getEvent('typing-' + this.chatChannel.pusherChannelName).subscribe(event => this._showTyping(event));
+    this.utils.getEvent('channel-id-update').subscribe(event => {
+      if (this.channelId === event.previousId) {
+        this.channelId = event.currentId;
+      }
+    });
   }
 
   /**
@@ -96,14 +107,15 @@ export class ChatRoomComponent extends RouterEnter {
    */
   getMessageFromEvent(data): Message {
     return {
-      senderName: data.sender.name,
-      senderRole: data.sender.role,
-      senderAvatar: data.sender.avatar,
+      senderName: data.meta.sender.name,
+      senderRole: data.meta.sender.role,
+      senderAvatar: data.meta.sender.avatar,
       isSender: false,
-      message: data.message,
-      sentTime: data.sent_time,
-      channelId: data.channel_id,
-      file: data.file
+      message: data.meta.message,
+      sentTime: data.meta.sent_time,
+      channelId: data.meta.channel_id,
+      channelIdAlias: data.meta.channel_id_alias,
+      file: data.meta.file
     };
   }
 
@@ -165,8 +177,13 @@ export class ChatRoomComponent extends RouterEnter {
       message: this.message
     }).subscribe(
       response => {
-        // this.messageList.push(response.data);
-        this.messageList.push(response);
+        this.messageList.push(response.message);
+        if (response.channelId) {
+          this.utils.broadcastEvent('channel-id-update', {
+            previousId: this.channelId,
+            currentId: response.channelId
+          });
+        }
         this._scrollToBottom();
         this._afterSendMessage();
       },
@@ -353,6 +370,9 @@ export class ChatRoomComponent extends RouterEnter {
   private attachmentPreview(filestackRes) {
     let preview = `Uploaded ${filestackRes.filename}`;
     const dimension = 224;
+    if (!filestackRes.mimetype) {
+      return preview;
+    }
     if (filestackRes.mimetype.includes('image')) {
       const attachmentURL = `https://cdn.filestackcontent.com/quality=value:70/resize=w:${dimension},h:${dimension},fit:crop/${filestackRes.handle}`;
       // preview = `<p>Uploaded ${filestackRes.filename}</p><img src=${attachmentURL}>`;
@@ -391,6 +411,9 @@ export class ChatRoomComponent extends RouterEnter {
     if (this.sendingMessage) {
       return;
     }
+    if (!file.mimetype) {
+      file.mimetype = '';
+    }
     this.sendingMessage = true;
     this.chatService.postAttachmentMessage({
       channel_id: this.channelId,
@@ -419,6 +442,10 @@ export class ChatRoomComponent extends RouterEnter {
     ];
 
     let result = '';
+
+    if (!mimetype) {
+      return 'File';
+    }
 
     if (zip.indexOf(mimetype) >= 0) {
       result = 'Zip';

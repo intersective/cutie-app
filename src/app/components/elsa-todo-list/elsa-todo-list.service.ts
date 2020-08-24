@@ -28,7 +28,7 @@ export interface TodoItem {
     actionTarget: string;
     users: any;
     isTeam: boolean;
-  }
+  };
 }
 
 @Injectable({
@@ -74,7 +74,7 @@ export class ElsaTodoListService {
               user_id: team.team_id,
               user_name: team.team_name,
               action_taken: team.action_taken
-            }
+            };
           }) : todoItem.meta.users,
         }
       });

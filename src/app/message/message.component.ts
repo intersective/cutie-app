@@ -32,7 +32,6 @@ export class MessageComponent extends RouterEnter {
   emailContent: string;
   constructor(
     public router: Router,
-    private route: ActivatedRoute,
     private storage: StorageService,
     private service: MessageService,
     private loadingController: LoadingController,
