@@ -5,14 +5,12 @@ phases:
     runtime-versions:
       nodejs: 10
     commands:
+      - echo Installing source NPM dependencies...
       - apt-get update -y
       - apt-get install -y apt-transport-https
-      - echo Installing source NPM dependencies...
       - npm install forever -g
       - npm install -g @angular/cli
       - npm install
-      - node node_modules/node-sass/scripts/install.js
-      - npm rebuild node-sass
       - printf '' > src/environments/environment.ts
   build:
     commands:
