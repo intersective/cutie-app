@@ -24,7 +24,7 @@ import { UtilsService } from '@services/utils.service';
     AppRoutingModule,
     RequestModule,
     PusherModule.forRoot({
-      apiurl: environment.APIEndpoint,
+      apiurl: environment.APIEndpointOld,
       pusherKey: environment.pusherKey,
     })
   ],
