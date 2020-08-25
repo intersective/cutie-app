@@ -105,7 +105,7 @@ export class ChatListComponent {
       return program.timeline.id === timeLineId;
     });
     this.chatService.createChannel({
-      name: currentProgram.title,
+      name: currentProgram.timeline.title,
       announcement: false,
       roles: ['participant', 'mentor'],
       members: [{
