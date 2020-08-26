@@ -23,8 +23,8 @@ module.exports = function (config) {
         },
         htmlReporter: {
             outputFile: require('path').join(__dirname, '../tests/result.html'),
-            pageTitle: 'Practera App V2 Unit Tests',
-            subPageTitle: 'Practera App V2',
+            pageTitle: 'Practera Cutie App Unit Tests',
+            subPageTitle: 'Practera Cutie App',
             groupSuites: true,
             useCompactStyle: true,
             useLegacyStyle: true,
