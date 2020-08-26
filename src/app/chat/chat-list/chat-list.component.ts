@@ -60,7 +60,13 @@ export class ChatListComponent {
       return event.channelId === data.channelId;
     });
     if (chatIndex > -1) {
-      this.chatList[chatIndex].unreadMessages = 0;
+      // set time out because when this calling from pusher events it need a time out.
+      setTimeout(() => {
+        this.chatList[chatIndex].unreadMessages -= event.readcount;
+        if (this.chatList[chatIndex].unreadMessages < 0) {
+          this.chatList[chatIndex].unreadMessages = 0;
+        }
+      });
     }
   }
 

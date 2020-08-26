@@ -212,7 +212,8 @@ export class ChatRoomComponent extends RouterEnter {
       .subscribe (
         res => {
           this.utils.broadcastEvent('chat:update-unread', {
-            channelId : this.channelId
+            channelId : this.channelId,
+            readcount: messageIds.length
           });
         },
         err => {}
