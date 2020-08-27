@@ -107,6 +107,7 @@ export class ChatRoomComponent extends RouterEnter {
    */
   getMessageFromEvent(data): Message {
     return {
+      id: data.meta.id,
       senderName: data.meta.sender.name,
       senderRole: data.meta.sender.role,
       senderAvatar: data.meta.sender.avatar,
@@ -211,7 +212,8 @@ export class ChatRoomComponent extends RouterEnter {
       .subscribe (
         res => {
           this.utils.broadcastEvent('chat:update-unread', {
-            channelId : this.channelId
+            channelId : this.channelId,
+            readcount: messageIds.length
           });
         },
         err => {}
@@ -421,7 +423,7 @@ export class ChatRoomComponent extends RouterEnter {
       file
     }).subscribe(
       response => {
-        const message = response.data;
+        const message = response.message;
         message.preview = this.attachmentPreview(file);
         this.messageList.push(message);
         this._scrollToBottom();

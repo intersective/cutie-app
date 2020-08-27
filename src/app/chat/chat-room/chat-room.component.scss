@@ -170,6 +170,13 @@ $message-body-size: 60%;
         .message-body {
           background-color: var(--ion-color-primary);
 
+          .general-attachment {
+            background: transparent;
+            --background: transparent;
+            ion-icon, ion-note, ion-label {
+              color: white !important;
+            }
+          }
           // margin-left: calc(100% - 150px) !important;
           float: right;
 
