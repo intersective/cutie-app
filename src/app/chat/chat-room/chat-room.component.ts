@@ -29,7 +29,7 @@ export class ChatRoomComponent extends RouterEnter {
   message: string;
   messagePageNumber = 0;
   messagePageSize = 20;
-  loadingChatMessages = true;
+  loadingChatMessages = false;
   sendingMessage = false;
   // display "someone is typing" when received a typing event
   whoIsTyping: string;
@@ -82,7 +82,7 @@ export class ChatRoomComponent extends RouterEnter {
   private _initialise() {
     this.message = '';
     this.messageList = [];
-    this.loadingChatMessages = true;
+    this.loadingChatMessages = false;
     this.messagePageNumber = 0;
     this.messagePageSize = 20;
     this.sendingMessage = false;
@@ -121,6 +121,12 @@ export class ChatRoomComponent extends RouterEnter {
   }
 
   private _loadMessages() {
+    // if one chat request send to the api. not calling other one.
+    // because in some cases second api call respose return before first one.
+    // then messages getting mixed.
+    if (this.loadingChatMessages) {
+      return;
+    }
     this.loadingChatMessages = true;
     this.messagePageNumber += 1;
     this.chatService
