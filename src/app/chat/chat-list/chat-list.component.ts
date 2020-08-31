@@ -125,7 +125,7 @@ export class ChatListComponent {
       if (err.message && err.message.includes('already exists')) {
         this.notification.alert({
           backdropDismiss: false,
-          message: 'You can only create one cohort channel',
+          message: 'Oops! You already created successfully your cohort wide chat.',
           buttons: [
             {
               text: 'Ok',

@@ -82,8 +82,8 @@ export class ChatInfoComponent implements OnInit {
       channel_name: this.channelName
     })
     .subscribe((response) => {
-      this.selectedChat.channelName = response.channel_name;
-      this.channelName = response.channel_name;
+      this.selectedChat.channelName = response.data.channel_name;
+      this.channelName = response.data.channel_name;
       this.enableSave = false;
     });
   }
