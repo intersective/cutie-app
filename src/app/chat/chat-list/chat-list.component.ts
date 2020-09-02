@@ -122,14 +122,22 @@ export class ChatListComponent {
       this.chatList.push(chat);
       this.chatListReady.emit(this.chatList);
     }, err => {
-      if (err.message && err.message.includes('already exists')) {
+      if (err.data.message && err.data.message.includes('already exist')) {
         this.notification.alert({
           backdropDismiss: false,
           message: 'Oops! You already created successfully your cohort wide chat.',
           buttons: [
             {
               text: 'Ok',
-              role: 'cancel'
+              role: 'cancel',
+              handler: () => {
+                const cohortChat = this.chatList.find((data) => {
+                  return err.data.id === data.channelId;
+                });
+                if (cohortChat) {
+                  this.goToChatRoom(cohortChat);
+                }
+              }
             }
           ]
         });
