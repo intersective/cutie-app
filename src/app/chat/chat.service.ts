@@ -328,7 +328,7 @@ export class ChatService {
   editChatChannel(data: EditChannelParams) {
     if (environment.demo) {
       const response = this.demo.getEditedChannel(data);
-      return of(response.data).pipe(delay(1000));
+      return of(response).pipe(delay(1000));
     }
     return this.request.post(api.editChannel, {
       id: data.channel_id,

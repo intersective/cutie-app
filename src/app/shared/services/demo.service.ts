@@ -28,9 +28,9 @@ export class DemoService {
       can_edit: false,
       members: [
         {
-             name: 'student1',
-             role: 'participant',
-             avatar: 'https://image.flaticon.com/icons/png/512/194/194938.png'
+          name: 'student1',
+          role: 'participant',
+          avatar: 'https://image.flaticon.com/icons/png/512/194/194938.png'
         },
         {
           name: 'student2',
@@ -142,9 +142,9 @@ export class DemoService {
       can_edit: true,
       members: [
         {
-             name: 'student1',
-             role: 'participant',
-             avatar: 'https://image.flaticon.com/icons/png/512/194/194938.png'
+          name: 'student1',
+          role: 'participant',
+          avatar: 'https://image.flaticon.com/icons/png/512/194/194938.png'
         },
         {
           name: 'student2',
@@ -282,7 +282,7 @@ export class DemoService {
         avatar: 'https://www.gravatar.com/avatar/6557b83887f5a40fde3749bd6c79af7a?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50'
       },
       message: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.' +
-      ' Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
+        ' Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
       file: null,
       sent_time: '2020-07-28 04:09:07',
       is_sender: true,
@@ -760,19 +760,19 @@ export class DemoService {
       'status': 'success',
       'cache': false,
       data: {
-        message: {
-          id: 507,
-          sender: {
-            name: 'sasanga+student01',
-            role: 'Participant',
-            avatar: 'https://www.gravatar.com/avatar/d139e8674543137eaa55012cbbb4d2cb?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50'
-          },
-          message: data.message,
-          file: null,
-          sent_time: '2020-08-13 08:10:10',
-          is_sender: true,
+        id: 507,
+        sender: {
+          name: 'sasanga+student01',
+          role: 'Participant',
+          avatar: 'https://www.gravatar.com/avatar/d139e8674543137eaa55012cbbb4d2cb?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50'
         },
-        channelId: 123
+        message: data.message,
+        file: null,
+        sent_time: '2020-08-13 08:10:10',
+        is_sender: true,
+        channel: {
+          channelId: 123
+        }
       }
     };
   }

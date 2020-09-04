@@ -29,7 +29,7 @@ export class ChatRoomComponent extends RouterEnter {
   message: string;
   messagePageNumber = 0;
   messagePageSize = 20;
-  loadingChatMessages = true;
+  loadingChatMessages = false;
   sendingMessage = false;
   // display "someone is typing" when received a typing event
   whoIsTyping: string;
@@ -82,7 +82,7 @@ export class ChatRoomComponent extends RouterEnter {
   private _initialise() {
     this.message = '';
     this.messageList = [];
-    this.loadingChatMessages = true;
+    this.loadingChatMessages = false;
     this.messagePageNumber = 0;
     this.messagePageSize = 20;
     this.sendingMessage = false;
@@ -107,6 +107,7 @@ export class ChatRoomComponent extends RouterEnter {
    */
   getMessageFromEvent(data): Message {
     return {
+      id: data.meta.id,
       senderName: data.meta.sender.name,
       senderRole: data.meta.sender.role,
       senderAvatar: data.meta.sender.avatar,
@@ -120,6 +121,12 @@ export class ChatRoomComponent extends RouterEnter {
   }
 
   private _loadMessages() {
+    // if one chat request send to the api. not calling other one.
+    // because in some cases second api call respose return before first one.
+    // then messages getting mixed.
+    if (this.loadingChatMessages) {
+      return;
+    }
     this.loadingChatMessages = true;
     this.messagePageNumber += 1;
     this.chatService
@@ -171,10 +178,11 @@ export class ChatRoomComponent extends RouterEnter {
     if (!this.message) {
       return;
     }
-    this.sendingMessage = true;
+    const message = this.message;
+    this._beforeSenMessages();
     this.chatService.postNewMessage({
       channel_id: this.channelId,
-      message: this.message
+      message: message
     }).subscribe(
       response => {
         this.messageList.push(response.message);
@@ -193,10 +201,21 @@ export class ChatRoomComponent extends RouterEnter {
     );
   }
 
-  private _afterSendMessage() {
+   /**
+   * need to clear type message before send api call.
+   * because if we wait untill api response to clear the type message user may think message not sent and
+   *  will press send button multiple times.
+   * to indicate message sending we have loading controll by sendingMessage.
+   * we will insert type message to cost variable befoer clear it so type message will not lost from the api call.
+   */
+  private _beforeSenMessages() {
+    this.sendingMessage = true;
     // remove typed message from text area and shrink text area.
     this.message = '';
     this.element.nativeElement.querySelector('textarea').style.height = 'auto';
+  }
+
+  private _afterSendMessage() {
     this.sendingMessage = false;
   }
 
@@ -211,7 +230,8 @@ export class ChatRoomComponent extends RouterEnter {
       .subscribe (
         res => {
           this.utils.broadcastEvent('chat:update-unread', {
-            channelId : this.channelId
+            channelId : this.channelId,
+            readcount: messageIds.length
           });
         },
         err => {}
@@ -421,7 +441,7 @@ export class ChatRoomComponent extends RouterEnter {
       file
     }).subscribe(
       response => {
-        const message = response.data;
+        const message = response.message;
         message.preview = this.attachmentPreview(file);
         this.messageList.push(message);
         this._scrollToBottom();
