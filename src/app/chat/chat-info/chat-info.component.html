@@ -24,7 +24,8 @@
             </ng-container>
           </div>
         </div>
-        <div class="enable-chat-container">
+        <!-- For now delete button is hide. to show delete button remove 'ion-hide' class. -->
+        <div class="enable-chat-container ion-hide">
           <ion-button size="large" mode="ios" [disabled]="!selectedChat.canEdit" (click)="deleteChannel()">DELETE</ion-button>
         </div>
       </ion-col>
