@@ -321,7 +321,9 @@ export class ChatService {
       return of({}).pipe(delay(1000));
     }
     return this.request.delete(api.deleteChannel, {
-      id: channelId
+      params: {
+        id: channelId
+      }
     });
   }
 

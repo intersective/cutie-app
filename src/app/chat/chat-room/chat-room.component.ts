@@ -186,6 +186,7 @@ export class ChatRoomComponent extends RouterEnter {
     }).subscribe(
       response => {
         this.messageList.push(response.message);
+        this.utils.broadcastEvent('chat:info-update', true);
         if (response.channelId) {
           this.utils.broadcastEvent('channel-id-update', {
             previousId: this.channelId,
@@ -217,6 +218,14 @@ export class ChatRoomComponent extends RouterEnter {
 
   private _afterSendMessage() {
     this.sendingMessage = false;
+    /**
+     * if there are no previous messages message page number is 0.
+     * after user start sending message, if page number is 0 we need to make it page 1.
+     * if we didn't do that when user scroll message list api call with page number 1 and load same messages again.
+     */
+    if (this.messageList.length > 0 && this.messagePageNumber === 0) {
+      this.messagePageNumber += 1;
+    }
   }
 
   // call chat api to mark message as seen messages
@@ -444,6 +453,13 @@ export class ChatRoomComponent extends RouterEnter {
         const message = response.message;
         message.preview = this.attachmentPreview(file);
         this.messageList.push(message);
+        this.utils.broadcastEvent('chat:info-update', true);
+        if (response.channelId) {
+          this.utils.broadcastEvent('channel-id-update', {
+            previousId: this.channelId,
+            currentId: response.channelId
+          });
+        }
         this._scrollToBottom();
         this._afterSendMessage();
       },
