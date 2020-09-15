@@ -2,7 +2,6 @@ import { Component, Input, ViewChild, NgZone, AfterContentInit, AfterViewInit, E
 import { Router, ActivatedRoute } from '@angular/router';
 import { IonContent, ModalController } from '@ionic/angular';
 import { StorageService } from '@services/storage.service';
-import { RouterEnter } from '@services/router-enter.service';
 import { UtilsService } from '@services/utils.service';
 import { PusherService } from '@shared/pusher/pusher.service';
 import { FilestackService } from '@shared/filestack/filestack.service';
@@ -17,11 +16,10 @@ import { ChatInfoComponent } from '../chat-info/chat-info.component';
   styleUrls: ['./chat-room.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class ChatRoomComponent extends RouterEnter {
+export class ChatRoomComponent {
   @ViewChild(IonContent) content: IonContent;
   @Input() chatChannel: ChatChannel;
 
-  routeUrl = '/chat-room/';
   channelId: number | string;
   // message history list
   messageList: Message[] = [];
@@ -46,7 +44,6 @@ export class ChatRoomComponent extends RouterEnter {
     private ngZone: NgZone,
     public element: ElementRef
   ) {
-    super(router);
 
     // message by team
     this.utils.getEvent('chat:new-message').subscribe(event => {

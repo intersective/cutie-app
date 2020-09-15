@@ -1,7 +1,6 @@
 import { Component, Output, EventEmitter, NgZone, Input, OnInit } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
 import { StorageService } from '@app/shared/services/storage.service';
-import { RouterEnter } from '@app/shared/services/router-enter.service';
 import { UtilsService } from '@app/shared/services/utils.service';
 import { ChatService, ChatChannel } from '@app/chat/chat.service';
 import { ModalController } from '@ionic/angular';

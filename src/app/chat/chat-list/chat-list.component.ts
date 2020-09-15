@@ -1,7 +1,6 @@
 import { Component, Output, EventEmitter, NgZone, Input } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
 import { StorageService } from '@services/storage.service';
-import { RouterEnter } from '@services/router-enter.service';
 import { UtilsService } from '@services/utils.service';
 import { ChatService, ChatChannel } from '../chat.service';
 import { NotificationService } from '@services/notification.service';
