@@ -90,7 +90,7 @@ export class ProgressTableService {
       return of(response).pipe(delay(1000));
     }
     const params = {
-      offset: offset,
+      offset: offset * limit,
       limit: limit,
       progress: true
     };
