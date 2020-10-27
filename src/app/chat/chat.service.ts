@@ -9,19 +9,6 @@ import { DemoService } from '@services/demo.service';
 import { delay } from 'rxjs/internal/operators';
 import { StorageService } from '@services/storage.service';
 
-/**
- * @description list of api endpoint involved in this service
- */
-const api = {
-  getChatList: 'api/v2/message/chat/list.json',
-  getChatMessages: 'api/v2/message/chat/list_messages.json',
-  createMessage: 'api/v2/message/chat/create_message',
-  markAsSeen: 'api/v2/message/chat/edit_message',
-  createChannel: 'api/v2/message/chat/create_channel',
-  deleteChannel: 'api/v2/message/chat/delete_channel',
-  editChannel: 'api/v2/message/chat/edit_channel'
-};
-
 export interface ChatChannel {
   uuid: string;
   name: string;
@@ -40,6 +27,7 @@ export interface ChannelMembers {
   uuid: string;
   name: string;
   role: string;
+  email: string;
   avatar: string;
 }
 
@@ -70,7 +58,7 @@ export interface NewChannelParam {
   roles: string[];
   members: {
     type: string;
-    uuid: string;
+    uuid: number | string;
   }[];
 }
 
@@ -231,12 +219,15 @@ export class ChatService {
       }
       messageList.push({
         uuid: message.uuid,
-        senderUuid: message.senderUuid,
         isSender: message.isSender,
         message: message.message,
         file: message.file,
         fileObject: fileObject,
-        created: message.created
+        created: message.created,
+        senderUuid: message.sender.uuid,
+        senderName: message.sender.name,
+        senderRole: message.sender.role,
+        senderAvatar: message.sender.avatar
       });
     });
     return {
@@ -377,7 +368,7 @@ export class ChatService {
   private _normalisePostMessageResponse(data): Message {
     const result = JSON.parse(JSON.stringify(data.createChatLog));
     if (!this.utils.has(result, 'uuid') ||
-        !this.utils.has(result, 'senderUuid') ||
+        !this.utils.has(result, 'sender.uuid') ||
         !this.utils.has(result, 'isSender') ||
         !this.utils.has(result, 'message') ||
         !this.utils.has(result, 'created') ||
@@ -393,12 +384,15 @@ export class ChatService {
     }
     return {
       uuid: result.uuid,
-      senderName: result.senderUuid,
       isSender: result.isSender,
       message: result.message,
-      created: result.created,
       file: result.file,
-      fileObject: fileObject
+      fileObject: fileObject,
+      created: result.created,
+      senderUuid: result.sender.uuid,
+      senderName: result.sender.name,
+      senderRole: result.sender.role,
+      senderAvatar: result.sender.avatar
     };
   }
 

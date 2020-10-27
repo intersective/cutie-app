@@ -4,6 +4,7 @@ import { StorageService } from '@services/storage.service';
 import { UtilsService } from '@services/utils.service';
 import { ChatService, ChatChannel } from '../chat.service';
 import { NotificationService } from '@services/notification.service';
+import { PusherService } from '@shared/pusher/pusher.service';
 
 @Component({
   selector: 'app-chat-list',
@@ -23,21 +24,17 @@ export class ChatListComponent {
     public storage: StorageService,
     public utils: UtilsService,
     private ngZone: NgZone,
-    private notification: NotificationService
+    private notification: NotificationService,
+    public pusherService: PusherService
   ) {
     this.utils.getEvent('chat:new-message').subscribe(event => this._loadChatData());
     this.utils.getEvent('chat:info-update').subscribe(event => this._loadChatData());
-    this.utils.getEvent('chat:update-unread').subscribe(event => this._updateUnread(event));
-    this.utils.getEvent('channel-id-update').subscribe(event => {
-      const channelIndex = this.chatList.findIndex(c => c.channelId === event.previousId);
-      if (channelIndex) {
-        this.chatList[channelIndex].channelId = event.currentId;
-      }
-    });
+    this.utils.getEvent('chat-badge-update').subscribe(event => this._updateUnread(event));
   }
 
   onEnter() {
     this._initialise();
+    this._checkAndSubscribePusherChannels();
     this._loadChatData();
   }
 
@@ -54,16 +51,29 @@ export class ChatListComponent {
     });
   }
 
-  private _updateUnread(event) {
-    const chatIndex = this.chatList.findIndex((data, index) => {
-      return event.channelId === data.channelId;
+    /**
+   * This method pusher service to subscribe to chat pusher channels
+   * - first it call chat service to get pusher channels.
+   * - then it call pusher service 'subscribeChannel' method to subscribe.
+   * - in pusher service it chaeck if we alrady subscribe or not.
+   *   if not it will subscribe to the pusher channel.
+   */
+  private _checkAndSubscribePusherChannels() {
+    this.chatService.getPusherChannels().subscribe(pusherChannels => {
+      pusherChannels.forEach(channel => {
+        this.pusherService.subscribeChannel('chat', channel.pusherChannel);
+      });
     });
+  }
+
+  private _updateUnread(event) {
+    const chatIndex = this.chatList.findIndex(data => data.uuid === event.channelUuid);
     if (chatIndex > -1) {
       // set time out because when this calling from pusher events it need a time out.
       setTimeout(() => {
-        this.chatList[chatIndex].unreadMessages -= event.readcount;
-        if (this.chatList[chatIndex].unreadMessages < 0) {
-          this.chatList[chatIndex].unreadMessages = 0;
+        this.chatList[chatIndex].unreadMessageCount -= event.readcount;
+        if (this.chatList[chatIndex].unreadMessageCount < 0) {
+          this.chatList[chatIndex].unreadMessageCount = 0;
         }
       });
     }
@@ -111,11 +121,11 @@ export class ChatListComponent {
     });
     this.chatService.createChannel({
       name: currentProgram.timeline.title,
-      announcement: false,
+      isAnnouncement: false,
       roles: ['participant', 'mentor'],
       members: [{
-        member_type: 'Timeline',
-        member_id: timeLineId
+        type: 'Timeline',
+        uuid: timeLineId
       }]
     }).subscribe(chat => {
       this.chatList.push(chat);
@@ -131,7 +141,7 @@ export class ChatListComponent {
               role: 'cancel',
               handler: () => {
                 const cohortChat = this.chatList.find((data) => {
-                  return err.data.id === data.channelId;
+                  return err.data.id === data.uuid;
                 });
                 if (cohortChat) {
                   this.goToChatRoom(cohortChat);

@@ -2,7 +2,7 @@ import { Component, Output, EventEmitter, NgZone, Input, OnInit } from '@angular
 import { Router, NavigationExtras } from '@angular/router';
 import { StorageService } from '@app/shared/services/storage.service';
 import { UtilsService } from '@app/shared/services/utils.service';
-import { ChatService, ChatChannel } from '@app/chat/chat.service';
+import { ChatService, ChatChannel, ChannelMembers } from '@app/chat/chat.service';
 import { ModalController } from '@ionic/angular';
 import { NotificationService } from '@services/notification.service';
 
@@ -16,6 +16,9 @@ export class ChatInfoComponent implements OnInit {
   @Input() selectedChat: ChatChannel;
   channelName: string;
   enableSave: boolean;
+  // channel member list
+  memberList: ChannelMembers[] = [];
+  loadingMembers: boolean;
 
   constructor(
     private chatService: ChatService,
@@ -28,11 +31,30 @@ export class ChatInfoComponent implements OnInit {
 
   ngOnInit() {
     this._initialise();
+    this._loadMembers();
   }
 
   private _initialise() {
-    this.channelName = this.selectedChat.channelName;
+    this.memberList = [];
+    this.loadingMembers = false;
+    this.channelName = this.selectedChat.name;
     this.enableSave = false;
+  }
+
+  private _loadMembers() {
+    this.loadingMembers = true;
+    this.chatService.getChatMembers(this.selectedChat.uuid).subscribe(
+      (response) => {
+        if (response.length === 0) {
+          this.loadingMembers = false;
+          return;
+        }
+        this.memberList = response;
+      },
+      error => {
+        this.loadingMembers = false;
+      }
+    );
   }
 
   close() {
@@ -42,7 +64,7 @@ export class ChatInfoComponent implements OnInit {
   }
 
   checkNamechanged(event) {
-    if (event.target.value !== this.selectedChat.channelName) {
+    if (event.target.value !== this.selectedChat.name) {
       this.enableSave = true;
     } else {
       this.enableSave = false;
@@ -59,7 +81,7 @@ export class ChatInfoComponent implements OnInit {
         {
           text: 'Delete',
           handler: () => {
-            this.chatService.deleteChatChannel(this.selectedChat.channelId)
+            this.chatService.deleteChatChannel(this.selectedChat.uuid)
             . subscribe(() => {
               this.modalController.dismiss({
                 type: 'channelDeleted'
@@ -77,12 +99,12 @@ export class ChatInfoComponent implements OnInit {
 
   editChannelDetail() {
     this.chatService.editChatChannel({
-      channel_id: this.selectedChat.channelId,
-      channel_name: this.channelName
+      uuid: this.selectedChat.uuid,
+      name: this.channelName
     })
     .subscribe((response) => {
-      this.selectedChat.channelName = response.data.channel_name;
-      this.channelName = response.data.channel_name;
+      this.selectedChat.name = response.name;
+      this.channelName = response.name;
       this.enableSave = false;
     });
   }
