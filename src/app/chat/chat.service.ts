@@ -21,6 +21,7 @@ export interface ChatChannel {
   unreadMessageCount: number;
   lastMessage: string;
   lastMessageCreated: string;
+  canEdit: boolean;
 }
 
 export interface ChannelMembers {
@@ -120,6 +121,7 @@ export class ChatService {
           lastMessage
           lastMessageCreated
           pusherChannel
+          canEdit
         }
       }`,
       {},
@@ -240,8 +242,12 @@ export class ChatService {
    * this method return members of a chat channels.
    */
   getChatMembers(channelId): Observable<ChannelMembers[]> {
+    if (environment.demo) {
+      const response = this.demo.getMembers(channelId);
+      return of(this._normaliseChatMembersResponse(response.data)).pipe(delay(1000));
+    }
     return this.request.chatGraphQLQuery(
-      `query getChannelmembers($uuid:String) {
+      `query getChannelmembers($uuid:String!) {
         channel(uuid:$uuid){
           members{
             uuid
@@ -281,6 +287,10 @@ export class ChatService {
    * This method is returning pusher channel list to subscribe.
    */
   getPusherChannels(): Observable<any[]> {
+    if (environment.demo) {
+      const response = this.demo.getPusherChannels();
+      return of(this._normalisePusherChannelsResponse(response.data)).pipe(delay(1000));
+    }
     return this.request.chatGraphQLQuery(
       `query getPusherChannels {
         channels {
@@ -315,7 +325,7 @@ export class ChatService {
       return of({}).pipe(delay(1000));
     }
     return this.request.chatGraphQLMutate(
-      `mutation markAsSeen($uuids: [String]) {
+      `mutation markAsSeen($uuids: [String]!) {
         readChatLogs(uuids: $uuids) {
           success
         }
@@ -336,7 +346,7 @@ export class ChatService {
       return of(this._normalisePostMessageResponse(response.data)).pipe(delay(1000));
     }
     return this.request.chatGraphQLMutate(
-      `mutation createChatLogs($channelUuid: String, $message: String, $file: String) {
+      `mutation createChatLogs($channelUuid: String!, $message: String, $file: String) {
         createChatLog(channelUuid: $channelUuid, message: $message, file: $file) {
             uuid
             isSender
@@ -422,6 +432,7 @@ export class ChatService {
             isDirectMessage
             readonly
             roles
+            canEdit
         }
     }`,
       {
@@ -448,7 +459,8 @@ export class ChatService {
         !this.utils.has(result, 'isAnnouncement') ||
         !this.utils.has(result, 'isDirectMessage') ||
         !this.utils.has(result, 'readonly') ||
-        !this.utils.has(result, 'roles')) {
+        !this.utils.has(result, 'roles') ||
+        !this.utils.has(result, 'canEdit')) {
       this.request.apiResponseFormatError('chat channel format error');
       return null;
     }
@@ -463,7 +475,8 @@ export class ChatService {
       roles: result.roles,
       unreadMessageCount: 0,
       lastMessage: null,
-      lastMessageCreated: null
+      lastMessageCreated: null,
+      canEdit: result.canEdit
     };
   }
 
@@ -472,7 +485,7 @@ export class ChatService {
       return of({}).pipe(delay(1000));
     }
     return this.request.chatGraphQLMutate(
-      `mutation deleteChannel($uuid: String){
+      `mutation deleteChannel($uuid: String!){
         deleteChannel(uuid: $uuid) {
             success
         }
@@ -489,7 +502,7 @@ export class ChatService {
       return of(this._normaliseEditChannelResponse(response.data)).pipe(delay(1000));
     }
     return this.request.chatGraphQLMutate(
-      `mutation editChannel($uuid: String, $name: String, $isAnnouncement: Boolean, $roles: [String]){
+      `mutation editChannel($uuid: String!, $name: String, $isAnnouncement: Boolean, $roles: [String]){
         editChannel(uuid: $uuid, name: $name, isAnnouncement: $isAnnouncement, roles: $roles) {
             uuid
             name
@@ -502,6 +515,7 @@ export class ChatService {
             unreadMessageCount
             lastMessage
             lastMessageCreated
+            canEdit
         }
       }`,
       {
@@ -531,7 +545,8 @@ export class ChatService {
         !this.utils.has(result, 'roles') ||
         !this.utils.has(result, 'unreadMessageCount') ||
         !this.utils.has(result, 'lastMessage') ||
-        !this.utils.has(result, 'lastMessageCreated')) {
+        !this.utils.has(result, 'lastMessageCreated') ||
+        !this.utils.has(result, 'canEdit')) {
       this.request.apiResponseFormatError('chat channel format error');
       return null;
     }
@@ -546,7 +561,8 @@ export class ChatService {
       roles: result.roles,
       unreadMessageCount: result.unreadMessageCount,
       lastMessage: result.lastMessage,
-      lastMessageCreated: result.lastMessageCreated
+      lastMessageCreated: result.lastMessageCreated,
+      canEdit: result.canEdit
     };
   }
 

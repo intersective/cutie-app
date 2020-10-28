@@ -17,161 +17,104 @@ export class DemoService {
     unassignedReview: 0,
     unpublishedReview: 0
   };
-  chatChannels = [
+  channelMembers = [
     {
-      channel_id: 1,
-      channel_name: 'Team 1',
-      channel_avatar: 'https://flaticons.net/icon.php?slug_category=people&slug_icon=user-group',
-      pusher_channel_name: 'private-develop-team-1447-322-20',
-      readonly: false,
-      roles: ['participant', 'mentor'],
-      can_edit: false,
-      members: [
-        {
-          name: 'student1',
-          role: 'participant',
-          avatar: 'https://image.flaticon.com/icons/png/512/194/194938.png'
-        },
-        {
-          name: 'student2',
-          role: 'participant',
-          avatar: 'https://cdn1.iconfinder.com/data/icons/user-pictures/101/malecostume-512.png'
-        },
-        {
-          name: 'mentor1',
-          role: 'mentor',
-          avatar: 'https://cdn3.iconfinder.com/data/icons/avatars-round-flat/33/avat-01-512.png'
-        },
-        {
-          name: 'student1',
-          role: 'participant',
-          avatar: 'https://image.flaticon.com/icons/png/512/194/194938.png'
-        },
-        {
-          name: 'student2',
-          role: 'participant',
-          avatar: 'https://cdn1.iconfinder.com/data/icons/user-pictures/101/malecostume-512.png'
-        },
-        {
-          name: 'mentor1',
-          role: 'mentor',
-          avatar: 'https://cdn3.iconfinder.com/data/icons/avatars-round-flat/33/avat-01-512.png'
-        },
-        {
-          name: 'student1',
-          role: 'participant',
-          avatar: 'https://image.flaticon.com/icons/png/512/194/194938.png'
-        },
-        {
-          name: 'student2',
-          role: 'participant',
-          avatar: 'https://cdn1.iconfinder.com/data/icons/user-pictures/101/malecostume-512.png'
-        },
-        {
-          name: 'mentor1',
-          role: 'mentor',
-          avatar: 'https://cdn3.iconfinder.com/data/icons/avatars-round-flat/33/avat-01-512.png'
-        },
-        {
-          name: 'student1',
-          role: 'participant',
-          avatar: 'https://image.flaticon.com/icons/png/512/194/194938.png'
-        },
-        {
-          name: 'student2',
-          role: 'participant',
-          avatar: 'https://cdn1.iconfinder.com/data/icons/user-pictures/101/malecostume-512.png'
-        },
-        {
-          name: 'mentor1',
-          role: 'mentor',
-          avatar: 'https://cdn3.iconfinder.com/data/icons/avatars-round-flat/33/avat-01-512.png'
-        },
-        {
-          name: 'mentor1',
-          role: 'mentor',
-          avatar: 'https://cdn3.iconfinder.com/data/icons/avatars-round-flat/33/avat-01-512.png'
-        },
-        {
-          name: 'student1',
-          role: 'participant',
-          avatar: 'https://image.flaticon.com/icons/png/512/194/194938.png'
-        },
-        {
-          name: 'student2',
-          role: 'participant',
-          avatar: 'https://cdn1.iconfinder.com/data/icons/user-pictures/101/malecostume-512.png'
-        },
-        {
-          name: 'mentor1',
-          role: 'mentor',
-          avatar: 'https://cdn3.iconfinder.com/data/icons/avatars-round-flat/33/avat-01-512.png'
-        },
-        {
-          name: 'mentor1',
-          role: 'mentor',
-          avatar: 'https://cdn3.iconfinder.com/data/icons/avatars-round-flat/33/avat-01-512.png'
-        },
-        {
-          name: 'student1',
-          role: 'participant',
-          avatar: 'https://image.flaticon.com/icons/png/512/194/194938.png'
-        },
-        {
-          name: 'student2',
-          role: 'participant',
-          avatar: 'https://cdn1.iconfinder.com/data/icons/user-pictures/101/malecostume-512.png'
-        },
-        {
-          name: 'mentor1',
-          role: 'mentor',
-          avatar: 'https://cdn3.iconfinder.com/data/icons/avatars-round-flat/33/avat-01-512.png'
-        }
-      ],
-      unread_messages: 1,
-      last_message_created: '2020-07-14 06:20:37',
-      last_message: '123'
+      uuid: '1',
+      name: 'student+01',
+      role: 'participant',
+      avatar: 'https://www.gravatar.com/avatar/21b7427270a606e8a3c4413a13bb47c6?d=https://sandbox.practera.com/img/user-512.png&s=50'
     },
     {
-      channel_id: 2,
-      channel_name: 'Timeline 01',
-      channel_avatar: 'https://flaticons.net/icon.php?slug_category=people&slug_icon=user-group',
-      pusher_channel_name: 'private-develop-team-1447-322-20',
-      readonly: false,
-      roles: ['participant', 'mentor'],
-      can_edit: true,
-      members: [
-        {
-          name: 'student1',
-          role: 'participant',
-          avatar: 'https://image.flaticon.com/icons/png/512/194/194938.png'
-        },
-        {
-          name: 'student2',
-          role: 'participant',
-          avatar: 'https://cdn1.iconfinder.com/data/icons/user-pictures/101/malecostume-512.png'
-        },
-        {
-          name: 'mentor1',
-          role: 'mentor',
-          avatar: 'https://cdn3.iconfinder.com/data/icons/avatars-round-flat/33/avat-01-512.png'
-        }
-      ],
-      unread_messages: 0,
-      last_message_created: '2020-07-14 04:20:37',
-      last_message: 'ABC'
+      uuid: '2',
+      name: 'student1',
+      role: 'participant',
+      avatar: 'https://www.gravatar.com/avatar/21b7427270a606e8a3c4413a13bb47c6?d=https://sandbox.practera.com/img/user-512.png&s=50'
+    },
+    {
+      uuid: '3',
+      name: 'student2',
+      role: 'participant',
+      avatar: 'https://www.gravatar.com/avatar/21b7427270a606e8a3c4413a13bb47c6?d=https://sandbox.practera.com/img/user-512.png&s=50'
+    },
+    {
+      uuid: '4',
+      name: 'mentor1',
+      role: 'mentor',
+      avatar: 'https://www.gravatar.com/avatar/21b7427270a606e8a3c4413a13bb47c6?d=https://sandbox.practera.com/img/user-512.png&s=50'
+    },
+    {
+      uuid: '5',
+      name: 'student1',
+      role: 'participant',
+      avatar: 'https://www.gravatar.com/avatar/21b7427270a606e8a3c4413a13bb47c6?d=https://sandbox.practera.com/img/user-512.png&s=50'
+    },
+    {
+      uuid: '6',
+      name: 'student2',
+      role: 'participant',
+      avatar: 'https://www.gravatar.com/avatar/21b7427270a606e8a3c4413a13bb47c6?d=https://sandbox.practera.com/img/user-512.png&s=50'
+    },
+    {
+      uuid: '7',
+      name: 'mentor1',
+      role: 'mentor',
+      avatar: 'https://www.gravatar.com/avatar/21b7427270a606e8a3c4413a13bb47c6?d=https://sandbox.practera.com/img/user-512.png&s=50'
+    },
+    {
+      uuid: '8',
+      name: 'student1',
+      role: 'participant',
+      avatar: 'https://www.gravatar.com/avatar/21b7427270a606e8a3c4413a13bb47c6?d=https://sandbox.practera.com/img/user-512.png&s=50'
     }
   ];
-  TeamChatMessages = [
+  chatChannels = [
     {
-      id: 510,
+      uuid: '1',
+      name: 'Team 1',
+      avatar: 'https://flaticons.net/icon.php?slug_category=people&slug_icon=user-group',
+      pusherChannel: 'private-develop-team-1447-322-20',
+      roles: ['participant', 'mentor'],
+      isAnnouncement: false,
+      isDirectMessage: false,
+      readonly: false,
+      unreadMessageCount: 1,
+      lastMessageCreated: '2020-07-14 06:20:37',
+      lastMessage: '123',
+      canEdit: false
+    },
+    {
+      uuid: '2',
+      name: 'Timeline 01',
+      avatar: 'https://flaticons.net/icon.php?slug_category=people&slug_icon=user-group',
+      pusherChannel: 'private-develop-team-1447-322-20',
+      roles: ['participant', 'mentor'],
+      isAnnouncement: false,
+      isDirectMessage: false,
+      readonly: false,
+      unreadMessageCount: 0,
+      lastMessageCreated: null,
+      lastMessage: null,
+      canEdit: false
+    }
+  ];
+  chatMessages = [
+    {
+      uuid: '1',
+      message: 'test message 01',
+      file: null,
+      created: '2020-02-27 01:48:28',
+      isSender: true,
       sender: {
-        name: 'sasanga+student01',
-        role: 'Participant',
-        avatar: 'https://www.gravatar.com/avatar/d139e8674543137eaa55012cbbb4d2cb?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50'
-      },
-      message: null,
-      file: {
+        uuid: '1',
+        name: 'student+01',
+        role: 'participant',
+        avatar: 'https://www.gravatar.com/avatar/21b7427270a606e8a3c4413a13bb47c6?d=https://sandbox.practera.com/img/user-512.png&s=50'
+      }
+    },
+    {
+      uuid: '2',
+      message: 'test admin message 01',
+      file: JSON.stringify({
         container: 'practera-aus',
         filename: 'file-sample_150kB.pdf',
         handle: 'VcVHlY1SzSC8VKNuXFBt',
@@ -188,107 +131,38 @@ export class DemoService {
         status: 'Stored',
         uploadId: '2ZaurtAztrY45d4S',
         url: 'https://cdn.filestackcontent.com/VcVHlY1SzSC8VKNuXFBt'
-      },
-      sent_time: '2020-07-28 03:51:35',
-      is_sender: false,
+      }),
+      created: '2020-01-30 06:18:45',
+      isSender: false,
+      sender: {
+        uuid: '3',
+        name: 'student2',
+        role: 'participant',
+        avatar: 'https://www.gravatar.com/avatar/21b7427270a606e8a3c4413a13bb47c6?d=https://sandbox.practera.com/img/user-512.png&s=50'
+      }
     },
     {
-      id: 509,
-      sender: {
-        name: 'sasanga+mentor',
-        role: 'Mentor',
-        avatar: 'https://www.gravatar.com/avatar/6557b83887f5a40fde3749bd6c79af7a?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50'
-      },
-      message: null,
-      file: {
-        filename: 'Landscape-Nature-Sunset-Trees-HD-Free-Background.png',
-        handle: 'Hg8rGSbSRTyki09DiM7G',
-        mimetype: 'image/png',
-        originalPath: 'Landscape-Nature-Sunset-Trees-HD-Free-Background.png',
-        size: 330150,
-        source: 'local_file_system',
-        url: 'https://cdn.filestackcontent.com/Hg8rGSbSRTyki09DiM7G',
-        uploadId: 'gM0t331cHi3YfoyM',
-        originalFile: {
-          name: 'Landscape-Nature-Sunset-Trees-HD-Free-Background.png',
-          type: 'image/png',
-          size: 330150
-        },
-        status: 'Stored',
-        key: 'appv2/stage/uploads/37ad733fdf20adf0de20effcbbf6f120/dPRBB7c2QhaqsUuO64T9_Landscape-Nature-Sunset-Trees-HD-Free-Background.png',
-        container: 'practera-aus'
-      },
-      sent_time: '2020-07-28 03:51:35',
-      is_sender: true,
-    },
-    {
-      id: 508,
-      sender: {
-        name: 'Admin+01',
-        role: 'Admin',
-        avatar: 'https://www.gravatar.com/avatar/d139e8674543137eaa55012cbbb4d2cb?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50'
-      },
-      message: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+      uuid: '3',
+      message: 'test message 02',
       file: null,
-      sent_time: '2020-07-28 04:09:11',
-      is_sender: false
-    },
-    {
-      id: 507,
+      created: '2019-11-27 02:21:21',
+      isSender: false,
       sender: {
-        name: 'sasanga+student01',
-        role: 'Participant',
-        avatar: 'https://www.gravatar.com/avatar/d139e8674543137eaa55012cbbb4d2cb?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50'
-      },
-      message: 'hi all',
-      file: null,
-      sent_time: '2020-07-28 04:09:10',
-      is_sender: false,
-    },
-    {
-      id: 509,
-      sender: {
-        name: 'sasanga+student01',
-        role: 'Participant',
-        avatar: 'https://www.gravatar.com/avatar/d139e8674543137eaa55012cbbb4d2cb?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50'
-      },
-      message: null,
-      file: {
-        filename: 'Landscape-Nature-Sunset-Trees-HD-Free-Background.png',
-        handle: 'Hg8rGSbSRTyki09DiM7G',
-        mimetype: 'image/png',
-        originalPath: 'Landscape-Nature-Sunset-Trees-HD-Free-Background.png',
-        size: 330150,
-        source: 'local_file_system',
-        url: 'https://cdn.filestackcontent.com/Hg8rGSbSRTyki09DiM7G',
-        uploadId: 'gM0t331cHi3YfoyM',
-        originalFile: {
-          name: 'Landscape-Nature-Sunset-Trees-HD-Free-Background.png',
-          type: 'image/png',
-          size: 330150
-        },
-        status: 'Stored',
-        key: 'appv2/stage/uploads/37ad733fdf20adf0de20effcbbf6f120/dPRBB7c2QhaqsUuO64T9_Landscape-Nature-Sunset-Trees-HD-Free-Background.png',
-        container: 'practera-aus'
-      },
-      sent_time: '2020-07-28 03:51:35',
-      is_sender: false
-    },
-    {
-      id: 506,
-      sender: {
-        name: 'sasanga+mentor',
-        role: 'Mentor',
-        avatar: 'https://www.gravatar.com/avatar/6557b83887f5a40fde3749bd6c79af7a?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50'
-      },
-      message: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.' +
-        ' Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
-      file: null,
-      sent_time: '2020-07-28 04:09:07',
-      is_sender: true,
+        uuid: '3',
+        name: 'student2',
+        role: 'participant',
+        avatar: 'https://www.gravatar.com/avatar/21b7427270a606e8a3c4413a13bb47c6?d=https://sandbox.practera.com/img/user-512.png&s=50'
+      }
     }
   ];
-
+  pusherChannels = [
+    {
+      pusherChannel: 'fgv34fg-34-8472354eb'
+    },
+    {
+      pusherChannel: 'k76i865-jyj-5f44eb4f'
+    }
+  ];
   constructor(
     private utils: UtilsService,
     private storage: StorageService
@@ -684,94 +558,109 @@ export class DemoService {
   // chat.service
   getChats() {
     return {
-      'success': true,
-      'status': 'success',
-      'cache': false,
-      data: this.chatChannels
+      data: {
+        channels: this.chatChannels
+      }
     };
   }
 
   getMessages(data) {
-    if (data.channel_id === 13459) {
+    if (data.channelUuid === '2' || data.channelUuid === '1234') {
       return {
-        'success': true,
-        'status': 'success',
-        'cache': false,
-        data: []
+        data: {
+          channel: {
+            chatLogsConnection: {
+              cursor: null,
+              chatLogs: []
+            }
+          }
+        }
       };
     }
     return {
-      'success': true,
-      'status': 'success',
-      'cache': false,
-      data: this.TeamChatMessages
+      data: {
+        channel: {
+          chatLogsConnection: {
+            cursor: '1234',
+            chatLogs: this.chatMessages
+          }
+        }
+      }
+    };
+  }
+
+  getMembers(channelId) {
+    return {
+      data: {
+        channel: {
+          members: this.channelMembers
+        }
+      }
+    };
+  }
+
+  getPusherChannels() {
+    return {
+      data: {
+        channels: this.pusherChannels
+      }
     };
   }
 
   getNewChannel() {
     return {
-      'success': true,
-      'status': 'success',
-      'cache': false,
       data: {
-        channel_id: 13459,
-        channel_name: 'cohort channel name',
-        channel_avatar: 'https://flaticons.net/icon.php?slug_category=people&slug_icon=user-group',
-        pusher_channel_name: 'private-develop-team-1447-322-20',
-        announcement: false,
-        roles: ['participant', 'mentor'],
-        can_edit: true,
-        members: [
-          {
-            name: 'student1',
-            role: 'participant',
-            avatar: 'https://image.flaticon.com/icons/png/512/194/194938.png'
-          },
-          {
-            name: 'student2',
-            role: 'participant',
-            avatar: 'https://cdn1.iconfinder.com/data/icons/user-pictures/101/malecostume-512.png'
-          },
-          {
-            name: 'mentor1',
-            role: 'mentor',
-            avatar: 'https://cdn3.iconfinder.com/data/icons/avatars-round-flat/33/avat-01-512.png'
-          }
-        ]
+        createChannel: {
+          uuid: '1234',
+          name: 'cohort channel name',
+          avatar: 'https://flaticons.net/icon.php?slug_category=people&slug_icon=user-group',
+          pusherChannel: 'private-develop-team-1447-322-20',
+          isAnnouncement: false,
+          isDirectMessage: false,
+          readonly: false,
+          roles: ['participant', 'mentor'],
+          canEdit: true
+        }
       }
     };
   }
 
   getEditedChannel(data) {
     return {
-      'success': true,
-      'status': 'success',
-      'cache': false,
       data: {
-        channel_id: data.channel_id,
-        channel_name: data.channel_name
+        editChannel: {
+          uuid: data.uuid,
+          name: data.name,
+          avatar: 'https://flaticons.net/icon.php?slug_category=people&slug_icon=user-group',
+          pusherChannel: 'private-develop-team-1447-322-20',
+          isAnnouncement: false,
+          isDirectMessage: false,
+          readonly: false,
+          roles: ['participant', 'mentor'],
+          unreadMessageCount: 0,
+          lastMessage: '1234',
+          lastMessageCreated: '2020-01-30 06:18:45',
+          canEdit: true
+        }
       }
     };
   }
 
   getNewMessage(data) {
     return {
-      'success': true,
-      'status': 'success',
-      'cache': false,
       data: {
-        id: 507,
-        sender: {
-          name: 'sasanga+student01',
-          role: 'Participant',
-          avatar: 'https://www.gravatar.com/avatar/d139e8674543137eaa55012cbbb4d2cb?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50'
-        },
-        message: data.message,
-        file: null,
-        sent_time: '2020-08-13 08:10:10',
-        is_sender: true,
-        channel: {
-          channelId: 123
+        createChatLog: {
+          uuid: data.channelUuid,
+          isSender: false,
+          message: data.message,
+          file: data.file,
+          created: '2020-08-13 08:10:10',
+          sender: {
+            uuid: '1',
+            name: 'student+01',
+            role: 'participant',
+            avatar: 'https://www.gravatar.com/avatar/21b7427270a606e8a3c4413a13bb47c6?d=https://sandbox.practera.com/img/user-512.png&s=50'
+          }
         }
       }
     };

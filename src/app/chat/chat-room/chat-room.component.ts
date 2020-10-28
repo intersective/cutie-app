@@ -29,7 +29,8 @@ export class ChatRoomComponent {
     roles: [],
     unreadMessageCount: 0,
     lastMessage: '',
-    lastMessageCreated: ''
+    lastMessageCreated: '',
+    canEdit: false
   };
 
   channelUuid: string;

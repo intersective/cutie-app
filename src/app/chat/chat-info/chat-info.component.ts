@@ -45,8 +45,8 @@ export class ChatInfoComponent implements OnInit {
     this.loadingMembers = true;
     this.chatService.getChatMembers(this.selectedChat.uuid).subscribe(
       (response) => {
+        this.loadingMembers = false;
         if (response.length === 0) {
-          this.loadingMembers = false;
           return;
         }
         this.memberList = response;

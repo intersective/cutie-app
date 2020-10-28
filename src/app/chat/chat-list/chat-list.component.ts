@@ -128,29 +128,32 @@ export class ChatListComponent {
         uuid: timeLineId
       }]
     }).subscribe(chat => {
-      this.chatList.push(chat);
-      this.chatListReady.emit(this.chatList);
-    }, err => {
-      if (err.data.message && err.data.message.includes('already exist')) {
-        this.notification.alert({
-          backdropDismiss: false,
-          message: 'Oops! You already created successfully your cohort wide chat.',
-          buttons: [
-            {
-              text: 'Ok',
-              role: 'cancel',
-              handler: () => {
-                const cohortChat = this.chatList.find((data) => {
-                  return err.data.id === data.uuid;
-                });
-                if (cohortChat) {
-                  this.goToChatRoom(cohortChat);
-                }
-              }
-            }
-          ]
-        });
+      if (!this._checkChannelAlreadyExist(chat)) {
+        this.chatList.push(chat);
+        this.chatListReady.emit(this.chatList);
       }
+    }, err => {});
+  }
+
+  private _checkChannelAlreadyExist(data) {
+    const existChannel = this.chatList.find((channel) => {
+      return data.uuid === channel.uuid;
+    });
+    if (!existChannel) {
+      return false;
+    }
+    this.notification.alert({
+      backdropDismiss: false,
+      message: 'Oops! You already created successfully your cohort wide chat.',
+      buttons: [
+        {
+          text: 'Ok',
+          role: 'cancel',
+          handler: () => {
+            this.goToChatRoom(existChannel);
+          }
+        }
+      ]
     });
   }
 
