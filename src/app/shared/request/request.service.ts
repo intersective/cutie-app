@@ -2,10 +2,12 @@ import { Injectable, Optional, isDevMode } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse, HttpParameterCodec } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable, of, throwError } from 'rxjs';
-import { catchError, tap, concatMap } from 'rxjs/operators';
+import { catchError, tap, concatMap, map } from 'rxjs/operators';
 import { UtilsService } from '@services/utils.service';
 import { StorageService } from '@services/storage.service';
 import { environment } from '@environments/environment';
+import { Apollo } from 'apollo-angular';
+import gql from 'graphql-tag';
 
 export class QueryEncoder implements HttpParameterCodec {
   encodeKey(k: string): string {
@@ -37,7 +39,8 @@ export class RequestService {
     private http: HttpClient,
     private utils: UtilsService,
     private storage: StorageService,
-    private router: Router
+    private router: Router,
+    private apollo: Apollo
   ) {}
 
   /**
@@ -143,6 +146,48 @@ export class RequestService {
         return of(response);
       }))
       .pipe(
+        catchError((error) => this.handleError(error))
+      );
+  }
+
+  /**
+   * Method to call graphQL chat server to get deta from database.
+   * @param query GraphQL query that use to get data from graphQL server.
+   * @param variables values need to pass with query.
+   * @param options options of the query eg:- 'no-cache' do we need to cache the data of query.
+   */
+  chatGraphQLQuery(query: string, variables?: any, options?: any): Observable<any> {
+    options = {...{ noCache: false }, ...options};
+    const watch = this.apollo.use('chat').watchQuery({
+      query: gql(query),
+      variables: variables || {},
+      fetchPolicy: options.noCache ? 'no-cache' : 'cache-and-network'
+    });
+    return watch.valueChanges
+      .pipe(map(response => {
+        this._refreshApikey(response);
+        return response;
+      }))
+      .pipe(
+        catchError((error) => this.handleError(error))
+      );
+  }
+
+  /**
+   * Method to call graphQL chat server to save data on database.
+   * @param query GraphQL query that use to get data from graphQL server.
+   * @param variables values need to pass with query.
+   */
+  chatGraphQLMutate(query: string, variables = {}): Observable<any> {
+    return this.apollo.use('chat').mutate({
+      mutation: gql(query),
+      variables: variables
+    })
+      .pipe(
+        concatMap(response => {
+          this._refreshApikey(response);
+          return of(response);
+        }),
         catchError((error) => this.handleError(error))
       );
   }
