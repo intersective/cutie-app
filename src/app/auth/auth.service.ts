@@ -54,6 +54,7 @@ export class AuthService {
       this.storage.setUser({
         apikey: data.apikey,
         timelineId: data.timeline_id ? data.timeline_id : null,
+        timelineUuid: data.timeline_uuid ? data.timeline_uuid : null,
         programId: data.program_id ? data.program_id : null
       });
       const programs = data.Timelines.map(function(timeline) {
