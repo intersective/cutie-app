@@ -47,13 +47,13 @@ export class ChatListComponent {
 
   private _loadChatData(): void {
     this.chatService.getChatList().subscribe(chats => {
-      this._graoupChatchannels(chats);
+      this._groupChatchannels(chats);
       this.loadingChatList = false;
       this.chatListReady.emit(this.groupChatList.concat(this.directChatList));
     });
   }
 
-  private _graoupChatchannels(chatList) {
+  private _groupChatchannels(chatList) {
     chatList.forEach(chat => {
       if (chat.isDirectMessage) {
         this.directChatList.push(chat);
