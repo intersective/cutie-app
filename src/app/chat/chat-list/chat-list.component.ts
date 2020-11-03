@@ -116,6 +116,7 @@ export class ChatListComponent {
 
   private _createChannelHandler() {
     const timeLineId = this.storage.getUser().timelineId;
+    const timelineUuid = this.storage.getUser().timelineUuid;
     const currentProgram = this.storage.get('programs').find(program => {
       return program.timeline.id === timeLineId;
     });
@@ -125,7 +126,7 @@ export class ChatListComponent {
       roles: ['participant', 'mentor'],
       members: [{
         type: 'Timeline',
-        uuid: timeLineId
+        uuid: timelineUuid
       }]
     }).subscribe(chat => {
       if (!this._checkChannelAlreadyExist(chat)) {
