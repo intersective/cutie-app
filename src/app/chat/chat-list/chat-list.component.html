@@ -25,7 +25,7 @@
       [active]="currentChat && currentChat.uuid == chat.uuid"
       [ngClass]="{'unread': chat.unreadMessageCount > 0}"
       [lines]="'none'">
-      <ion-avatar slot="start" text-center>
+      <ion-avatar slot="start" class="ion-text-center">
         <img [src]="chat.avatar" alt="{{chat.name}}">
       </ion-avatar>
       <ion-label>

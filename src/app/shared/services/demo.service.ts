@@ -72,6 +72,7 @@ export class DemoService {
       uuid: '1',
       name: 'Team 1',
       avatar: 'https://flaticons.net/icon.php?slug_category=people&slug_icon=user-group',
+      targetUser: null,
       pusherChannel: 'private-develop-team-1447-322-20',
       roles: ['participant', 'mentor'],
       isAnnouncement: false,
@@ -86,6 +87,7 @@ export class DemoService {
       uuid: '2',
       name: 'Timeline 01',
       avatar: 'https://flaticons.net/icon.php?slug_category=people&slug_icon=user-group',
+      targetUser: null,
       pusherChannel: 'private-develop-team-1447-322-20',
       roles: ['participant', 'mentor'],
       isAnnouncement: false,
@@ -94,6 +96,25 @@ export class DemoService {
       unreadMessageCount: 0,
       lastMessageCreated: null,
       lastMessage: null,
+      canEdit: false
+    },
+    {
+      uuid: '3',
+      name: 'Student 1',
+      avatar: 'https://flaticons.net/icon.php?slug_category=people&slug_icon=user-group',
+      targetUser: {
+        email: 'student1@practera.com',
+        role: 'participant',
+        teamName: 'Team 1'
+      },
+      pusherChannel: 'private-develop-team-1447-322-20',
+      roles: ['participant'],
+      isAnnouncement: false,
+      isDirectMessage: true,
+      readonly: false,
+      unreadMessageCount: 0,
+      lastMessageCreated: '2020-07-14 06:20:37',
+      lastMessage: 'Hello',
       canEdit: false
     }
   ];

@@ -13,6 +13,7 @@ export interface ChatChannel {
   uuid: string;
   name: string;
   avatar: string;
+  targetUser?: TargetUser;
   isAnnouncement: boolean;
   isDirectMessage: boolean;
   pusherChannel: string;
@@ -22,6 +23,12 @@ export interface ChatChannel {
   lastMessage: string;
   lastMessageCreated: string;
   canEdit: boolean;
+}
+
+export interface TargetUser {
+  email: string;
+  role: string;
+  teamName: string;
 }
 
 export interface ChannelMembers {
@@ -113,6 +120,11 @@ export class ChatService {
           uuid
           name
           avatar
+          targetUser {
+            email
+            role
+            teamName
+          }
           isAnnouncement
           isDirectMessage
           readonly
