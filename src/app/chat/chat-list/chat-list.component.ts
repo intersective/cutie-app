@@ -123,7 +123,7 @@ export class ChatListComponent {
     this.chatService.createChannel({
       name: currentProgram.timeline.title,
       isAnnouncement: false,
-      roles: ['participant', 'mentor'],
+      roles: ['participant', 'mentor', 'admin', 'coordinator'],
       members: [{
         type: 'Timeline',
         uuid: timelineUuid
