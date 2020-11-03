@@ -48,9 +48,8 @@ export class ChatListComponent {
   private _loadChatData(): void {
     this.chatService.getChatList().subscribe(chats => {
       this._graoupChatchannels(chats);
-      this.chatList = chats;
       this.loadingChatList = false;
-      this.chatListReady.emit(this.chatList);
+      this.chatListReady.emit(this.groupChatList.concat(this.directChatList));
     });
   }
 
@@ -80,15 +79,24 @@ export class ChatListComponent {
   }
 
   private _updateUnread(event) {
-    const chatIndex = this.chatList.findIndex(data => data.uuid === event.channelUuid);
-    if (chatIndex > -1) {
+    const groupChatIndex = this.groupChatList.findIndex(data => data.uuid === event.channelUuid);
+    const directChatIndex = this.directChatList.findIndex(data => data.uuid === event.channelUuid);
+    if (groupChatIndex > -1) {
       // set time out because when this calling from pusher events it need a time out.
-      setTimeout(() => {
-        this.chatList[chatIndex].unreadMessageCount -= event.readcount;
-        if (this.chatList[chatIndex].unreadMessageCount < 0) {
-          this.chatList[chatIndex].unreadMessageCount = 0;
-        }
-      });
+    setTimeout(() => {
+      this.groupChatList[groupChatIndex].unreadMessageCount -= event.readcount;
+      if (this.groupChatList[groupChatIndex].unreadMessageCount < 0) {
+        this.groupChatList[groupChatIndex].unreadMessageCount = 0;
+      }
+    });
+    } else if (directChatIndex > -1) {
+      // set time out because when this calling from pusher events it need a time out.
+    setTimeout(() => {
+      this.directChatList[directChatIndex].unreadMessageCount -= event.readcount;
+      if (this.directChatList[directChatIndex].unreadMessageCount < 0) {
+        this.directChatList[directChatIndex].unreadMessageCount = 0;
+      }
+    });
     }
   }
 
@@ -106,7 +114,7 @@ export class ChatListComponent {
     return this.utils.timeFormatter(date);
   }
 
-  createChatChannel() {
+  createCohortChatChannel() {
     this.notification.alert({
       cssClass: 'chat-conformation',
       backdropDismiss: false,
@@ -116,7 +124,7 @@ export class ChatListComponent {
         {
           text: 'Create',
           handler: () => {
-            this._createChannelHandler();
+            this._createCohortChannelHandler();
           }
         },
         {
@@ -127,7 +135,7 @@ export class ChatListComponent {
     });
   }
 
-  private _createChannelHandler() {
+  private _createCohortChannelHandler() {
     const timeLineId = this.storage.getUser().timelineId;
     const currentProgram = this.storage.get('programs').find(program => {
       return program.timeline.id === timeLineId;
@@ -142,14 +150,22 @@ export class ChatListComponent {
       }]
     }).subscribe(chat => {
       if (!this._checkChannelAlreadyExist(chat)) {
-        this.chatList.push(chat);
-        this.chatListReady.emit(this.chatList);
+        if (chat.isDirectMessage) {
+          this.directChatList.push(chat);
+        } else {
+          this.groupChatList.push(chat);
+        }
+        this.chatListReady.emit(this.groupChatList.concat(this.directChatList));
       }
     }, err => {});
   }
 
   private _checkChannelAlreadyExist(data) {
-    const existChannel = this.chatList.find((channel) => {
+    let existChannel = null;
+    existChannel = this.directChatList.find((channel) => {
+      return data.uuid === channel.uuid;
+    });
+    existChannel = this.groupChatList.find((channel) => {
       return data.uuid === channel.uuid;
     });
     if (!existChannel) {

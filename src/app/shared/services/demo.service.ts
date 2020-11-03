@@ -95,6 +95,20 @@ export class DemoService {
       lastMessageCreated: null,
       lastMessage: null,
       canEdit: false
+    },
+    {
+      uuid: '3',
+      name: 'Student 01',
+      avatar: 'https://flaticons.net/icon.php?slug_category=people&slug_icon=user-group',
+      pusherChannel: 'private-develop-team-1447-322-20',
+      roles: ['participant'],
+      isAnnouncement: false,
+      isDirectMessage: true,
+      readonly: false,
+      unreadMessageCount: 0,
+      lastMessageCreated: null,
+      lastMessage: null,
+      canEdit: false
     }
   ];
   chatMessages = [
