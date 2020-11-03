@@ -15,7 +15,8 @@ export class ChatListComponent {
   @Output() navigate = new EventEmitter();
   @Output() chatListReady = new EventEmitter();
   @Input() currentChat: ChatChannel;
-  chatList: ChatChannel[];
+  groupChatList: ChatChannel[];
+  directChatList: ChatChannel[];
   loadingChatList = true;
 
   constructor(
@@ -40,14 +41,26 @@ export class ChatListComponent {
 
   private _initialise() {
     this.loadingChatList = true;
-    this.chatList = [];
+    this.groupChatList = [];
+    this.directChatList = [];
   }
 
   private _loadChatData(): void {
     this.chatService.getChatList().subscribe(chats => {
+      this._graoupChatchannels(chats);
       this.chatList = chats;
       this.loadingChatList = false;
       this.chatListReady.emit(this.chatList);
+    });
+  }
+
+  private _graoupChatchannels(chatList) {
+    chatList.forEach(chat => {
+      if (chat.isDirectMessage) {
+        this.directChatList.push(chat);
+      } else {
+        this.groupChatList.push(chat);
+      }
     });
   }
 
