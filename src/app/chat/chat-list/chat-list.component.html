@@ -1,6 +1,6 @@
-<ion-header mode="ios">
-  <ion-toolbar class="ion-toolbar-absolute">
-    <ion-title>Chat</ion-title>
+<ion-header>
+  <ion-toolbar class="search-toolbar">
+    <ion-searchbar class="search-bar" [(ngModel)]="filter" (ionChange)="filterChannels()"></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
@@ -27,7 +27,7 @@
         <p class="chat-name subtitle-2 gray-1">Group Chats</p>
       </ion-label>
     </ion-item>
-    <clickable-item *ngFor="let chat of groupChatList; let i = index" (click)="goToChatRoom(chat)"
+    <clickable-item *ngFor="let chat of groupChatChannels; let i = index" (click)="goToChatRoom(chat)"
       [active]="currentChat && currentChat.uuid == chat.uuid" [ngClass]="{'unread': chat.unreadMessageCount > 0}"
       [lines]="'none'">
       <ion-avatar slot="start" text-center>
@@ -65,7 +65,7 @@
         <ion-icon color="primary" slot="icon-only" name="add-outline"></ion-icon>
       </ion-button>
     </ion-item>
-    <clickable-item *ngFor="let chat of directChatList; let i = index" (click)="goToChatRoom(chat)"
+    <clickable-item *ngFor="let chat of directChatChannels; let i = index" (click)="goToChatRoom(chat)"
       [active]="currentChat && currentChat.uuid == chat.uuid" [ngClass]="{'unread': chat.unreadMessageCount > 0}"
       [lines]="'none'">
       <ion-avatar slot="start" class="ion-text-center">

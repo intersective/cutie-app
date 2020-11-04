@@ -70,8 +70,8 @@ export class DemoService {
   chatChannels = [
     {
       uuid: '1',
-      name: 'Team 1',
-      avatar: 'https://flaticons.net/icon.php?slug_category=people&slug_icon=user-group',
+      name: 'Avengers',
+      avatar: 'https://c3.klipartz.com/pngpicture/208/878/sticker-png-avengers-endgame-2019-avengers-logo-avengers-logo-thumbnail.png',
       targetUser: null,
       pusherChannel: 'private-develop-team-1447-322-20',
       roles: ['participant', 'mentor'],
@@ -85,7 +85,7 @@ export class DemoService {
     },
     {
       uuid: '2',
-      name: 'Timeline 01',
+      name: 'Timeline 1',
       avatar: 'https://flaticons.net/icon.php?slug_category=people&slug_icon=user-group',
       targetUser: null,
       pusherChannel: 'private-develop-team-1447-322-20',
@@ -100,12 +100,12 @@ export class DemoService {
     },
     {
       uuid: '3',
-      name: 'Student 1',
-      avatar: 'https://flaticons.net/icon.php?slug_category=people&slug_icon=user-group',
+      name: 'Steven G. Rogers',
+      avatar: 'https://c0.klipartz.com/pngpicture/130/607/gratis-png-capitan-america-retrato-chris-evans-capitan-america-hombre-de-hierro-los-vengadores-maravilla-del-universo-cinematografico-capitan-america-thumbnail.png',
       targetUser: {
-        email: 'student1@practera.com',
+        email: 'steven@practera.com',
         role: 'participant',
-        teamName: 'Team 1'
+        teamName: 'Avengers'
       },
       pusherChannel: 'private-develop-team-1447-322-20',
       roles: ['participant'],
@@ -114,7 +114,26 @@ export class DemoService {
       readonly: false,
       unreadMessageCount: 0,
       lastMessageCreated: '2020-07-14 06:20:37',
-      lastMessage: 'Hello',
+      lastMessage: 'Avengers assemble',
+      canEdit: false
+    },
+    {
+      uuid: '4',
+      name: 'Tony Stark',
+      avatar: 'https://c0.klipartz.com/pngpicture/471/25/gratis-png-hombre-de-acero-thumbnail.png',
+      targetUser: {
+        email: 'tony@practera.com',
+        role: 'participant',
+        teamName: 'Avengers'
+      },
+      pusherChannel: 'private-develop-team-1447-322-20',
+      roles: ['participant'],
+      isAnnouncement: false,
+      isDirectMessage: true,
+      readonly: false,
+      unreadMessageCount: 0,
+      lastMessageCreated: '2020-07-15 06:20:37',
+      lastMessage: `I'm Ironman`,
       canEdit: false
     }
   ];
