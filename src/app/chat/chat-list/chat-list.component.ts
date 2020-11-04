@@ -51,7 +51,7 @@ export class ChatListComponent {
     this.chatService.getChatList().subscribe(chats => {
       // store the chat channels for filter later
       this.chatChannels = JSON.parse(JSON.stringify(chats));
-      this._groupChatchannels();
+      this._groupingChatChannels();
       this.loadingChatList = false;
       this.chatListReady.emit(this.groupChatChannels.concat(this.directChatChannels));
     });
@@ -61,7 +61,7 @@ export class ChatListComponent {
    * Split the chat channels into two part: group chat & direct message
    * @param {ChatChannel[]} chatList The list of chat channels
    */
-  private _groupChatchannels(chatList?: ChatChannel[]) {
+  private _groupingChatChannels(chatList?: ChatChannel[]) {
     if (!chatList) {
       chatList = this.chatChannels;
     }
@@ -84,7 +84,7 @@ export class ChatListComponent {
       channel.name.toLowerCase().includes(this.filter.toLowerCase()) ||
       channel.targetUser && channel.targetUser.email.toLowerCase().includes(this.filter.toLowerCase())
     );
-    this._groupChatchannels(filteredChannels);
+    this._groupingChatChannels(filteredChannels);
   }
 
   /**
@@ -113,7 +113,7 @@ export class ChatListComponent {
         }
       });
     }
-    this._groupChatchannels();
+    this._groupingChatChannels();
   }
 
   goToChatRoom(chat: ChatChannel) {
@@ -167,7 +167,7 @@ export class ChatListComponent {
     }).subscribe(chat => {
       if (!this._channelExist(chat)) {
         this.chatChannels.push(chat);
-        this._groupChatchannels();
+        this._groupingChatChannels();
       }
     }, err => {});
   }

@@ -17,6 +17,22 @@ export class DemoService {
     unassignedReview: 0,
     unpublishedReview: 0
   };
+  characters = {
+    avengers: {
+      name: 'Avengers',
+      avatar: 'https://c3.klipartz.com/pngpicture/208/878/sticker-png-avengers-endgame-2019-avengers-logo-avengers-logo-thumbnail.png'
+    },
+    steven: {
+      name: 'Steven G. Rogers',
+      avatar: 'https://c0.klipartz.com/pngpicture/130/607/gratis-png-capitan-america-retrato-chris-evans-capitan-america-hombre-de-hierro-los-vengadores-maravilla-del-universo-cinematografico-capitan-america-thumbnail.png',
+      email: 'steven@practera.com'
+    },
+    tony: {
+      name: 'Tony Stark',
+      avatar: 'https://c0.klipartz.com/pngpicture/471/25/gratis-png-hombre-de-acero-thumbnail.png',
+      email: 'tony@practera.com'
+    }
+  }
   channelMembers = [
     {
       uuid: '1',
@@ -70,8 +86,8 @@ export class DemoService {
   chatChannels = [
     {
       uuid: '1',
-      name: 'Avengers',
-      avatar: 'https://c3.klipartz.com/pngpicture/208/878/sticker-png-avengers-endgame-2019-avengers-logo-avengers-logo-thumbnail.png',
+      name: this.characters.avengers.name,
+      avatar: this.characters.avengers.avatar,
       targetUser: null,
       pusherChannel: 'private-develop-team-1447-322-20',
       roles: ['participant', 'mentor'],
@@ -100,12 +116,12 @@ export class DemoService {
     },
     {
       uuid: '3',
-      name: 'Steven G. Rogers',
-      avatar: 'https://c0.klipartz.com/pngpicture/130/607/gratis-png-capitan-america-retrato-chris-evans-capitan-america-hombre-de-hierro-los-vengadores-maravilla-del-universo-cinematografico-capitan-america-thumbnail.png',
+      name: this.characters.steven.name,
+      avatar: this.characters.steven.avatar,
       targetUser: {
-        email: 'steven@practera.com',
+        email: this.characters.steven.email,
         role: 'participant',
-        teamName: 'Avengers'
+        teamName: this.characters.avengers.name
       },
       pusherChannel: 'private-develop-team-1447-322-20',
       roles: ['participant'],
@@ -119,12 +135,12 @@ export class DemoService {
     },
     {
       uuid: '4',
-      name: 'Tony Stark',
-      avatar: 'https://c0.klipartz.com/pngpicture/471/25/gratis-png-hombre-de-acero-thumbnail.png',
+      name: this.characters.tony.name,
+      avatar: this.characters.tony.avatar,
       targetUser: {
-        email: 'tony@practera.com',
+        email: this.characters.tony.email,
         role: 'participant',
-        teamName: 'Avengers'
+        teamName: this.characters.avengers.name
       },
       pusherChannel: 'private-develop-team-1447-322-20',
       roles: ['participant'],
@@ -140,7 +156,7 @@ export class DemoService {
   chatMessages = [
     {
       uuid: '1',
-      message: 'test message 01',
+      message: 'WOW, so cool!',
       file: null,
       created: '2020-02-27 01:48:28',
       isSender: true,
@@ -183,7 +199,7 @@ export class DemoService {
     },
     {
       uuid: '3',
-      message: 'test message 02',
+      message: 'Hello guys, look at this',
       file: null,
       created: '2019-11-27 02:21:21',
       isSender: false,
