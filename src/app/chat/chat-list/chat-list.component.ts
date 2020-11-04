@@ -59,7 +59,7 @@ export class ChatListComponent {
 
   /**
    * Split the chat channels into two part: group chat & direct message
-   * @param {ChatChannel[]} chatList The list of chat channels
+   * @param chatList The list of chat channels
    */
   private _groupingChatChannels(chatList?: ChatChannel[]) {
     if (!chatList) {
