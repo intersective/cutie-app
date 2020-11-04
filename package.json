@@ -6,6 +6,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --port 4202",
+    "dev": "npm run start",
     "build": "ng build --base-href './' && npx cap copy",
     "test": "ng test --watch=false",
     "lint": "ng lint",

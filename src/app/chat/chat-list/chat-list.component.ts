@@ -15,8 +15,11 @@ export class ChatListComponent {
   @Output() navigate = new EventEmitter();
   @Output() chatListReady = new EventEmitter();
   @Input() currentChat: ChatChannel;
-  chatList: ChatChannel[];
+  chatChannels: ChatChannel[];
+  groupChatChannels: ChatChannel[];
+  directChatChannels: ChatChannel[];
   loadingChatList = true;
+  filter: string;
 
   constructor(
     private chatService: ChatService,
@@ -40,18 +43,51 @@ export class ChatListComponent {
 
   private _initialise() {
     this.loadingChatList = true;
-    this.chatList = [];
+    this.groupChatChannels = [];
+    this.directChatChannels = [];
   }
 
   private _loadChatData(): void {
     this.chatService.getChatList().subscribe(chats => {
-      this.chatList = chats;
+      // store the chat channels for filter later
+      this.chatChannels = JSON.parse(JSON.stringify(chats));
+      this._groupingChatChannels();
       this.loadingChatList = false;
-      this.chatListReady.emit(this.chatList);
+      this.chatListReady.emit(this.groupChatChannels.concat(this.directChatChannels));
     });
   }
 
-    /**
+  /**
+   * Split the chat channels into two part: group chat & direct message
+   * @param chatList The list of chat channels
+   */
+  private _groupingChatChannels(chatList?: ChatChannel[]) {
+    if (!chatList) {
+      chatList = this.chatChannels;
+    }
+    this.groupChatChannels = [];
+    this.directChatChannels = [];
+    chatList.forEach(chat => {
+      if (chat.isDirectMessage) {
+        this.directChatChannels.push(chat);
+      } else {
+        this.groupChatChannels.push(chat);
+      }
+    });
+  }
+
+  /**
+   * Filter the channels by the search text
+   */
+  public filterChannels() {
+    const filteredChannels = this.chatChannels.filter(channel =>
+      channel.name.toLowerCase().includes(this.filter.toLowerCase()) ||
+      channel.targetUser && channel.targetUser.email.toLowerCase().includes(this.filter.toLowerCase())
+    );
+    this._groupingChatChannels(filteredChannels);
+  }
+
+  /**
    * This method pusher service to subscribe to chat pusher channels
    * - first it call chat service to get pusher channels.
    * - then it call pusher service 'subscribeChannel' method to subscribe.
@@ -67,16 +103,17 @@ export class ChatListComponent {
   }
 
   private _updateUnread(event) {
-    const chatIndex = this.chatList.findIndex(data => data.uuid === event.channelUuid);
+    const chatIndex = this.chatChannels.findIndex(data => data.uuid === event.channelUuid);
     if (chatIndex > -1) {
       // set time out because when this calling from pusher events it need a time out.
       setTimeout(() => {
-        this.chatList[chatIndex].unreadMessageCount -= event.readcount;
-        if (this.chatList[chatIndex].unreadMessageCount < 0) {
-          this.chatList[chatIndex].unreadMessageCount = 0;
+        this.chatChannels[chatIndex].unreadMessageCount -= event.readcount;
+        if (this.chatChannels[chatIndex].unreadMessageCount < 0) {
+          this.chatChannels[chatIndex].unreadMessageCount = 0;
         }
       });
     }
+    this._groupingChatChannels();
   }
 
   goToChatRoom(chat: ChatChannel) {
@@ -93,7 +130,7 @@ export class ChatListComponent {
     return this.utils.timeFormatter(date);
   }
 
-  createChatChannel() {
+  createCohortChatChannel() {
     this.notification.alert({
       cssClass: 'chat-conformation',
       backdropDismiss: false,
@@ -103,7 +140,7 @@ export class ChatListComponent {
         {
           text: 'Create',
           handler: () => {
-            this._createChannelHandler();
+            this._createCohortChannelHandler();
           }
         },
         {
@@ -114,7 +151,7 @@ export class ChatListComponent {
     });
   }
 
-  private _createChannelHandler() {
+  private _createCohortChannelHandler() {
     const timeLineId = this.storage.getUser().timelineId;
     const timelineUuid = this.storage.getUser().timelineUuid;
     const currentProgram = this.storage.get('programs').find(program => {
@@ -129,33 +166,32 @@ export class ChatListComponent {
         uuid: timelineUuid
       }]
     }).subscribe(chat => {
-      if (!this._checkChannelAlreadyExist(chat)) {
-        this.chatList.push(chat);
-        this.chatListReady.emit(this.chatList);
+      if (!this._channelExist(chat)) {
+        this.chatChannels.push(chat);
+        this._groupingChatChannels();
       }
     }, err => {});
   }
 
-  private _checkChannelAlreadyExist(data) {
-    const existChannel = this.chatList.find((channel) => {
-      return data.uuid === channel.uuid;
-    });
-    if (!existChannel) {
-      return false;
-    }
-    this.notification.alert({
-      backdropDismiss: false,
-      message: 'Oops! You already created successfully your cohort wide chat.',
-      buttons: [
-        {
-          text: 'Ok',
-          role: 'cancel',
-          handler: () => {
-            this.goToChatRoom(existChannel);
+  private _channelExist(data) {
+    const existingChannel = this.chatChannels.find((channel) => data.uuid === channel.uuid);
+    if (existingChannel) {
+      this.notification.alert({
+        backdropDismiss: false,
+        message: 'Oops! You already created successfully your cohort wide chat.',
+        buttons: [
+          {
+            text: 'Ok',
+            role: 'cancel',
+            handler: () => {
+              this.goToChatRoom(existingChannel);
+            }
           }
-        }
-      ]
-    });
+        ]
+      });
+      return true;
+    }
+    return false;
   }
 
 }
