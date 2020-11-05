@@ -17,11 +17,13 @@ export class ChatListComponent {
   @Output() navigate = new EventEmitter();
   @Output() chatListReady = new EventEmitter();
   @Input() currentChat: ChatChannel;
-  groupChatList: ChatChannel[];
-  directChatList: ChatChannel[];
+  chatChannels: ChatChannel[];
+  groupChatChannels: ChatChannel[];
+  directChatChannels: ChatChannel[];
   loadingChatList = true;
   isGroupChatExpand = true;
   isDirectChatExpand = true;
+  filter: string;
 
   constructor(
     private chatService: ChatService,
@@ -46,37 +48,59 @@ export class ChatListComponent {
 
   private _initialise() {
     this.loadingChatList = true;
-    this.groupChatList = [];
-    this.directChatList = [];
     this.isGroupChatExpand = true;
     this.isDirectChatExpand = true;
+    this.groupChatChannels = [];
+    this.directChatChannels = [];
   }
 
   private _loadChatData(): void {
     this.chatService.getChatList().subscribe(chats => {
-      this._groupChatchannels(chats);
+      // store the chat channels for filter later
+      this.chatChannels = JSON.parse(JSON.stringify(chats));
+      this._groupingChatChannels();
       this.loadingChatList = false;
-      this.chatListReady.emit(this.groupChatList.concat(this.directChatList));
+      this.chatListReady.emit(this.groupChatChannels.concat(this.directChatChannels));
     });
   }
 
-  private _groupChatchannels(chatList) {
+  /**
+   * Split the chat channels into two part: group chat & direct message
+   * @param chatList The list of chat channels
+   */
+  private _groupingChatChannels(chatList?: ChatChannel[]) {
+    if (!chatList) {
+      chatList = this.chatChannels;
+    }
+    this.groupChatChannels = [];
+    this.directChatChannels = [];
     chatList.forEach(chat => {
       if (chat.isDirectMessage) {
-        this.directChatList.push(chat);
+        this.directChatChannels.push(chat);
       } else {
-        this.groupChatList.push(chat);
+        this.groupChatChannels.push(chat);
       }
     });
   }
 
   /**
- * This method pusher service to subscribe to chat pusher channels
- * - first it call chat service to get pusher channels.
- * - then it call pusher service 'subscribeChannel' method to subscribe.
- * - in pusher service it chaeck if we alrady subscribe or not.
- *   if not it will subscribe to the pusher channel.
- */
+   * Filter the channels by the search text
+   */
+  public filterChannels() {
+    const filteredChannels = this.chatChannels.filter(channel =>
+      channel.name.toLowerCase().includes(this.filter.toLowerCase()) ||
+      channel.targetUser && channel.targetUser.email.toLowerCase().includes(this.filter.toLowerCase())
+    );
+    this._groupingChatChannels(filteredChannels);
+  }
+
+  /**
+   * This method pusher service to subscribe to chat pusher channels
+   * - first it call chat service to get pusher channels.
+   * - then it call pusher service 'subscribeChannel' method to subscribe.
+   * - in pusher service it chaeck if we alrady subscribe or not.
+   *   if not it will subscribe to the pusher channel.
+   */
   private _checkAndSubscribePusherChannels() {
     this.chatService.getPusherChannels().subscribe(pusherChannels => {
       pusherChannels.forEach(channel => {
@@ -86,25 +110,17 @@ export class ChatListComponent {
   }
 
   private _updateUnread(event) {
-    const groupChatIndex = this.groupChatList.findIndex(data => data.uuid === event.channelUuid);
-    const directChatIndex = this.directChatList.findIndex(data => data.uuid === event.channelUuid);
-    if (groupChatIndex > -1) {
+    const chatIndex = this.chatChannels.findIndex(data => data.uuid === event.channelUuid);
+    if (chatIndex > -1) {
       // set time out because when this calling from pusher events it need a time out.
       setTimeout(() => {
-        this.groupChatList[groupChatIndex].unreadMessageCount -= event.readcount;
-        if (this.groupChatList[groupChatIndex].unreadMessageCount < 0) {
-          this.groupChatList[groupChatIndex].unreadMessageCount = 0;
-        }
-      });
-    } else if (directChatIndex > -1) {
-      // set time out because when this calling from pusher events it need a time out.
-      setTimeout(() => {
-        this.directChatList[directChatIndex].unreadMessageCount -= event.readcount;
-        if (this.directChatList[directChatIndex].unreadMessageCount < 0) {
-          this.directChatList[directChatIndex].unreadMessageCount = 0;
+        this.chatChannels[chatIndex].unreadMessageCount -= event.readcount;
+        if (this.chatChannels[chatIndex].unreadMessageCount < 0) {
+          this.chatChannels[chatIndex].unreadMessageCount = 0;
         }
       });
     }
+    this._groupingChatChannels();
   }
 
   goToChatRoom(chat: ChatChannel) {
@@ -144,53 +160,45 @@ export class ChatListComponent {
 
   private _createCohortChannelHandler() {
     const timeLineId = this.storage.getUser().timelineId;
+    const timelineUuid = this.storage.getUser().timelineUuid;
     const currentProgram = this.storage.get('programs').find(program => {
       return program.timeline.id === timeLineId;
     });
     this.chatService.createChannel({
       name: currentProgram.timeline.title,
       isAnnouncement: false,
-      roles: ['participant', 'mentor'],
+      roles: ['participant', 'mentor', 'admin', 'coordinator'],
       members: [{
         type: 'Timeline',
-        uuid: timeLineId
+        uuid: timelineUuid
       }]
     }).subscribe(chat => {
-      if (!this._checkChannelAlreadyExist(chat)) {
-        if (chat.isDirectMessage) {
-          this.directChatList.push(chat);
-        } else {
-          this.groupChatList.push(chat);
-        }
-        this.chatListReady.emit(this.groupChatList.concat(this.directChatList));
+      if (!this._channelExist(chat)) {
+        this.chatChannels.push(chat);
+        this._groupingChatChannels();
       }
     }, err => { });
   }
 
-  private _checkChannelAlreadyExist(data) {
-    let existChannel = null;
-    existChannel = this.directChatList.find((channel) => {
-      return data.uuid === channel.uuid;
-    });
-    existChannel = this.groupChatList.find((channel) => {
-      return data.uuid === channel.uuid;
-    });
-    if (!existChannel) {
-      return false;
-    }
-    this.notification.alert({
-      backdropDismiss: false,
-      message: 'Oops! You already created successfully your cohort wide chat.',
-      buttons: [
-        {
-          text: 'Ok',
-          role: 'cancel',
-          handler: () => {
-            this.goToChatRoom(existChannel);
+  private _channelExist(data) {
+    const existingChannel = this.chatChannels.find((channel) => data.uuid === channel.uuid);
+    if (existingChannel) {
+      this.notification.alert({
+        backdropDismiss: false,
+        message: 'Oops! You already created successfully your cohort wide chat.',
+        buttons: [
+          {
+            text: 'Ok',
+            role: 'cancel',
+            handler: () => {
+              this.goToChatRoom(existingChannel);
+            }
           }
-        }
-      ]
-    });
+        ]
+      });
+      return true;
+    }
+    return false;
   }
 
   expandAndShrinkMessageSections(type) {

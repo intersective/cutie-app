@@ -195,7 +195,8 @@
                 "input": "src/assets",
                 "output": "/assets"
               }
-            ]
+            ],
+            "codeCoverage": true
           },
           "configurations": {
             "ci": {

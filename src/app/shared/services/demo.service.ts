@@ -2,10 +2,35 @@ import { Injectable } from '@angular/core';
 import { UtilsService } from '@services/utils.service';
 import { StorageService } from '@services/storage.service';
 
+const CHARACTERS = {
+  avengers: {
+    name: 'Avengers',
+    avatar: 'https://c3.klipartz.com/pngpicture/208/878/sticker-png-avengers-endgame-2019-avengers-logo-avengers-logo-thumbnail.png'
+  },
+  shield: {
+    name: 'S.H.I.E.L.D.',
+    avatar: 'https://c0.klipartz.com/pngpicture/420/169/gratis-png-nick-fury-s-h-i-e-l-d-marvel-universo-cinematico-marvel-comics-decal-s-h-i-e-l-d-thumbnail.png'
+  },
+  steven: {
+    name: 'Steven G. Rogers',
+    avatar: 'https://c0.klipartz.com/pngpicture/716/616/gratis-png-capitan-america-escudo-de-superheroes-escudo-de-dibujos-animados-thumbnail.png',
+    email: 'steven@practera.com'
+  },
+  tony: {
+    name: 'Tony Stark',
+    avatar: 'https://c0.klipartz.com/pngpicture/471/25/gratis-png-hombre-de-acero-thumbnail.png',
+    email: 'tony@practera.com'
+  },
+  thanos: {
+    name: 'Thanos',
+    avatar: 'https://c3.klipartz.com/pngpicture/468/242/sticker-png-thanos-background-thumbnail.png',
+    email: 'thanos@practera.com'
+  }
+};
+
 @Injectable({
   providedIn: 'root'
 })
-
 export class DemoService {
   students = ['Caramel Dundee', 'Gosinder Shah', 'Mein Black', 'Gos Baxter', 'Monday Blighton', 'Joreis Park', 'Dimitry Ricks', 'Desean Ning'];
   allStatus = ['not started', 'in progress', 'done', 'pending review', 'pending approval', 'published'];
@@ -20,58 +45,28 @@ export class DemoService {
   channelMembers = [
     {
       uuid: '1',
-      name: 'student+01',
+      name: CHARACTERS.steven.name,
       role: 'participant',
-      avatar: 'https://www.gravatar.com/avatar/21b7427270a606e8a3c4413a13bb47c6?d=https://sandbox.practera.com/img/user-512.png&s=50'
+      avatar: CHARACTERS.steven.avatar
     },
     {
       uuid: '2',
-      name: 'student1',
+      name: CHARACTERS.tony.name,
       role: 'participant',
-      avatar: 'https://www.gravatar.com/avatar/21b7427270a606e8a3c4413a13bb47c6?d=https://sandbox.practera.com/img/user-512.png&s=50'
+      avatar: CHARACTERS.tony.avatar
     },
     {
       uuid: '3',
-      name: 'student2',
-      role: 'participant',
-      avatar: 'https://www.gravatar.com/avatar/21b7427270a606e8a3c4413a13bb47c6?d=https://sandbox.practera.com/img/user-512.png&s=50'
-    },
-    {
-      uuid: '4',
-      name: 'mentor1',
+      name: CHARACTERS.thanos.name,
       role: 'mentor',
-      avatar: 'https://www.gravatar.com/avatar/21b7427270a606e8a3c4413a13bb47c6?d=https://sandbox.practera.com/img/user-512.png&s=50'
-    },
-    {
-      uuid: '5',
-      name: 'student1',
-      role: 'participant',
-      avatar: 'https://www.gravatar.com/avatar/21b7427270a606e8a3c4413a13bb47c6?d=https://sandbox.practera.com/img/user-512.png&s=50'
-    },
-    {
-      uuid: '6',
-      name: 'student2',
-      role: 'participant',
-      avatar: 'https://www.gravatar.com/avatar/21b7427270a606e8a3c4413a13bb47c6?d=https://sandbox.practera.com/img/user-512.png&s=50'
-    },
-    {
-      uuid: '7',
-      name: 'mentor1',
-      role: 'mentor',
-      avatar: 'https://www.gravatar.com/avatar/21b7427270a606e8a3c4413a13bb47c6?d=https://sandbox.practera.com/img/user-512.png&s=50'
-    },
-    {
-      uuid: '8',
-      name: 'student1',
-      role: 'participant',
-      avatar: 'https://www.gravatar.com/avatar/21b7427270a606e8a3c4413a13bb47c6?d=https://sandbox.practera.com/img/user-512.png&s=50'
+      avatar: CHARACTERS.thanos.avatar
     }
   ];
   chatChannels = [
     {
       uuid: '1',
-      name: 'Team 1',
-      avatar: 'https://flaticons.net/icon.php?slug_category=people&slug_icon=user-group',
+      name: CHARACTERS.avengers.name,
+      avatar: CHARACTERS.avengers.avatar,
       targetUser: null,
       pusherChannel: 'private-develop-team-1447-322-20',
       roles: ['participant', 'mentor'],
@@ -80,13 +75,13 @@ export class DemoService {
       readonly: false,
       unreadMessageCount: 1,
       lastMessageCreated: '2020-07-14 06:20:37',
-      lastMessage: '123',
+      lastMessage: 'Thanos is coming',
       canEdit: false
     },
     {
       uuid: '2',
-      name: 'Timeline 01',
-      avatar: 'https://flaticons.net/icon.php?slug_category=people&slug_icon=user-group',
+      name: CHARACTERS.shield.name,
+      avatar: CHARACTERS.shield.avatar,
       targetUser: null,
       pusherChannel: 'private-develop-team-1447-322-20',
       roles: ['participant', 'mentor'],
@@ -100,12 +95,12 @@ export class DemoService {
     },
     {
       uuid: '3',
-      name: 'Student 1',
-      avatar: 'https://flaticons.net/icon.php?slug_category=people&slug_icon=user-group',
+      name: CHARACTERS.steven.name,
+      avatar: CHARACTERS.steven.avatar,
       targetUser: {
-        email: 'student1@practera.com',
+        email: CHARACTERS.steven.email,
         role: 'participant',
-        teamName: 'Team 1'
+        teamName: CHARACTERS.avengers.name
       },
       pusherChannel: 'private-develop-team-1447-322-20',
       roles: ['participant'],
@@ -114,16 +109,48 @@ export class DemoService {
       readonly: false,
       unreadMessageCount: 0,
       lastMessageCreated: '2020-07-14 06:20:37',
-      lastMessage: 'Hello',
+      lastMessage: 'Avengers assemble',
+      canEdit: false
+    },
+    {
+      uuid: '4',
+      name: CHARACTERS.tony.name,
+      avatar: CHARACTERS.tony.avatar,
+      targetUser: {
+        email: CHARACTERS.tony.email,
+        role: 'participant',
+        teamName: CHARACTERS.avengers.name
+      },
+      pusherChannel: 'private-develop-team-1447-322-20',
+      roles: ['participant'],
+      isAnnouncement: false,
+      isDirectMessage: true,
+      readonly: false,
+      unreadMessageCount: 2,
+      lastMessageCreated: '2020-07-15 06:20:37',
+      lastMessage: `I'm Ironman`,
       canEdit: false
     }
   ];
   chatMessages = [
     {
-      uuid: '1',
-      message: 'test message 01',
+      uuid: '11',
+      message: `I'm Ironman`,
       file: null,
-      created: '2020-02-27 01:48:28',
+      created: '2019-11-28 02:21:21',
+      isSender: false,
+      sender: {
+        uuid: '1',
+        name: CHARACTERS.tony.name,
+        role: 'participant',
+        avatar: CHARACTERS.tony.avatar
+      }
+    },
+    {
+      uuid: '1',
+      message: 'Thanos is coming',
+      file: null,
+      created: '2019-11-28 02:21:21',
       isSender: true,
       sender: {
         uuid: '1',
@@ -134,10 +161,10 @@ export class DemoService {
     },
     {
       uuid: '2',
-      message: 'test admin message 01',
+      message: '',
       file: JSON.stringify({
         container: 'practera-aus',
-        filename: 'file-sample_150kB.pdf',
+        filename: 'Thanos_is_coming.pdf',
         handle: 'VcVHlY1SzSC8VKNuXFBt',
         key: 'appv2/stage/uploads/37ad733fdf20adf0de20effcbbf6f120/THPhHZoRCiUscy4hrXvQ_file-sample_150kB.pdf',
         mimetype: 'application/pdf',
@@ -153,26 +180,26 @@ export class DemoService {
         uploadId: '2ZaurtAztrY45d4S',
         url: 'https://cdn.filestackcontent.com/VcVHlY1SzSC8VKNuXFBt'
       }),
-      created: '2020-01-30 06:18:45',
+      created: '2019-11-27 02:25:21',
       isSender: false,
       sender: {
         uuid: '3',
-        name: 'student2',
+        name: CHARACTERS.steven.name,
         role: 'participant',
-        avatar: 'https://www.gravatar.com/avatar/21b7427270a606e8a3c4413a13bb47c6?d=https://sandbox.practera.com/img/user-512.png&s=50'
+        avatar: CHARACTERS.steven.avatar
       }
     },
     {
       uuid: '3',
-      message: 'test message 02',
+      message: 'Hi guys, check this out!',
       file: null,
       created: '2019-11-27 02:21:21',
       isSender: false,
       sender: {
         uuid: '3',
-        name: 'student2',
+        name: CHARACTERS.steven.name,
         role: 'participant',
-        avatar: 'https://www.gravatar.com/avatar/21b7427270a606e8a3c4413a13bb47c6?d=https://sandbox.practera.com/img/user-512.png&s=50'
+        avatar: CHARACTERS.steven.avatar
       }
     }
   ];
