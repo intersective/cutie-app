@@ -67,6 +67,7 @@ export class AuthService {
       this.storage.set('programs', programs);
     }
     this.getMyInfo().subscribe();
+    this.getUserEnrolmentUuid().subscribe();
     return response;
   }
 
@@ -98,4 +99,38 @@ export class AuthService {
     }
     return response;
   }
+
+  getUserEnrolmentUuid(): Observable<any> {
+    if (environment.demo) {
+      const response = this.demo.getCurrentUser();
+      return of(this._normaliseGetUserEnrolmentUuidResponse(response.data)).pipe(delay(1000));
+    }
+    return this.request.graphQLQuery(
+      `query user {
+        user {
+            enrolmentUuid
+        }
+      }`,
+      {}
+    ).pipe(
+      map(response => {
+        if (response.data) {
+          return this._normaliseGetUserEnrolmentUuidResponse(response.data);
+        }
+      })
+    );
+  }
+
+  private _normaliseGetUserEnrolmentUuidResponse(data) {
+    const result = JSON.parse(JSON.stringify(data.user));
+    if (!this.utils.has(result, 'enrolmentUuid')) {
+      this.request.apiResponseFormatError('current user enrolment uuid format error');
+      return null;
+    }
+    this.storage.setUser({
+      enrolmentUuid: result.enrolmentUuid
+    });
+    return result;
+  }
+
 }

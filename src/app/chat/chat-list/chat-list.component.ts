@@ -5,6 +5,8 @@ import { UtilsService } from '@services/utils.service';
 import { ChatService, ChatChannel } from '../chat.service';
 import { NotificationService } from '@services/notification.service';
 import { PusherService } from '@shared/pusher/pusher.service';
+import { DirectChatComponent } from '../direct-chat/direct-chat.component';
+import { IonContent, ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-chat-list',
@@ -18,6 +20,8 @@ export class ChatListComponent {
   groupChatList: ChatChannel[];
   directChatList: ChatChannel[];
   loadingChatList = true;
+  isGroupChatExpand = true;
+  isDirectChatExpand = true;
 
   constructor(
     private chatService: ChatService,
@@ -26,7 +30,8 @@ export class ChatListComponent {
     public utils: UtilsService,
     private ngZone: NgZone,
     private notification: NotificationService,
-    public pusherService: PusherService
+    public pusherService: PusherService,
+    private modalController: ModalController,
   ) {
     this.utils.getEvent('chat:new-message').subscribe(event => this._loadChatData());
     this.utils.getEvent('chat:info-update').subscribe(event => this._loadChatData());
@@ -43,6 +48,8 @@ export class ChatListComponent {
     this.loadingChatList = true;
     this.groupChatList = [];
     this.directChatList = [];
+    this.isGroupChatExpand = true;
+    this.isDirectChatExpand = true;
   }
 
   private _loadChatData(): void {
@@ -63,13 +70,13 @@ export class ChatListComponent {
     });
   }
 
-    /**
-   * This method pusher service to subscribe to chat pusher channels
-   * - first it call chat service to get pusher channels.
-   * - then it call pusher service 'subscribeChannel' method to subscribe.
-   * - in pusher service it chaeck if we alrady subscribe or not.
-   *   if not it will subscribe to the pusher channel.
-   */
+  /**
+ * This method pusher service to subscribe to chat pusher channels
+ * - first it call chat service to get pusher channels.
+ * - then it call pusher service 'subscribeChannel' method to subscribe.
+ * - in pusher service it chaeck if we alrady subscribe or not.
+ *   if not it will subscribe to the pusher channel.
+ */
   private _checkAndSubscribePusherChannels() {
     this.chatService.getPusherChannels().subscribe(pusherChannels => {
       pusherChannels.forEach(channel => {
@@ -83,20 +90,20 @@ export class ChatListComponent {
     const directChatIndex = this.directChatList.findIndex(data => data.uuid === event.channelUuid);
     if (groupChatIndex > -1) {
       // set time out because when this calling from pusher events it need a time out.
-    setTimeout(() => {
-      this.groupChatList[groupChatIndex].unreadMessageCount -= event.readcount;
-      if (this.groupChatList[groupChatIndex].unreadMessageCount < 0) {
-        this.groupChatList[groupChatIndex].unreadMessageCount = 0;
-      }
-    });
+      setTimeout(() => {
+        this.groupChatList[groupChatIndex].unreadMessageCount -= event.readcount;
+        if (this.groupChatList[groupChatIndex].unreadMessageCount < 0) {
+          this.groupChatList[groupChatIndex].unreadMessageCount = 0;
+        }
+      });
     } else if (directChatIndex > -1) {
       // set time out because when this calling from pusher events it need a time out.
-    setTimeout(() => {
-      this.directChatList[directChatIndex].unreadMessageCount -= event.readcount;
-      if (this.directChatList[directChatIndex].unreadMessageCount < 0) {
-        this.directChatList[directChatIndex].unreadMessageCount = 0;
-      }
-    });
+      setTimeout(() => {
+        this.directChatList[directChatIndex].unreadMessageCount -= event.readcount;
+        if (this.directChatList[directChatIndex].unreadMessageCount < 0) {
+          this.directChatList[directChatIndex].unreadMessageCount = 0;
+        }
+      });
     }
   }
 
@@ -157,7 +164,7 @@ export class ChatListComponent {
         }
         this.chatListReady.emit(this.groupChatList.concat(this.directChatList));
       }
-    }, err => {});
+    }, err => { });
   }
 
   private _checkChannelAlreadyExist(data) {
@@ -184,6 +191,35 @@ export class ChatListComponent {
         }
       ]
     });
+  }
+
+  expandAndShrinkMessageSections(type) {
+    switch (type) {
+      case 'direct':
+        this.isDirectChatExpand = !this.isDirectChatExpand;
+        break;
+      case 'group':
+        this.isGroupChatExpand = !this.isGroupChatExpand;
+        break;
+    }
+  }
+
+  async openCreateDirectChatPopup() {
+    console.log('wsdsd');
+    const modal = await this.modalController.create({
+      component: DirectChatComponent,
+      cssClass: 'chat-direct-message',
+      componentProps: {
+        // selectedChat: this.chatChannel,
+      },
+      keyboardClose: false
+    });
+    await modal.present();
+    // modal.onWillDismiss().then((data) => {
+    //   if (data.data && (data.data.type === 'channelDeleted' || data.data.channelName !== this.chatChannel.name)) {
+    //     this.utils.broadcastEvent('chat:info-update', true);
+    //   }
+    // });
   }
 
 }

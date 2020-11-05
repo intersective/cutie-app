@@ -98,5 +98,6 @@ clickable-item {
 }
 
 .arrow-button {
-  --padding-start: 0px;
+  --ripple-color: transparent;
+  --color: rgba(0, 0, 0, 0.6);
 }

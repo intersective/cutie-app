@@ -7,6 +7,7 @@ export const environment = {
   APIEndpoint: 'https://sandbox-cutie.api.practera.com/',
   APIEndpointOld: 'https://sandbox.practera.com/',
   Practera: 'https://sandbox.practera.com',
+  graphQL: 'https://kixs5acl6j.execute-api.ap-southeast-2.amazonaws.com/sandbox/',
   chatGraphQL: 'https://antkrqcqa6.execute-api.ap-southeast-2.amazonaws.com/dev/graphql',
   filestack: {
     key: 'AO6F4C72uTPGRywaEijdLz',
