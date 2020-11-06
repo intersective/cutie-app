@@ -181,7 +181,7 @@ export class ChatListComponent {
         uuid: timelineUuid
       }]
     }).subscribe(chat => {
-      if (!this._channelExist(chat)) {
+      if (!this._channelExist(chat, 'cohort')) {
         this.chatChannels.push(chat);
         this._groupingChatChannels();
       }
@@ -192,13 +192,23 @@ export class ChatListComponent {
    * check new created chat is already exist in the list.
    * if it already exist, then select that channel.
    * @param data created chat channel object
+   * @param channelType channel type currently cohort and direct
    */
-  private _channelExist(data) {
+  private _channelExist(data, channelType) {
+    let alertMessage = '';
+    switch (channelType) {
+      case 'cohort':
+      alertMessage = 'Oops! You already created successfully your cohort wide chat.';
+      break;
+      case 'direct':
+      alertMessage = 'Oops! You already started conversation with this user.';
+      break;
+    }
     const existingChannel = this.chatChannels.find((channel) => data.uuid === channel.uuid);
     if (existingChannel) {
       this.notification.alert({
         backdropDismiss: false,
-        message: 'Oops! You already created successfully your cohort wide chat.',
+        message: alertMessage,
         buttons: [
           {
             text: 'Ok',
@@ -241,7 +251,7 @@ export class ChatListComponent {
     await modal.present();
     modal.onWillDismiss().then((data) => {
       if (data.data && data.data.newChannel) {
-        if (!this._channelExist(data.data.newChannel)) {
+        if (!this._channelExist(data.data.newChannel, 'direct')) {
           this.chatChannels.push(data.data.newChannel);
           this._groupingChatChannels();
         }
