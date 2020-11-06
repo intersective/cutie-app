@@ -20,6 +20,7 @@ export interface User {
   projectId?: number;
   teamId?: number;
   userHash?: string;
+  enrolmentUuid?: string;
 }
 
 @Injectable({

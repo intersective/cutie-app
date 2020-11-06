@@ -130,6 +130,25 @@ export class DemoService {
       lastMessageCreated: '2020-07-15 06:20:37',
       lastMessage: `I'm Ironman`,
       canEdit: false
+    },
+    {
+      uuid: '5',
+      name: CHARACTERS.thanos.name,
+      avatar: CHARACTERS.thanos.avatar,
+      targetUser: {
+        email: CHARACTERS.thanos.email,
+        role: 'mentor',
+        teamName: CHARACTERS.thanos.name
+      },
+      pusherChannel: 'private-develop-team-1447-322-20',
+      roles: ['participant', 'mentor'],
+      isAnnouncement: false,
+      isDirectMessage: true,
+      readonly: false,
+      unreadMessageCount: 2,
+      lastMessageCreated: '2020-07-15 06:20:37',
+      lastMessage: `I'm inevitable`,
+      canEdit: false
     }
   ];
   chatMessages = [
@@ -211,6 +230,75 @@ export class DemoService {
       pusherChannel: 'k76i865-jyj-5f44eb4f'
     }
   ];
+  timelineUsers = [
+    {
+      uuid: '60712b63-95c8-bffe-ba86-784f1c0f6426',
+      name: 'coordinator+02',
+      email: 'coordinator+02@practera.com',
+      role: 'coordinator',
+      avatar: 'https://www.gravatar.com/avatar/aeded3a2d9242b1c8144ea079f1acc42?d=https://sandbox.practera.com/img/user-512.png&s=50',
+      enrolmentUuid: '5f9f92b4-2fa0-468d-9000-185dac110002',
+      team: null
+    },
+    {
+      uuid: '73fbb872-9658-9543-bdb4-ac85a6a253ab',
+      name: 'mentor+04',
+      email: 'mentor+04@practera.com',
+      role: 'mentor',
+      avatar: 'https://www.gravatar.com/avatar/fc4b6bea10864603ffc693a27fca6d78?d=https://sandbox.practera.com/img/user-512.png&s=50',
+      enrolmentUuid: '0c389a89-722b-99ff-8d25-3debb9e2f17e',
+      team: {
+        uuid: '5f9f938f-392c-4424-a1bd-15f1ac110002',
+        name: 'Team 2'
+      }
+    },
+    {
+      uuid: '8bee29d0-bf45-af7d-0927-19a73a7e1840',
+      name: 'student+02',
+      email: 'student+02@practera.com',
+      role: 'participant',
+      avatar: 'https://www.gravatar.com/avatar/db30b12260b2c589b1394b26390eab50?d=https://sandbox.practera.com/img/user-512.png&s=50',
+      enrolmentUuid: '436b9500-5fbf-7175-72c3-ee661b5c99b0',
+      team: {
+        uuid: '5f927d94-1718-44b7-9996-5cf8ac110002',
+        name: 'Team 1'
+      }
+    },
+    {
+      uuid: '8d1f3cdf-d697-e957-7120-b5568159a978',
+      name: 'student+01',
+      email: 'student+01@practera.com',
+      role: 'participant',
+      avatar: 'https://www.gravatar.com/avatar/21b7427270a606e8a3c4413a13bb47c6?d=https://sandbox.practera.com/img/user-512.png&s=50',
+      enrolmentUuid: 'e1a2aa12-bb1f-71c9-0ad5-fe5a56d635f9',
+      team: {
+        uuid: '5f927d94-1718-44b7-9996-5cf8ac110002',
+        name: 'Team 1'
+      }
+    },
+    {
+      uuid: '158c470c-64df-c3b1-db5d-82b1db2f263d',
+      name: 'coordinator+01',
+      email: 'coordinator+01@practera.com',
+      role: 'coordinator',
+      avatar: 'https://www.gravatar.com/avatar/432005178fd530c00c9ac7ace134fe7d?d=https://sandbox.practera.com/img/user-512.png&s=50',
+      enrolmentUuid: '52c0eee1-ca1e-f8e2-9693-95ffa14070d1',
+      team: null
+    },
+    {
+      uuid: '9b96af23-e7e0-5d19-2d71-e0064c895a8d',
+      name: 'mentor+02',
+      email: 'mentor+02@practera.com',
+      role: 'mentor',
+      avatar: 'https://www.gravatar.com/avatar/c9cdff7fef088b13e2b75a4ad7dddc95?d=https://sandbox.practera.com/img/user-512.png&s=50',
+      enrolmentUuid: '3a2e3b7a-fcc1-e1e8-cf37-7989753dd438',
+      team: {
+        uuid: '5f9f938f-392c-4424-a1bd-15f1ac110002',
+        name: 'Team 2'
+      }
+    }
+  ];
+
   constructor(
     private utils: UtilsService,
     private storage: StorageService
@@ -709,6 +797,24 @@ export class DemoService {
             role: 'participant',
             avatar: 'https://www.gravatar.com/avatar/21b7427270a606e8a3c4413a13bb47c6?d=https://sandbox.practera.com/img/user-512.png&s=50'
           }
+        }
+      }
+    };
+  }
+
+  getUsers(data) {
+    return {
+      data: {
+        users: this.timelineUsers
+      }
+    };
+  }
+
+  getCurrentUser() {
+    return {
+      data: {
+        user: {
+          enrolmentUuid: '5f9f92b4-2fa0-468d-9000-185dac110002'
         }
       }
     };

@@ -53,6 +53,17 @@ export class AppModule {
         }),
         cache: new InMemoryCache(),
       },
-      'chat');
+      'chat'
+    );
+
+    this.apollo.create(
+      {
+        link: httpLink.create({
+          uri: environment.graphQL
+        }),
+        cache: new InMemoryCache(),
+      },
+      'practera'
+    );
   }
 }

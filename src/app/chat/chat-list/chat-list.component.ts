@@ -5,6 +5,8 @@ import { UtilsService } from '@services/utils.service';
 import { ChatService, ChatChannel } from '../chat.service';
 import { NotificationService } from '@services/notification.service';
 import { PusherService } from '@shared/pusher/pusher.service';
+import { DirectChatComponent } from '../direct-chat/direct-chat.component';
+import { IonContent, ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-chat-list',
@@ -19,6 +21,8 @@ export class ChatListComponent {
   groupChatChannels: ChatChannel[];
   directChatChannels: ChatChannel[];
   loadingChatList = true;
+  isGroupChatExpand = true;
+  isDirectChatExpand = true;
   filter: string;
 
   constructor(
@@ -28,7 +32,8 @@ export class ChatListComponent {
     public utils: UtilsService,
     private ngZone: NgZone,
     private notification: NotificationService,
-    public pusherService: PusherService
+    public pusherService: PusherService,
+    private modalController: ModalController,
   ) {
     this.utils.getEvent('chat:new-message').subscribe(event => this._loadChatData());
     this.utils.getEvent('chat:info-update').subscribe(event => this._loadChatData());
@@ -43,6 +48,8 @@ export class ChatListComponent {
 
   private _initialise() {
     this.loadingChatList = true;
+    this.isGroupChatExpand = true;
+    this.isDirectChatExpand = true;
     this.groupChatChannels = [];
     this.directChatChannels = [];
   }
@@ -130,6 +137,11 @@ export class ChatListComponent {
     return this.utils.timeFormatter(date);
   }
 
+  /**
+   * Ask confomation to create cohort chat channel.
+   * Will show a popup confomation.
+   * if user conform, then it call _createCohortChannelHandler method to create cohort channel.
+   */
   createCohortChatChannel() {
     this.notification.alert({
       cssClass: 'chat-conformation',
@@ -151,6 +163,9 @@ export class ChatListComponent {
     });
   }
 
+  /**
+   * Call chat service to create cohort channel
+   */
   private _createCohortChannelHandler() {
     const timeLineId = this.storage.getUser().timelineId;
     const timelineUuid = this.storage.getUser().timelineUuid;
@@ -170,9 +185,14 @@ export class ChatListComponent {
         this.chatChannels.push(chat);
         this._groupingChatChannels();
       }
-    }, err => {});
+    }, err => { });
   }
 
+  /**
+   * check new created chat is already exist in the list.
+   * if it already exist, then select that channel.
+   * @param data created chat channel object
+   */
   private _channelExist(data) {
     const existingChannel = this.chatChannels.find((channel) => data.uuid === channel.uuid);
     if (existingChannel) {
@@ -192,6 +212,41 @@ export class ChatListComponent {
       return true;
     }
     return false;
+  }
+
+  /**
+   * This will expand or shrink different chat groups sections.
+   * @param type message section type
+   */
+  expandAndShrinkMessageSections(type) {
+    switch (type) {
+      case 'direct':
+        this.isDirectChatExpand = !this.isDirectChatExpand;
+        break;
+      case 'group':
+        this.isGroupChatExpand = !this.isGroupChatExpand;
+        break;
+    }
+  }
+
+  /**
+   * This will open create direct chat channel popup to create direct channel.
+   */
+  async openCreateDirectChatPopup() {
+    const modal = await this.modalController.create({
+      component: DirectChatComponent,
+      cssClass: 'chat-direct-message',
+      keyboardClose: false
+    });
+    await modal.present();
+    modal.onWillDismiss().then((data) => {
+      if (data.data && data.data.newChannel) {
+        if (!this._channelExist(data.data.newChannel)) {
+          this.chatChannels.push(data.data.newChannel);
+          this._groupingChatChannels();
+        }
+      }
+    });
   }
 
 }

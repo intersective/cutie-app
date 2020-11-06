@@ -151,6 +151,29 @@ export class RequestService {
   }
 
   /**
+   * Method to call practera graphQL server to get deta from database.
+   * @param query GraphQL query that use to get data from graphQL server.
+   * @param variables values need to pass with query.
+   * @param options options of the query eg:- 'no-cache' do we need to cache the data of query.
+   */
+  graphQLQuery(query: string, variables?: any, options?: any): Observable<any> {
+    options = {...{ noCache: false }, ...options};
+    const watch = this.apollo.use('practera').watchQuery({
+      query: gql(query),
+      variables: variables || {},
+      fetchPolicy: options.noCache ? 'no-cache' : 'cache-and-network'
+    });
+    return watch.valueChanges
+      .pipe(map(response => {
+        this._refreshApikey(response);
+        return response;
+      }))
+      .pipe(
+        catchError((error) => this.handleError(error))
+      );
+  }
+
+  /**
    * Method to call graphQL chat server to get deta from database.
    * @param query GraphQL query that use to get data from graphQL server.
    * @param variables values need to pass with query.

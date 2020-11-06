@@ -70,6 +70,26 @@ export interface NewChannelParam {
   }[];
 }
 
+export interface User {
+  uuid: string;
+  name: string;
+  avatar: string;
+  role: string;
+  email: string;
+  enrolmentUuid: string;
+  team: {
+    uuid: string;
+    name: string;
+  };
+}
+
+export interface SearchUsersParam {
+  scope: string;
+  scopeUuid: string;
+  filter: string;
+  teamUserOnly: boolean;
+}
+
 interface NewMessageParam {
   channelUuid: string;
   message: string;
@@ -104,7 +124,7 @@ export class ChatService {
     private pusherService: PusherService,
     private demo: DemoService,
     public storage: StorageService,
-  ) {}
+  ) { }
 
   /**
    * this method return chat list data.
@@ -390,11 +410,11 @@ export class ChatService {
   private _normalisePostMessageResponse(data): Message {
     const result = JSON.parse(JSON.stringify(data.createChatLog));
     if (!this.utils.has(result, 'uuid') ||
-        !this.utils.has(result, 'sender.uuid') ||
-        !this.utils.has(result, 'isSender') ||
-        !this.utils.has(result, 'message') ||
-        !this.utils.has(result, 'created') ||
-        !this.utils.has(result, 'file')) {
+      !this.utils.has(result, 'sender.uuid') ||
+      !this.utils.has(result, 'isSender') ||
+      !this.utils.has(result, 'message') ||
+      !this.utils.has(result, 'created') ||
+      !this.utils.has(result, 'file')) {
       this.request.apiResponseFormatError('chat channel format error');
       return null;
     }
@@ -425,9 +445,9 @@ export class ChatService {
     return this.postNewMessage(data);
   }
 
-    /**
-   * this method create new cohort channel.
-   */
+  /**
+ * this method create new cohort channel.
+ */
   createChannel(data: NewChannelParam): Observable<ChatChannel> {
     if (environment.demo) {
       const response = this.demo.getNewChannel();
@@ -465,14 +485,14 @@ export class ChatService {
   private _normaliseCreateChannelResponse(data): ChatChannel {
     const result = JSON.parse(JSON.stringify(data.createChannel));
     if (!this.utils.has(result, 'uuid') ||
-        !this.utils.has(result, 'name') ||
-        !this.utils.has(result, 'avatar') ||
-        !this.utils.has(result, 'pusherChannel') ||
-        !this.utils.has(result, 'isAnnouncement') ||
-        !this.utils.has(result, 'isDirectMessage') ||
-        !this.utils.has(result, 'readonly') ||
-        !this.utils.has(result, 'roles') ||
-        !this.utils.has(result, 'canEdit')) {
+      !this.utils.has(result, 'name') ||
+      !this.utils.has(result, 'avatar') ||
+      !this.utils.has(result, 'pusherChannel') ||
+      !this.utils.has(result, 'isAnnouncement') ||
+      !this.utils.has(result, 'isDirectMessage') ||
+      !this.utils.has(result, 'readonly') ||
+      !this.utils.has(result, 'roles') ||
+      !this.utils.has(result, 'canEdit')) {
       this.request.apiResponseFormatError('chat channel format error');
       return null;
     }
@@ -548,17 +568,17 @@ export class ChatService {
   private _normaliseEditChannelResponse(data): ChatChannel {
     const result = JSON.parse(JSON.stringify(data.editChannel));
     if (!this.utils.has(result, 'uuid') ||
-        !this.utils.has(result, 'name') ||
-        !this.utils.has(result, 'avatar') ||
-        !this.utils.has(result, 'pusherChannel') ||
-        !this.utils.has(result, 'isAnnouncement') ||
-        !this.utils.has(result, 'isDirectMessage') ||
-        !this.utils.has(result, 'readonly') ||
-        !this.utils.has(result, 'roles') ||
-        !this.utils.has(result, 'unreadMessageCount') ||
-        !this.utils.has(result, 'lastMessage') ||
-        !this.utils.has(result, 'lastMessageCreated') ||
-        !this.utils.has(result, 'canEdit')) {
+      !this.utils.has(result, 'name') ||
+      !this.utils.has(result, 'avatar') ||
+      !this.utils.has(result, 'pusherChannel') ||
+      !this.utils.has(result, 'isAnnouncement') ||
+      !this.utils.has(result, 'isDirectMessage') ||
+      !this.utils.has(result, 'readonly') ||
+      !this.utils.has(result, 'roles') ||
+      !this.utils.has(result, 'unreadMessageCount') ||
+      !this.utils.has(result, 'lastMessage') ||
+      !this.utils.has(result, 'lastMessageCreated') ||
+      !this.utils.has(result, 'canEdit')) {
       this.request.apiResponseFormatError('chat channel format error');
       return null;
     }
@@ -576,6 +596,60 @@ export class ChatService {
       lastMessageCreated: result.lastMessageCreated,
       canEdit: result.canEdit
     };
+  }
+
+  searchTimelineUsers(data: SearchUsersParam): Observable<User[]> {
+    if (environment.demo) {
+      const response = this.demo.getUsers(data);
+      return of(this._normaliseSearchTimelineUsersResponse(response.data)).pipe(delay(1000));
+    }
+    return this.request.graphQLQuery(
+      `query getUsers($scope: String, $scopeUuid: String, $filter: String, $teamUserOnly: Boolean) {
+        users(scope: $scope, scopeUuid: $scopeUuid, filter: $filter, teamUserOnly: $teamUserOnly) {
+          uuid
+          name
+          email
+          role
+          avatar
+          enrolmentUuid
+          team {
+            uuid
+            name
+          }
+        }
+      }`,
+      {
+        scope: data.scope,
+        scopeUuid: data.scopeUuid,
+        filter: data.filter,
+        teamUserOnly: data.teamUserOnly
+      }
+    ).pipe(
+      map(response => {
+        if (response.data) {
+          return this._normaliseSearchTimelineUsersResponse(response.data);
+        }
+      })
+    );
+  }
+
+  private _normaliseSearchTimelineUsersResponse(data): User[] {
+    const result = JSON.parse(JSON.stringify(data.users));
+    if (!Array.isArray(result)) {
+      this.request.apiResponseFormatError('User array format error');
+      return [];
+    }
+    if (result.length === 0) {
+      return [];
+    }
+    const myEmail = this.storage.getUser().email;
+    const userList = [];
+    result.forEach(user => {
+      if (user.email !== myEmail) {
+        userList.push(user);
+      }
+    });
+    return userList;
   }
 
 }

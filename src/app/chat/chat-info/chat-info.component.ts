@@ -1,7 +1,5 @@
 import { Component, Output, EventEmitter, NgZone, Input, OnInit } from '@angular/core';
-import { Router, NavigationExtras } from '@angular/router';
 import { StorageService } from '@app/shared/services/storage.service';
-import { UtilsService } from '@app/shared/services/utils.service';
 import { ChatService, ChatChannel, ChannelMembers } from '@app/chat/chat.service';
 import { ModalController } from '@ionic/angular';
 import { NotificationService } from '@services/notification.service';
@@ -22,9 +20,7 @@ export class ChatInfoComponent implements OnInit {
 
   constructor(
     private chatService: ChatService,
-    public router: Router,
     public storage: StorageService,
-    public utils: UtilsService,
     public modalController: ModalController,
     private notification: NotificationService
   ) {}
@@ -34,6 +30,9 @@ export class ChatInfoComponent implements OnInit {
     this._loadMembers();
   }
 
+  /**
+   * Initialise all variables
+   */
   private _initialise() {
     this.memberList = [];
     this.loadingMembers = false;
@@ -41,6 +40,9 @@ export class ChatInfoComponent implements OnInit {
     this.enableSave = false;
   }
 
+  /**
+   * Call chat service to get members of current selected chat channel.
+   */
   private _loadMembers() {
     this.loadingMembers = true;
     this.chatService.getChatMembers(this.selectedChat.uuid).subscribe(
@@ -57,12 +59,21 @@ export class ChatInfoComponent implements OnInit {
     );
   }
 
+  /**
+   * close the info page.
+   */
   close() {
     this.modalController.dismiss({
       channelName: this.channelName
     });
   }
 
+  /**
+   * calling from input key up event.
+   * check selected chat channel name and the name in text file is different or not.
+   * if it's different show the save if not hide save.
+   * @param event text field key up event object.
+   */
   checkNamechanged(event) {
     if (event.target.value !== this.selectedChat.name) {
       this.enableSave = true;
@@ -71,6 +82,11 @@ export class ChatInfoComponent implements OnInit {
     }
   }
 
+  /**
+   * Call char service to detele sected chat channel.
+   * First show a popup asking for comfimation to delete.
+   * if you confirm delete, then call chat service to delete channel.
+   */
   deleteChannel() {
     this.notification.alert({
       cssClass: 'chat-conformation',
@@ -97,6 +113,10 @@ export class ChatInfoComponent implements OnInit {
     });
   }
 
+  /**
+   * Call chat service to update chat channel.
+   * Currently only updating channel name.
+   */
   editChannelDetail() {
     this.chatService.editChatChannel({
       uuid: this.selectedChat.uuid,
