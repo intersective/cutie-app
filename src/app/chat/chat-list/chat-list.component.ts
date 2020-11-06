@@ -137,6 +137,11 @@ export class ChatListComponent {
     return this.utils.timeFormatter(date);
   }
 
+  /**
+   * Ask confomation to create cohort chat channel.
+   * Will show a popup confomation.
+   * if user conform, then it call _createCohortChannelHandler method to create cohort channel.
+   */
   createCohortChatChannel() {
     this.notification.alert({
       cssClass: 'chat-conformation',
@@ -158,6 +163,9 @@ export class ChatListComponent {
     });
   }
 
+  /**
+   * Call chat service to create cohort channel
+   */
   private _createCohortChannelHandler() {
     const timeLineId = this.storage.getUser().timelineId;
     const timelineUuid = this.storage.getUser().timelineUuid;
@@ -180,6 +188,11 @@ export class ChatListComponent {
     }, err => { });
   }
 
+  /**
+   * check new created chat is already exist in the list.
+   * if it already exist, then select that channel.
+   * @param data created chat channel object
+   */
   private _channelExist(data) {
     const existingChannel = this.chatChannels.find((channel) => data.uuid === channel.uuid);
     if (existingChannel) {
@@ -201,6 +214,10 @@ export class ChatListComponent {
     return false;
   }
 
+  /**
+   * This will expand or shrink different chat groups sections.
+   * @param type message section type
+   */
   expandAndShrinkMessageSections(type) {
     switch (type) {
       case 'direct':
@@ -212,22 +229,24 @@ export class ChatListComponent {
     }
   }
 
+  /**
+   * This will open create direct chat channel popup to create direct channel.
+   */
   async openCreateDirectChatPopup() {
-    console.log('wsdsd');
     const modal = await this.modalController.create({
       component: DirectChatComponent,
       cssClass: 'chat-direct-message',
-      componentProps: {
-        // selectedChat: this.chatChannel,
-      },
       keyboardClose: false
     });
     await modal.present();
-    // modal.onWillDismiss().then((data) => {
-    //   if (data.data && (data.data.type === 'channelDeleted' || data.data.channelName !== this.chatChannel.name)) {
-    //     this.utils.broadcastEvent('chat:info-update', true);
-    //   }
-    // });
+    modal.onWillDismiss().then((data) => {
+      if (data.data && data.data.newChannel) {
+        if (!this._channelExist(data.data.newChannel)) {
+          this.chatChannels.push(data.data.newChannel);
+          this._groupingChatChannels();
+        }
+      }
+    });
   }
 
 }

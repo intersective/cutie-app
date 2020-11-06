@@ -33,7 +33,7 @@ clickable-item {
 
       span {
         border: 1px solid var(--ion-color-primary);
-        padding: 1px 5px 0 5px;
+        padding: 0 5px 0 5px;
         border-radius: 10px;
         vertical-align: baseline;
         text-align: center;
@@ -42,6 +42,10 @@ clickable-item {
         text-overflow: inherit;
         overflow: inherit;
         color: var(--ion-color-primary);
+        height: 16px;
+        margin: auto;
+        margin-left: 0px;
+        margin-right: 0px;
       }
 
       .chat-name {

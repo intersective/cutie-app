@@ -87,7 +87,7 @@ export interface SearchUsersParam {
   scope: string;
   scopeUuid: string;
   filter: string;
-  teamUserOnly: string;
+  teamUserOnly: boolean;
 }
 
 interface NewMessageParam {
@@ -642,7 +642,14 @@ export class ChatService {
     if (result.length === 0) {
       return [];
     }
-    return result;
+    const myEmail = this.storage.getUser().email;
+    const userList = [];
+    result.forEach(user => {
+      if (user.email !== myEmail) {
+        userList.push(user);
+      }
+    });
+    return userList;
   }
 
 }

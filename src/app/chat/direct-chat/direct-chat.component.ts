@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { StorageService } from '@app/shared/services/storage.service';
-import { UtilsService } from '@app/shared/services/utils.service';
 import { ChatService, ChatChannel, ChannelMembers, SearchUsersParam, User } from '@app/chat/chat.service';
 import { AuthService } from '@app/auth/auth.service';
 
@@ -21,7 +20,6 @@ export class DirectChatComponent implements OnInit {
     public modalController: ModalController,
     private chatService: ChatService,
     public storage: StorageService,
-    public utils: UtilsService,
     private authService: AuthService
   ) { }
 
@@ -29,12 +27,19 @@ export class DirectChatComponent implements OnInit {
     this._initialise();
   }
 
+  /**
+   * This will cloase the direct chat popup
+   */
   close() {
     this.modalController.dismiss({
-      // channelName: this.channelName
+      newChannel: null
     });
   }
 
+  /**
+   * Initialise all variables
+   * and if enrolmentUuid not in the storage will call _getEnrolmentUuid to get it from auth service.
+   */
   private _initialise() {
     this.searchText = '';
     this.userList = [];
@@ -46,6 +51,9 @@ export class DirectChatComponent implements OnInit {
     }
   }
 
+  /**
+   * Calling auth service to get current user enrolmentUuid
+   */
   private _getEnrolmentUuid() {
     this.authService.getUserEnrolmentUuid().subscribe(
       (response) => {
@@ -61,7 +69,56 @@ export class DirectChatComponent implements OnInit {
     );
   }
 
+  /**
+   * call chat service to get timeline user list
+   */
   searchUsers() {
+    this.loadingUsers = true;
+    if (this.searchText === '') {
+      this.loadingUsers = false;
+      this.userList = [];
+      return;
+    }
+    const searchParam: SearchUsersParam = {
+      scope: 'timeline',
+      scopeUuid: this.storage.getUser().timelineUuid,
+      filter: this.searchText,
+      teamUserOnly: true
+    };
+
+    this.chatService.searchTimelineUsers(searchParam).subscribe(
+      (response) => {
+        this.loadingUsers = false;
+        if (!response || response.length === 0) {
+          return;
+        }
+        this.userList = response;
+      },
+      error => {}
+    );
+  }
+
+  /**
+   * This call chat service to create direct channel with a selected user.
+   * @param user selected user object
+   */
+  createChatChannel(user) {
+    this.chatService.createChannel({
+      name: user.name,
+      isAnnouncement: false,
+      roles: [user.role, this.storage.getUser().role],
+      members: [{
+        type: 'Enrolmenet',
+        uuid: this.currentEnrolmentUuid
+      }, {
+        type: 'Enrolmenet',
+        uuid: user.enrolmentUuid
+      }]
+    }).subscribe(chat => {
+      this.modalController.dismiss({
+        newChannel: chat
+      });
+    }, err => { });
   }
 
 }

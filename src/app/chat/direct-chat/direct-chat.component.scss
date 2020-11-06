@@ -1,3 +1,6 @@
+ion-content {
+  --overflow: hidden;
+}
 .close-button {
   --ripple-color: transparent;
   --color: rgba(0, 0, 0, 0.6);
@@ -13,17 +16,139 @@
   padding-right: 0;
 }
 
+.user-list-container {
+  margin-top: 14px;
+
+  ion-list {
+    --overflow: auto;
+    overflow-y: auto;
+    height: 350px;
+  }
+}
+
 .search-bar-container {
   margin-top: 24px;
+
   .search-box {
     height: 33px;
     border: 1px solid;
     border-color: #D1D1D1;
-    box-shadow: inset 0 -0.5px 0 0 rgba(0,0,0,0.12);
+    box-shadow: inset 0 -0.5px 0 0 rgba(0, 0, 0, 0.12);
+    border-radius: 4px;
 
     input {
       font-size: 14px !important;
       letter-spacing: 0.25px !important;
+    }
+  }
+}
+
+.user-item {
+  cursor: pointer;
+}
+
+clickable-item {
+  .bold {
+    font-weight: bold;
+  }
+
+  .item-inner {
+    border: none !important;
+  }
+
+  ion-label {
+    margin: 10px 0 10px 0 !important;
+
+    .chat-name-container {
+      display: inline-flex !important;
+      flex-wrap: wrap;
+      text-overflow: inherit;
+      overflow: inherit;
+      width: 100% !important;
+
+      span {
+        border: 1px solid var(--ion-color-primary);
+        padding: 0 5px 0 5px;
+        border-radius: 10px;
+        vertical-align: baseline;
+        text-align: center;
+        white-space: nowrap;
+        max-width: 70% !important;
+        text-overflow: inherit;
+        overflow: inherit;
+        color: var(--ion-color-primary);
+        height: 16px;
+        margin: auto;
+        margin-left: 0px;
+        margin-right: 0px;
+      }
+
+      .chat-name {
+        text-overflow: inherit;
+        overflow: inherit;
+        max-width: 90%;
+        width: fit-content;
+        margin-right: 3px;
+
+        &.team-channel {
+          margin-right: 3px;
+          max-width: -webkit-fill-available !important;
+          width: auto !important;
+
+          .chat-name-container {
+            display: block !important;
+          }
+        }
+      }
+
+    }
+  }
+
+  .time-container {
+    width: 22% !important;
+    display: grid;
+    justify-items: end;
+    margin-left: 4px !important;
+
+    ion-badge {
+      margin-top: 2px;
+      max-width: 43px !important;
+      max-height: 20px;
+      min-width: 20px;
+      min-height: 20px;
+      border-radius: 8px !important;
+      width: fit-content;
+    }
+
+  }
+}
+
+.desktop-view {
+  .time-container {
+    width: auto !important;
+    height: 100%;
+    padding-bottom: 10px;
+    padding-top: 10px;
+  }
+
+  clickable-item {
+    ion-label {
+      .chat-name-container {
+        span {
+          max-width: none !important;
+        }
+      }
+    }
+  }
+}
+
+.empty-status {
+  margin-top: 85px;
+  ion-col {
+    text-align: center !important;
+    ion-icon {
+      font-size: 70px;
+      color: #D1D1D1;
     }
   }
 }
