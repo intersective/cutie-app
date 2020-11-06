@@ -95,7 +95,8 @@ export class AuthService {
         contactNumber: apiData.contact_number,
         email: apiData.email,
         image: apiData.image,
-        userHash: apiData.userhash
+        userHash: apiData.userhash,
+        role: apiData.role
       });
     }
     return response;
