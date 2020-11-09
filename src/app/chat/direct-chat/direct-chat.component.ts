@@ -4,6 +4,9 @@ import { StorageService } from '@app/shared/services/storage.service';
 import { ChatService, ChatChannel, ChannelMembers, SearchUsersParam, User } from '@app/chat/chat.service';
 import { AuthService } from '@app/auth/auth.service';
 
+const searchScope = 'timeline';
+const chatMemberUuidType = 'Enrolment';
+
 @Component({
   selector: 'app-direct-chat',
   templateUrl: './direct-chat.component.html',
@@ -80,7 +83,7 @@ export class DirectChatComponent implements OnInit {
       return;
     }
     const searchParam: SearchUsersParam = {
-      scope: 'timeline',
+      scope: searchScope,
       scopeUuid: this.storage.getUser().timelineUuid,
       filter: this.searchText,
       teamUserOnly: true
@@ -108,10 +111,10 @@ export class DirectChatComponent implements OnInit {
       isAnnouncement: false,
       roles: [user.role, this.storage.getUser().role],
       members: [{
-        type: 'Enrolmenet',
+        type: chatMemberUuidType,
         uuid: this.currentEnrolmentUuid
       }, {
-        type: 'Enrolmenet',
+        type: chatMemberUuidType,
         uuid: user.enrolmentUuid
       }]
     }).subscribe(chat => {
