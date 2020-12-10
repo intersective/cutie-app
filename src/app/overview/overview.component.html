@@ -1,0 +1,34 @@
+<p>
+  overview works!
+</p>
+
+<alert type="success">
+  <strong>Well done!</strong> You successfully read this important alert message.
+</alert>
+<alert type="info">
+  <strong>Heads up!</strong> This alert needs your attention, but it's not super important.
+</alert>
+<alert type="warning">
+  <strong>Warning!</strong> Better check yourself, you're not looking too good.
+</alert>
+<alert type="danger">
+  <strong>Oh snap!</strong> Change a few things up and try submitting again.
+</alert>
+
+<button type="button" class="btn btn-primary">
+  Single Button
+</button>
+<button type="button" class="btn btn-success">
+  Single Button
+</button>
+
+<pre class="card card-block card-header">{{checkModel | json}}</pre>
+ 
+<div class="btn-group">
+  <label class="btn btn-primary" [(ngModel)]="checkModel.left"
+         btnCheckbox tabindex="0" role="button">Left</label>
+  <label class="btn btn-primary" [(ngModel)]="checkModel.middle"
+         btnCheckbox tabindex="0" role="button">Middle</label>
+  <label class="btn btn-primary" [(ngModel)]="checkModel.right"
+         btnCheckbox tabindex="0" role="button">Right</label>
+</div>
