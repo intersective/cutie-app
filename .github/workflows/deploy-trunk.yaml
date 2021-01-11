@@ -39,7 +39,7 @@ jobs:
       
       # Install Serverless Framework
       - name: Install Serverless Framework
-        run: npm i -g serverless
+        run: npm i -g serverless @angular/cli forever
 
       # Cache Node modules
       - name: Cache node modules
