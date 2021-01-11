@@ -75,7 +75,8 @@
     "karma-coverage": "^2.0.3",
     "karma-sonarqube-unit-reporter": "0.0.23",
     "serverless": "^2.16.1",
-    "serverless-certificate-creator": "^1.4.0"
+    "serverless-certificate-creator": "^1.4.0",
+    "karma-htmlfile-reporter": "~0.3"
   },
   "description": "Practera CUTIE project"
 }
