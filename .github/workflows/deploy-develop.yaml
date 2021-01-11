@@ -37,9 +37,9 @@ jobs:
       - name: Node.js environment
         uses: actions/setup-node@v1
 
-      # Install Serverless Framework
+     # Install Serverless Framework
       - name: Install Serverless Framework
-        run: npm i -g serverless
+        run: npm i -g serverless @angular/cli forever
 
       # Cache Node modules
       - name: Cache node modules
@@ -115,7 +115,10 @@ jobs:
           echo "CutieAppCDN: "${{env.CutieAppCDN}}
 
       - name: Building web packages
-        run: npm run build --configuration=${{ env.BUILD_CONFIG }}
+        run: |
+          printf '' > src/environments/environment.ts
+          ng build --configuration=${{ env.BUILD_CONFIG }}
+          # npm run build --configuration=${{ env.BUILD_CONFIG }}
 
       - name: AWS S3 Sync operation
         run: aws s3 sync www/ s3://${{env.CutieAppS3}} --delete
