@@ -115,7 +115,9 @@ jobs:
           echo "CutieAppCDN: "${{env.CutieAppCDN}}
 
       - name: Building web packages
-        run: npm run build --configuration=${{ env.BUILD_CONFIG }}
+        run: |
+          printf '' > src/environments/environment.ts
+          npm run build --configuration=${{ env.BUILD_CONFIG }}
 
       - name: AWS S3 Sync operation
         run: aws s3 sync www/ s3://${{env.CutieAppS3}} --delete
