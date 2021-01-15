@@ -11,7 +11,7 @@ on:
       - 'docs/**'
       - '**.md'
       - '.gitignore'
-    branches: [ feature/uk-release-fix ]
+    branches: [release/uk]
 
 jobs:
   Build-Deploy:
