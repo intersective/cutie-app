@@ -2,9 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '@shared/shared.module';
 
-import { AlertModule } from 'ngx-bootstrap/alert';
-import { ButtonsModule } from 'ngx-bootstrap/buttons';
-
 import { OverviewComponent } from './overview.component';
 
 @NgModule({
@@ -13,8 +10,6 @@ import { OverviewComponent } from './overview.component';
   ],
   imports: [
     SharedModule,
-    AlertModule,
-    ButtonsModule,
     RouterModule.forChild([
       {
         path: '',
