@@ -1,28 +1,331 @@
-<p>
-  overview works!
-</p>
+<header class="container-fluid">
+  <div class="app-bar row">
+    <div class="app-bar-entity col-md-4 col-lg-3">
+      <div class="practera-brand">
+        <img src="./assets/practera-mark.svg" alt="Practera">
+      </div>
+      <div class="entity-brand">
+        <img src="./assets/entity-mark.svg" alt="Entity">
+      </div>
+    </div>
+    <div class="app-bar-active-entity col-9 col-md-4 col-lg-3">
+      <div class="entity-switcher">
+        <div>
+          <span class="entity-switcher-label">Active institution</span>
+          <span class="entity-switcher-value">The University of Queensland</span>
+        </div>
+        <ion-icon name="caret-down-sharp"></ion-icon>
+      </div>
+    </div>
+    <div class="app-bar-user col-3 col-md-4 col-lg-6">
+      <div class="user-avatar">
+        <img src="https://place-hold.it/64x64/cccccc/FFF.png&text=AT&bold&fontsize=24" alt="Avatar">
+        <ion-icon name="caret-down-sharp"></ion-icon>
+      </div>
+    </div>
+  </div>
+</header>
 
-<div class="alert alert-primary" role="alert">
-  A simple primary alert—check it out!
-</div>
-<div class="alert alert-secondary" role="alert">
-  A simple secondary alert—check it out!
-</div>
-<div class="alert alert-success" role="alert">
-  A simple success alert—check it out!
-</div>
-<div class="alert alert-danger" role="alert">
-  A simple danger alert—check it out!
-</div>
-<div class="alert alert-warning" role="alert">
-  A simple warning alert—check it out!
-</div>
-<div class="alert alert-info" role="alert">
-  A simple info alert—check it out!
-</div>
-<div class="alert alert-light" role="alert">
-  A simple light alert—check it out!
-</div>
-<div class="alert alert-dark" role="alert">
-  A simple dark alert—check it out!
-</div>
+<main>
+
+  <header class="title-bar container-fluid">
+    <div class="row">
+      <div class="col-md-6">
+        <h1>Experiences</h1>
+      </div>
+      <div class="title-bar-tools col-md-6">
+        <button class="btn btn-primary">Create report</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="experiences-stats">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-6 col-xl-3">
+          <div class="experiences-stat card">
+            <div class="experiences-stat-value">2</div>
+            <div class="experiences-stat-label">
+              <span>Live experiences</span>
+              <ion-icon name="information-circle"></ion-icon>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+          <div class="experiences-stat card">
+            <div class="experiences-stat-value">80%</div>
+            <div class="experiences-stat-label">
+              <span>Recently active participants and mentors</span>
+              <ion-icon name="information-circle"></ion-icon>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+          <div class="experiences-stat card">
+            <div class="experiences-stat-value">902/2,000</div>
+            <div class="experiences-stat-label">
+              <span>Feedback loops completed</span>
+              <ion-icon name="information-circle"></ion-icon>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+          <div class="experiences-stat card">
+            <div class="experiences-stat-value">91%</div>
+            <div class="experiences-stat-label">
+              <span>Feedback quality score</span>
+              <ion-icon name="information-circle"></ion-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="experiences-gallery">
+
+    <header class="title-bar container-fluid">
+      <div class="row">
+        <div class="col-md-6">
+          <h2>My experiences</h2>
+        </div>
+        <div class="title-bar-tools col-md-6">
+          <button class="btn btn-primary btn-lg">
+            <ion-icon name="add"></ion-icon>
+            <span>Add experience</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div class="container-fluid">
+      <div class="row">
+        <aside class="experiences-aside col-md-3">
+          <h3>Filter by tags</h3>
+          <div class="experience-tags-list">
+            <button type="button" class="experience-tag btn btn-sm btn-tag-active">
+              another tag <span class="experience-tag-count">1</span>
+            </button>
+            <button type="button" class="experience-tag btn btn-sm btn-tag-active">
+              another tag <span class="experience-tag-count">1</span>
+            </button>
+            <button type="button" class="experience-tag btn btn-sm btn-tag-inactive">
+              another tag <span class="experience-tag-count">1</span>
+            </button>
+            <button type="button" class="experience-tag btn btn-sm btn-tag-active">
+              another tag <span class="experience-tag-count">1</span>
+            </button>
+            <button type="button" class="experience-tag btn btn-sm btn-tag-inactive">
+              another tag <span class="experience-tag-count">1</span>
+            </button>
+          </div>
+        </aside>
+        <section class="experiences-content col-md-9">
+          <div class="experiences-filters">
+            <div class="experiences-filter">
+              <span>Status</span>
+              <div class="dropdown">
+                <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                  All
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <li><a class="dropdown-item" href="#">Action</a></li>
+                  <li><a class="dropdown-item" href="#">Another action</a></li>
+                  <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="experiences-filter">
+              <span>Type</span>
+              <div class="dropdown">
+                <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                  All
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <li><a class="dropdown-item" href="#">Action</a></li>
+                  <li><a class="dropdown-item" href="#">Another action</a></li>
+                  <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="experiences-filter">
+              <span>Sort by</span>
+              <div class="dropdown">
+                <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                  All
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <li><a class="dropdown-item" href="#">Action</a></li>
+                  <li><a class="dropdown-item" href="#">Another action</a></li>
+                  <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="experiences-filter">
+              <span>Sort order</span>
+              <ion-icon name="arrow-down"></ion-icon>
+            </div>
+          </div>
+          <div class="experiences-list">
+            <article class="experience-item card">
+              <div class="row">
+                <div class="experience-item-image col-lg-3">
+                  <img src="https://place-hold.it/512x512/cccccc/FFF.png&text=EXP1&bold&fontsize=24" alt="Experience image">
+                </div>
+                <div class="experience-item-summary col-lg-9">
+                  <div class="row">
+                    <div class="experience-item-title col-lg-8">
+                      <h3>Tech PM</h3>
+                      <span class="experience-item-type">Work simulation</span>
+                      <span class="experience-item-status status-draft">Draft</span>
+                      <!-- status-draft, status-live, status-completed -->
+                    </div>
+                    <div class="experience-item-actions col-lg-4">
+                      <a href="#" class="btn btn-link">Resume building</a>
+                      <button class="btn btn-link">
+                        <ion-icon name="ellipsis-horizontal"></ion-icon>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="experience-item-description col-lg-6">
+                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempo … <a href="#">more</a></p>
+                    </div>
+                    <div class="experience-item-tags col-lg-6">
+                      <a href="#" class="btn btn-link">Add tags</a>
+                    </div>
+                  </div>
+                  <div class="experience-item-stats row">
+                    <div class="experience-item-stat col-4 col-lg-2">
+                      <div class="experience-item-people">
+                        <ion-icon name="people"></ion-icon> 110
+                      </div>
+                    </div>
+                    <div class="experience-item-stat col-8 col-lg-10">
+                      <div class="progress-steps">
+                        <div class="progress-step done">
+                          <div class="progress-step-number">1</div>
+                          <div class="progress-step-label">Configuration complete</div>
+                        </div>
+                        <div class="progress-step">
+                          <div class="progress-step-number">2</div>
+                          <div class="progress-step-label">Visuals incomplete</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+            <article class="experience-item card">
+              <div class="row">
+                <div class="experience-item-image col-lg-3">
+                  <img src="https://place-hold.it/512x512/cccccc/FFF.png&text=EXP2&bold&fontsize=24" alt="Experience image">
+                </div>
+                <div class="experience-item-summary col-lg-9">
+                  <div class="row">
+                    <div class="experience-item-title col-lg-8">
+                      <h3>Tech PM</h3>
+                      <span class="experience-item-type">Work simulation</span>
+                      <span class="experience-item-status status-draft">Draft</span>
+                      <!-- status-draft, status-live, status-completed -->
+                    </div>
+                    <div class="experience-item-actions col-lg-4">
+                      <span class="experience-item-timestamp">
+                        40m
+                        <ion-icon name="time-outline"></ion-icon>
+                      </span>
+                      <button class="btn btn-link">
+                        <ion-icon name="ellipsis-horizontal"></ion-icon>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="experience-item-description col-lg-6">
+                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempo … <a href="#">more</a></p>
+                    </div>
+                    <div class="experience-item-tags col-lg-6">
+                      <span class="experience-tag btn btn-sm btn-tag">pen</span>
+                      <span class="experience-tag btn btn-sm btn-tag">pineapple</span>
+                      <span class="experience-tag btn btn-sm btn-tag">apple</span>
+                    </div>
+                  </div>
+                  <div class="experience-item-stats row">
+                    <div class="experience-item-stat col-6 col-md-2">
+                      <div class="experience-item-issues">
+                        <button type="button" class="btn btn-sm btn-danger">
+                          1 issue
+                        </button>
+                      </div>
+                      <div class="experience-item-people">
+                        <ion-icon name="people"></ion-icon> 110
+                      </div>
+                    </div>
+                    <div class="experience-item-stat col-6 col-md-2">
+                      <div class="experience-item-stat-value">
+                        <div class="experience-item-stat-pulse">
+                          <div class="progress">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: 60.5%" aria-valuenow="60.5" aria-valuemin="0" aria-valuemax="100"></div>
+                            <div class="progress-bar bg-danger" role="progressbar" style="width: 39.5%" aria-valuenow="39.5" aria-valuemin="0" aria-valuemax="100"></div>
+                          </div>
+                          <ion-icon name="information-circle"></ion-icon>
+                        </div>
+                      </div>
+                      <div class="experience-item-stat-label">
+                        <div>60.5% <span class="text-success">on-track</span></div>
+                        <div>39.5% <span class="text-danger">off-track</span></div>
+                      </div>
+                    </div>
+                    <div class="experience-item-stat col-6 col-md-2">
+                      <div class="experience-item-stat-value">
+                        70%
+                      </div>
+                      <div class="experience-item-stat-label">
+                        <div>of participants recently active</div>
+                      </div>
+                    </div>
+                    <div class="experience-item-stat col-6 col-md-2">
+                      <div class="experience-item-stat-value">
+                        70%
+                      </div>
+                      <div class="experience-item-stat-label">
+                        <div>of mentors recently active</div>
+                      </div>
+                    </div>
+                    <div class="experience-item-stat col-6 col-md-2">
+                      <div class="experience-item-stat-value">
+                        129/300
+                      </div>
+                      <div class="experience-item-stat-label">
+                        <div>feedback loops completed</div>
+                      </div>
+                    </div>
+                    <div class="experience-item-stat col-6 col-md-2">
+                      <div class="experience-item-stat-value">
+                        80%
+                      </div>
+                      <div class="experience-item-stat-label">
+                        <div>feedback quality score</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<footer class="container-fluid">
+  <div class="app-footer row">
+    <div class="app-footer-copyright col-md-4 col-lg-3">
+      © 2021 Practera
+    </div>
+    <div class="app-footer-menu col-md-8 col-lg-9"></div>
+  </div>
+</footer>

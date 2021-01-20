@@ -1,0 +1,105 @@
+//
+// APPLICATION + BOOTSTRAP STYLES
+//
+
+// Google fonts Roboto
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500&family=Roboto:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap');
+
+//
+// Import app and Bootstrap dependencies
+//
+
+@import '~bootstrap/scss/functions';
+
+@import './variables'; // Non-Bootstrap variables
+@import './bootstrap/variables'; // Bootstrap variables overrides
+@import '~bootstrap/scss/variables';
+
+@import '~bootstrap/scss/mixins';
+// Custom mixins (be sure to follow original mixin order: https://github.com/twbs/bootstrap/blob/main/scss/_mixins.scss)
+// @import './bootstrap/mixins/buttons';
+
+@import '~bootstrap/scss/utilities';
+
+//
+// Import Bootstrap piecemeal
+//
+
+@import '~bootstrap/scss/root';
+@import '~bootstrap/scss/reboot';
+@import '~bootstrap/scss/type';
+@import '~bootstrap/scss/images';
+@import '~bootstrap/scss/containers';
+@import '~bootstrap/scss/grid';
+// @import '~bootstrap/scss/tables';
+// @import '~bootstrap/scss/forms';
+@import '~bootstrap/scss/buttons';
+// @import "~bootstrap/scss/transitions";
+@import '~bootstrap/scss/dropdown';
+// @import '~bootstrap/scss/button-group';
+// @import '~bootstrap/scss/nav';
+// @import '~bootstrap/scss/navbar';
+@import '~bootstrap/scss/card';
+// @import "~bootstrap/scss/accordion";
+// @import "~bootstrap/scss/breadcrumb";
+// @import '~bootstrap/scss/pagination';
+@import '~bootstrap/scss/badge';
+// @import '~bootstrap/scss/alert';
+@import '~bootstrap/scss/progress';
+// @import "~bootstrap/scss/list-group";
+@import '~bootstrap/scss/close';
+// @import "~bootstrap/scss/toasts";
+@import '~bootstrap/scss/modal';
+// @import "~bootstrap/scss/tooltip";
+@import '~bootstrap/scss/popover';
+// @import "~bootstrap/scss/carousel";
+// @import "~bootstrap/scss/spinners";
+@import '~bootstrap/scss/helpers';
+@import '~bootstrap/scss/utilities/api';
+// scss-docs-end import-stack
+
+//
+// Customize Bootstrap as necessary
+// These files don't exist yet. To customize, copy from Bootstrap, edit, then uncomment.
+
+// @import './bootstrap/root';
+// @import './bootstrap/reboot';
+@import './bootstrap/type';
+// @import './bootstrap/images';
+// @import './bootstrap/containers';
+// @import './bootstrap/grid';
+// @import './bootstrap/tables';
+// @import './bootstrap/forms';
+@import './bootstrap/buttons';
+// @import './bootstrap/transitions';
+// @import './bootstrap/dropdown';
+// @import './bootstrap/button-group';
+// @import './bootstrap/nav';
+// @import './bootstrap/navbar';
+@import './bootstrap/card';
+// @import './bootstrap/accordion';
+// @import './bootstrap/breadcrumb';
+// @import './bootstrap/pagination';
+// @import './bootstrap/badge';
+// @import './bootstrap/alert';
+// @import './bootstrap/progress';
+// @import './bootstrap/list-group';
+// @import './bootstrap/close';
+// @import './bootstrap/toasts';
+// @import './bootstrap/modal';
+// @import './bootstrap/tooltip';
+// @import './bootstrap/popover';
+// @import './bootstrap/carousel';
+// @import './bootstrap/spinners';
+
+//
+// Unofficial bootstrap compoennts and mods
+//
+// @import '~react-bootstrap-range-slider/dist/react-bootstrap-range-slider';
+
+//
+// APPLICATION-ONLY STYLES
+// This is where non-Bootstrap-related styles go
+
+@import './progress-steps';
+@import './layout';

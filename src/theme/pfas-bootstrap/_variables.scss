@@ -1,0 +1,27 @@
+// Variables
+//
+// Variables should follow the `$component-state-property-size` formula for
+
+// Color system
+
+$pfas-primary-accessible:   #008296;
+$pfas-primary:              #2BC1D9;
+$pfas-accent:               #6A3DE0;
+$pfas-secondary:            #ADF82D;
+
+$pfas-green:                #4CAF50;
+$pfas-orange:               #FF9800;
+$pfas-red:                  #ff0000;
+
+$pfas-scent:                #F5F6FA;
+
+$pfas-colors: (
+  'pfas-primary-accessible': $pfas-primary-accessible,
+  'pfas-primary': $pfas-primary,
+  'pfas-secondary': $pfas-secondary,
+  'pfas-accent': $pfas-accent,
+  'pfas-green': $pfas-green,
+  'pfas-orange': $pfas-orange,
+  'pfas-red': $pfas-red,
+  'pfas-scent': $pfas-scent,
+);
