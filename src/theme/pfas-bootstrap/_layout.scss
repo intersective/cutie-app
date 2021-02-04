@@ -1,0 +1,211 @@
+body {
+  background-color: $pfas-scent;
+}
+
+.app-bar {
+  min-height: 64px;
+  border-bottom: $border-width solid $border-color;
+  background-color: white;
+
+  @include media-breakpoint-up(md) {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .app-bar-entity {
+    min-height: 48px;
+    padding-right: 0;
+    border-bottom: $border-width solid $border-color;
+    display: flex;
+    align-items: center;
+
+    @include media-breakpoint-up(md) {
+      border-bottom: 0;
+      border-right: $border-width solid $border-color;
+    }
+  }
+
+  .practera-brand {
+    width: 32px;
+    height: 32px;
+    padding-right: 56px;
+    margin-right: 16px;
+    position: relative;
+
+    img {
+      position: absolute;
+      left: 2px;
+      top: 2px;
+      width: 28px;
+      height: 28px;
+      display: block;
+    }
+
+    &:after {
+      content: "";
+      background-image: url("data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjMyIiB2aWV3Qm94PSIwIDAgMTggMzIiIHdpZHRoPSIxOCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJtMSAzMiAxNi0zMiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYWJhZWJiIi8+PC9zdmc+");
+      width: 16px;
+      height: 32px;
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+  }
+
+  .app-bar-active-entity {
+    padding: 0;
+    border-right: $border-width solid $border-color;
+  }
+
+  .entity-switcher {
+    padding-left: 16px;
+    padding-right: 16px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    @include media-breakpoint-up(md) {
+      height: 64px;
+      padding-left: 32px;
+      padding-right: 32px;
+    }
+    
+    .entity-switcher-label {
+      display: block;
+      font-size: 0.75rem;
+      line-height: 1rem;
+      color: $gray-600;
+    }
+
+    .entity-switcher-value {
+      display: block;
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+    }
+
+    ion-icon {
+      color: $gray-600;
+      font-size: 12px;
+    }
+  }
+
+  .app-bar-user {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    .user-avatar {
+      height: 32px;
+      display: flex;
+      align-items: center;
+
+      img {
+        width: 32px;
+        height: 32px;
+        border-radius: 16px;
+        margin-right: 8px;
+      }
+
+      ion-icon {
+        color: $gray-600;
+        font-size: 12px;
+      }
+    }
+  }
+}
+
+main {
+  flex-grow: 1;
+  overflow: auto;
+
+  @include media-breakpoint-up(md) {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
+.title-bar-tools {
+  display: flex;
+  align-items: center;
+  margin-top: $spacer;
+
+  @include media-breakpoint-up(md) {
+    justify-content: flex-end;
+    margin-top: 0;
+  }
+}
+
+main > .title-bar {
+  padding-top: 24px;
+  padding-bottom: 16px;
+
+  @include media-breakpoint-up(md) {
+    padding-top: 32px;
+  }
+
+  h1 {
+    margin-bottom: 0;
+    line-height: 2rem;
+  }
+}
+
+main > section {
+  padding-top: 24px;
+  padding-bottom: 24px;
+
+  > .title-bar {
+    padding-top: 16px;
+    padding-bottom: 16px;
+    align-items: center;
+
+    @include media-breakpoint-up(md) {
+      padding-top: 24px;
+    }
+
+    h2 {
+      margin-bottom: 0;
+      font-weight: $font-weight-medium;
+    }
+  }
+
+  aside,
+  section {
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+}
+
+.app-footer {
+  min-height: 64px;
+  border-top: $border-width solid $border-color;
+  background-color: white;
+
+  @include media-breakpoint-up(md) {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .app-footer-copyright {
+    min-height: 48px;
+    padding-right: 0;
+    border-bottom: $border-width solid $border-color;
+    display: flex;
+    align-items: center;
+
+    @include media-breakpoint-up(md) {
+      min-height: 64px;
+      border-bottom: 0;
+      border-right: $border-width solid $border-color;
+    }
+  }
+
+  .app-footer-menu {
+    display: none;
+  }
+
+  @include media-breakpoint-up(md) {
+    display: block;
+    border-right: $border-width solid $border-color;
+  }
+}

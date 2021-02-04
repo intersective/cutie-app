@@ -1,0 +1,41 @@
+.btn {
+  text-transform: uppercase;
+  font-weight: $font-weight-medium;
+  letter-spacing: 0.046875rem;
+  display: flex;
+  align-items: center;
+
+  &:hover {
+    text-decoration: none;
+  }
+
+  ion-icon {
+    font-size: 1.5rem;
+
+    &:first-child {
+      margin-right: 8px;
+    }
+
+    &:last-child {
+      margin-left: 8px;
+    }
+
+    &:only-child {
+      margin: 0;
+    }
+  }
+}
+
+.btn-link {
+  font-weight: $font-weight-medium;
+  text-transform: uppercase;
+}
+
+
+//
+// Button Sizes
+//
+
+.btn-lg {
+  border-radius: 1.5rem;
+}

@@ -19,6 +19,10 @@ const routes: Routes = [
     loadChildren: './chat/chat.module#ChatModule'
   },
   {
+    path: 'overview',
+    loadChildren: './overview/overview.module#OverviewModule'
+  },
+  {
     path: '',
     loadChildren: './menu/menu.module#MenuModule'
   }
