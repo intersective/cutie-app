@@ -45,6 +45,12 @@
             "scripts": [
               "./node_modules/pusher-js/dist/web/pusher.min.js"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "./node_modules/bootstrap/scss",
+                "src/theme"
+              ]
+            },
             "es5BrowserSupport": true
           },
           "configurations": {

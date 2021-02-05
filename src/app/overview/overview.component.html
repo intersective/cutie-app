@@ -1,30 +1,4 @@
-<header class="container-fluid">
-  <div class="app-bar row">
-    <div class="app-bar-entity col-md-4 col-lg-3">
-      <div class="practera-brand">
-        <img src="./assets/practera-mark.svg" alt="Practera">
-      </div>
-      <div class="entity-brand">
-        <img src="./assets/entity-mark.svg" alt="Entity">
-      </div>
-    </div>
-    <div class="app-bar-active-entity col-9 col-md-4 col-lg-3">
-      <div class="entity-switcher">
-        <div>
-          <span class="entity-switcher-label">Active institution</span>
-          <span class="entity-switcher-value">The University of Queensland</span>
-        </div>
-        <ion-icon name="caret-down-sharp"></ion-icon>
-      </div>
-    </div>
-    <div class="app-bar-user col-3 col-md-4 col-lg-6">
-      <div class="user-avatar">
-        <img src="https://place-hold.it/64x64/cccccc/FFF.png&text=AT&bold&fontsize=24" alt="Avatar">
-        <ion-icon name="caret-down-sharp"></ion-icon>
-      </div>
-    </div>
-  </div>
-</header>
+<!-- <app-header></app-header> -->
 
 <main>
 
@@ -42,41 +16,11 @@
   <section class="experiences-stats">
     <div class="container-fluid">
       <div class="row">
-        <div class="col-md-6 col-xl-3">
-          <div class="experiences-stat card">
-            <div class="experiences-stat-value">2</div>
-            <div class="experiences-stat-label">
-              <span>Live experiences</span>
-              <ion-icon name="information-circle"></ion-icon>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 col-xl-3">
-          <div class="experiences-stat card">
-            <div class="experiences-stat-value">80%</div>
-            <div class="experiences-stat-label">
-              <span>Recently active participants and mentors</span>
-              <ion-icon name="information-circle"></ion-icon>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 col-xl-3">
-          <div class="experiences-stat card">
-            <div class="experiences-stat-value">902/2,000</div>
-            <div class="experiences-stat-label">
-              <span>Feedback loops completed</span>
-              <ion-icon name="information-circle"></ion-icon>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 col-xl-3">
-          <div class="experiences-stat card">
-            <div class="experiences-stat-value">91%</div>
-            <div class="experiences-stat-label">
-              <span>Feedback quality score</span>
-              <ion-icon name="information-circle"></ion-icon>
-            </div>
-          </div>
+        <div class="col-md-6 col-xl-3" *ngFor="let stat of stats">
+          <app-stat-card
+            [statValue]="stat.value"
+            [statLabel]="stat.label"
+          ></app-stat-card>
         </div>
       </div>
     </div>
@@ -103,20 +47,8 @@
         <aside class="experiences-aside col-md-3">
           <h3>Filter by tags</h3>
           <div class="experience-tags-list">
-            <button type="button" class="experience-tag btn btn-sm btn-tag-active">
-              another tag <span class="experience-tag-count">1</span>
-            </button>
-            <button type="button" class="experience-tag btn btn-sm btn-tag-active">
-              another tag <span class="experience-tag-count">1</span>
-            </button>
-            <button type="button" class="experience-tag btn btn-sm btn-tag-inactive">
-              another tag <span class="experience-tag-count">1</span>
-            </button>
-            <button type="button" class="experience-tag btn btn-sm btn-tag-active">
-              another tag <span class="experience-tag-count">1</span>
-            </button>
-            <button type="button" class="experience-tag btn btn-sm btn-tag-inactive">
-              another tag <span class="experience-tag-count">1</span>
+            <button *ngFor="let tag of tags" type="button" class="experience-tag btn btn-sm" [ngClass]="{ 'btn-tag-active': tag.active, 'btn-tag-inactive': !tag.active }">
+              {{ tag.name }}<span class="experience-tag-count">1</span>
             </button>
           </div>
         </aside>
@@ -321,11 +253,4 @@
 
 </main>
 
-<footer class="container-fluid">
-  <div class="app-footer row">
-    <div class="app-footer-copyright col-md-4 col-lg-3">
-      © 2021 Practera
-    </div>
-    <div class="app-footer-menu col-md-8 col-lg-9"></div>
-  </div>
-</footer>
+<!-- <app-footer></app-footer> -->

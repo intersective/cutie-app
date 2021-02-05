@@ -19,7 +19,7 @@ const routes: Routes = [
     loadChildren: './chat/chat.module#ChatModule'
   },
   {
-    path: 'overview',
+    path: 'overview-only',
     loadChildren: './overview/overview.module#OverviewModule'
   },
   {
