@@ -306,11 +306,7 @@ export class DemoService {
     {
       uuid: '8fad2d07-8b17-9c09-b744-414c73767c29',
       name: 'Tech PM',
-      description: `Practera is the leading platform to power high quality experiential learning programs.
-Deliver experiential learning programs at larger scale and lower cost
-Customisable platform to author, launch & manage programs
-Connect students to industry projects, internships & experiences
-Expert course design, configuration and deployment services`,
+      description: `Practera is the leading platform to power high quality experiential learning programs.<br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services`,
       type: 'work simulation',
       status: 'draft',
       setupStep: 'configuration',
@@ -346,11 +342,7 @@ Expert course design, configuration and deployment services`,
     {
       uuid: '16c3d514-b459-b9d1-05c8-2bd1f582447c',
       name: 'XCELERY 2.0',
-      description: `Practera is the leading platform to power high quality experiential learning programs.
-Deliver experiential learning programs at larger scale and lower cost
-Customisable platform to author, launch & manage programs
-Connect students to industry projects, internships & experiences
-Expert course design, configuration and deployment services`,
+      description: `Practera is the leading platform to power high quality experiential learning programs.<br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services`,
       type: 'internship',
       status: 'live',
       setupStep: 'visuals',
@@ -370,13 +362,13 @@ Expert course design, configuration and deployment services`,
         enrolledUserCount: {
           admin: 4,
           coordinator: 3,
-          mentor: 2,
+          mentor: 3,
           participant: 15
         },
         registeredUserCount: {
           admin: 4,
           coordinator: 3,
-          mentor: 2,
+          mentor: 3,
           participant: 11
         },
         activeUserCount: {
@@ -389,17 +381,62 @@ Expert course design, configuration and deployment services`,
         feedbackLoopCompleted: 129,
         reviewRatingAvg: 0.83,
         onTrackRatio: 0.75,
-        lastUpdated: 1612493090353
+        lastUpdated: 1612774050261
+      }
+    },
+    {
+      uuid: '16c3d514-b459-b9d1-05c8-2bd1f582447d',
+      name: 'Teamnovation',
+      description: `Practera is the leading platform to power high quality experiential learning programs.<br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services`,
+      type: 'team project',
+      status: 'live',
+      setupStep: 'visuals',
+      leadImage: '',
+      todoItemCount: 3,
+      tags: [
+        {
+          id: 1,
+          name: 'tag 1'
+        },
+        {
+          id: 2,
+          name: 'tag 2'
+        },
+        {
+          id: 3,
+          name: 'tag 3'
+        },
+      ],
+      statistics: {
+        enrolledUserCount: {
+          admin: 4,
+          coordinator: 3,
+          mentor: 5,
+          participant: 53
+        },
+        registeredUserCount: {
+          admin: 4,
+          coordinator: 3,
+          mentor: 4,
+          participant: 50
+        },
+        activeUserCount: {
+          admin: 1,
+          coordinator: 3,
+          mentor: 2,
+          participant: 23
+        },
+        feedbackLoopStarted: 50,
+        feedbackLoopCompleted: 0,
+        reviewRatingAvg: 0,
+        onTrackRatio: -1,
+        lastUpdated: 1612775394683
       }
     },
     {
       uuid: '84f14db9-491a-09f7-ae61-9926f3ad8c8d',
       name: 'GROW 2020',
-      description: `Practera is the leading platform to power high quality experiential learning programs.
-Deliver experiential learning programs at larger scale and lower cost
-Customisable platform to author, launch & manage programs
-Connect students to industry projects, internships & experiences
-Expert course design, configuration and deployment services`,
+      description: `Practera is the leading platform to power high quality experiential learning programs.<br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services`,
       type: 'mentoring',
       status: 'completed',
       setupStep: 'visuals',
@@ -434,9 +471,9 @@ Expert course design, configuration and deployment services`,
           mentor: 0,
           participant: 0
         },
-        feedbackLoopStarted: 300,
-        feedbackLoopCompleted: 129,
-        reviewRatingAvg: 0.83,
+        feedbackLoopStarted: 120,
+        feedbackLoopCompleted: 56,
+        reviewRatingAvg: 0.76,
         onTrackRatio: -1,
         lastUpdated: 1612493090322
       }

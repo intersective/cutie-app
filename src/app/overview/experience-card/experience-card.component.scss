@@ -129,11 +129,11 @@
 
   @include media-breakpoint-up(lg) {
     justify-content: flex-end;
+  }
 
-    .experience-tag {
-      margin-right: 0;
-      margin-left: 0.5rem;
-    }
+  .experience-tag {
+    margin-right: 0;
+    margin-left: 0.5rem;
   }
 }
 
@@ -246,4 +246,8 @@
       line-height: 1.25rem;
     }
   }
+}
+
+.cursor-auto {
+  cursor: auto;
 }

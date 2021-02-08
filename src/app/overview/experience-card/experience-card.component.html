@@ -70,125 +70,114 @@
           <app-description [content]="experience.description" [popupTitle]="experience.name"></app-description>
         </div>
         <div class="experience-item-tags col-lg-6">
-          <a class="btn btn-link" (click)="addTag()">Add tags</a>
+          <ng-container *ngIf="!experience.tags.length">
+            <a class="btn btn-link" (click)="addTag()">Add tags</a>
+          </ng-container>
+          <ng-container *ngIf="experience.tags.length">
+            <span *ngFor="let tag of experience.tags" class="experience-tag btn btn-sm btn-tag cursor-auto">{{ tag.name }}</span>
+          </ng-container>
         </div>
       </div>
-      <div class="experience-item-stats row">
-        <div class="experience-item-stat col-4 col-lg-2">
-          <div class="experience-item-people">
-            <ion-icon name="people"></ion-icon> 110
-          </div>
-        </div>
-        <div class="experience-item-stat col-8 col-lg-10">
-          <div class="progress-steps">
-            <div class="progress-step done">
-              <div class="progress-step-number">1</div>
-              <div class="progress-step-label">Configuration complete</div>
-            </div>
-            <div class="progress-step">
-              <div class="progress-step-number">2</div>
-              <div class="progress-step-label">Visuals incomplete</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</article>
-
-
-<article class="experience-item card">
-  <div class="row">
-    <div class="experience-item-image col-lg-3">
-      <img src="https://place-hold.it/512x512/cccccc/FFF.png&text=EXP2&bold&fontsize=24" alt="Experience image">
-    </div>
-    <div class="experience-item-summary col-lg-9">
-      <div class="row">
-        <div class="experience-item-title col-lg-8">
-          <h3>Tech PM</h3>
-          <span class="experience-item-type">Work simulation</span>
-          <span class="experience-item-status status-draft">Draft</span>
-          <!-- status-draft, status-live, status-completed -->
-        </div>
-        <div class="experience-item-actions col-lg-4">
-          <span class="experience-item-timestamp">
-            40m
-            <ion-icon name="time-outline"></ion-icon>
-          </span>
-          <button class="btn btn-link">
-            <ion-icon name="ellipsis-horizontal"></ion-icon>
-          </button>
-        </div>
-      </div>
-      <div class="row">
-        <div class="experience-item-description col-lg-6">
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempo … <a>more</a></p>
-        </div>
-        <div class="experience-item-tags col-lg-6">
-          <span class="experience-tag btn btn-sm btn-tag">pen</span>
-          <span class="experience-tag btn btn-sm btn-tag">pineapple</span>
-          <span class="experience-tag btn btn-sm btn-tag">apple</span>
-        </div>
-      </div>
-      <div class="experience-item-stats row">
+      <div class="row experience-item-stats">
         <div class="experience-item-stat col-6 col-md-2">
-          <div class="experience-item-issues">
-            <button type="button" class="btn btn-sm btn-danger">
-              1 issue
-            </button>
+          <div *ngIf="experience.todoItemCount" class="experience-item-issues">
+            <span class="btn btn-sm btn-danger cursor-auto">
+              {{ experience.todoItemCount }} issue
+            </span>
           </div>
           <div class="experience-item-people">
-            <ion-icon name="people"></ion-icon> 110
+            <ion-icon name="people"></ion-icon>{{ userCount() }}
           </div>
         </div>
-        <div class="experience-item-stat col-6 col-md-2">
-          <div class="experience-item-stat-value">
-            <div class="experience-item-stat-pulse">
-              <div class="progress">
-                <div class="progress-bar bg-success" role="progressbar" style="width: 60.5%" aria-valuenow="60.5" aria-valuemin="0" aria-valuemax="100"></div>
-                <div class="progress-bar bg-danger" role="progressbar" style="width: 39.5%" aria-valuenow="39.5" aria-valuemin="0" aria-valuemax="100"></div>
+
+        <ng-container [ngSwitch]="experience.status">
+          <ng-container *ngSwitchCase="'draft'">
+            <div class="experience-item-stat col-6 col-md-10">
+              <div class="progress-steps">
+                <div class="progress-step" [ngClass]="{'done': ['configuration', 'visual'].includes(experience.setupStep)}">
+                  <div class="progress-step-number">1</div>
+                  <div class="progress-step-label">Configuration complete</div>
+                </div>
+                <div class="progress-step" [ngClass]="{'done': ['visual'].includes(experience.setupStep)}">
+                  <div class="progress-step-number">2</div>
+                  <div class="progress-step-label">Visuals incomplete</div>
+                </div>
               </div>
-              <ion-icon name="information-circle"></ion-icon>
             </div>
-          </div>
-          <div class="experience-item-stat-label">
-            <div>60.5% <span class="text-success">on-track</span></div>
-            <div>39.5% <span class="text-danger">off-track</span></div>
-          </div>
-        </div>
-        <div class="experience-item-stat col-6 col-md-2">
-          <div class="experience-item-stat-value">
-            70%
-          </div>
-          <div class="experience-item-stat-label">
-            <div>of participants recently active</div>
-          </div>
-        </div>
-        <div class="experience-item-stat col-6 col-md-2">
-          <div class="experience-item-stat-value">
-            70%
-          </div>
-          <div class="experience-item-stat-label">
-            <div>of mentors recently active</div>
-          </div>
-        </div>
-        <div class="experience-item-stat col-6 col-md-2">
-          <div class="experience-item-stat-value">
-            129/300
-          </div>
-          <div class="experience-item-stat-label">
-            <div>feedback loops completed</div>
-          </div>
-        </div>
-        <div class="experience-item-stat col-6 col-md-2">
-          <div class="experience-item-stat-value">
-            80%
-          </div>
-          <div class="experience-item-stat-label">
-            <div>feedback quality score</div>
-          </div>
-        </div>
+          </ng-container>
+
+          <ng-container *ngSwitchCase="'live'">
+            <div class="experience-item-stat col-6 col-md-2">
+              <div class="experience-item-stat-value">
+                <div class="experience-item-stat-pulse">
+                  <div class="progress">
+                    <div *ngIf="onTrack()" class="progress-bar bg-success" role="progressbar" [style]="'width: ' + onTrack() + '%'" [aria-valuenow]="onTrack()" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div *ngIf="offTrack()" class="progress-bar bg-danger" role="progressbar" [style]="'width: ' + offTrack() + '%'" [aria-valuenow]="offTrack()" aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                  <button class="btn p-0 shadow-none" type="button" (click)="onTrackInfo()">
+                    <ion-icon name="information-circle"></ion-icon>
+                  </button>
+                </div>
+              </div>
+              <div class="experience-item-stat-label">
+                <div>{{ onTrack() ? onTrack() + '%' : 'N/A' }} <span class="text-success">on-track</span></div>
+                <div>{{ offTrack() ? offTrack() + '%' : 'N/A' }} <span class="text-danger">off-track</span></div>
+              </div>
+            </div>
+            <div class="experience-item-stat col-6 col-md-2">
+              <div class="experience-item-stat-value">
+                {{ activeParticipant() }}%
+              </div>
+              <div class="experience-item-stat-label">
+                <div>of participants recently active</div>
+              </div>
+            </div>
+            <div class="experience-item-stat col-6 col-md-2">
+              <div class="experience-item-stat-value">
+                {{ activeMentor() }}%
+              </div>
+              <div class="experience-item-stat-label">
+                <div>of mentors recently active</div>
+              </div>
+            </div>
+            <div class="experience-item-stat col-6 col-md-2">
+              <ng-container *ngTemplateOutlet="feedbackLoop"></ng-container>
+            </div>
+            <div class="experience-item-stat col-6 col-md-2">
+              <ng-container *ngTemplateOutlet="reviewRating"></ng-container>
+            </div>
+          </ng-container>
+
+          <ng-container *ngSwitchCase="'completed'">
+            <div class="col-6 col-md-6"></div>
+            <div class="experience-item-stat col-6 col-md-2">
+              <ng-container *ngTemplateOutlet="feedbackLoop"></ng-container>
+            </div>
+            <div class="experience-item-stat col-6 col-md-2">
+              <ng-container *ngTemplateOutlet="reviewRating"></ng-container>
+            </div>
+          </ng-container>
+        </ng-container>
+
       </div>
     </div>
   </div>
 </article>
+
+<ng-template #feedbackLoop>
+  <div class="experience-item-stat-value">
+    {{ experience.statistics.feedbackLoopCompleted || 0 }}/{{ experience.statistics.feedbackLoopStarted || 0 }}
+  </div>
+  <div class="experience-item-stat-label">
+    <div>feedback loops completed</div>
+  </div>
+</ng-template>
+
+<ng-template #reviewRating>
+  <div class="experience-item-stat-value">
+    {{ experience.statistics.reviewRatingAvg * 100 || 0 }}%
+  </div>
+  <div class="experience-item-stat-label">
+    <div>feedback quality score</div>
+  </div>
+</ng-template>
