@@ -351,11 +351,11 @@ export class DemoService {
       tags: [
         {
           id: 1,
-          name: 'tag 1'
+          name: 'apple'
         },
         {
           id: 2,
-          name: 'tag 2'
+          name: 'banana'
         }
       ],
       statistics: {
@@ -396,15 +396,15 @@ export class DemoService {
       tags: [
         {
           id: 1,
-          name: 'tag 1'
+          name: 'apple'
         },
         {
           id: 2,
-          name: 'tag 2'
+          name: 'banana'
         },
         {
           id: 3,
-          name: 'tag 3'
+          name: 'watermelon'
         },
       ],
       statistics: {
@@ -445,11 +445,11 @@ export class DemoService {
       tags: [
         {
           id: 1,
-          name: 'tag 1'
+          name: 'apple'
         },
         {
           id: 3,
-          name: 'tag 3'
+          name: 'watermelon'
         }
       ],
       statistics: {

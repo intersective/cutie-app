@@ -2,7 +2,7 @@
   <div class="card-body">
     <h3 class="card-title">{{ title }}</h3>
     <hr/>
-    <p class="card-text">{{ content }}</p>
+    <p class="card-text" [innerHTML]="content"></p>
     <button type="button" class="btn btn-primary float-end" (click)="confirmed()">OK</button>
   </div>
 </div>

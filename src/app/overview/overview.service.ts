@@ -19,6 +19,8 @@ export interface Experience {
 export interface Tag {
   id: number;
   name: string;
+  active?: boolean;
+  count?: number;
 }
 
 export interface Statistics {

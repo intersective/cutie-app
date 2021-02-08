@@ -47,7 +47,13 @@
         <aside class="experiences-aside col-md-3">
           <h3>Filter by tags</h3>
           <div class="experience-tags-list">
-            <button *ngFor="let tag of tags" type="button" class="experience-tag btn btn-sm" [ngClass]="{ 'btn-tag-active': tag.active, 'btn-tag-inactive': !tag.active }">
+            <button
+              *ngFor="let tag of tags"
+              type="button"
+              class="experience-tag btn btn-sm"
+              [ngClass]="{ 'btn-tag-active': tag.active, 'btn-tag-inactive': !tag.active }"
+              (click)="filterByTag(tag)"
+            >
               {{ tag.name }}<span class="experience-tag-count">{{ tag.count }}</span>
             </button>
           </div>
