@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Experience, OverviewService } from './overview.service';
 
 @Component({
   selector: 'app-overview',
@@ -24,16 +25,44 @@ export class OverviewComponent implements OnInit {
       value: '91%'
     }
   ];
-  tags = Array(5).fill(1).forEach((x, i) => {
+  tags = Array(5).fill(1).map((x, i) => {
     return {
       id: i,
       name: `tag${ i }`,
-      active: Math.random() > 0.5
+      active: Math.random() > 0.5,
+      count: 1
     };
   });
+  types = ['all', 'internship', 'mentoring', 'skills portfolio'];
+  status = 'all';
+  type = 'all';
 
-  constructor() { }
+  experiences: Experience[] = [];
 
-  ngOnInit() {console.log(this.tags)}
+  constructor(
+    private service: OverviewService
+  ) { }
+
+  ngOnInit() {
+    this.service.getExperiences().subscribe(res => {
+      this.experiences = res;
+    });
+  }
+
+  filterByStatus(status: string) {
+    if (this.status === status) {
+      return;
+    }
+    console.log('filter:', status);
+    this.status = status;
+  }
+
+  filterByType(type: string) {
+    if (this.type === type) {
+      return;
+    }
+    console.log('filter:', type);
+    this.type = type;
+  }
 
 }

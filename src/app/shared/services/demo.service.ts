@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { UtilsService } from '@services/utils.service';
 import { StorageService } from '@services/storage.service';
+import { of } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { delay } from 'rxjs/internal/operators';
 
 const CHARACTERS = {
   avengers: {
@@ -295,6 +298,147 @@ export class DemoService {
       team: {
         uuid: '5f9f938f-392c-4424-a1bd-15f1ac110002',
         name: 'Team 2'
+      }
+    }
+  ];
+
+  experiences = [
+    {
+      uuid: '8fad2d07-8b17-9c09-b744-414c73767c29',
+      name: 'Tech PM',
+      description: `Practera is the leading platform to power high quality experiential learning programs.
+Deliver experiential learning programs at larger scale and lower cost
+Customisable platform to author, launch & manage programs
+Connect students to industry projects, internships & experiences
+Expert course design, configuration and deployment services`,
+      type: 'work simulation',
+      status: 'draft',
+      setupStep: 'configuration',
+      leadImage: '',
+      todoItemCount: 0,
+      tags: [],
+      statistics: {
+        enrolledUserCount: {
+          admin: 0,
+          coordinator: 0,
+          mentor: 0,
+          participant: 0
+        },
+        registeredUserCount: {
+          admin: 0,
+          coordinator: 0,
+          mentor: 0,
+          participant: 0
+        },
+        activeUserCount: {
+          admin: 0,
+          coordinator: 0,
+          mentor: 0,
+          participant: 0
+        },
+        feedbackLoopStarted: 0,
+        feedbackLoopCompleted: 0,
+        reviewRatingAvg: 0,
+        onTrackRatio: -1,
+        lastUpdated: 1612493090291
+      }
+    },
+    {
+      uuid: '16c3d514-b459-b9d1-05c8-2bd1f582447c',
+      name: 'XCELERY 2.0',
+      description: `Practera is the leading platform to power high quality experiential learning programs.
+Deliver experiential learning programs at larger scale and lower cost
+Customisable platform to author, launch & manage programs
+Connect students to industry projects, internships & experiences
+Expert course design, configuration and deployment services`,
+      type: 'internship',
+      status: 'live',
+      setupStep: 'visuals',
+      leadImage: '',
+      todoItemCount: 1,
+      tags: [
+        {
+          id: 1,
+          name: 'tag 1'
+        },
+        {
+          id: 2,
+          name: 'tag 2'
+        }
+      ],
+      statistics: {
+        enrolledUserCount: {
+          admin: 4,
+          coordinator: 3,
+          mentor: 2,
+          participant: 15
+        },
+        registeredUserCount: {
+          admin: 4,
+          coordinator: 3,
+          mentor: 2,
+          participant: 11
+        },
+        activeUserCount: {
+          admin: 1,
+          coordinator: 1,
+          mentor: 2,
+          participant: 8
+        },
+        feedbackLoopStarted: 300,
+        feedbackLoopCompleted: 129,
+        reviewRatingAvg: 0.83,
+        onTrackRatio: 0.75,
+        lastUpdated: 1612493090353
+      }
+    },
+    {
+      uuid: '84f14db9-491a-09f7-ae61-9926f3ad8c8d',
+      name: 'GROW 2020',
+      description: `Practera is the leading platform to power high quality experiential learning programs.
+Deliver experiential learning programs at larger scale and lower cost
+Customisable platform to author, launch & manage programs
+Connect students to industry projects, internships & experiences
+Expert course design, configuration and deployment services`,
+      type: 'mentoring',
+      status: 'completed',
+      setupStep: 'visuals',
+      leadImage: '',
+      todoItemCount: 0,
+      tags: [
+        {
+          id: 1,
+          name: 'tag 1'
+        },
+        {
+          id: 3,
+          name: 'tag 3'
+        }
+      ],
+      statistics: {
+        enrolledUserCount: {
+          admin: 0,
+          coordinator: 0,
+          mentor: 1,
+          participant: 21
+        },
+        registeredUserCount: {
+          admin: 0,
+          coordinator: 0,
+          mentor: 1,
+          participant: 21
+        },
+        activeUserCount: {
+          admin: 0,
+          coordinator: 0,
+          mentor: 0,
+          participant: 0
+        },
+        feedbackLoopStarted: 300,
+        feedbackLoopCompleted: 129,
+        reviewRatingAvg: 0.83,
+        onTrackRatio: -1,
+        lastUpdated: 1612493090322
       }
     }
   ];
@@ -818,6 +962,10 @@ export class DemoService {
         }
       }
     };
+  }
+
+  getExperiences() {
+    return of(this.experiences).pipe(delay(1000));
   }
 
 }

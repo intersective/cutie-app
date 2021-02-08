@@ -16,6 +16,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { RequestModule } from '@shared/request/request.module';
 import { PusherModule } from '@shared/pusher/pusher.module';
 import { UtilsService } from '@services/utils.service';
+import { PopupModule } from '@shared/popup/popup.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -31,7 +32,8 @@ import { UtilsService } from '@services/utils.service';
       pusherKey: environment.pusherKey,
     }),
     ApolloModule,
-    HttpLinkModule
+    HttpLinkModule,
+    PopupModule
   ],
   providers: [
     StatusBar,

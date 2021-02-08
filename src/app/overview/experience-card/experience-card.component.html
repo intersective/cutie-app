@@ -1,0 +1,194 @@
+<article class="experience-item card">
+  <div class="row">
+    <div class="experience-item-image col-lg-3">
+      <img [src]="experience.leadImage || 'https://place-hold.it/512x512/cccccc/FFF.png&text=EXP&bold&fontsize=24'" alt="Experience image">
+    </div>
+    <div class="experience-item-summary col-lg-9">
+      <div class="row">
+        <div class="experience-item-title col-lg-8">
+          <h3>{{ experience.name }}</h3>
+          <span class="experience-item-type">{{ experience.type | titlecase }}</span>
+          <span class="experience-item-status" [ngClass]="{
+            'status-draft': experience.status === 'draft',
+            'status-live': experience.status === 'live',
+            'status-completed': experience.status === 'completed',
+            'status-archived': experience.status === 'archived'
+          }">{{ experience.status | titlecase }}</span>
+        </div>
+        <div class="experience-item-actions col-lg-4">
+
+          <ng-container *ngIf="experience.status === 'draft'">
+            <a class="btn btn-link">Resume building</a>
+          </ng-container>
+          <ng-container *ngIf="experience.status !== 'draft'">
+            <button class="btn btn-link shadow-none" type="button" [id]="'last-update-' + experience.uuid" data-bs-toggle="dropdown" aria-expanded="false">
+              <span class="experience-item-timestamp">
+                {{ lastUpdated() }}<ion-icon name="time-outline"></ion-icon>
+              </span>
+            </button>
+            <ul class="dropdown-menu" [aria-labelledby]="'last-update-' + experience.uuid">
+              <li class="px-3 gray-2">Statistics last updated {{ lastUpdated() }} ago</li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <a class="dropdown-item" (click)="refresh()">
+                  <ion-icon name="refresh"></ion-icon><span class="ms-2">Refresh Now</span>
+                </a>
+              </li>
+            </ul>
+          </ng-container>
+
+          <button class="btn btn-link shadow-none" type="button" [id]="'option-' + experience.uuid" data-bs-toggle="dropdown" aria-expanded="false">
+            <ion-icon name="ellipsis-horizontal"></ion-icon>
+          </button>
+          <ul class="dropdown-menu" [aria-labelledby]="'option-' + experience.uuid">
+            <li>
+              <a class="dropdown-item" (click)="edit()">
+                <ion-icon name="pencil"></ion-icon><span class="ms-2">Edit</span>
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" (click)="addTag()">
+                <ion-icon name="pricetag"></ion-icon><span class="ms-2">Add or edit tags</span>
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" (click)="duplicate()">
+                <ion-icon name="copy"></ion-icon><span class="ms-2">Duplicate</span>
+              </a>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+            <li>
+              <a class="dropdown-item text-danger" (click)="delete()">
+                <ion-icon name="trash"></ion-icon><span class="ms-2">Delete</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        <div class="experience-item-description col-lg-6">
+          <app-description [content]="experience.description" [popupTitle]="experience.name"></app-description>
+        </div>
+        <div class="experience-item-tags col-lg-6">
+          <a class="btn btn-link" (click)="addTag()">Add tags</a>
+        </div>
+      </div>
+      <div class="experience-item-stats row">
+        <div class="experience-item-stat col-4 col-lg-2">
+          <div class="experience-item-people">
+            <ion-icon name="people"></ion-icon> 110
+          </div>
+        </div>
+        <div class="experience-item-stat col-8 col-lg-10">
+          <div class="progress-steps">
+            <div class="progress-step done">
+              <div class="progress-step-number">1</div>
+              <div class="progress-step-label">Configuration complete</div>
+            </div>
+            <div class="progress-step">
+              <div class="progress-step-number">2</div>
+              <div class="progress-step-label">Visuals incomplete</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+
+
+<article class="experience-item card">
+  <div class="row">
+    <div class="experience-item-image col-lg-3">
+      <img src="https://place-hold.it/512x512/cccccc/FFF.png&text=EXP2&bold&fontsize=24" alt="Experience image">
+    </div>
+    <div class="experience-item-summary col-lg-9">
+      <div class="row">
+        <div class="experience-item-title col-lg-8">
+          <h3>Tech PM</h3>
+          <span class="experience-item-type">Work simulation</span>
+          <span class="experience-item-status status-draft">Draft</span>
+          <!-- status-draft, status-live, status-completed -->
+        </div>
+        <div class="experience-item-actions col-lg-4">
+          <span class="experience-item-timestamp">
+            40m
+            <ion-icon name="time-outline"></ion-icon>
+          </span>
+          <button class="btn btn-link">
+            <ion-icon name="ellipsis-horizontal"></ion-icon>
+          </button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="experience-item-description col-lg-6">
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempo … <a>more</a></p>
+        </div>
+        <div class="experience-item-tags col-lg-6">
+          <span class="experience-tag btn btn-sm btn-tag">pen</span>
+          <span class="experience-tag btn btn-sm btn-tag">pineapple</span>
+          <span class="experience-tag btn btn-sm btn-tag">apple</span>
+        </div>
+      </div>
+      <div class="experience-item-stats row">
+        <div class="experience-item-stat col-6 col-md-2">
+          <div class="experience-item-issues">
+            <button type="button" class="btn btn-sm btn-danger">
+              1 issue
+            </button>
+          </div>
+          <div class="experience-item-people">
+            <ion-icon name="people"></ion-icon> 110
+          </div>
+        </div>
+        <div class="experience-item-stat col-6 col-md-2">
+          <div class="experience-item-stat-value">
+            <div class="experience-item-stat-pulse">
+              <div class="progress">
+                <div class="progress-bar bg-success" role="progressbar" style="width: 60.5%" aria-valuenow="60.5" aria-valuemin="0" aria-valuemax="100"></div>
+                <div class="progress-bar bg-danger" role="progressbar" style="width: 39.5%" aria-valuenow="39.5" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <ion-icon name="information-circle"></ion-icon>
+            </div>
+          </div>
+          <div class="experience-item-stat-label">
+            <div>60.5% <span class="text-success">on-track</span></div>
+            <div>39.5% <span class="text-danger">off-track</span></div>
+          </div>
+        </div>
+        <div class="experience-item-stat col-6 col-md-2">
+          <div class="experience-item-stat-value">
+            70%
+          </div>
+          <div class="experience-item-stat-label">
+            <div>of participants recently active</div>
+          </div>
+        </div>
+        <div class="experience-item-stat col-6 col-md-2">
+          <div class="experience-item-stat-value">
+            70%
+          </div>
+          <div class="experience-item-stat-label">
+            <div>of mentors recently active</div>
+          </div>
+        </div>
+        <div class="experience-item-stat col-6 col-md-2">
+          <div class="experience-item-stat-value">
+            129/300
+          </div>
+          <div class="experience-item-stat-label">
+            <div>feedback loops completed</div>
+          </div>
+        </div>
+        <div class="experience-item-stat col-6 col-md-2">
+          <div class="experience-item-stat-value">
+            80%
+          </div>
+          <div class="experience-item-stat-label">
+            <div>feedback quality score</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</article>

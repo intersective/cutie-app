@@ -1,0 +1,15 @@
+<div class="wrapper">
+  <div class="text-content">
+    <p
+      #description
+      [innerHtml]="getContent()"
+      [ngClass]="{'limit-height': isTruncated()}"
+    ></p>
+  </div>
+
+  <ng-container *ngIf="isTruncated()">
+    ...
+    <a class="btn btn-link float-end" (click)="showMore()">more</a>
+  </ng-container>
+
+</div>

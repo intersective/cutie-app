@@ -1,3 +1,10 @@
+.practera-popup {
+  .modal-wrapper {
+    --background: transparent;
+    --box-shadow: none;
+  }
+}
+
 .popover-action {
   --width: auto;
   --height: fit-content;

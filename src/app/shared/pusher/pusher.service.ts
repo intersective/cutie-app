@@ -170,6 +170,9 @@ export class PusherService {
    * connected + authorised pusher
    */
    async getChannels() {
+    if (environment.demo) {
+      return;
+    }
     await this.getNotificationChannel().toPromise();
     await this.getChatChannels().toPromise();
   }
