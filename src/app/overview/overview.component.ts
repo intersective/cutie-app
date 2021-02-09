@@ -10,23 +10,23 @@ export class OverviewComponent implements OnInit {
   stats = [
     {
       label: 'Live experiences',
-      value: '2'
+      value: ''
     },
     {
       label: 'Recently active participants and mentors',
-      value: '80%'
+      value: ''
     },
     {
       label: 'Feedback loops completed',
-      value: '902/2000'
+      value: ''
     },
     {
       label: 'Feedback quality score',
-      value: '91%'
+      value: ''
     }
   ];
   tags = [];
-  types = ['all', 'internship', 'mentoring', 'skills portfolio'];
+  types = ['all'];
   status = 'all';
   type = 'all';
 
@@ -41,6 +41,8 @@ export class OverviewComponent implements OnInit {
     this.service.getExperiences().subscribe(res => {
       this.experiences = res;
       this.experiencesRaw = res;
+      this.calculateStatistics();
+      // get all tags
       this.tags = [];
       res.forEach(exp => {
         exp.tags.forEach(t => {
@@ -58,7 +60,38 @@ export class OverviewComponent implements OnInit {
           }
         });
       });
+      // get all types
+      this.types = [...['all'], ...res.map(exp => exp.type)];
+      this.types = [...new Set(this.types)];
     });
+  }
+
+  calculateStatistics() {
+    let liveExpCount = 0;
+    let activeUsers = 0;
+    let totalUsers = 0;
+    let fbCompleted = 0;
+    let fbStarted = 0;
+    let reviewRatingAvg = 0;
+    this.experiences.forEach(exp => {
+      if (exp.status === 'live') {
+        liveExpCount ++;
+      }
+      const stat = exp.statistics;
+      activeUsers += stat.activeUserCount.participant + stat.activeUserCount.mentor;
+      totalUsers += stat.registeredUserCount.participant + stat.registeredUserCount.mentor;
+      fbCompleted += stat.feedbackLoopCompleted;
+      fbStarted += stat.feedbackLoopStarted;
+      if (reviewRatingAvg === 0) {
+        reviewRatingAvg = stat.reviewRatingAvg;
+      } else {
+        reviewRatingAvg = (reviewRatingAvg + stat.reviewRatingAvg) / 2;
+      }
+    });
+    this.stats[0].value = liveExpCount.toString();
+    this.stats[1].value = totalUsers ? `${ Math.round(activeUsers * 100 / totalUsers) }%` : '0%';
+    this.stats[2].value = fbStarted ? `${ fbCompleted }/${ fbStarted }` : '0/0';
+    this.stats[3].value = `${ Math.round(reviewRatingAvg * 100) }%`;
   }
 
   filterByTag(tag: Tag) {
@@ -70,6 +103,7 @@ export class OverviewComponent implements OnInit {
     } else {
       this.experiences = this.experiencesRaw.filter(exp => exp.tags.find(t => activeTagIds.includes(t.id)));
     }
+    this.calculateStatistics();
   }
 
   filterByStatus(status: string) {
@@ -82,14 +116,20 @@ export class OverviewComponent implements OnInit {
       this.experiences = this.experiencesRaw.filter(exp => exp.status === status);
     }
     this.status = status;
+    this.calculateStatistics();
   }
 
   filterByType(type: string) {
     if (this.type === type) {
       return;
     }
-    console.log('filter:', type);
+    if (type === 'all') {
+      this.experiences = this.experiencesRaw;
+    } else {
+      this.experiences = this.experiencesRaw.filter(exp => exp.type === type);
+    }
     this.type = type;
+    this.calculateStatistics();
   }
 
 }

@@ -9,6 +9,7 @@ import { PopupService } from '@shared/popup/popup.service';
 })
 export class DescriptionComponent {
   heightLimit = 35;
+  isTruncated = false;
   @Input() content;
   @Input() popupTitle;
   @ViewChild('description') descriptionRef: ElementRef;
@@ -22,11 +23,16 @@ export class DescriptionComponent {
     return this.sanitizer.bypassSecurityTrustHtml(this.content);
   }
 
-  isTruncated() {
-    if (!this.descriptionRef) {
-      return false;
-    }
-    return this.descriptionRef.nativeElement.clientHeight >= this.heightLimit;
+  ngOnChanges() {
+    setTimeout(
+      () => {
+        if (this.descriptionRef.nativeElement.clientHeight >= this.heightLimit) {
+          this.isTruncated = true;
+        } else {
+          this.isTruncated = false;
+        }
+      }
+    );
   }
 
   showMore() {
@@ -34,4 +40,3 @@ export class DescriptionComponent {
   }
 
 }
-
