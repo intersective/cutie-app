@@ -48,11 +48,11 @@
           <h3>Filter by tags</h3>
           <div class="experience-tags-list">
             <button
-              *ngFor="let tag of tags"
+              *ngFor="let tag of tags; let i = index"
               type="button"
               class="experience-tag btn btn-sm"
               [ngClass]="{ 'btn-tag-active': tag.active, 'btn-tag-inactive': !tag.active }"
-              (click)="filterByTag(tag)"
+              (click)="tags[i].active = !tag.active; filterAndOrder()"
             >
               {{ tag.name }}<span class="experience-tag-count">{{ tag.count }}</span>
             </button>
@@ -67,12 +67,37 @@
                   {{ status | titlecase }}
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="filterStatus">
-                  <li><a class="dropdown-item" (click)="filterByStatus('all')">All</a></li>
-                  <li><a class="dropdown-item" (click)="filterByStatus('draft')">Draft</a></li>
-                  <li><a class="dropdown-item" (click)="filterByStatus('live')">Live</a></li>
-                  <li><a class="dropdown-item" (click)="filterByStatus('completed')">Completed</a></li>
+                  <li>
+                    <a class="dropdown-item" (click)="status = 'all'; filterAndOrder()">
+                      All
+                      <span *ngIf="status === 'all'"><ion-icon name="checkmark"></ion-icon></span>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" (click)="status = 'draft'; filterAndOrder()">
+                      Draft
+                      <span *ngIf="status === 'draft'"><ion-icon name="checkmark"></ion-icon></span>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" (click)="status = 'live'; filterAndOrder()">
+                      Live
+                      <span *ngIf="status === 'live'"><ion-icon name="checkmark"></ion-icon></span>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" (click)="status = 'completed'; filterAndOrder()">
+                      Completed
+                      <span *ngIf="status === 'completed'"><ion-icon name="checkmark"></ion-icon></span>
+                    </a>
+                  </li>
                   <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" (click)="filterByStatus('archived')">Archived</a></li>
+                  <li>
+                    <a class="dropdown-item" (click)="status = 'archived'; filterAndOrder()">
+                      Archived
+                      <span *ngIf="status === 'archived'"><ion-icon name="checkmark"></ion-icon></span>
+                    </a>
+                  </li>
                 </ul>
               </div>
             </div>
@@ -83,7 +108,12 @@
                   {{ type | titlecase }}
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="filterType">
-                  <li *ngFor="let type of types"><a class="dropdown-item" (click)="filterByType(type)">{{ type | titlecase }}</a></li>
+                  <li *ngFor="let t of types">
+                    <a class="dropdown-item" (click)="type = t; filterAndOrder()">
+                      {{ t | titlecase }}
+                      <span *ngIf="type === t"><ion-icon name="checkmark"></ion-icon></span>
+                    </a>
+                  </li>
                 </ul>
               </div>
             </div>
@@ -91,18 +121,24 @@
               <span>Sort by</span>
               <div class="dropdown">
                 <button class="btn btn-link dropdown-toggle shadow-none" type="button" id="filterSort" data-bs-toggle="dropdown" aria-expanded="false">
-                  All
+                  {{ sortBy | titlecase }}
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="filterSort">
-                  <li><a class="dropdown-item">Action</a></li>
-                  <li><a class="dropdown-item">Another action</a></li>
-                  <li><a class="dropdown-item">Something else here</a></li>
+                  <li *ngFor="let s of sortList">
+                    <a class="dropdown-item" (click)="sortBy = s; filterAndOrder()">
+                      {{ s | titlecase }}
+                      <span *ngIf="sortBy === s"><ion-icon name="checkmark"></ion-icon></span>
+                    </a>
+                  </li>
                 </ul>
               </div>
             </div>
             <div class="experiences-filter">
               <span>Sort order</span>
-              <ion-icon name="arrow-down"></ion-icon>
+              <button class="btn shadow-none" (click)="sortDesc = !sortDesc; filterAndOrder()">
+                <ion-icon *ngIf="sortDesc" name="arrow-down"></ion-icon>
+                <ion-icon *ngIf="!sortDesc" name="arrow-up"></ion-icon>
+              </button>
             </div>
           </div>
 
