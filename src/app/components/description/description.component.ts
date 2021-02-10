@@ -31,7 +31,8 @@ export class DescriptionComponent {
         } else {
           this.isTruncated = false;
         }
-      }
+      },
+      100
     );
   }
 

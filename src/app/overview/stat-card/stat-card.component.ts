@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { PopupService } from '@shared/popup/popup.service';
 
 @Component({
   selector: 'app-stat-card',
@@ -8,7 +9,13 @@ import { Component, Input } from '@angular/core';
 export class StatCardComponent {
   @Input() statValue: string;
   @Input() statLabel: string;
+  @Input() statDescription: string;
 
-  constructor() { }
+  constructor(
+    private popupService: PopupService
+  ) { }
 
+  showInfo() {
+    this.popupService.description(this.statLabel, this.statDescription);
+  }
 }

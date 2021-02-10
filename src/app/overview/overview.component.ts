@@ -10,19 +10,30 @@ export class OverviewComponent implements OnInit {
   stats = [
     {
       label: 'Live experiences',
-      value: ''
+      value: '',
+      description: 'Displays all experiences which are currently live. An experience is live when the status is moved from "Draft" to "Live" and the content is now visible to all registered users.'
     },
     {
       label: 'Recently active participants and mentors',
-      value: ''
+      value: '',
+      description: 'Reflects the percentage of participants who logged in at least once during the past 7 days out of the total number.'
     },
     {
       label: 'Feedback loops completed',
-      value: ''
+      value: '',
+      description: `
+        <p>Reflects the started and completed feedback loops. A feedback loop counts as completed if all stages are completed:</p>
+        <ul>
+          <li>Assessment submitted by a team</li>
+          <li>Mentor reviewed assessment and submitted feedback</li>
+          <li>Team members read feedback</li>
+        </ul>
+        <p>A feedback loop helps participants to process the way they learn in practice and is triggered after certain events (e.g. moderated assessment) which can happen multiple times over the duration of a program.</p>`
     },
     {
       label: 'Feedback quality score',
-      value: ''
+      value: '',
+      description: `This is the average rating given by participants to mentors' feedback based on how helpful they find it (on a scale of 0-100%). It is done at the end of the feedback loop and can happen multiple times during the course of the program (e.g. moderated assessment). `
     }
   ];
   sortList = [
