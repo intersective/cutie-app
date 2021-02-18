@@ -42,6 +42,14 @@ export class ExperienceCardComponent {
     return total;
   }
 
+  userCountStyle(role: string) {
+    if (!this.experience.statistics.enrolledUserCount[role]) {
+      return '';
+    }
+    const ratio = Math.round(this.experience.statistics.registeredUserCount[role] * 100 / this.experience.statistics.enrolledUserCount[role]);
+    return `linear-gradient(90deg, var(--ion-color-primary-tint) ${ ratio }%, #fff ${ 100 - ratio }%)`;
+  }
+
   onTrack() {
     if (!this.experience.statistics) {
       return null;

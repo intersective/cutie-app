@@ -224,6 +224,16 @@
       font-size: 1.5rem;
       margin-right: .5rem;
     }
+
+    .table {
+      font-family: $font-family-monospace;
+      th {
+        font-weight: 500;
+      }
+      .td-enrolled {
+        background-color: var(--ion-color-primary-tint);
+      }
+    }
   }
 
   .progress-step {

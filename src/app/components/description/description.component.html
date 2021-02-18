@@ -3,11 +3,11 @@
     <p
       #description
       [innerHTML]="getContent()"
-      [ngClass]="{'limit-height': isTruncated}"
+      [ngClass]="{'limit-height': content.length > 100}"
     ></p>
   </div>
 
-  <ng-container *ngIf="isTruncated">
+  <ng-container *ngIf="content.length > 100">
     ...
     <a class="btn btn-link float-end" (click)="showMore()">more</a>
   </ng-container>

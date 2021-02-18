@@ -18,7 +18,7 @@
         <div class="experience-item-actions col-lg-4">
 
           <ng-container *ngIf="experience.status === 'draft'">
-            <a class="btn btn-link">Resume building</a>
+            <!-- <a class="btn btn-link">Resume building</a> -->
           </ng-container>
           <ng-container *ngIf="experience.status !== 'draft'">
             <button class="btn btn-link shadow-none" type="button" [id]="'last-update-' + experience.uuid" data-bs-toggle="dropdown" aria-expanded="false">
@@ -85,14 +85,61 @@
               {{ experience.todoItemCount }} issue
             </span>
           </div>
-          <div class="experience-item-people">
-            <ion-icon name="people"></ion-icon>{{ userCount() }}
+          <div class="experience-item-people btn-group dropend">
+            <button type="button" class="btn btn-link shadow-none" data-bs-toggle="dropdown" aria-expanded="false">
+              <ion-icon name="people"></ion-icon>{{ userCount() }}
+            </button>
+            <ul class="dropdown-menu p-0">
+              <table class="table table-bordered rounded-2 m-0">
+                <thead>
+                  <tr>
+                    <th scope="col"><ion-icon name="people"></ion-icon></th>
+                    <th scope="col">Paticipants</th>
+                    <th scope="col">Mentors</th>
+                    <th scope="col">Admins</th>
+                    <th scope="col">Coordinators</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">Enrolled</th>
+                    <td [ngClass]="{ 'td-enrolled': experience.statistics.enrolledUserCount.participant }">
+                      {{ experience.statistics.enrolledUserCount.participant || 0 }}
+                    </td>
+                    <td [ngClass]="{ 'td-enrolled': experience.statistics.enrolledUserCount.mentor }">
+                      {{ experience.statistics.enrolledUserCount.mentor || 0 }}
+                    </td>
+                    <td [ngClass]="{ 'td-enrolled': experience.statistics.enrolledUserCount.admin }">
+                      {{ experience.statistics.enrolledUserCount.admin || 0 }}
+                    </td>
+                    <td [ngClass]="{ 'td-enrolled': experience.statistics.enrolledUserCount.coordinator }">
+                      {{ experience.statistics.enrolledUserCount.coordinator || 0 }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Registered</th>
+                    <td [ngStyle]="{ background: userCountStyle('participant') }">
+                      {{ experience.statistics.registeredUserCount.participant || 0 }}
+                    </td>
+                    <td [ngStyle]="{ background: userCountStyle('mentor') }">
+                      {{ experience.statistics.registeredUserCount.mentor || 0 }}
+                    </td>
+                    <td [ngStyle]="{ background: userCountStyle('admin') }">
+                      {{ experience.statistics.registeredUserCount.admin || 0 }}
+                    </td>
+                    <td [ngStyle]="{ background: userCountStyle('coordinator') }">
+                      {{ experience.statistics.registeredUserCount.coordinator || 0 }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </ul>
           </div>
         </div>
 
         <ng-container [ngSwitch]="experience.status">
           <ng-container *ngSwitchCase="'draft'">
-            <div class="experience-item-stat col-6 col-md-10">
+            <!-- <div class="experience-item-stat col-6 col-md-10">
               <div class="progress-steps">
                 <div class="progress-step" [ngClass]="{'done': ['configuration', 'visual'].includes(experience.setupStep)}">
                   <div class="progress-step-number">1</div>
@@ -103,7 +150,7 @@
                   <div class="progress-step-label">Visuals incomplete</div>
                 </div>
               </div>
-            </div>
+            </div> -->
           </ng-container>
 
           <ng-container *ngSwitchCase="'live'">
