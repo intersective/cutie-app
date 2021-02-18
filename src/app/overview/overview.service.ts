@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { RequestService } from '@shared/request/request.service';
+import { map } from 'rxjs/operators';
 import { environment } from '@environments/environment';
 import { DemoService } from '@services/demo.service';
 
@@ -52,9 +53,20 @@ export class OverviewService {
 
   getExperiences() {
     if (environment.demo) {
-      return this.demo.getExperiences();
+      return this.demo.getExperiences().pipe(map(this._handleExperiences));
     }
 
+  }
+
+  private _handleExperiences(res) {
+    return res.map(exp => {
+      return {
+        ...exp,
+        ...{
+          tags: exp.tags.map(t => t.name)
+        }
+      };
+    })
   }
 
 

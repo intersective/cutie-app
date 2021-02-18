@@ -349,7 +349,14 @@ export class DemoService {
       setupStep: 'visuals',
       leadImage: '',
       todoItemCount: 1,
-      tags: ['apple', 'banana'],
+      tags: [
+        {
+          name: 'apple'
+        },
+        {
+          name: 'banana'
+        }
+      ],
       statistics: {
         enrolledUserCount: {
           admin: 4,
@@ -385,7 +392,15 @@ export class DemoService {
       setupStep: 'visuals',
       leadImage: '',
       todoItemCount: 3,
-      tags: ['apple', 'banana', 'watermelon'],
+      tags: [{
+        name: 'apple'
+      },
+      {
+        name: 'banana'
+      },
+      {
+        name: 'watermelon'
+      }],
       statistics: {
         enrolledUserCount: {
           admin: 4,
@@ -421,7 +436,12 @@ export class DemoService {
       setupStep: 'visuals',
       leadImage: '',
       todoItemCount: 0,
-      tags: ['apple', 'watermelon'],
+      tags: [{
+        name: 'apple'
+      },
+      {
+        name: 'watermelon'
+      }],
       statistics: {
         enrolledUserCount: {
           admin: 0,
