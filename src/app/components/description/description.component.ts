@@ -37,7 +37,7 @@ export class DescriptionComponent {
   // }
 
   showMore() {
-    this.popupService.description(this.popupTitle, this.content);
+    this.popupService.showDescription(this.popupTitle, this.content);
   }
 
 }

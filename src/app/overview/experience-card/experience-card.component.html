@@ -74,7 +74,7 @@
             <a class="btn btn-link" (click)="addTag()">Add tags</a>
           </ng-container>
           <ng-container *ngIf="experience.tags.length">
-            <span *ngFor="let tag of experience.tags" class="experience-tag btn btn-sm btn-tag cursor-auto">{{ tag.name }}</span>
+            <span *ngFor="let tag of experience.tags" class="experience-tag btn-sm btn-tag cursor-auto">{{ tag }}</span>
           </ng-container>
         </div>
       </div>

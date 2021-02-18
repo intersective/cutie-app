@@ -17,6 +17,7 @@ import { RequestModule } from '@shared/request/request.module';
 import { PusherModule } from '@shared/pusher/pusher.module';
 import { UtilsService } from '@services/utils.service';
 import { PopupModule } from '@shared/popup/popup.module';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [AppComponent],
@@ -33,7 +34,8 @@ import { PopupModule } from '@shared/popup/popup.module';
     }),
     ApolloModule,
     HttpLinkModule,
-    PopupModule
+    PopupModule,
+    NgbModule
   ],
   providers: [
     StatusBar,

@@ -45,6 +45,7 @@ export class DemoService {
     unassignedReview: 0,
     unpublishedReview: 0
   };
+  tags = ['apple', 'banana', 'watermelon', 'peach', 'pineapple'];
   channelMembers = [
     {
       uuid: '1',
@@ -348,16 +349,7 @@ export class DemoService {
       setupStep: 'visuals',
       leadImage: '',
       todoItemCount: 1,
-      tags: [
-        {
-          id: 1,
-          name: 'apple'
-        },
-        {
-          id: 2,
-          name: 'banana'
-        }
-      ],
+      tags: ['apple', 'banana'],
       statistics: {
         enrolledUserCount: {
           admin: 4,
@@ -393,20 +385,7 @@ export class DemoService {
       setupStep: 'visuals',
       leadImage: '',
       todoItemCount: 3,
-      tags: [
-        {
-          id: 1,
-          name: 'apple'
-        },
-        {
-          id: 2,
-          name: 'banana'
-        },
-        {
-          id: 3,
-          name: 'watermelon'
-        },
-      ],
+      tags: ['apple', 'banana', 'watermelon'],
       statistics: {
         enrolledUserCount: {
           admin: 4,
@@ -442,16 +421,7 @@ export class DemoService {
       setupStep: 'visuals',
       leadImage: '',
       todoItemCount: 0,
-      tags: [
-        {
-          id: 1,
-          name: 'apple'
-        },
-        {
-          id: 3,
-          name: 'watermelon'
-        }
-      ],
+      tags: ['apple', 'watermelon'],
       statistics: {
         enrolledUserCount: {
           admin: 0,
@@ -1003,6 +973,15 @@ export class DemoService {
 
   getExperiences() {
     return of(this.experiences).pipe(delay(1000));
+  }
+
+  getTags() {
+    return of(this.tags).pipe(delay(1000));
+  }
+
+  updateExperienceTags(experience, tags) {
+    console.log('update experience tag:', experience, tags);
+    return of({});
   }
 
 }

@@ -11,7 +11,7 @@ export class ExperienceCardComponent {
   @Input() experience: Experience;
 
   constructor(
-    private popupService: PopupService
+    private popupService: PopupService,
   ) { }
 
   lastUpdated() {
@@ -71,7 +71,7 @@ export class ExperienceCardComponent {
   }
 
   onTrackInfo() {
-    this.popupService.description('About Pulse rating', 'Participants are prompted from time to time to report whether they feel the experience they are participating in, is on-track. The responses are aggregated, and the overall split between on and off-track sentiments is displayed.');
+    this.popupService.showDescription('About Pulse rating', 'Participants are prompted from time to time to report whether they feel the experience they are participating in, is on-track. The responses are aggregated, and the overall split between on and off-track sentiments is displayed.');
   }
 
   activeParticipant() {
@@ -95,7 +95,12 @@ export class ExperienceCardComponent {
   }
 
   addTag() {
-
+    this.popupService.showTags({
+      tags: JSON.parse(JSON.stringify(this.experience.tags)),
+      type: 'experience',
+      data: this.experience,
+      title: 'Tags',
+    });
   }
 
   duplicate() {

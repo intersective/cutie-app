@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Experience, Tag, OverviewService } from './overview.service';
+import { UtilsService } from '@services/utils.service';
 
 @Component({
   selector: 'app-overview',
@@ -48,7 +49,7 @@ export class OverviewComponent implements OnInit {
   ];
   sortDesc = true;
   sortBy = this.sortList[0];
-  tags = [];
+  tags: Tag[] = [];
   types = ['all'];
   status = 'all';
   type = 'all';
@@ -57,34 +58,55 @@ export class OverviewComponent implements OnInit {
   experiences: Experience[] = [];
 
   constructor(
-    private service: OverviewService
+    private service: OverviewService,
+    private utils: UtilsService,
   ) { }
 
   ngOnInit() {
     this.service.getExperiences().subscribe(res => {
+      // reformat tags from string[] to Tag[]
       this.experiencesRaw = res;
       // get all tags
-      this.tags = [];
-      res.forEach(exp => {
-        exp.tags.forEach(t => {
-          const index = this.tags.findIndex(tt => t.id === tt.id);
-          if (index < 0) {
-            this.tags.push({
-              ...t,
-              ...{
-                count: 1,
-                active: false
-              }
-            });
-          } else {
-            this.tags[index].count += 1;
-          }
-        });
-      });
+      this._getAllTags();
       // get all types
       this.types = [...['all'], ...res.map(exp => exp.type)];
       this.types = [...new Set(this.types)];
       this.filterAndOrder();
+    });
+    this.utils.getEvent('exp-tags-updated').subscribe(event => {
+      this.experiences = this._updateTags(this.experiences, event.experience, event.tags);
+      this.experiencesRaw = this._updateTags(this.experiencesRaw, event.experience, event.tags);
+      this._getAllTags();
+    });
+  }
+
+  /**
+   * Given experiences raw data, get all tags and the count for each of them
+   */
+  private _getAllTags() {
+    this.tags = [];
+    this.experiencesRaw.forEach(exp => {
+      exp.tags.forEach(t => {
+        const index = this.tags.findIndex(tt => t === tt.name);
+        if (index < 0) {
+          this.tags.push({
+            name: t,
+            count: 1,
+            active: false
+          });
+        } else {
+          this.tags[index].count += 1;
+        }
+      });
+    });
+  }
+
+  private _updateTags(experiences: Experience[], experience: Experience, tags: string[]) {
+    return experiences.map(exp => {
+      if (exp.uuid === experience.uuid) {
+        exp.tags = tags;
+      }
+      return exp;
     });
   }
 
@@ -98,11 +120,11 @@ export class OverviewComponent implements OnInit {
   }
 
   private _filterByTag() {
-    const activeTagIds = this.tags.filter(t => t.active).map(t => t.id);
-    if (!activeTagIds.length) {
+    const activeTags = this.tags.filter(t => t.active).map(t => t.name);
+    if (!activeTags.length) {
       return;
     }
-    this.experiences = this.experiences.filter(exp => exp.tags.find(t => activeTagIds.includes(t.id)));
+    this.experiences = this.experiences.filter(exp => exp.tags.find(t => activeTags.includes(t)));
   }
 
   private _filterByStatus() {

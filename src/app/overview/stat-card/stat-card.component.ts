@@ -16,6 +16,6 @@ export class StatCardComponent {
   ) { }
 
   showInfo() {
-    this.popupService.description(this.statLabel, this.statDescription);
+    this.popupService.showDescription(this.statLabel, this.statDescription);
   }
 }

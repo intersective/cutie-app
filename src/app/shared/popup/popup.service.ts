@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ModalController, AlertController, ToastController, LoadingController } from '@ionic/angular';
 import { AlertOptions, ToastOptions, ModalOptions, LoadingOptions } from '@ionic/core';
 import { DescriptionComponent } from './description/description.component';
+import { TagsComponent } from './tags/tags.component';
 
 export interface CustomTostOptions {
   message: string;
@@ -67,7 +68,7 @@ export class PopupService {
    * this is using description.component.ts as the view
    * put redirect = false if don't need to redirect
    */
-  description(title, content, redirect: any = false) {
+  showDescription(title, content, redirect: any = false) {
     const component = DescriptionComponent;
     const componentProps = {
       title,
@@ -79,4 +80,23 @@ export class PopupService {
     };
     return this.showModal(component, componentProps, options);
   }
+
+  /**
+   * show tags pop up message
+   * this is using tags.component.ts as the view
+   */
+  showTags({ tags, type, data, title }) {
+    const component = TagsComponent;
+    const componentProps = {
+      title,
+      tags,
+      type,
+      data,
+    };
+    const options = {
+      cssClass: 'practera-popup'
+    };
+    return this.showModal(component, componentProps, options);
+  }
+
 }

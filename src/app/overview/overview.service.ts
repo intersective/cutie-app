@@ -11,13 +11,12 @@ export interface Experience {
   status: string;
   leadImage: string;
   setupStep: string;
-  tags: Tag[];
+  tags: string[];
   todoItemCount: number;
   statistics: Statistics;
 }
 
 export interface Tag {
-  id: number;
   name: string;
   active?: boolean;
   count?: number;
@@ -57,5 +56,6 @@ export class OverviewService {
     }
 
   }
+
 
 }
