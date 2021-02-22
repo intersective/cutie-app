@@ -56,12 +56,14 @@
                 <ion-icon name="copy"></ion-icon><span class="ms-2">Duplicate</span>
               </a>
             </li>
-            <li><hr class="dropdown-divider"></li>
-            <li>
-              <a class="dropdown-item text-danger" (click)="delete()">
-                <ion-icon name="trash"></ion-icon><span class="ms-2">Delete</span>
-              </a>
-            </li>
+            <ng-container *ngIf="experience.status === 'draft'">
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <a class="dropdown-item text-danger" (click)="delete()">
+                  <ion-icon name="trash"></ion-icon><span class="ms-2">Delete</span>
+                </a>
+              </li>
+            </ng-container>
           </ul>
         </div>
       </div>
