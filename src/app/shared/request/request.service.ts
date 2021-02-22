@@ -174,6 +174,25 @@ export class RequestService {
   }
 
   /**
+   * Method to call Practera graphQL server to save data on database.
+   * @param query GraphQL query that use to get data from graphQL server.
+   * @param variables values need to pass with query.
+   */
+  graphQLMutate(query: string, variables = {}): Observable<any> {
+    return this.apollo.use('practera').mutate({
+      mutation: gql(query),
+      variables: variables
+    })
+      .pipe(
+        map(response => {
+          this._refreshApikey(response);
+          return response;
+        }),
+        catchError((error) => this.handleError(error))
+      );
+  }
+
+  /**
    * Method to call graphQL chat server to get deta from database.
    * @param query GraphQL query that use to get data from graphQL server.
    * @param variables values need to pass with query.

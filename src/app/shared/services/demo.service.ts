@@ -992,11 +992,23 @@ export class DemoService {
   }
 
   getExperiences() {
-    return of(this.experiences).pipe(delay(1000));
+    return of({
+      data: {
+        experiences: this.experiences
+      }
+    }).pipe(delay(1000));
   }
 
   getTags() {
-    return of(this.tags).pipe(delay(1000));
+    return of({
+      data: {
+        tags: this.tags.map(t => {
+          return {
+            name: t
+          }
+        })
+      }
+    }).pipe(delay(1000));
   }
 
   updateExperienceTags(experience, tags) {

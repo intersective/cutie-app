@@ -5,6 +5,7 @@ import { environment } from '@environments/environment';
 import { DemoService } from '@services/demo.service';
 
 export interface Experience {
+  id?: number;
   uuid: string;
   name: string;
   description: string;
@@ -55,11 +56,55 @@ export class OverviewService {
     if (environment.demo) {
       return this.demo.getExperiences().pipe(map(this._handleExperiences));
     }
-
+    return this.request.graphQLQuery(
+      `query experiences {
+        experiences {
+          uuid
+          name
+          description
+          type
+          leadImage
+          status
+          setupStep
+          tags{
+            name
+          }
+          todoItemCount
+          statistics{
+            enrolledUserCount {
+              admin
+              coordinator
+              mentor
+              participant
+            }
+            registeredUserCount{
+              admin
+              coordinator
+              mentor
+              participant
+            }
+            activeUserCount{
+              admin
+              coordinator
+              mentor
+              participant
+            }
+            feedbackLoopStarted
+            feedbackLoopCompleted
+            reviewRatingAvg
+            onTrackRatio
+            lastUpdated
+          }
+        }
+      }`
+    ).pipe(map(this._handleExperiences));
   }
 
   private _handleExperiences(res) {
-    return res.map(exp => {
+    if (!res.data) {
+      return [];
+    }
+    return res.data.experiences.map(exp => {
       return {
         ...exp,
         ...{
@@ -68,6 +113,5 @@ export class OverviewService {
       };
     })
   }
-
 
 }

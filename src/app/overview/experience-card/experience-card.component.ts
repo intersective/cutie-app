@@ -36,7 +36,7 @@ export class ExperienceCardComponent {
       return 0;
     }
     let total = 0;
-    for (let c in this.experience.statistics.enrolledUserCount) {
+    for (let c of ['admin', 'coordinator', 'mentor', 'participant']) {
       total += this.experience.statistics.enrolledUserCount[c];
     }
     return total;
