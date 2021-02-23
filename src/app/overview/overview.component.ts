@@ -233,7 +233,8 @@ export class OverviewComponent implements OnInit {
       fbStarted += stat.feedbackLoopStarted;
       if (reviewRatingAvg === 0) {
         reviewRatingAvg = stat.reviewRatingAvg;
-      } else {
+      } else if (stat.reviewRatingAvg > 0) {
+        // if stat.reviewRatingAvg <= 0, don't count it for the average
         reviewRatingAvg = (reviewRatingAvg + stat.reviewRatingAvg) / 2;
       }
     });
