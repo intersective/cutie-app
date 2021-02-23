@@ -17,6 +17,6 @@ export class CreateExperienceComponent {
   browse() {
     this.modalController.dismiss();
     console.log('navigate to catalog');
-    //this.router.navigate([]);
+    // this.router.navigate([]);
   }
 }
