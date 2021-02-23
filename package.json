@@ -10,6 +10,7 @@
     "build": "ng build --base-href './' && npx cap copy",
     "test": "ng test --watch=false",
     "lint": "ng lint",
+    "lint-fix": "ng lint --fix",
     "e2e": "ng e2e",
     "deploy": "ng build -c demo --base-href '/cutie/' && npx angular-cli-ghpages --dir=www",
     "sonar-test": "ng test --no-watch --code-coverage --browsers ChromeHeadless --karmaConfig=karma.conf.sonar.js"

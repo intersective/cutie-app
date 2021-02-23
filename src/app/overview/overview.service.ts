@@ -111,7 +111,7 @@ export class OverviewService {
           tags: exp.tags.map(t => t.name)
         }
       };
-    })
+    });
   }
 
   getExpStatistics(experience: Experience) {

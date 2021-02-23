@@ -22,15 +22,15 @@ export class ExperienceCardComponent {
     if (this.experience && this.experience.statistics.lastUpdated) {
       const diff = Date.now() - this.experience.statistics.lastUpdated;
       if (diff > 1000 * 60 * 60 * 24) {
-        return `${ Math.floor(diff/(1000 * 60 * 60 * 24)) }d`;
+        return `${ Math.floor(diff / (1000 * 60 * 60 * 24)) }d`;
       }
       if (diff > 1000 * 60 * 60) {
-        return `${ Math.floor(diff/(1000 * 60 * 60)) }h`;
+        return `${ Math.floor(diff / (1000 * 60 * 60)) }h`;
       }
       if (diff > 1000 * 60) {
-        return `${ Math.floor(diff/(1000 * 60)) }m`;
+        return `${ Math.floor(diff / (1000 * 60)) }m`;
       }
-      return `${ Math.floor(diff/1000) }s`;
+      return `${ Math.floor(diff / 1000) }s`;
     }
     return '';
   }
@@ -40,7 +40,7 @@ export class ExperienceCardComponent {
       return 0;
     }
     let total = 0;
-    for (let c of ['admin', 'coordinator', 'mentor', 'participant']) {
+    for (const c of ['admin', 'coordinator', 'mentor', 'participant']) {
       total += this.experience.statistics.enrolledUserCount[c];
     }
     return total;
@@ -123,6 +123,6 @@ export class ExperienceCardComponent {
         statistics: res
       });
       this.refreshing = false;
-    })
+    });
   }
 }

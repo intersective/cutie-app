@@ -1005,7 +1005,7 @@ export class DemoService {
         tags: this.tags.map(t => {
           return {
             name: t
-          }
+          };
         })
       }
     }).pipe(delay(1000));
