@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Experience, Statistics, Tag, OverviewService } from './overview.service';
 import { UtilsService } from '@services/utils.service';
+import { PopupService } from '@shared/popup/popup.service';
 
 @Component({
   selector: 'app-overview',
@@ -60,6 +61,7 @@ export class OverviewComponent implements OnInit {
   constructor(
     private service: OverviewService,
     private utils: UtilsService,
+    private popupService: PopupService,
   ) { }
 
   ngOnInit() {
@@ -147,6 +149,7 @@ export class OverviewComponent implements OnInit {
 
   private _filterByStatus() {
     if (this.status === 'all') {
+      this.experiences = this.experiences.filter(exp => exp.status !== 'archived');
       return;
     }
     this.experiences = this.experiences.filter(exp => exp.status === this.status);
@@ -260,6 +263,10 @@ export class OverviewComponent implements OnInit {
     this.stats[1].value = totalUsers ? `${ Math.round(activeUsers * 100 / totalUsers) }%` : '0%';
     this.stats[2].value = fbStarted ? `${ fbCompleted }/${ fbStarted }` : '0/0';
     this.stats[3].value = `${ Math.round(reviewRatingAvg * 100) }%`;
+  }
+
+  add() {
+    this.popupService.showCreateExp();
   }
 
 }
