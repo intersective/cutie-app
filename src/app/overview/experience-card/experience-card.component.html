@@ -21,7 +21,8 @@
             <!-- <a class="btn btn-link">Resume building</a> -->
           </ng-container>
           <ng-container *ngIf="experience.status !== 'draft'">
-            <button class="btn btn-link shadow-none" type="button" [id]="'last-update-' + experience.uuid" data-bs-toggle="dropdown" aria-expanded="false">
+            <ion-spinner *ngIf="refreshing"></ion-spinner>
+            <button class="btn btn-link shadow-none" type="button" [id]="'last-update-' + experience.uuid" data-bs-toggle="dropdown" aria-expanded="false" [disabled]="refreshing">
               <span class="experience-item-timestamp">
                 {{ lastUpdated() }}<ion-icon name="time-outline"></ion-icon>
               </span>

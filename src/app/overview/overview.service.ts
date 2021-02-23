@@ -114,4 +114,49 @@ export class OverviewService {
     })
   }
 
+  getExpStatistics(experience: Experience) {
+    if (environment.demo) {
+      return this.demo.getExpStatistics(experience).pipe(map(this._handleExpStatistics));
+    }
+    return this.request.graphQLQuery(
+      `query expStatistics($uuid: String){
+        expStatistics(uuid: $uuid) {
+          enrolledUserCount {
+            admin
+            coordinator
+            mentor
+            participant
+          }
+          registeredUserCount{
+            admin
+            coordinator
+            mentor
+            participant
+          }
+          activeUserCount{
+            admin
+            coordinator
+            mentor
+            participant
+          }
+          feedbackLoopStarted
+          feedbackLoopCompleted
+          reviewRatingAvg
+          onTrackRatio
+          lastUpdated
+        }
+      }`,
+      {
+        uuid: experience.uuid
+      }
+    ).pipe(map(this._handleExpStatistics));
+  }
+
+  private _handleExpStatistics(res) {
+    if (!res.data || !res.data.expStatistics) {
+      return null;
+    }
+    return res.data.expStatistics;
+  }
+
 }

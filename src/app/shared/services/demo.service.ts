@@ -1016,4 +1016,17 @@ export class DemoService {
     return of({});
   }
 
+  getExpStatistics(experience) {
+    return of({
+      data: {
+        expStatistics: {
+          ...this.experiences[1].statistics,
+          ...{
+            lastUpdated: Date.now()
+          }
+        }
+      }
+    }).pipe(delay(1000));
+  }
+
 }

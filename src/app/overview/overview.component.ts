@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Experience, Tag, OverviewService } from './overview.service';
+import { Experience, Statistics, Tag, OverviewService } from './overview.service';
 import { UtilsService } from '@services/utils.service';
 
 @Component({
@@ -73,9 +73,18 @@ export class OverviewComponent implements OnInit {
       this.types = [...new Set(this.types)];
       this.filterAndOrder();
     });
+
+    // when experience tags get updated, update the experiences data
     this.utils.getEvent('exp-tags-updated').subscribe(event => {
       this.experiences = this._updateTags(this.experiences, event.experience, event.tags);
       this.experiencesRaw = this._updateTags(this.experiencesRaw, event.experience, event.tags);
+      this._getAllTags();
+    });
+
+    // when experience statistics get updated, update the experience statistics
+    this.utils.getEvent('exp-statistics-updated').subscribe(event => {
+      this.experiences = this._updateStatistics(this.experiences, event.experience, event.statistics);
+      this.experiencesRaw = this._updateStatistics(this.experiencesRaw, event.experience, event.statistics);
       this._getAllTags();
     });
   }
@@ -105,6 +114,15 @@ export class OverviewComponent implements OnInit {
     return experiences.map(exp => {
       if (exp.uuid === experience.uuid) {
         exp.tags = tags;
+      }
+      return exp;
+    });
+  }
+
+  private _updateStatistics(experiences: Experience[], experience: Experience, statistics: Statistics) {
+    return experiences.map(exp => {
+      if (exp.uuid === experience.uuid) {
+        exp.statistics = statistics;
       }
       return exp;
     });

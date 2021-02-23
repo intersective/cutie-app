@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { Experience } from '../overview.service';
+import { Experience, OverviewService } from '../overview.service';
 import { PopupService } from '@shared/popup/popup.service';
+import { UtilsService } from '@services/utils.service';
 
 @Component({
   selector: 'app-experience-card',
@@ -9,9 +10,12 @@ import { PopupService } from '@shared/popup/popup.service';
 })
 export class ExperienceCardComponent {
   @Input() experience: Experience;
+  refreshing = false;
 
   constructor(
     private popupService: PopupService,
+    private service: OverviewService,
+    private utils: UtilsService,
   ) { }
 
   lastUpdated() {
@@ -112,6 +116,13 @@ export class ExperienceCardComponent {
   }
 
   refresh() {
-
+    this.refreshing = true;
+    this.service.getExpStatistics(this.experience).subscribe(res => {
+      this.utils.broadcastEvent('exp-statistics-updated', {
+        experience: this.experience,
+        statistics: res
+      });
+      this.refreshing = false;
+    })
   }
 }
