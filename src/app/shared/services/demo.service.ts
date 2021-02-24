@@ -349,7 +349,7 @@ export class DemoService {
       setupStep: 'visuals',
       leadImage: '',
       todoItemCount: 1,
-      tags: this.tags.map(t => { return { name:t }; }),
+      tags: this.tags.map(t => ({ name: t })),
       statistics: {
         enrolledUserCount: {
           admin: 4,
