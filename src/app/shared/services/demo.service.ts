@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { UtilsService } from '@services/utils.service';
 import { StorageService } from '@services/storage.service';
+import { of } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { delay } from 'rxjs/internal/operators';
 
 const CHARACTERS = {
   avengers: {
@@ -42,6 +45,7 @@ export class DemoService {
     unassignedReview: 0,
     unpublishedReview: 0
   };
+  tags = ['apple', 'banana', 'watermelon', 'peach', 'pineapple', 'grape', 'orange', 'stonemelon', 'dragon fruit'];
   channelMembers = [
     {
       uuid: '1',
@@ -295,6 +299,166 @@ export class DemoService {
       team: {
         uuid: '5f9f938f-392c-4424-a1bd-15f1ac110002',
         name: 'Team 2'
+      }
+    }
+  ];
+
+  experiences = [
+    {
+      uuid: '8fad2d07-8b17-9c09-b744-414c73767c29',
+      name: 'Tech PM',
+      description: `Practera is the leading platform to power high quality experiential learning programs.<br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services`,
+      type: 'work simulation',
+      status: 'draft',
+      setupStep: 'configuration',
+      leadImage: '',
+      todoItemCount: 0,
+      tags: [],
+      statistics: {
+        enrolledUserCount: {
+          admin: 0,
+          coordinator: 0,
+          mentor: 0,
+          participant: 0
+        },
+        registeredUserCount: {
+          admin: 0,
+          coordinator: 0,
+          mentor: 0,
+          participant: 0
+        },
+        activeUserCount: {
+          admin: 0,
+          coordinator: 0,
+          mentor: 0,
+          participant: 0
+        },
+        feedbackLoopStarted: 0,
+        feedbackLoopCompleted: 0,
+        reviewRatingAvg: 0,
+        onTrackRatio: -1,
+        lastUpdated: 1612493090291
+      }
+    },
+    {
+      uuid: '16c3d514-b459-b9d1-05c8-2bd1f582447c',
+      name: 'XCELERY 2.0',
+      description: `Practera is the leading platform to power high quality experiential learning programs.<br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services`,
+      type: 'internship',
+      status: 'live',
+      setupStep: 'visuals',
+      leadImage: '',
+      todoItemCount: 1,
+      tags: this.tags.map(t => ({ name: t })),
+      statistics: {
+        enrolledUserCount: {
+          admin: 4,
+          coordinator: 3,
+          mentor: 3,
+          participant: 15
+        },
+        registeredUserCount: {
+          admin: 4,
+          coordinator: 3,
+          mentor: 3,
+          participant: 11
+        },
+        activeUserCount: {
+          admin: 1,
+          coordinator: 1,
+          mentor: 2,
+          participant: 8
+        },
+        feedbackLoopStarted: 300,
+        feedbackLoopCompleted: 129,
+        reviewRatingAvg: 0.83,
+        onTrackRatio: 0.75,
+        lastUpdated: 1612774050261
+      }
+    },
+    {
+      uuid: '16c3d514-b459-b9d1-05c8-2bd1f582447d',
+      name: 'Teamnovation',
+      description: `Practera is the leading platform to power high quality experiential learning programs.<br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services`,
+      type: 'team project',
+      status: 'live',
+      setupStep: 'visuals',
+      leadImage: '',
+      todoItemCount: 3,
+      tags: [{
+        name: 'apple'
+      },
+      {
+        name: 'banana'
+      },
+      {
+        name: 'watermelon'
+      }],
+      statistics: {
+        enrolledUserCount: {
+          admin: 4,
+          coordinator: 3,
+          mentor: 5,
+          participant: 53
+        },
+        registeredUserCount: {
+          admin: 4,
+          coordinator: 3,
+          mentor: 4,
+          participant: 50
+        },
+        activeUserCount: {
+          admin: 1,
+          coordinator: 3,
+          mentor: 2,
+          participant: 23
+        },
+        feedbackLoopStarted: 50,
+        feedbackLoopCompleted: 0,
+        reviewRatingAvg: 0,
+        onTrackRatio: -1,
+        lastUpdated: 1612775394683
+      }
+    },
+    {
+      uuid: '84f14db9-491a-09f7-ae61-9926f3ad8c8d',
+      name: 'GROW 2020',
+      description: `Practera is the leading platform to power high quality experiential learning programs.<br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services`,
+      type: 'mentoring',
+      status: 'completed',
+      setupStep: 'visuals',
+      leadImage: '',
+      todoItemCount: 0,
+      tags: [{
+        name: 'apple'
+      },
+      {
+        name: 'watermelon'
+      }],
+      statistics: {
+        enrolledUserCount: {
+          admin: 0,
+          coordinator: 0,
+          mentor: 1,
+          participant: 21
+        },
+        registeredUserCount: {
+          admin: 0,
+          coordinator: 0,
+          mentor: 1,
+          participant: 21
+        },
+        activeUserCount: {
+          admin: 0,
+          coordinator: 0,
+          mentor: 0,
+          participant: 0
+        },
+        feedbackLoopStarted: 120,
+        feedbackLoopCompleted: 56,
+        reviewRatingAvg: 0.76,
+        onTrackRatio: -1,
+        lastUpdated: 1612493090322
       }
     }
   ];
@@ -818,6 +982,44 @@ export class DemoService {
         }
       }
     };
+  }
+
+  getExperiences() {
+    return of({
+      data: {
+        experiences: this.experiences
+      }
+    }).pipe(delay(1000));
+  }
+
+  getTags() {
+    return of({
+      data: {
+        tags: this.tags.map(t => {
+          return {
+            name: t
+          };
+        })
+      }
+    }).pipe(delay(1000));
+  }
+
+  updateExperienceTags(experience, tags) {
+    console.log('update experience tag:', experience, tags);
+    return of({});
+  }
+
+  getExpStatistics(experience) {
+    return of({
+      data: {
+        expStatistics: {
+          ...this.experiences[1].statistics,
+          ...{
+            lastUpdated: Date.now()
+          }
+        }
+      }
+    }).pipe(delay(1000));
   }
 
 }

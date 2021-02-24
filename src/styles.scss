@@ -1,3 +1,10 @@
+.practera-popup {
+  .modal-wrapper {
+    --background: transparent;
+    --box-shadow: none;
+  }
+}
+
 .popover-action {
   --width: auto;
   --height: fit-content;
@@ -78,4 +85,9 @@ ion-item.sc-ion-select-popover {
   .modal-wrapper {
     border-radius: 4px;
   }
+}
+
+// backward compatable for Bootstrap 4, used in NgbTypeahead
+.sr-only {
+  display: none;
 }

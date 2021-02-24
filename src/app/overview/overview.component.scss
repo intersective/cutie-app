@@ -1,0 +1,72 @@
+//
+// Import Bootstrap variables and mixins to use
+//
+
+@import 'functions';
+@import 'pfas-bootstrap/variables';
+@import 'pfas-bootstrap/bootstrap/variables';
+@import 'variables';
+@import 'mixins';
+
+//
+// Tags
+//
+
+.experience-tag {
+  text-transform: none;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  letter-spacing: 0.025rem;
+  font-weight: $font-weight-normal;
+  display: inline-block;
+  margin-right: 8px;
+  margin-bottom: 8px;
+  color: $white;
+
+  .experience-tag-count {
+    margin-left: 4px;
+    color: rgba(white, 0.7);
+  }
+}
+
+
+//
+// Filters
+//
+
+.experiences-filters {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: $spacer;
+  flex-wrap: wrap;
+}
+
+.experiences-filter {
+  display: flex;
+  align-items: center;
+  margin-right: 1.5rem;
+
+  .dropdown {
+    display: inline-block;
+  }
+
+  .btn {
+    text-transform: none;
+    font-size: 1rem;
+    letter-spacing: 0.0275rem;
+  }
+
+  ion-icon {
+    display: inline-block;
+    font-size: 1.25rem;
+    color: $primary;
+    margin-left: 4px;
+  }
+}
+
+.no-exp {
+  position: relative;
+  top: 60px;
+}

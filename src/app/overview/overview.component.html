@@ -1,0 +1,165 @@
+<!-- <app-header></app-header> -->
+
+<main>
+
+  <header class="title-bar container-fluid">
+    <div class="row">
+      <div class="col-md-6">
+        <h1>Experiences</h1>
+      </div>
+      <div class="title-bar-tools col-md-6">
+        <a class="btn btn-link">Create report</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="experiences-stats">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-6 col-xl-3" *ngFor="let stat of stats">
+          <app-stat-card
+            [statValue]="stat.value"
+            [statLabel]="stat.label"
+            [statDescription]="stat.description"
+          ></app-stat-card>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="experiences-gallery">
+
+    <header class="title-bar container-fluid">
+      <div class="row">
+        <div class="col-md-6">
+          <h2>My experiences</h2>
+        </div>
+        <div class="title-bar-tools col-md-6">
+          <button class="btn btn-primary btn-lg" (click)="add()">
+            <ion-icon name="add"></ion-icon>
+            <span>Add experience</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div class="container-fluid">
+      <div class="row">
+        <aside class="experiences-aside col-md-3">
+          <h3>Filter by tags</h3>
+          <div>
+            <button
+              *ngFor="let tag of tags; let i = index"
+              type="button"
+              class="experience-tag btn btn-sm"
+              [ngClass]="{ 'btn-tag-active': tag.active, 'btn-tag-inactive': !tag.active }"
+              (click)="tags[i].active = !tag.active; filterAndOrder()"
+            >
+              {{ tag.name }}<span class="experience-tag-count">{{ tag.count }}</span>
+            </button>
+          </div>
+        </aside>
+        <section class="experiences-content col-md-9">
+          <div class="experiences-filters">
+            <div class="experiences-filter">
+              <span>Status</span>
+              <div class="dropdown">
+                <button class="btn btn-link dropdown-toggle shadow-none" type="button" id="filterStatus" data-bs-toggle="dropdown" aria-expanded="false">
+                  {{ status | titlecase }}
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="filterStatus">
+                  <li>
+                    <a class="dropdown-item" (click)="status = 'all'; filterAndOrder()">
+                      All
+                      <span *ngIf="status === 'all'"><ion-icon name="checkmark"></ion-icon></span>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" (click)="status = 'draft'; filterAndOrder()">
+                      Draft
+                      <span *ngIf="status === 'draft'"><ion-icon name="checkmark"></ion-icon></span>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" (click)="status = 'live'; filterAndOrder()">
+                      Live
+                      <span *ngIf="status === 'live'"><ion-icon name="checkmark"></ion-icon></span>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" (click)="status = 'completed'; filterAndOrder()">
+                      Completed
+                      <span *ngIf="status === 'completed'"><ion-icon name="checkmark"></ion-icon></span>
+                    </a>
+                  </li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li>
+                    <a class="dropdown-item" (click)="status = 'archived'; filterAndOrder()">
+                      Archived
+                      <span *ngIf="status === 'archived'"><ion-icon name="checkmark"></ion-icon></span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="experiences-filter">
+              <span>Type</span>
+              <div class="dropdown">
+                <button class="btn btn-link dropdown-toggle shadow-none" type="button" id="filterType" data-bs-toggle="dropdown" aria-expanded="false">
+                  {{ type | titlecase }}
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="filterType">
+                  <li *ngFor="let t of types">
+                    <a class="dropdown-item" (click)="type = t; filterAndOrder()">
+                      {{ t | titlecase }}
+                      <span *ngIf="type === t"><ion-icon name="checkmark"></ion-icon></span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="experiences-filter">
+              <span>Sort by</span>
+              <div class="dropdown">
+                <button class="btn btn-link dropdown-toggle shadow-none" type="button" id="filterSort" data-bs-toggle="dropdown" aria-expanded="false">
+                  {{ sortBy | titlecase }}
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="filterSort">
+                  <li *ngFor="let s of sortList">
+                    <a class="dropdown-item" (click)="sortBy = s; filterAndOrder()">
+                      {{ s | titlecase }}
+                      <span *ngIf="sortBy === s"><ion-icon name="checkmark"></ion-icon></span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="experiences-filter">
+              <span>Sort order</span>
+              <button class="btn shadow-none" (click)="sortDesc = !sortDesc; filterAndOrder()">
+                <ion-icon *ngIf="sortDesc" name="arrow-down"></ion-icon>
+                <ion-icon *ngIf="!sortDesc" name="arrow-up"></ion-icon>
+              </button>
+            </div>
+          </div>
+
+          <div class="experiences-list">
+            <ng-container *ngFor="let exp of experiences">
+              <app-experience-card
+                [experience]="exp"
+              ></app-experience-card>
+            </ng-container>
+            <div *ngIf="experiences.length === 0" class="text-center mt-3">
+              <div class="no-exp">No experiences found</div>
+              <img src="./assets/no-exp.svg">
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<!-- <app-footer></app-footer> -->
