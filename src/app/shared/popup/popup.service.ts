@@ -3,6 +3,7 @@ import { ModalController, AlertController, ToastController, LoadingController } 
 import { AlertOptions, ToastOptions, ModalOptions, LoadingOptions } from '@ionic/core';
 import { DescriptionComponent } from './description/description.component';
 import { TagsComponent } from './tags/tags.component';
+import { TagsViewComponent } from './tags-view/tags-view.component';
 import { CreateExperienceComponent } from './create-experience/create-experience.component';
 
 export interface CustomTostOptions {
@@ -93,6 +94,22 @@ export class PopupService {
       tags,
       type,
       data,
+    };
+    const options = {
+      cssClass: 'practera-popup'
+    };
+    return this.showModal(component, componentProps, options);
+  }
+
+  /**
+   * show tags pop up message
+   * this is using tags.component.ts as the view
+   */
+  showTagsView({ tags, title }) {
+    const component = TagsViewComponent;
+    const componentProps = {
+      title,
+      tags,
     };
     const options = {
       cssClass: 'practera-popup'

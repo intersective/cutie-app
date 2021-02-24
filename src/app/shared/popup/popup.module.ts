@@ -4,6 +4,7 @@ import { PopupService } from './popup.service';
 import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { DescriptionComponent } from './description/description.component';
 import { TagsComponent } from './tags/tags.component';
+import { TagsViewComponent } from './tags-view/tags-view.component';
 
 @NgModule({
   imports: [
@@ -15,15 +16,18 @@ import { TagsComponent } from './tags/tags.component';
   ],
   declarations: [
     DescriptionComponent,
-    TagsComponent
+    TagsComponent,
+    TagsViewComponent,
   ],
   exports: [
     DescriptionComponent,
-    TagsComponent
+    TagsComponent,
+    TagsViewComponent,
   ],
   entryComponents: [
     DescriptionComponent,
-    TagsComponent
+    TagsComponent,
+    TagsViewComponent,
   ]
 })
 

@@ -122,19 +122,8 @@
   }
 }
 
-.experience-item-tags {
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-
-  @include media-breakpoint-up(lg) {
-    justify-content: flex-end;
-  }
-
-  .experience-tag {
-    margin-right: 0;
-    margin-left: 0.5rem;
-  }
+.experience-tag {
+  display: inline-block;
 }
 
 .experience-item-stats {

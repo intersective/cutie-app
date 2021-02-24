@@ -149,6 +149,10 @@
                 [experience]="exp"
               ></app-experience-card>
             </ng-container>
+            <div *ngIf="experiences.length === 0" class="text-center mt-3">
+              <div class="no-exp">No experiences found</div>
+              <img src="./assets/no-exp.svg">
+            </div>
           </div>
         </section>
       </div>

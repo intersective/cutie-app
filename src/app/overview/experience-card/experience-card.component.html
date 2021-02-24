@@ -54,7 +54,7 @@
             </li>
             <li>
               <a class="dropdown-item" (click)="duplicate()">
-                <ion-icon name="copy"></ion-icon><span class="ms-2">Duplicate</span>
+                <ion-icon name="copy-outline"></ion-icon><span class="ms-2">Duplicate</span>
               </a>
             </li>
             <ng-container *ngIf="experience.status === 'draft'">
@@ -65,6 +65,14 @@
                 </a>
               </li>
             </ng-container>
+            <ng-container *ngIf="experience.status === 'completed'">
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <a class="dropdown-item" (click)="archive()">
+                  <ion-icon name="archive"></ion-icon><span class="ms-2">Archive</span>
+                </a>
+              </li>
+            </ng-container>
           </ul>
         </div>
       </div>
@@ -72,12 +80,15 @@
         <div class="experience-item-description col-lg-6">
           <app-description [content]="experience.description" [popupTitle]="experience.name"></app-description>
         </div>
-        <div class="experience-item-tags col-lg-6">
+        <div class="text-end col-lg-6">
           <ng-container *ngIf="!experience.tags.length">
-            <a class="btn btn-link" (click)="addTag()">Add tags</a>
+            <button class="btn btn-link d-inline-block" (click)="addTag()">Add tags</button>
           </ng-container>
           <ng-container *ngIf="experience.tags.length">
-            <span *ngFor="let tag of experience.tags" class="experience-tag btn-sm btn-tag cursor-auto">{{ tag }}</span>
+            <ng-container *ngFor="let tag of experience.tags; let i = index">
+              <span *ngIf="i < 8" class="experience-tag btn-sm btn-tag cursor-auto m-1">{{ tag }}</span>
+            </ng-container>
+            <a *ngIf="experience.tags.length > 8" class="btn btn-link float-end" (click)="moreTags()">+{{ experience.tags.length - 8 }} more</a>
           </ng-container>
         </div>
       </div>

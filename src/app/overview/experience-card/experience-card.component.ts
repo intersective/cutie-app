@@ -107,11 +107,22 @@ export class ExperienceCardComponent {
     });
   }
 
+  moreTags() {
+    this.popupService.showTagsView({
+      tags: this.experience.tags,
+      title: this.experience.name,
+    });
+  }
+
   duplicate() {
 
   }
 
   delete() {
+
+  }
+
+  archive() {
 
   }
 

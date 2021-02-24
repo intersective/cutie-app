@@ -45,7 +45,7 @@ export class DemoService {
     unassignedReview: 0,
     unpublishedReview: 0
   };
-  tags = ['apple', 'banana', 'watermelon', 'peach', 'pineapple'];
+  tags = ['apple', 'banana', 'watermelon', 'peach', 'pineapple', 'grape', 'orange', 'stonemelon', 'dragon fruit'];
   channelMembers = [
     {
       uuid: '1',
@@ -349,14 +349,7 @@ export class DemoService {
       setupStep: 'visuals',
       leadImage: '',
       todoItemCount: 1,
-      tags: [
-        {
-          name: 'apple'
-        },
-        {
-          name: 'banana'
-        }
-      ],
+      tags: this.tags.map(t => { return { name:t }; }),
       statistics: {
         enrolledUserCount: {
           admin: 4,
