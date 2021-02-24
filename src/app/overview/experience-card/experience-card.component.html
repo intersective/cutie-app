@@ -27,7 +27,7 @@
                 {{ lastUpdated() }}<ion-icon name="time-outline"></ion-icon>
               </span>
             </button>
-            <ul class="dropdown-menu" [aria-labelledby]="'last-update-' + experience.uuid">
+            <ul class="dropdown-menu" [attr.aria-labelledby]="'last-update-' + experience.uuid">
               <li class="px-3 gray-2">Statistics last updated {{ lastUpdated() }} ago</li>
               <li><hr class="dropdown-divider"></li>
               <li>
@@ -41,7 +41,7 @@
           <button class="btn btn-link shadow-none" type="button" [id]="'option-' + experience.uuid" data-bs-toggle="dropdown" aria-expanded="false">
             <ion-icon name="ellipsis-horizontal"></ion-icon>
           </button>
-          <ul class="dropdown-menu" [aria-labelledby]="'option-' + experience.uuid">
+          <ul class="dropdown-menu" [attr.aria-labelledby]="'option-' + experience.uuid">
             <li>
               <a class="dropdown-item" (click)="edit()">
                 <ion-icon name="pencil"></ion-icon><span class="ms-2">Edit</span>
@@ -172,8 +172,8 @@
               <div class="experience-item-stat-value">
                 <div class="experience-item-stat-pulse">
                   <div class="progress">
-                    <div *ngIf="onTrack()" class="progress-bar bg-success" role="progressbar" [style]="'width: ' + onTrack() + '%'" [aria-valuenow]="onTrack()" aria-valuemin="0" aria-valuemax="100"></div>
-                    <div *ngIf="offTrack()" class="progress-bar bg-danger" role="progressbar" [style]="'width: ' + offTrack() + '%'" [aria-valuenow]="offTrack()" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div *ngIf="onTrack()" class="progress-bar bg-success" role="progressbar" [style]="'width: ' + onTrack() + '%'" [attr.aria-valuenow]="onTrack()" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div *ngIf="offTrack()" class="progress-bar bg-danger" role="progressbar" [style]="'width: ' + offTrack() + '%'" [attr.aria-valuenow]="offTrack()" aria-valuemin="0" aria-valuemax="100"></div>
                   </div>
                   <button class="btn p-0 shadow-none" type="button" (click)="onTrackInfo()">
                     <ion-icon name="information-circle"></ion-icon>
