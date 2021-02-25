@@ -6,6 +6,10 @@ const routes: Routes = [
   {
     path: ':token',
     component: AuthComponent
+  },
+  {
+    path: 'jwt/:jwt',
+    component: AuthComponent
   }
 ];
 
