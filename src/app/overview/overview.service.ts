@@ -7,6 +7,7 @@ import { DemoService } from '@services/demo.service';
 export interface Experience {
   id?: number;
   uuid: string;
+  timelineId?: number;
   name: string;
   description: string;
   type: string;
@@ -59,7 +60,9 @@ export class OverviewService {
     return this.request.graphQLQuery(
       `query experiences {
         experiences {
+          id
           uuid
+          timelineId
           name
           description
           type

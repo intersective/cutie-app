@@ -47,6 +47,23 @@ export class AuthService {
       }).pipe(map(this._handleLoginResponse, this));
   }
 
+  /**
+   * login API specifically only accept request data in encodedUrl formdata,
+   * so must convert them into compatible formdata before submission
+   */
+  jwtLogin(jwt: string): Observable<any> {
+    if (environment.demo) {
+      const response = this.demo.directLogin();
+      this._handleLoginResponse(response);
+      return of(response).pipe(delay(2000));
+    }
+    const body = new HttpParams()
+      .set('apikey', jwt);
+    return this.request.post(api.login, body.toString(), {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+      }).pipe(map(this._handleLoginResponse, this));
+  }
+
   private _handleLoginResponse(response) {
     this.storage.clear();
     const data = response.data;
