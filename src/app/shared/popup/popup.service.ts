@@ -15,6 +15,7 @@ export interface CustomTostOptions {
   providedIn: 'root'
 })
 export class PopupService {
+  loading;
 
   constructor(
     private modalController: ModalController,
@@ -58,11 +59,12 @@ export class PopupService {
   }
 
   async showLoading(opts?: LoadingOptions): Promise<void> {
-    const loading = await this.loadingController.create(opts || {
-      spinner: 'dots',
+    this.loading = await this.loadingController.create(opts);
+    return this.loading.present();
+  }
 
-    });
-    return loading.present();
+  dismissLoading() {
+    this.loading.dismiss();
   }
 
   /**

@@ -87,6 +87,10 @@ ion-item.sc-ion-select-popover {
   }
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 // backward compatable for Bootstrap 4, used in NgbTypeahead
 .sr-only {
   display: none;

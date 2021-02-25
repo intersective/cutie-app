@@ -1,12 +1,12 @@
 <article class="experience-item card">
   <div class="row">
     <div class="experience-item-image col-lg-3">
-      <img [src]="experience.leadImage || './assets/exp-placeholder.png'" alt="Experience image">
+      <img [src]="experience.leadImage || './assets/exp-placeholder.png'" alt="Experience image" (click)="view()" class="cursor-pointer">
     </div>
     <div class="experience-item-summary col-lg-9">
       <div class="row">
         <div class="experience-item-title col-lg-8">
-          <h3>{{ experience.name }}</h3>
+          <a (click)="view()" class="cursor-pointer"><h3>{{ experience.name }}</h3></a>
           <span class="experience-item-type">{{ experience.type | titlecase }}</span>
           <span class="experience-item-status" [ngClass]="{
             'status-draft': experience.status === 'draft',
