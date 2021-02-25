@@ -22,7 +22,7 @@ jobs:
       prefix: stage
       domain: internal.p2.practera.com
       subdomain: cutie-app
-      stage : live
+      stage : stage
       deploy: prod
       BUILD_CONFIG: custom
       hostedZoneId: Z07084721W45W9OIAP0PJ
