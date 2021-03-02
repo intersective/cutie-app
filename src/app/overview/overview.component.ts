@@ -55,6 +55,7 @@ export class OverviewComponent implements OnInit {
   status = 'all';
   type = 'all';
 
+  loadingExps = false;
   experiencesRaw: Experience[] = [];
   experiences: Experience[] = [];
 
@@ -65,16 +66,7 @@ export class OverviewComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.service.getExperiences().subscribe(res => {
-      // reformat tags from string[] to Tag[]
-      this.experiencesRaw = res;
-      // get all tags
-      this._getAllTags();
-      // get all types
-      this.types = [...['all'], ...res.map(exp => exp.type)];
-      this.types = [...new Set(this.types)];
-      this.filterAndOrder();
-    });
+    this.loadExperiences();
 
     // when experience tags get updated, update the experiences data
     this.utils.getEvent('exp-tags-updated').subscribe(event => {
@@ -88,6 +80,26 @@ export class OverviewComponent implements OnInit {
       this.experiences = this._updateStatistics(this.experiences, event.experience, event.statistics);
       this.experiencesRaw = this._updateStatistics(this.experiencesRaw, event.experience, event.statistics);
       this._getAllTags();
+    });
+
+    // when experience get archived/deleted, reload the experiences data
+    this.utils.getEvent('exps-reload').subscribe(event => {
+      this.loadExperiences();
+    });
+  }
+
+  loadExperiences() {
+    this.loadingExps = true;
+    this.service.getExperiences().subscribe(res => {
+      // reformat tags from string[] to Tag[]
+      this.experiencesRaw = res;
+      // get all tags
+      this._getAllTags();
+      // get all types
+      this.types = [...['all'], ...res.map(exp => exp.type)];
+      this.types = [...new Set(this.types)];
+      this.filterAndOrder();
+      this.loadingExps = false;
     });
   }
 

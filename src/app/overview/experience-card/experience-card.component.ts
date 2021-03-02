@@ -141,11 +141,23 @@ export class ExperienceCardComponent {
   }
 
   delete() {
-
+    this.popupService.showLoading({
+      message: 'Deleting the experience'
+    });
+    this.service.deleteExperience(this.experience).subscribe(res => {
+      this.utils.broadcastEvent('exps-reload', {});
+      setTimeout(() => this.popupService.dismissLoading(), 500);
+    });
   }
 
   archive() {
-
+    this.popupService.showLoading({
+      message: 'Archiving the experience'
+    });
+    this.service.archiveExperience(this.experience).subscribe(res => {
+      this.utils.broadcastEvent('exps-reload', {});
+      setTimeout(() => this.popupService.dismissLoading(), 500);
+    });
   }
 
   refresh() {

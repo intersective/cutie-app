@@ -1006,7 +1006,17 @@ export class DemoService {
 
   updateExperienceTags(experience, tags) {
     console.log('update experience tag:', experience, tags);
-    return of({});
+    return of({}).pipe(delay(1000));
+  }
+
+  deleteExperience(experience) {
+    console.log('delete experience:', experience.uuid);
+    return of({}).pipe(delay(1000));
+  }
+
+  archiveExperience(experience) {
+    console.log('archive experience:', experience.uuid);
+    return of({}).pipe(delay(1000));
   }
 
   getExpStatistics(experience) {

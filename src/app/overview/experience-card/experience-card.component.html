@@ -37,10 +37,11 @@
               </li>
             </ul>
           </ng-container>
-
-          <button class="btn btn-link shadow-none" type="button" [id]="'option-' + experience.uuid" data-bs-toggle="dropdown" aria-expanded="false">
-            <ion-icon name="ellipsis-horizontal"></ion-icon>
-          </button>
+          <ng-container *ngIf="experience.status !== 'archived'">
+            <button class="btn btn-link shadow-none" type="button" [id]="'option-' + experience.uuid" data-bs-toggle="dropdown"  aria-expanded="false">
+              <ion-icon name="ellipsis-horizontal"></ion-icon>
+            </button>
+          </ng-container>
           <ul class="dropdown-menu" [attr.aria-labelledby]="'option-' + experience.uuid">
             <li>
               <a class="dropdown-item" (click)="edit()">
@@ -59,6 +60,11 @@
             </li>
             <ng-container *ngIf="experience.status === 'draft'">
               <li><hr class="dropdown-divider"></li>
+              <li>
+                <a class="dropdown-item" (click)="archive()">
+                  <ion-icon name="archive"></ion-icon><span class="ms-2">Archive</span>
+                </a>
+              </li>
               <li>
                 <a class="dropdown-item text-danger" (click)="delete()">
                   <ion-icon name="trash"></ion-icon><span class="ms-2">Delete</span>
@@ -210,6 +216,16 @@
           </ng-container>
 
           <ng-container *ngSwitchCase="'completed'">
+            <div class="col-6 col-md-6"></div>
+            <div class="experience-item-stat col-6 col-md-2">
+              <ng-container *ngTemplateOutlet="feedbackLoop"></ng-container>
+            </div>
+            <div class="experience-item-stat col-6 col-md-2">
+              <ng-container *ngTemplateOutlet="reviewRating"></ng-container>
+            </div>
+          </ng-container>
+
+          <ng-container *ngSwitchCase="'archived'">
             <div class="col-6 col-md-6"></div>
             <div class="experience-item-stat col-6 col-md-2">
               <ng-container *ngTemplateOutlet="feedbackLoop"></ng-container>

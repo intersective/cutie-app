@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { RequestService } from '@shared/request/request.service';
 import { map } from 'rxjs/operators';
+import { UtilsService } from '@services/utils.service';
 import { environment } from '@environments/environment';
 import { DemoService } from '@services/demo.service';
 
@@ -50,7 +51,8 @@ export class OverviewService {
 
   constructor(
     private request: RequestService,
-    private demo: DemoService
+    private demo: DemoService,
+    private utils: UtilsService,
   ) { }
 
   getExperiences() {
@@ -160,6 +162,41 @@ export class OverviewService {
       return null;
     }
     return res.data.expStatistics;
+  }
+
+  deleteExperience(experience) {
+    if (environment.demo) {
+      return this.demo.deleteExperience(experience);
+    }
+    return this.request.graphQLMutate(
+      `mutation deleteExperience($uuid: String!) {
+        deleteExperience(uuid: $uuid) {
+          success
+          message
+        }
+      }`,
+      {
+        uuid: experience.uuid,
+      }
+    );
+  }
+
+  archiveExperience(experience) {
+    if (environment.demo) {
+      return this.demo.archiveExperience(experience);
+    }
+    return this.request.graphQLMutate(
+      `mutation updateExperience($uuid: String!, $status: String) {
+        updateExperience(uuid: $uuid, status: $status) {
+          success
+          message
+        }
+      }`,
+      {
+        uuid: experience.uuid,
+        status: 'archived',
+      }
+    );
   }
 
 }
