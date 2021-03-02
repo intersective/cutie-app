@@ -1,0 +1,251 @@
+@import 'functions';
+@import 'pfas-bootstrap/variables';
+@import 'pfas-bootstrap/bootstrap/variables';
+@import 'mixins';
+
+.experience-item {
+  margin-bottom: 1.5rem;
+}
+
+.experience-item-image {
+  height: 160px;
+  position: relative;
+
+  @include media-breakpoint-up(lg) {
+    padding-right: 0;
+    height: auto;
+    max-height: 100%;
+  }
+
+  img {
+    position: absolute;
+    width: calc(100% - 1rem);
+    height: 100%;
+    display: block;
+    object-fit: cover;
+  }
+}
+
+.experience-item-summary {
+  padding-top: 1rem;
+  padding-bottom: 1.5rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+
+  @include media-breakpoint-up(lg) {
+    padding-left: 1.5rem;
+    padding-right: 2.5rem;
+  }
+}
+
+.experience-item-title {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  h3 {
+    margin-bottom: 0;
+    margin-right: 1rem;
+    font-size: 1.25rem;
+    line-height: 1.5rem;
+    letter-spacing: 0.009375rem;
+  }
+
+  .experience-item-type {
+    font-size: .875rem;
+    line-height: 1.25rem;
+    letter-spacing: 0.015625rem;
+    margin-right: 1rem;
+    color: $secondary;
+  }
+
+  .experience-item-status {
+    font-size: .875rem;
+    line-height: 1.25rem;
+    letter-spacing: 0.015625rem;
+
+    &.status-draft {
+      color: $gray-400;
+    }
+
+    &.status-live {
+      color: $green;
+    }
+
+    &.status-completed {
+      color: $blue;
+    }
+
+    &.status-archived {
+      color: $gray-400;
+    }
+  }
+}
+
+.experience-item-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: .5rem;
+  padding-bottom: .5rem;
+
+  a ion-icon {
+    vertical-align: middle;
+  }
+
+  @include media-breakpoint-up(lg) {
+    justify-content: flex-end;
+  }
+}
+
+.experience-item-description {
+  @include media-breakpoint-down(lg) {
+    margin-bottom: 1rem;
+  }
+
+  p {
+    margin: 0;
+  }
+}
+
+.experience-item-timestamp {
+  font-size: .75rem;
+  line-height: 1rem;
+  color: $secondary;
+  display: flex;
+  align-items: center;
+
+  ion-icon {
+    font-size: 1rem;
+    margin-left: 4px;
+  }
+}
+
+.experience-tag {
+  display: inline-block;
+}
+
+.experience-item-stats {
+  margin-top: 1rem;
+
+  .experience-item-stat {
+    min-height: 56px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+
+    @include media-breakpoint-up(lg) {
+      min-height: 72px;
+    }
+  }
+
+  .experience-item-stat-value {
+    font-family: $font-family-monospace;
+    letter-spacing: 0.009375rem;
+    font-weight: $font-weight-medium;
+    font-size: 1rem;
+    line-height: 1.5rem;
+
+    @include media-breakpoint-up(lg) {
+      margin-bottom: .5rem;
+      text-align: center;
+    }
+  }
+
+  .experience-item-stat-pulse {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    @include media-breakpoint-up(lg) {
+      justify-content: center;
+    }
+
+    .progress {
+      width: 48px;
+      margin-right: .5rem;
+    }
+
+    ion-icon {
+      font-size: 1.25rem;
+      color: $secondary;
+    }
+  }
+
+  .experience-item-stat-label {
+    font-size: .75rem;
+    line-height: 1rem;
+    color: $secondary;
+
+    @include media-breakpoint-up(lg) {
+      text-align: center;
+      padding-left: .5rem;
+      padding-right: .5rem;
+    }
+  }
+
+  .experience-item-issues {
+    @include media-breakpoint-up(lg) {
+      margin-bottom: .25rem;
+    }
+
+    .btn {
+      text-transform: none;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      line-height: 1rem;
+      letter-spacing: 0.025rem;
+      font-weight: $font-weight-medium;
+      display: inline-block;
+      margin-right: 8px;
+      margin-bottom: 8px;
+      color: white;
+    }
+  }
+
+  .experience-item-people {
+    color: $secondary;
+    display: flex;
+    align-items: center;
+
+    ion-icon {
+      font-size: 1.5rem;
+      margin-right: .5rem;
+    }
+
+    .table {
+      font-family: $font-family-monospace;
+      th {
+        font-weight: 500;
+      }
+      .td-enrolled {
+        background-color: var(--ion-color-primary-tint);
+      }
+    }
+  }
+
+  .progress-step {
+    max-width: 120px;
+    padding-bottom: 4px;
+
+    &:after {
+      top: 9px;
+    }
+
+    .progress-step-number {
+      width: 20px;
+      height: 20px;
+      border-radius: 10px;
+      margin-bottom: .5rem;
+    }
+
+    .progress-step-label {
+      font-size: .875rem;
+      line-height: 1.25rem;
+    }
+  }
+}
+
+.cursor-auto {
+  cursor: auto;
+}

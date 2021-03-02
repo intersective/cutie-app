@@ -7,6 +7,8 @@ export const environment = {
   APIEndpoint: '<CUSTOM_APIENDPOINT>',
   APIEndpointOld: '<CUSTOM_APIENDPOINTOLD>',
   Practera: '<CUSTOM_PRACTERCORE>',
+  graphQL: '<CUSTOM_GEAPHQLENDPOINT>',
+  chatGraphQL: '<CUSTOM_CHATGEAPHQLENDPOINT>',
   filestack: {
     key: '<CUSTOM_FILESTACK_KEY>',
     s3Config: {

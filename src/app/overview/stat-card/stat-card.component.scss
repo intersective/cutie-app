@@ -1,0 +1,35 @@
+@import 'functions';
+@import 'pfas-bootstrap/variables';
+@import 'pfas-bootstrap/bootstrap/variables';
+
+.experiences-stat {
+  margin-bottom: 24px;
+
+  .experiences-stat-value {
+    text-align: center;
+    font-size: 2.125rem;
+    line-height: 2.5rem;
+    letter-spacing: 0.015625rem;
+    padding-top: 2rem;
+    padding-bottom: 1.25rem;
+    font-family: $font-family-monospace;
+  }
+
+  .experiences-stat-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 16px;
+    height: 64px;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    padding-left: $grid-gutter-width / 2;
+    padding-right: $grid-gutter-width / 2;
+
+    ion-icon {
+      font-size: 1.5rem;
+      color: $pfas-primary-accessible;
+      margin-left: 8px;
+    }
+  }
+}

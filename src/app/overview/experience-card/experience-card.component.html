@@ -1,0 +1,260 @@
+<article class="experience-item card">
+  <div class="row">
+    <div class="experience-item-image col-lg-3">
+      <img [src]="experience.leadImage || './assets/exp-placeholder.png'" alt="Experience image" (click)="view()" class="cursor-pointer">
+    </div>
+    <div class="experience-item-summary col-lg-9">
+      <div class="row">
+        <div class="experience-item-title col-lg-8">
+          <a (click)="view()" class="cursor-pointer"><h3>{{ experience.name }}</h3></a>
+          <span class="experience-item-type">{{ experience.type | titlecase }}</span>
+          <span class="experience-item-status" [ngClass]="{
+            'status-draft': experience.status === 'draft',
+            'status-live': experience.status === 'live',
+            'status-completed': experience.status === 'completed',
+            'status-archived': experience.status === 'archived'
+          }">{{ experience.status | titlecase }}</span>
+        </div>
+        <div class="experience-item-actions col-lg-4">
+
+          <ng-container *ngIf="experience.status === 'draft'">
+            <!-- <a class="btn btn-link">Resume building</a> -->
+          </ng-container>
+          <ng-container *ngIf="experience.status !== 'draft'">
+            <ion-spinner *ngIf="refreshing"></ion-spinner>
+            <button class="btn btn-link shadow-none" type="button" [id]="'last-update-' + experience.uuid" data-bs-toggle="dropdown" aria-expanded="false" [disabled]="refreshing">
+              <span class="experience-item-timestamp">
+                {{ lastUpdated() }}<ion-icon name="time-outline"></ion-icon>
+              </span>
+            </button>
+            <ul class="dropdown-menu" [attr.aria-labelledby]="'last-update-' + experience.uuid">
+              <li class="px-3 gray-2">Statistics last updated {{ lastUpdated() }} ago</li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <a class="dropdown-item" (click)="refresh()">
+                  <ion-icon name="refresh"></ion-icon><span class="ms-2">Refresh Now</span>
+                </a>
+              </li>
+            </ul>
+          </ng-container>
+          <ng-container *ngIf="experience.status !== 'archived'">
+            <button class="btn btn-link shadow-none" type="button" [id]="'option-' + experience.uuid" data-bs-toggle="dropdown"  aria-expanded="false">
+              <ion-icon name="ellipsis-horizontal"></ion-icon>
+            </button>
+          </ng-container>
+          <ul class="dropdown-menu" [attr.aria-labelledby]="'option-' + experience.uuid">
+            <li>
+              <a class="dropdown-item" (click)="edit()">
+                <ion-icon name="pencil"></ion-icon><span class="ms-2">Edit</span>
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" (click)="addTag()">
+                <ion-icon name="pricetag"></ion-icon><span class="ms-2">Add or edit tags</span>
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" (click)="duplicate()">
+                <ion-icon name="copy-outline"></ion-icon><span class="ms-2">Duplicate</span>
+              </a>
+            </li>
+            <ng-container *ngIf="experience.status === 'draft'">
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <a class="dropdown-item" (click)="archive()">
+                  <ion-icon name="archive"></ion-icon><span class="ms-2">Archive</span>
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item text-danger" (click)="delete()">
+                  <ion-icon name="trash"></ion-icon><span class="ms-2">Delete</span>
+                </a>
+              </li>
+            </ng-container>
+            <ng-container *ngIf="experience.status === 'completed'">
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <a class="dropdown-item" (click)="archive()">
+                  <ion-icon name="archive"></ion-icon><span class="ms-2">Archive</span>
+                </a>
+              </li>
+            </ng-container>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        <div class="experience-item-description col-lg-6">
+          <app-description [content]="experience.description" [popupTitle]="experience.name"></app-description>
+        </div>
+        <div class="text-end col-lg-6">
+          <ng-container *ngIf="!experience.tags.length">
+            <button class="btn btn-link d-inline-block" (click)="addTag()">Add tags</button>
+          </ng-container>
+          <ng-container *ngIf="experience.tags.length">
+            <ng-container *ngFor="let tag of experience.tags; let i = index">
+              <span *ngIf="i < 8" class="experience-tag btn-sm btn-tag cursor-auto m-1">{{ tag }}</span>
+            </ng-container>
+            <a *ngIf="experience.tags.length > 8" class="btn btn-link float-end" (click)="moreTags()">+{{ experience.tags.length - 8 }} more</a>
+          </ng-container>
+        </div>
+      </div>
+      <div class="row experience-item-stats">
+        <div class="experience-item-stat col-6 col-md-2">
+          <div *ngIf="experience.todoItemCount" class="experience-item-issues">
+            <span class="btn btn-sm btn-danger cursor-auto">
+              {{ experience.todoItemCount }} issue
+            </span>
+          </div>
+          <div class="experience-item-people btn-group dropend">
+            <button type="button" class="btn btn-link shadow-none" data-bs-toggle="dropdown" aria-expanded="false">
+              <ion-icon name="people"></ion-icon>{{ userCount() }}
+            </button>
+            <ul class="dropdown-menu p-0">
+              <table class="table table-bordered rounded-2 m-0">
+                <thead>
+                  <tr>
+                    <th scope="col"><ion-icon name="people"></ion-icon></th>
+                    <th scope="col">Paticipants</th>
+                    <th scope="col">Mentors</th>
+                    <th scope="col">Admins</th>
+                    <th scope="col">Coordinators</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">Enrolled</th>
+                    <td [ngClass]="{ 'td-enrolled': experience.statistics.enrolledUserCount.participant }">
+                      {{ experience.statistics.enrolledUserCount.participant || 0 }}
+                    </td>
+                    <td [ngClass]="{ 'td-enrolled': experience.statistics.enrolledUserCount.mentor }">
+                      {{ experience.statistics.enrolledUserCount.mentor || 0 }}
+                    </td>
+                    <td [ngClass]="{ 'td-enrolled': experience.statistics.enrolledUserCount.admin }">
+                      {{ experience.statistics.enrolledUserCount.admin || 0 }}
+                    </td>
+                    <td [ngClass]="{ 'td-enrolled': experience.statistics.enrolledUserCount.coordinator }">
+                      {{ experience.statistics.enrolledUserCount.coordinator || 0 }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Registered</th>
+                    <td [ngStyle]="{ background: userCountStyle('participant') }">
+                      {{ experience.statistics.registeredUserCount.participant || 0 }}
+                    </td>
+                    <td [ngStyle]="{ background: userCountStyle('mentor') }">
+                      {{ experience.statistics.registeredUserCount.mentor || 0 }}
+                    </td>
+                    <td [ngStyle]="{ background: userCountStyle('admin') }">
+                      {{ experience.statistics.registeredUserCount.admin || 0 }}
+                    </td>
+                    <td [ngStyle]="{ background: userCountStyle('coordinator') }">
+                      {{ experience.statistics.registeredUserCount.coordinator || 0 }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </ul>
+          </div>
+        </div>
+
+        <ng-container [ngSwitch]="experience.status">
+          <ng-container *ngSwitchCase="'draft'">
+            <!-- <div class="experience-item-stat col-6 col-md-10">
+              <div class="progress-steps">
+                <div class="progress-step" [ngClass]="{'done': ['configuration', 'visual'].includes(experience.setupStep)}">
+                  <div class="progress-step-number">1</div>
+                  <div class="progress-step-label">Configuration complete</div>
+                </div>
+                <div class="progress-step" [ngClass]="{'done': ['visual'].includes(experience.setupStep)}">
+                  <div class="progress-step-number">2</div>
+                  <div class="progress-step-label">Visuals incomplete</div>
+                </div>
+              </div>
+            </div> -->
+          </ng-container>
+
+          <ng-container *ngSwitchCase="'live'">
+            <div class="experience-item-stat col-6 col-md-2">
+              <div class="experience-item-stat-value">
+                <div class="experience-item-stat-pulse">
+                  <div class="progress">
+                    <div *ngIf="onTrack()" class="progress-bar bg-success" role="progressbar" [style]="'width: ' + onTrack() + '%'" [attr.aria-valuenow]="onTrack()" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div *ngIf="offTrack()" class="progress-bar bg-danger" role="progressbar" [style]="'width: ' + offTrack() + '%'" [attr.aria-valuenow]="offTrack()" aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                  <button class="btn p-0 shadow-none" type="button" (click)="onTrackInfo()">
+                    <ion-icon name="information-circle"></ion-icon>
+                  </button>
+                </div>
+              </div>
+              <div class="experience-item-stat-label">
+                <div>{{ onTrack() ? onTrack() + '%' : 'N/A' }} <span class="text-success">on-track</span></div>
+                <div>{{ offTrack() ? offTrack() + '%' : 'N/A' }} <span class="text-danger">off-track</span></div>
+              </div>
+            </div>
+            <div class="experience-item-stat col-6 col-md-2">
+              <div class="experience-item-stat-value">
+                {{ activeParticipant() }}%
+              </div>
+              <div class="experience-item-stat-label">
+                <div>of participants recently active</div>
+              </div>
+            </div>
+            <div class="experience-item-stat col-6 col-md-2">
+              <div class="experience-item-stat-value">
+                {{ activeMentor() }}%
+              </div>
+              <div class="experience-item-stat-label">
+                <div>of mentors recently active</div>
+              </div>
+            </div>
+            <div class="experience-item-stat col-6 col-md-2">
+              <ng-container *ngTemplateOutlet="feedbackLoop"></ng-container>
+            </div>
+            <div class="experience-item-stat col-6 col-md-2">
+              <ng-container *ngTemplateOutlet="reviewRating"></ng-container>
+            </div>
+          </ng-container>
+
+          <ng-container *ngSwitchCase="'completed'">
+            <div class="col-6 col-md-6"></div>
+            <div class="experience-item-stat col-6 col-md-2">
+              <ng-container *ngTemplateOutlet="feedbackLoop"></ng-container>
+            </div>
+            <div class="experience-item-stat col-6 col-md-2">
+              <ng-container *ngTemplateOutlet="reviewRating"></ng-container>
+            </div>
+          </ng-container>
+
+          <ng-container *ngSwitchCase="'archived'">
+            <div class="col-6 col-md-6"></div>
+            <div class="experience-item-stat col-6 col-md-2">
+              <ng-container *ngTemplateOutlet="feedbackLoop"></ng-container>
+            </div>
+            <div class="experience-item-stat col-6 col-md-2">
+              <ng-container *ngTemplateOutlet="reviewRating"></ng-container>
+            </div>
+          </ng-container>
+        </ng-container>
+
+      </div>
+    </div>
+  </div>
+</article>
+
+<ng-template #feedbackLoop>
+  <div class="experience-item-stat-value">
+    {{ experience.statistics.feedbackLoopCompleted || 0 }}/{{ experience.statistics.feedbackLoopStarted || 0 }}
+  </div>
+  <div class="experience-item-stat-label">
+    <div>feedback loops completed</div>
+  </div>
+</ng-template>
+
+<ng-template #reviewRating>
+  <div class="experience-item-stat-value">
+    {{ experience.statistics.reviewRatingAvg * 100 || 0 }}%
+  </div>
+  <div class="experience-item-stat-label">
+    <div>feedback quality score</div>
+  </div>
+</ng-template>

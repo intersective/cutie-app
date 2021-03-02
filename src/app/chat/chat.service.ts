@@ -9,70 +9,97 @@ import { DemoService } from '@services/demo.service';
 import { delay } from 'rxjs/internal/operators';
 import { StorageService } from '@services/storage.service';
 
-/**
- * @description list of api endpoint involved in this service
- */
-const api = {
-  getChatList: 'api/v2/message/chat/list.json',
-  getChatMessages: 'api/v2/message/chat/list_messages.json',
-  createMessage: 'api/v2/message/chat/create_message',
-  markAsSeen: 'api/v2/message/chat/edit_message',
-  createChannel: 'api/v2/message/chat/create_channel',
-  deleteChannel: 'api/v2/message/chat/delete_channel',
-  editChannel: 'api/v2/message/chat/edit_channel'
-};
-
 export interface ChatChannel {
-  channelId: number | string;
-  channelName: string;
-  channelAvatar: string;
-  pusherChannelName: string;
-  readonly?: boolean;
-  announcement?: boolean;
+  uuid: string;
+  name: string;
+  avatar: string;
+  targetUser?: TargetUser;
+  isAnnouncement: boolean;
+  isDirectMessage: boolean;
+  pusherChannel: string;
+  readonly: boolean;
   roles: string[];
-  members: {
-    name: string;
-    role: string;
-    avatar: string;
-  }[];
+  unreadMessageCount: number;
+  lastMessage: string;
+  lastMessageCreated: string;
   canEdit: boolean;
-  unreadMessages?: number;
-  lastMessage?: string;
-  lastMessageCreated?: string;
+}
+
+export interface TargetUser {
+  email: string;
+  role: string;
+  teamName: string;
+}
+
+export interface ChannelMembers {
+  uuid: string;
+  name: string;
+  role: string;
+  email: string;
+  avatar: string;
 }
 
 export interface Message {
-  id?: number;
+  uuid: string;
+  senderUuid?: string;
   senderName?: string;
   senderRole?: string;
   senderAvatar?: string;
-  isSender?: boolean;
+  isSender: boolean;
   message: string;
-  sentTime?: string;
-  channelId?: number | string;
-  channelIdAlias?: string;
-  file?: object;
+  created: string;
+  file: string;
+  fileObject?: object;
   preview?: string;
   noAvatar?: boolean;
+  channelUuid?: string;
+}
+
+export interface MessageListResult {
+  cursor: string;
+  messages: Message[];
+}
+
+export interface NewChannelParam {
+  name: string;
+  isAnnouncement: boolean;
+  roles: string[];
+  members: {
+    type: string;
+    uuid: number | string;
+  }[];
+}
+
+export interface User {
+  uuid: string;
+  name: string;
+  avatar: string;
+  role: string;
+  email: string;
+  enrolmentUuid: string;
+  team: {
+    uuid: string;
+    name: string;
+  };
+}
+
+export interface SearchUsersParam {
+  scope: string;
+  scopeUuid: string;
+  filter: string;
+  teamUserOnly: boolean;
 }
 
 interface NewMessageParam {
-  channel_id: number | string;
+  channelUuid: string;
   message: string;
-  env?: string;
-  file?: object;
+  file?: string;
 }
 
 interface MessageListParams {
-  channel_id: number | string;
-  page: number;
+  channelUuid: string;
+  cursor: string;
   size: number;
-}
-
-interface MarkAsSeenParams {
-  channel_id: number | string;
-  ids: number[];
-  action?: string;
 }
 
 interface UnreadMessageParams {
@@ -80,9 +107,9 @@ interface UnreadMessageParams {
 }
 
 interface EditChannelParams {
-  channel_id: number | string;
-  channel_name?: string;
-  announcement?: boolean;
+  uuid: string;
+  name?: string;
+  isAnnouncement?: boolean;
   roles?: string[];
 }
 
@@ -97,7 +124,7 @@ export class ChatService {
     private pusherService: PusherService,
     private demo: DemoService,
     public storage: StorageService,
-  ) {}
+  ) { }
 
   /**
    * this method return chat list data.
@@ -107,41 +134,49 @@ export class ChatService {
       const response = this.demo.getChats();
       return of(this._normaliseChatListResponse(response.data)).pipe(delay(1000));
     }
-    return this.request.get(api.getChatList).pipe(
-      map(response => {
-        if (response.success && response.data) {
-          return this._normaliseChatListResponse(response.data);
+    return this.request.chatGraphQLQuery(
+      `query getChannels {
+        channels{
+          uuid
+          name
+          avatar
+          targetUser {
+            email
+            role
+            teamName
+          }
+          isAnnouncement
+          isDirectMessage
+          readonly
+          roles
+          unreadMessageCount
+          lastMessage
+          lastMessageCreated
+          pusherChannel
+          canEdit
         }
-      })
-    );
+      }`,
+      {},
+      {
+        noCache: true
+      }
+    ).pipe(map(response => {
+      if (response.data) {
+        return this._normaliseChatListResponse(response.data);
+      }
+    }));
   }
 
   private _normaliseChatListResponse(data): ChatChannel[] {
-    if (!Array.isArray(data)) {
+    const result = JSON.parse(JSON.stringify(data.channels));
+    if (!Array.isArray(result)) {
       this.request.apiResponseFormatError('Chat format error');
       return [];
     }
-    if (data.length === 0) {
+    if (result.length === 0) {
       return [];
     }
-    const chats = [];
-    data.forEach(chat => {
-      chats.push({
-        channelId: chat.channel_id,
-        channelName: chat.channel_name,
-        channelAvatar: chat.channel_avatar,
-        pusherChannelName: chat.pusher_channel_name,
-        readonly: chat.readonly,
-        announcement: chat.announcement,
-        roles: chat.roles,
-        members: chat.members,
-        canEdit: chat.can_edit,
-        unreadMessages: chat.unread_messages,
-        lastMessage: chat.last_message,
-        lastMessageCreated: chat.last_message_created
-      });
-    });
-    return chats;
+    return result;
   }
 
   /**
@@ -149,68 +184,188 @@ export class ChatService {
    * @param prams
    *  prams is a json object
    * {
-   *  channel_id: 1234,
-   *  page: 1,
-   *  size:20
+   *   channel_id: 1234,
+   *   cursor: 1,
+   *   size:20
    * }
    */
-  getMessageList(data: MessageListParams): Observable<Message[]> {
+  getMessageList(data: MessageListParams): Observable<MessageListResult> {
     if (environment.demo) {
       const response = this.demo.getMessages(data);
       return of(this._normaliseMessageListResponse(response.data)).pipe(delay(1000));
     }
-    return this.request
-      .get(api.getChatMessages, {
-        params: data
-      })
-      .pipe(
-        map(response => {
-          if (response.success && response.data) {
-            return this._normaliseMessageListResponse(response.data);
+    return this.request.chatGraphQLQuery(
+      `query getChannellogs($uuid:String!, $cursor:String!, $size:Int!) {
+        channel(uuid:$uuid){
+          chatLogsConnection(cursor:$cursor, size:$size){
+            cursor
+            chatLogs{
+              uuid
+              isSender
+              message
+              file
+              created
+              sender {
+                uuid
+                name
+                role
+                avatar
+              }
+            }
           }
-        })
-      );
+        }
+      }`,
+      {
+        uuid: data.channelUuid,
+        cursor: data.cursor,
+        size: data.size
+      },
+      {
+        noCache: true
+      }
+    ).pipe(map(response => {
+      if (response.data) {
+        return this._normaliseMessageListResponse(response.data);
+      }
+    }));
   }
 
   /**
    * modify the message list response
    */
-  private _normaliseMessageListResponse(data): Message[] {
-    if (!Array.isArray(data)) {
+  private _normaliseMessageListResponse(data): MessageListResult {
+    const messages = JSON.parse(JSON.stringify(data.channel.chatLogsConnection.chatLogs));
+    const cursor = JSON.parse(JSON.stringify(data.channel.chatLogsConnection.cursor));
+    if (!Array.isArray(messages)) {
       this.request.apiResponseFormatError('Message array format error');
-      return [];
+      return null;
     }
-    if (data.length === 0) {
-      return [];
+    if (messages.length === 0) {
+      return null;
     }
     const messageList = [];
-    data.forEach(message => {
+    messages.forEach(message => {
+      let fileObject = null;
+      if ((typeof message.file) === 'string') {
+        fileObject = JSON.parse(message.file);
+      } else {
+        fileObject = message.file;
+      }
       messageList.push({
-        id: message.id,
+        uuid: message.uuid,
+        isSender: message.isSender,
+        message: message.message,
+        file: message.file,
+        fileObject: fileObject,
+        created: message.created,
+        senderUuid: message.sender.uuid,
         senderName: message.sender.name,
         senderRole: message.sender.role,
-        senderAvatar: message.sender.avatar,
-        isSender: message.is_sender,
-        message: message.message,
-        sentTime: message.sent_time,
-        file: message.file
+        senderAvatar: message.sender.avatar
       });
     });
-    return messageList;
+    return {
+      cursor: cursor,
+      messages: messageList
+    };
   }
 
-  markMessagesAsSeen(prams: MarkAsSeenParams): Observable<any> {
+  /**
+   * this method return members of a chat channels.
+   */
+  getChatMembers(channelId): Observable<ChannelMembers[]> {
+    if (environment.demo) {
+      const response = this.demo.getMembers(channelId);
+      return of(this._normaliseChatMembersResponse(response.data)).pipe(delay(1000));
+    }
+    return this.request.chatGraphQLQuery(
+      `query getChannelmembers($uuid:String!) {
+        channel(uuid:$uuid){
+          members{
+            uuid
+            name
+            role
+            avatar
+            email
+          }
+        }
+      }`,
+      {
+        uuid: channelId
+      },
+      {
+        noCache: true
+      }
+    ).pipe(map(response => {
+      if (response.data) {
+        return this._normaliseChatMembersResponse(response.data);
+      }
+    }));
+  }
+
+  private _normaliseChatMembersResponse(data): ChannelMembers[] {
+    const result = JSON.parse(JSON.stringify(data.channel.members));
+    if (!Array.isArray(result)) {
+      this.request.apiResponseFormatError('Member array format error');
+      return [];
+    }
+    if (result.length === 0) {
+      return [];
+    }
+    return result;
+  }
+
+  /**
+   * This method is returning pusher channel list to subscribe.
+   */
+  getPusherChannels(): Observable<any[]> {
+    if (environment.demo) {
+      const response = this.demo.getPusherChannels();
+      return of(this._normalisePusherChannelsResponse(response.data)).pipe(delay(1000));
+    }
+    return this.request.chatGraphQLQuery(
+      `query getPusherChannels {
+        channels {
+          pusherChannel
+        }
+      }`,
+      {},
+      {
+        noCache: true
+      }
+    ).pipe(map(response => {
+      if (response.data) {
+        return this._normalisePusherChannelsResponse(response.data);
+      }
+    }));
+  }
+
+  private _normalisePusherChannelsResponse(data): any[] {
+    const result = JSON.parse(JSON.stringify(data.channels));
+    if (!Array.isArray(result)) {
+      this.request.apiResponseFormatError('Pusher Channel array format error');
+      return [];
+    }
+    if (result.length === 0) {
+      return [];
+    }
+    return result;
+  }
+
+  markMessagesAsSeen(uuids: string[]): Observable<any> {
     if (environment.demo) {
       return of({}).pipe(delay(1000));
     }
-    const body = {
-      channel_id: prams.channel_id,
-      id: prams.ids,
-      action: 'mark_seen'
-    };
-    return this.request.post(api.markAsSeen, body, {
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-    });
+    return this.request.chatGraphQLMutate(
+      `mutation markAsSeen($uuids: [String]!) {
+        readChatLogs(uuids: $uuids) {
+          success
+        }
+      }`,
+      {
+        uuids: uuids
+      }
+    );
   }
 
   /**
@@ -222,45 +377,64 @@ export class ChatService {
       const response = this.demo.getNewMessage(data);
       return of(this._normalisePostMessageResponse(response.data)).pipe(delay(1000));
     }
-    return this.request.post(api.createMessage, {
-      channel_id: data.channel_id,
-      message: data.message,
-      env: environment.env,
-      file: data.file,
-    })
-    .pipe(
+    return this.request.chatGraphQLMutate(
+      `mutation createChatLogs($channelUuid: String!, $message: String, $file: String) {
+        createChatLog(channelUuid: $channelUuid, message: $message, file: $file) {
+            uuid
+            isSender
+            message
+            file
+            created
+            sender {
+              uuid
+              name
+              role
+              avatar
+          }
+        }
+      }`,
+      {
+        channelUuid: data.channelUuid,
+        message: data.message,
+        file: data.file
+      }
+    ).pipe(
       map(response => {
-        if (response.success && response.data) {
+        if (response.data) {
           return this._normalisePostMessageResponse(response.data);
         }
       })
     );
   }
 
-  private _normalisePostMessageResponse(data): { message: Message, channelId?: number } {
-    if (!this.utils.has(data, 'id') ||
-        !this.utils.has(data, 'sender.name') ||
-        !this.utils.has(data, 'sender.role') ||
-        !this.utils.has(data, 'sender.avatar') ||
-        !this.utils.has(data, 'is_sender') ||
-        !this.utils.has(data, 'message') ||
-        !this.utils.has(data, 'sent_time') ||
-        !this.utils.has(data, 'file')) {
+  private _normalisePostMessageResponse(data): Message {
+    const result = JSON.parse(JSON.stringify(data.createChatLog));
+    if (!this.utils.has(result, 'uuid') ||
+      !this.utils.has(result, 'sender.uuid') ||
+      !this.utils.has(result, 'isSender') ||
+      !this.utils.has(result, 'message') ||
+      !this.utils.has(result, 'created') ||
+      !this.utils.has(result, 'file')) {
       this.request.apiResponseFormatError('chat channel format error');
       return null;
     }
+    let fileObject = null;
+    if ((typeof result.file) === 'string') {
+      fileObject = JSON.parse(result.file);
+    } else {
+      fileObject = result.file;
+    }
     return {
-      message: {
-        id: data.id,
-        senderName: data.sender.name,
-        senderRole: data.sender.role,
-        senderAvatar: data.sender.avatar,
-        isSender: data.is_sender,
-        message: data.message,
-        sentTime: data.sent_time,
-        file: data.file
-      },
-      channelId: data.channel ? data.channel.channel_id : null
+      uuid: result.uuid,
+      isSender: result.isSender,
+      message: result.message,
+      file: result.file,
+      fileObject: fileObject,
+      created: result.created,
+      senderUuid: result.sender.uuid,
+      senderName: result.sender.name,
+      senderRole: result.sender.role,
+      senderAvatar: result.sender.avatar
     };
   }
 
@@ -271,22 +445,37 @@ export class ChatService {
     return this.postNewMessage(data);
   }
 
-    /**
-   * this method create new cohort channel.
-   */
-  createChannel(data): Observable<ChatChannel> {
+  /**
+ * this method create new cohort channel.
+ */
+  createChannel(data: NewChannelParam): Observable<ChatChannel> {
     if (environment.demo) {
       const response = this.demo.getNewChannel();
       return of(this._normaliseCreateChannelResponse(response.data)).pipe(delay(1000));
     }
-    return this.request.post(api.createChannel, {
-      name: data.name,
-      announcement: data.announcement,
-      roles: data.roles,
-      members: data.members
-    }).pipe(
+    return this.request.chatGraphQLMutate(
+      `mutation createChannel($name: String, $isAnnouncement: Boolean, $roles: [String], $members: [MemberInput]!){
+        createChannel(name: $name, isAnnouncement: $isAnnouncement, roles: $roles, members: $members) {
+            uuid
+            name
+            avatar
+            pusherChannel
+            isAnnouncement
+            isDirectMessage
+            readonly
+            roles
+            canEdit
+        }
+    }`,
+      {
+        name: data.name,
+        isAnnouncement: data.isAnnouncement,
+        roles: data.roles,
+        members: data.members
+      }
+    ).pipe(
       map(response => {
-        if (response.success && response.data) {
+        if (response.data) {
           return this._normaliseCreateChannelResponse(response.data);
         }
       })
@@ -294,50 +483,173 @@ export class ChatService {
   }
 
   private _normaliseCreateChannelResponse(data): ChatChannel {
-    if (!this.utils.has(data, 'channel_id') ||
-        !this.utils.has(data, 'channel_name') ||
-        !this.utils.has(data, 'channel_avatar') ||
-        !this.utils.has(data, 'pusher_channel_name') ||
-        !this.utils.has(data, 'roles') ||
-        !this.utils.has(data, 'members') ||
-        !this.utils.has(data, 'can_edit')) {
+    const result = JSON.parse(JSON.stringify(data.createChannel));
+    if (!this.utils.has(result, 'uuid') ||
+      !this.utils.has(result, 'name') ||
+      !this.utils.has(result, 'avatar') ||
+      !this.utils.has(result, 'pusherChannel') ||
+      !this.utils.has(result, 'isAnnouncement') ||
+      !this.utils.has(result, 'isDirectMessage') ||
+      !this.utils.has(result, 'readonly') ||
+      !this.utils.has(result, 'roles') ||
+      !this.utils.has(result, 'canEdit')) {
       this.request.apiResponseFormatError('chat channel format error');
       return null;
     }
     return {
-      channelId: data.channel_id,
-      channelName: data.channel_name,
-      channelAvatar: data.channel_avatar,
-      pusherChannelName: data.pusher_channel_name,
-      announcement: data.announcement,
-      roles: data.roles,
-      members: data.members,
-      canEdit: data.can_edit
+      uuid: result.uuid,
+      name: result.name,
+      avatar: result.avatar,
+      pusherChannel: result.pusherChannel,
+      isAnnouncement: result.isAnnouncement,
+      isDirectMessage: result.isDirectMessage,
+      readonly: result.readonly,
+      roles: result.roles,
+      unreadMessageCount: 0,
+      lastMessage: null,
+      lastMessageCreated: null,
+      canEdit: result.canEdit
     };
   }
 
-  deleteChatChannel(channelId) {
+  deleteChatChannel(channelUuid) {
     if (environment.demo) {
       return of({}).pipe(delay(1000));
     }
-    return this.request.delete(api.deleteChannel, {
-      params: {
-        id: channelId
+    return this.request.chatGraphQLMutate(
+      `mutation deleteChannel($uuid: String!){
+        deleteChannel(uuid: $uuid) {
+            success
+        }
+      }`,
+      {
+        uuids: channelUuid
       }
-    });
+    );
   }
 
-  editChatChannel(data: EditChannelParams) {
+  editChatChannel(data: EditChannelParams): Observable<ChatChannel> {
     if (environment.demo) {
       const response = this.demo.getEditedChannel(data);
-      return of(response).pipe(delay(1000));
+      return of(this._normaliseEditChannelResponse(response.data)).pipe(delay(1000));
     }
-    return this.request.post(api.editChannel, {
-      id: data.channel_id,
-      name: data.channel_name,
-      announcement: data.announcement,
-      roles: data.roles
+    return this.request.chatGraphQLMutate(
+      `mutation editChannel($uuid: String!, $name: String, $isAnnouncement: Boolean, $roles: [String]){
+        editChannel(uuid: $uuid, name: $name, isAnnouncement: $isAnnouncement, roles: $roles) {
+            uuid
+            name
+            avatar
+            pusherChannel
+            isAnnouncement
+            isDirectMessage
+            readonly
+            roles
+            unreadMessageCount
+            lastMessage
+            lastMessageCreated
+            canEdit
+        }
+      }`,
+      {
+        uuid: data.uuid,
+        name: data.name,
+        isAnnouncement: data.isAnnouncement,
+        roles: data.roles
+      }
+    ).pipe(
+      map(response => {
+        if (response.data) {
+          return this._normaliseEditChannelResponse(response.data);
+        }
+      })
+    );
+  }
+
+  private _normaliseEditChannelResponse(data): ChatChannel {
+    const result = JSON.parse(JSON.stringify(data.editChannel));
+    if (!this.utils.has(result, 'uuid') ||
+      !this.utils.has(result, 'name') ||
+      !this.utils.has(result, 'avatar') ||
+      !this.utils.has(result, 'pusherChannel') ||
+      !this.utils.has(result, 'isAnnouncement') ||
+      !this.utils.has(result, 'isDirectMessage') ||
+      !this.utils.has(result, 'readonly') ||
+      !this.utils.has(result, 'roles') ||
+      !this.utils.has(result, 'unreadMessageCount') ||
+      !this.utils.has(result, 'lastMessage') ||
+      !this.utils.has(result, 'lastMessageCreated') ||
+      !this.utils.has(result, 'canEdit')) {
+      this.request.apiResponseFormatError('chat channel format error');
+      return null;
+    }
+    return {
+      uuid: result.uuid,
+      name: result.name,
+      avatar: result.avatar,
+      pusherChannel: result.pusherChannel,
+      isAnnouncement: result.isAnnouncement,
+      isDirectMessage: result.isDirectMessage,
+      readonly: result.readonly,
+      roles: result.roles,
+      unreadMessageCount: result.unreadMessageCount,
+      lastMessage: result.lastMessage,
+      lastMessageCreated: result.lastMessageCreated,
+      canEdit: result.canEdit
+    };
+  }
+
+  searchTimelineUsers(data: SearchUsersParam): Observable<User[]> {
+    if (environment.demo) {
+      const response = this.demo.getUsers(data);
+      return of(this._normaliseSearchTimelineUsersResponse(response.data)).pipe(delay(1000));
+    }
+    return this.request.graphQLQuery(
+      `query getUsers($scope: String, $scopeUuid: String, $filter: String, $teamUserOnly: Boolean) {
+        users(scope: $scope, scopeUuid: $scopeUuid, filter: $filter, teamUserOnly: $teamUserOnly) {
+          uuid
+          name
+          email
+          role
+          avatar
+          enrolmentUuid
+          team {
+            uuid
+            name
+          }
+        }
+      }`,
+      {
+        scope: data.scope,
+        scopeUuid: data.scopeUuid,
+        filter: data.filter,
+        teamUserOnly: data.teamUserOnly
+      }
+    ).pipe(
+      map(response => {
+        if (response.data) {
+          return this._normaliseSearchTimelineUsersResponse(response.data);
+        }
+      })
+    );
+  }
+
+  private _normaliseSearchTimelineUsersResponse(data): User[] {
+    const result = JSON.parse(JSON.stringify(data.users));
+    if (!Array.isArray(result)) {
+      this.request.apiResponseFormatError('User array format error');
+      return [];
+    }
+    if (result.length === 0) {
+      return [];
+    }
+    const myEmail = this.storage.getUser().email;
+    const userList = [];
+    result.forEach(user => {
+      if (user.email !== myEmail) {
+        userList.push(user);
+      }
     });
+    return userList;
   }
 
 }

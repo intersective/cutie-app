@@ -1,11 +1,39 @@
 import { Injectable } from '@angular/core';
 import { UtilsService } from '@services/utils.service';
 import { StorageService } from '@services/storage.service';
+import { of } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { delay } from 'rxjs/internal/operators';
+
+const CHARACTERS = {
+  avengers: {
+    name: 'Avengers',
+    avatar: 'https://c3.klipartz.com/pngpicture/208/878/sticker-png-avengers-endgame-2019-avengers-logo-avengers-logo-thumbnail.png'
+  },
+  shield: {
+    name: 'S.H.I.E.L.D.',
+    avatar: 'https://c0.klipartz.com/pngpicture/420/169/gratis-png-nick-fury-s-h-i-e-l-d-marvel-universo-cinematico-marvel-comics-decal-s-h-i-e-l-d-thumbnail.png'
+  },
+  steven: {
+    name: 'Steven G. Rogers',
+    avatar: 'https://c0.klipartz.com/pngpicture/716/616/gratis-png-capitan-america-escudo-de-superheroes-escudo-de-dibujos-animados-thumbnail.png',
+    email: 'steven@practera.com'
+  },
+  tony: {
+    name: 'Tony Stark',
+    avatar: 'https://c0.klipartz.com/pngpicture/471/25/gratis-png-hombre-de-acero-thumbnail.png',
+    email: 'tony@practera.com'
+  },
+  thanos: {
+    name: 'Thanos',
+    avatar: 'https://c3.klipartz.com/pngpicture/468/242/sticker-png-thanos-background-thumbnail.png',
+    email: 'thanos@practera.com'
+  }
+};
 
 @Injectable({
   providedIn: 'root'
 })
-
 export class DemoService {
   students = ['Caramel Dundee', 'Gosinder Shah', 'Mein Black', 'Gos Baxter', 'Monday Blighton', 'Joreis Park', 'Dimitry Ricks', 'Desean Ning'];
   allStatus = ['not started', 'in progress', 'done', 'pending review', 'pending approval', 'published'];
@@ -17,163 +45,149 @@ export class DemoService {
     unassignedReview: 0,
     unpublishedReview: 0
   };
-  chatChannels = [
+  tags = ['apple', 'banana', 'watermelon', 'peach', 'pineapple', 'grape', 'orange', 'stonemelon', 'dragon fruit'];
+  channelMembers = [
     {
-      channel_id: 1,
-      channel_name: 'Team 1',
-      channel_avatar: 'https://flaticons.net/icon.php?slug_category=people&slug_icon=user-group',
-      pusher_channel_name: 'private-develop-team-1447-322-20',
-      readonly: false,
-      roles: ['participant', 'mentor'],
-      can_edit: false,
-      members: [
-        {
-          name: 'student1',
-          role: 'participant',
-          avatar: 'https://image.flaticon.com/icons/png/512/194/194938.png'
-        },
-        {
-          name: 'student2',
-          role: 'participant',
-          avatar: 'https://cdn1.iconfinder.com/data/icons/user-pictures/101/malecostume-512.png'
-        },
-        {
-          name: 'mentor1',
-          role: 'mentor',
-          avatar: 'https://cdn3.iconfinder.com/data/icons/avatars-round-flat/33/avat-01-512.png'
-        },
-        {
-          name: 'student1',
-          role: 'participant',
-          avatar: 'https://image.flaticon.com/icons/png/512/194/194938.png'
-        },
-        {
-          name: 'student2',
-          role: 'participant',
-          avatar: 'https://cdn1.iconfinder.com/data/icons/user-pictures/101/malecostume-512.png'
-        },
-        {
-          name: 'mentor1',
-          role: 'mentor',
-          avatar: 'https://cdn3.iconfinder.com/data/icons/avatars-round-flat/33/avat-01-512.png'
-        },
-        {
-          name: 'student1',
-          role: 'participant',
-          avatar: 'https://image.flaticon.com/icons/png/512/194/194938.png'
-        },
-        {
-          name: 'student2',
-          role: 'participant',
-          avatar: 'https://cdn1.iconfinder.com/data/icons/user-pictures/101/malecostume-512.png'
-        },
-        {
-          name: 'mentor1',
-          role: 'mentor',
-          avatar: 'https://cdn3.iconfinder.com/data/icons/avatars-round-flat/33/avat-01-512.png'
-        },
-        {
-          name: 'student1',
-          role: 'participant',
-          avatar: 'https://image.flaticon.com/icons/png/512/194/194938.png'
-        },
-        {
-          name: 'student2',
-          role: 'participant',
-          avatar: 'https://cdn1.iconfinder.com/data/icons/user-pictures/101/malecostume-512.png'
-        },
-        {
-          name: 'mentor1',
-          role: 'mentor',
-          avatar: 'https://cdn3.iconfinder.com/data/icons/avatars-round-flat/33/avat-01-512.png'
-        },
-        {
-          name: 'mentor1',
-          role: 'mentor',
-          avatar: 'https://cdn3.iconfinder.com/data/icons/avatars-round-flat/33/avat-01-512.png'
-        },
-        {
-          name: 'student1',
-          role: 'participant',
-          avatar: 'https://image.flaticon.com/icons/png/512/194/194938.png'
-        },
-        {
-          name: 'student2',
-          role: 'participant',
-          avatar: 'https://cdn1.iconfinder.com/data/icons/user-pictures/101/malecostume-512.png'
-        },
-        {
-          name: 'mentor1',
-          role: 'mentor',
-          avatar: 'https://cdn3.iconfinder.com/data/icons/avatars-round-flat/33/avat-01-512.png'
-        },
-        {
-          name: 'mentor1',
-          role: 'mentor',
-          avatar: 'https://cdn3.iconfinder.com/data/icons/avatars-round-flat/33/avat-01-512.png'
-        },
-        {
-          name: 'student1',
-          role: 'participant',
-          avatar: 'https://image.flaticon.com/icons/png/512/194/194938.png'
-        },
-        {
-          name: 'student2',
-          role: 'participant',
-          avatar: 'https://cdn1.iconfinder.com/data/icons/user-pictures/101/malecostume-512.png'
-        },
-        {
-          name: 'mentor1',
-          role: 'mentor',
-          avatar: 'https://cdn3.iconfinder.com/data/icons/avatars-round-flat/33/avat-01-512.png'
-        }
-      ],
-      unread_messages: 1,
-      last_message_created: '2020-07-14 06:20:37',
-      last_message: '123'
+      uuid: '1',
+      name: CHARACTERS.steven.name,
+      role: 'participant',
+      avatar: CHARACTERS.steven.avatar
     },
     {
-      channel_id: 2,
-      channel_name: 'Timeline 01',
-      channel_avatar: 'https://flaticons.net/icon.php?slug_category=people&slug_icon=user-group',
-      pusher_channel_name: 'private-develop-team-1447-322-20',
-      readonly: false,
-      roles: ['participant', 'mentor'],
-      can_edit: true,
-      members: [
-        {
-          name: 'student1',
-          role: 'participant',
-          avatar: 'https://image.flaticon.com/icons/png/512/194/194938.png'
-        },
-        {
-          name: 'student2',
-          role: 'participant',
-          avatar: 'https://cdn1.iconfinder.com/data/icons/user-pictures/101/malecostume-512.png'
-        },
-        {
-          name: 'mentor1',
-          role: 'mentor',
-          avatar: 'https://cdn3.iconfinder.com/data/icons/avatars-round-flat/33/avat-01-512.png'
-        }
-      ],
-      unread_messages: 0,
-      last_message_created: '2020-07-14 04:20:37',
-      last_message: 'ABC'
+      uuid: '2',
+      name: CHARACTERS.tony.name,
+      role: 'participant',
+      avatar: CHARACTERS.tony.avatar
+    },
+    {
+      uuid: '3',
+      name: CHARACTERS.thanos.name,
+      role: 'mentor',
+      avatar: CHARACTERS.thanos.avatar
     }
   ];
-  TeamChatMessages = [
+  chatChannels = [
     {
-      id: 510,
-      sender: {
-        name: 'sasanga+student01',
-        role: 'Participant',
-        avatar: 'https://www.gravatar.com/avatar/d139e8674543137eaa55012cbbb4d2cb?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50'
+      uuid: '1',
+      name: CHARACTERS.avengers.name,
+      avatar: CHARACTERS.avengers.avatar,
+      targetUser: null,
+      pusherChannel: 'private-develop-team-1447-322-20',
+      roles: ['participant', 'mentor'],
+      isAnnouncement: false,
+      isDirectMessage: false,
+      readonly: false,
+      unreadMessageCount: 1,
+      lastMessageCreated: '2020-07-14 06:20:37',
+      lastMessage: 'Thanos is coming',
+      canEdit: false
+    },
+    {
+      uuid: '2',
+      name: CHARACTERS.shield.name,
+      avatar: CHARACTERS.shield.avatar,
+      targetUser: null,
+      pusherChannel: 'private-develop-team-1447-322-20',
+      roles: ['participant', 'mentor'],
+      isAnnouncement: false,
+      isDirectMessage: false,
+      readonly: false,
+      unreadMessageCount: 0,
+      lastMessageCreated: null,
+      lastMessage: null,
+      canEdit: false
+    },
+    {
+      uuid: '3',
+      name: CHARACTERS.steven.name,
+      avatar: CHARACTERS.steven.avatar,
+      targetUser: {
+        email: CHARACTERS.steven.email,
+        role: 'participant',
+        teamName: CHARACTERS.avengers.name
       },
-      message: null,
-      file: {
+      pusherChannel: 'private-develop-team-1447-322-20',
+      roles: ['participant'],
+      isAnnouncement: false,
+      isDirectMessage: true,
+      readonly: false,
+      unreadMessageCount: 0,
+      lastMessageCreated: '2020-07-14 06:20:37',
+      lastMessage: 'Avengers assemble',
+      canEdit: false
+    },
+    {
+      uuid: '4',
+      name: CHARACTERS.tony.name,
+      avatar: CHARACTERS.tony.avatar,
+      targetUser: {
+        email: CHARACTERS.tony.email,
+        role: 'participant',
+        teamName: CHARACTERS.avengers.name
+      },
+      pusherChannel: 'private-develop-team-1447-322-20',
+      roles: ['participant'],
+      isAnnouncement: false,
+      isDirectMessage: true,
+      readonly: false,
+      unreadMessageCount: 2,
+      lastMessageCreated: '2020-07-15 06:20:37',
+      lastMessage: `I'm Ironman`,
+      canEdit: false
+    },
+    {
+      uuid: '5',
+      name: CHARACTERS.thanos.name,
+      avatar: CHARACTERS.thanos.avatar,
+      targetUser: {
+        email: CHARACTERS.thanos.email,
+        role: 'mentor',
+        teamName: CHARACTERS.thanos.name
+      },
+      pusherChannel: 'private-develop-team-1447-322-20',
+      roles: ['participant', 'mentor'],
+      isAnnouncement: false,
+      isDirectMessage: true,
+      readonly: false,
+      unreadMessageCount: 2,
+      lastMessageCreated: '2020-07-15 06:20:37',
+      lastMessage: `I'm inevitable`,
+      canEdit: false
+    }
+  ];
+  chatMessages = [
+    {
+      uuid: '11',
+      message: `I'm Ironman`,
+      file: null,
+      created: '2019-11-28 02:21:21',
+      isSender: false,
+      sender: {
+        uuid: '1',
+        name: CHARACTERS.tony.name,
+        role: 'participant',
+        avatar: CHARACTERS.tony.avatar
+      }
+    },
+    {
+      uuid: '1',
+      message: 'Thanos is coming',
+      file: null,
+      created: '2019-11-28 02:21:21',
+      isSender: true,
+      sender: {
+        uuid: '1',
+        name: 'student+01',
+        role: 'participant',
+        avatar: 'https://www.gravatar.com/avatar/21b7427270a606e8a3c4413a13bb47c6?d=https://sandbox.practera.com/img/user-512.png&s=50'
+      }
+    },
+    {
+      uuid: '2',
+      message: '',
+      file: JSON.stringify({
         container: 'practera-aus',
-        filename: 'file-sample_150kB.pdf',
+        filename: 'Thanos_is_coming.pdf',
         handle: 'VcVHlY1SzSC8VKNuXFBt',
         key: 'appv2/stage/uploads/37ad733fdf20adf0de20effcbbf6f120/THPhHZoRCiUscy4hrXvQ_file-sample_150kB.pdf',
         mimetype: 'application/pdf',
@@ -188,104 +202,264 @@ export class DemoService {
         status: 'Stored',
         uploadId: '2ZaurtAztrY45d4S',
         url: 'https://cdn.filestackcontent.com/VcVHlY1SzSC8VKNuXFBt'
-      },
-      sent_time: '2020-07-28 03:51:35',
-      is_sender: false,
+      }),
+      created: '2019-11-27 02:25:21',
+      isSender: false,
+      sender: {
+        uuid: '3',
+        name: CHARACTERS.steven.name,
+        role: 'participant',
+        avatar: CHARACTERS.steven.avatar
+      }
     },
     {
-      id: 509,
+      uuid: '3',
+      message: 'Hi guys, check this out!',
+      file: null,
+      created: '2019-11-27 02:21:21',
+      isSender: false,
       sender: {
-        name: 'sasanga+mentor',
-        role: 'Mentor',
-        avatar: 'https://www.gravatar.com/avatar/6557b83887f5a40fde3749bd6c79af7a?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50'
-      },
-      message: null,
-      file: {
-        filename: 'Landscape-Nature-Sunset-Trees-HD-Free-Background.png',
-        handle: 'Hg8rGSbSRTyki09DiM7G',
-        mimetype: 'image/png',
-        originalPath: 'Landscape-Nature-Sunset-Trees-HD-Free-Background.png',
-        size: 330150,
-        source: 'local_file_system',
-        url: 'https://cdn.filestackcontent.com/Hg8rGSbSRTyki09DiM7G',
-        uploadId: 'gM0t331cHi3YfoyM',
-        originalFile: {
-          name: 'Landscape-Nature-Sunset-Trees-HD-Free-Background.png',
-          type: 'image/png',
-          size: 330150
+        uuid: '3',
+        name: CHARACTERS.steven.name,
+        role: 'participant',
+        avatar: CHARACTERS.steven.avatar
+      }
+    }
+  ];
+  pusherChannels = [
+    {
+      pusherChannel: 'fgv34fg-34-8472354eb'
+    },
+    {
+      pusherChannel: 'k76i865-jyj-5f44eb4f'
+    }
+  ];
+  timelineUsers = [
+    {
+      uuid: '60712b63-95c8-bffe-ba86-784f1c0f6426',
+      name: 'coordinator+02',
+      email: 'coordinator+02@practera.com',
+      role: 'coordinator',
+      avatar: 'https://www.gravatar.com/avatar/aeded3a2d9242b1c8144ea079f1acc42?d=https://sandbox.practera.com/img/user-512.png&s=50',
+      enrolmentUuid: '5f9f92b4-2fa0-468d-9000-185dac110002',
+      team: null
+    },
+    {
+      uuid: '73fbb872-9658-9543-bdb4-ac85a6a253ab',
+      name: 'mentor+04',
+      email: 'mentor+04@practera.com',
+      role: 'mentor',
+      avatar: 'https://www.gravatar.com/avatar/fc4b6bea10864603ffc693a27fca6d78?d=https://sandbox.practera.com/img/user-512.png&s=50',
+      enrolmentUuid: '0c389a89-722b-99ff-8d25-3debb9e2f17e',
+      team: {
+        uuid: '5f9f938f-392c-4424-a1bd-15f1ac110002',
+        name: 'Team 2'
+      }
+    },
+    {
+      uuid: '8bee29d0-bf45-af7d-0927-19a73a7e1840',
+      name: 'student+02',
+      email: 'student+02@practera.com',
+      role: 'participant',
+      avatar: 'https://www.gravatar.com/avatar/db30b12260b2c589b1394b26390eab50?d=https://sandbox.practera.com/img/user-512.png&s=50',
+      enrolmentUuid: '436b9500-5fbf-7175-72c3-ee661b5c99b0',
+      team: {
+        uuid: '5f927d94-1718-44b7-9996-5cf8ac110002',
+        name: 'Team 1'
+      }
+    },
+    {
+      uuid: '8d1f3cdf-d697-e957-7120-b5568159a978',
+      name: 'student+01',
+      email: 'student+01@practera.com',
+      role: 'participant',
+      avatar: 'https://www.gravatar.com/avatar/21b7427270a606e8a3c4413a13bb47c6?d=https://sandbox.practera.com/img/user-512.png&s=50',
+      enrolmentUuid: 'e1a2aa12-bb1f-71c9-0ad5-fe5a56d635f9',
+      team: {
+        uuid: '5f927d94-1718-44b7-9996-5cf8ac110002',
+        name: 'Team 1'
+      }
+    },
+    {
+      uuid: '158c470c-64df-c3b1-db5d-82b1db2f263d',
+      name: 'coordinator+01',
+      email: 'coordinator+01@practera.com',
+      role: 'coordinator',
+      avatar: 'https://www.gravatar.com/avatar/432005178fd530c00c9ac7ace134fe7d?d=https://sandbox.practera.com/img/user-512.png&s=50',
+      enrolmentUuid: '52c0eee1-ca1e-f8e2-9693-95ffa14070d1',
+      team: null
+    },
+    {
+      uuid: '9b96af23-e7e0-5d19-2d71-e0064c895a8d',
+      name: 'mentor+02',
+      email: 'mentor+02@practera.com',
+      role: 'mentor',
+      avatar: 'https://www.gravatar.com/avatar/c9cdff7fef088b13e2b75a4ad7dddc95?d=https://sandbox.practera.com/img/user-512.png&s=50',
+      enrolmentUuid: '3a2e3b7a-fcc1-e1e8-cf37-7989753dd438',
+      team: {
+        uuid: '5f9f938f-392c-4424-a1bd-15f1ac110002',
+        name: 'Team 2'
+      }
+    }
+  ];
+
+  experiences = [
+    {
+      uuid: '8fad2d07-8b17-9c09-b744-414c73767c29',
+      name: 'Tech PM',
+      description: `Practera is the leading platform to power high quality experiential learning programs.<br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services`,
+      type: 'work simulation',
+      status: 'draft',
+      setupStep: 'configuration',
+      leadImage: '',
+      todoItemCount: 0,
+      tags: [],
+      statistics: {
+        enrolledUserCount: {
+          admin: 0,
+          coordinator: 0,
+          mentor: 0,
+          participant: 0
         },
-        status: 'Stored',
-        key: 'appv2/stage/uploads/37ad733fdf20adf0de20effcbbf6f120/dPRBB7c2QhaqsUuO64T9_Landscape-Nature-Sunset-Trees-HD-Free-Background.png',
-        container: 'practera-aus'
-      },
-      sent_time: '2020-07-28 03:51:35',
-      is_sender: true,
-    },
-    {
-      id: 508,
-      sender: {
-        name: 'Admin+01',
-        role: 'Admin',
-        avatar: 'https://www.gravatar.com/avatar/d139e8674543137eaa55012cbbb4d2cb?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50'
-      },
-      message: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-      file: null,
-      sent_time: '2020-07-28 04:09:11',
-      is_sender: false
-    },
-    {
-      id: 507,
-      sender: {
-        name: 'sasanga+student01',
-        role: 'Participant',
-        avatar: 'https://www.gravatar.com/avatar/d139e8674543137eaa55012cbbb4d2cb?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50'
-      },
-      message: 'hi all',
-      file: null,
-      sent_time: '2020-07-28 04:09:10',
-      is_sender: false,
-    },
-    {
-      id: 509,
-      sender: {
-        name: 'sasanga+student01',
-        role: 'Participant',
-        avatar: 'https://www.gravatar.com/avatar/d139e8674543137eaa55012cbbb4d2cb?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50'
-      },
-      message: null,
-      file: {
-        filename: 'Landscape-Nature-Sunset-Trees-HD-Free-Background.png',
-        handle: 'Hg8rGSbSRTyki09DiM7G',
-        mimetype: 'image/png',
-        originalPath: 'Landscape-Nature-Sunset-Trees-HD-Free-Background.png',
-        size: 330150,
-        source: 'local_file_system',
-        url: 'https://cdn.filestackcontent.com/Hg8rGSbSRTyki09DiM7G',
-        uploadId: 'gM0t331cHi3YfoyM',
-        originalFile: {
-          name: 'Landscape-Nature-Sunset-Trees-HD-Free-Background.png',
-          type: 'image/png',
-          size: 330150
+        registeredUserCount: {
+          admin: 0,
+          coordinator: 0,
+          mentor: 0,
+          participant: 0
         },
-        status: 'Stored',
-        key: 'appv2/stage/uploads/37ad733fdf20adf0de20effcbbf6f120/dPRBB7c2QhaqsUuO64T9_Landscape-Nature-Sunset-Trees-HD-Free-Background.png',
-        container: 'practera-aus'
-      },
-      sent_time: '2020-07-28 03:51:35',
-      is_sender: false
+        activeUserCount: {
+          admin: 0,
+          coordinator: 0,
+          mentor: 0,
+          participant: 0
+        },
+        feedbackLoopStarted: 0,
+        feedbackLoopCompleted: 0,
+        reviewRatingAvg: 0,
+        onTrackRatio: -1,
+        lastUpdated: 1612493090291
+      }
     },
     {
-      id: 506,
-      sender: {
-        name: 'sasanga+mentor',
-        role: 'Mentor',
-        avatar: 'https://www.gravatar.com/avatar/6557b83887f5a40fde3749bd6c79af7a?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50'
+      uuid: '16c3d514-b459-b9d1-05c8-2bd1f582447c',
+      name: 'XCELERY 2.0',
+      description: `Practera is the leading platform to power high quality experiential learning programs.<br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services`,
+      type: 'internship',
+      status: 'live',
+      setupStep: 'visuals',
+      leadImage: '',
+      todoItemCount: 1,
+      tags: this.tags.map(t => ({ name: t })),
+      statistics: {
+        enrolledUserCount: {
+          admin: 4,
+          coordinator: 3,
+          mentor: 3,
+          participant: 15
+        },
+        registeredUserCount: {
+          admin: 4,
+          coordinator: 3,
+          mentor: 3,
+          participant: 11
+        },
+        activeUserCount: {
+          admin: 1,
+          coordinator: 1,
+          mentor: 2,
+          participant: 8
+        },
+        feedbackLoopStarted: 300,
+        feedbackLoopCompleted: 129,
+        reviewRatingAvg: 0.83,
+        onTrackRatio: 0.75,
+        lastUpdated: 1612774050261
+      }
+    },
+    {
+      uuid: '16c3d514-b459-b9d1-05c8-2bd1f582447d',
+      name: 'Teamnovation',
+      description: `Practera is the leading platform to power high quality experiential learning programs.<br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services`,
+      type: 'team project',
+      status: 'live',
+      setupStep: 'visuals',
+      leadImage: '',
+      todoItemCount: 3,
+      tags: [{
+        name: 'apple'
       },
-      message: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.' +
-        ' Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
-      file: null,
-      sent_time: '2020-07-28 04:09:07',
-      is_sender: true,
+      {
+        name: 'banana'
+      },
+      {
+        name: 'watermelon'
+      }],
+      statistics: {
+        enrolledUserCount: {
+          admin: 4,
+          coordinator: 3,
+          mentor: 5,
+          participant: 53
+        },
+        registeredUserCount: {
+          admin: 4,
+          coordinator: 3,
+          mentor: 4,
+          participant: 50
+        },
+        activeUserCount: {
+          admin: 1,
+          coordinator: 3,
+          mentor: 2,
+          participant: 23
+        },
+        feedbackLoopStarted: 50,
+        feedbackLoopCompleted: 0,
+        reviewRatingAvg: 0,
+        onTrackRatio: -1,
+        lastUpdated: 1612775394683
+      }
+    },
+    {
+      uuid: '84f14db9-491a-09f7-ae61-9926f3ad8c8d',
+      name: 'GROW 2020',
+      description: `Practera is the leading platform to power high quality experiential learning programs.<br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services`,
+      type: 'mentoring',
+      status: 'completed',
+      setupStep: 'visuals',
+      leadImage: '',
+      todoItemCount: 0,
+      tags: [{
+        name: 'apple'
+      },
+      {
+        name: 'watermelon'
+      }],
+      statistics: {
+        enrolledUserCount: {
+          admin: 0,
+          coordinator: 0,
+          mentor: 1,
+          participant: 21
+        },
+        registeredUserCount: {
+          admin: 0,
+          coordinator: 0,
+          mentor: 1,
+          participant: 21
+        },
+        activeUserCount: {
+          admin: 0,
+          coordinator: 0,
+          mentor: 0,
+          participant: 0
+        },
+        feedbackLoopStarted: 120,
+        feedbackLoopCompleted: 56,
+        reviewRatingAvg: 0.76,
+        onTrackRatio: -1,
+        lastUpdated: 1612493090322
+      }
     }
   ];
 
@@ -684,97 +858,178 @@ export class DemoService {
   // chat.service
   getChats() {
     return {
-      'success': true,
-      'status': 'success',
-      'cache': false,
-      data: this.chatChannels
+      data: {
+        channels: this.chatChannels
+      }
     };
   }
 
   getMessages(data) {
-    if (data.channel_id === 13459) {
+    if (data.channelUuid === '2' || data.channelUuid === '1234') {
       return {
-        'success': true,
-        'status': 'success',
-        'cache': false,
-        data: []
+        data: {
+          channel: {
+            chatLogsConnection: {
+              cursor: null,
+              chatLogs: []
+            }
+          }
+        }
       };
     }
     return {
-      'success': true,
-      'status': 'success',
-      'cache': false,
-      data: this.TeamChatMessages
+      data: {
+        channel: {
+          chatLogsConnection: {
+            cursor: '1234',
+            chatLogs: this.chatMessages
+          }
+        }
+      }
+    };
+  }
+
+  getMembers(channelId) {
+    return {
+      data: {
+        channel: {
+          members: this.channelMembers
+        }
+      }
+    };
+  }
+
+  getPusherChannels() {
+    return {
+      data: {
+        channels: this.pusherChannels
+      }
     };
   }
 
   getNewChannel() {
     return {
-      'success': true,
-      'status': 'success',
-      'cache': false,
       data: {
-        channel_id: 13459,
-        channel_name: 'cohort channel name',
-        channel_avatar: 'https://flaticons.net/icon.php?slug_category=people&slug_icon=user-group',
-        pusher_channel_name: 'private-develop-team-1447-322-20',
-        announcement: false,
-        roles: ['participant', 'mentor'],
-        can_edit: true,
-        members: [
-          {
-            name: 'student1',
-            role: 'participant',
-            avatar: 'https://image.flaticon.com/icons/png/512/194/194938.png'
-          },
-          {
-            name: 'student2',
-            role: 'participant',
-            avatar: 'https://cdn1.iconfinder.com/data/icons/user-pictures/101/malecostume-512.png'
-          },
-          {
-            name: 'mentor1',
-            role: 'mentor',
-            avatar: 'https://cdn3.iconfinder.com/data/icons/avatars-round-flat/33/avat-01-512.png'
-          }
-        ]
+        createChannel: {
+          uuid: '1234',
+          name: 'cohort channel name',
+          avatar: 'https://flaticons.net/icon.php?slug_category=people&slug_icon=user-group',
+          pusherChannel: 'private-develop-team-1447-322-20',
+          isAnnouncement: false,
+          isDirectMessage: false,
+          readonly: false,
+          roles: ['participant', 'mentor'],
+          canEdit: true
+        }
       }
     };
   }
 
   getEditedChannel(data) {
     return {
-      'success': true,
-      'status': 'success',
-      'cache': false,
       data: {
-        channel_id: data.channel_id,
-        channel_name: data.channel_name
+        editChannel: {
+          uuid: data.uuid,
+          name: data.name,
+          avatar: 'https://flaticons.net/icon.php?slug_category=people&slug_icon=user-group',
+          pusherChannel: 'private-develop-team-1447-322-20',
+          isAnnouncement: false,
+          isDirectMessage: false,
+          readonly: false,
+          roles: ['participant', 'mentor'],
+          unreadMessageCount: 0,
+          lastMessage: '1234',
+          lastMessageCreated: '2020-01-30 06:18:45',
+          canEdit: true
+        }
       }
     };
   }
 
   getNewMessage(data) {
     return {
-      'success': true,
-      'status': 'success',
-      'cache': false,
       data: {
-        id: 507,
-        sender: {
-          name: 'sasanga+student01',
-          role: 'Participant',
-          avatar: 'https://www.gravatar.com/avatar/d139e8674543137eaa55012cbbb4d2cb?d=https%3A%2F%2Fmy.practera.com%2Fimg%2Fuser-512.png&s=50'
-        },
-        message: data.message,
-        file: null,
-        sent_time: '2020-08-13 08:10:10',
-        is_sender: true,
-        channel: {
-          channelId: 123
+        createChatLog: {
+          uuid: data.channelUuid,
+          isSender: false,
+          message: data.message,
+          file: data.file,
+          created: '2020-08-13 08:10:10',
+          sender: {
+            uuid: '1',
+            name: 'student+01',
+            role: 'participant',
+            avatar: 'https://www.gravatar.com/avatar/21b7427270a606e8a3c4413a13bb47c6?d=https://sandbox.practera.com/img/user-512.png&s=50'
+          }
         }
       }
     };
+  }
+
+  getUsers(data) {
+    return {
+      data: {
+        users: this.timelineUsers
+      }
+    };
+  }
+
+  getCurrentUser() {
+    return {
+      data: {
+        user: {
+          enrolmentUuid: '5f9f92b4-2fa0-468d-9000-185dac110002'
+        }
+      }
+    };
+  }
+
+  getExperiences() {
+    return of({
+      data: {
+        experiences: this.experiences
+      }
+    }).pipe(delay(1000));
+  }
+
+  getTags() {
+    return of({
+      data: {
+        tags: this.tags.map(t => {
+          return {
+            name: t
+          };
+        })
+      }
+    }).pipe(delay(1000));
+  }
+
+  updateExperienceTags(experience, tags) {
+    console.log('update experience tag:', experience, tags);
+    return of({}).pipe(delay(1000));
+  }
+
+  deleteExperience(experience) {
+    console.log('delete experience:', experience.uuid);
+    return of({}).pipe(delay(1000));
+  }
+
+  archiveExperience(experience) {
+    console.log('archive experience:', experience.uuid);
+    return of({}).pipe(delay(1000));
+  }
+
+  getExpStatistics(experience) {
+    return of({
+      data: {
+        expStatistics: {
+          ...this.experiences[1].statistics,
+          ...{
+            lastUpdated: Date.now()
+          }
+        }
+      }
+    }).pipe(delay(1000));
   }
 
 }

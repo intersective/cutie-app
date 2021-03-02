@@ -47,6 +47,23 @@ export class AuthService {
       }).pipe(map(this._handleLoginResponse, this));
   }
 
+  /**
+   * login API specifically only accept request data in encodedUrl formdata,
+   * so must convert them into compatible formdata before submission
+   */
+  jwtLogin(jwt: string): Observable<any> {
+    if (environment.demo) {
+      const response = this.demo.directLogin();
+      this._handleLoginResponse(response);
+      return of(response).pipe(delay(2000));
+    }
+    const body = new HttpParams()
+      .set('apikey', jwt);
+    return this.request.post(api.login, body.toString(), {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+      }).pipe(map(this._handleLoginResponse, this));
+  }
+
   private _handleLoginResponse(response) {
     this.storage.clear();
     const data = response.data;
@@ -54,6 +71,7 @@ export class AuthService {
       this.storage.setUser({
         apikey: data.apikey,
         timelineId: data.timeline_id ? data.timeline_id : null,
+        timelineUuid: data.timeline_uuid ? data.timeline_uuid : null,
         programId: data.program_id ? data.program_id : null
       });
       const programs = data.Timelines.map(function(timeline) {
@@ -67,6 +85,7 @@ export class AuthService {
       this.storage.set('programs', programs);
     }
     this.getMyInfo().subscribe();
+    this.getUserEnrolmentUuid().subscribe();
     return response;
   }
 
@@ -93,9 +112,44 @@ export class AuthService {
         contactNumber: apiData.contact_number,
         email: apiData.email,
         image: apiData.image,
-        userHash: apiData.userhash
+        userHash: apiData.userhash,
+        role: apiData.role
       });
     }
     return response;
   }
+
+  getUserEnrolmentUuid(): Observable<any> {
+    if (environment.demo) {
+      const response = this.demo.getCurrentUser();
+      return of(this._normaliseGetUserEnrolmentUuidResponse(response.data)).pipe(delay(1000));
+    }
+    return this.request.graphQLQuery(
+      `query user {
+        user {
+            enrolmentUuid
+        }
+      }`,
+      {}
+    ).pipe(
+      map(response => {
+        if (response.data) {
+          return this._normaliseGetUserEnrolmentUuidResponse(response.data);
+        }
+      })
+    );
+  }
+
+  private _normaliseGetUserEnrolmentUuidResponse(data) {
+    const result = JSON.parse(JSON.stringify(data.user));
+    if (!this.utils.has(result, 'enrolmentUuid')) {
+      this.request.apiResponseFormatError('current user enrolment uuid format error');
+      return null;
+    }
+    this.storage.setUser({
+      enrolmentUuid: result.enrolmentUuid
+    });
+    return result;
+  }
+
 }
