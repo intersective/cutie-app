@@ -17,9 +17,10 @@
     max-height: 100%;
   }
 
-  img {
+  img,
+  ion-thumbnail {
     position: absolute;
-    width: calc(100% - 1rem);
+    width: calc(100% - 2rem);
     height: 100%;
     display: block;
     object-fit: cover;

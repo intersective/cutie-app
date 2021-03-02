@@ -1,4 +1,64 @@
-<article class="experience-item card">
+<article *ngIf="skeleton" class="experience-item card">
+  <div class="row">
+    <div class="experience-item-image col-lg-3">
+      <ion-thumbnail>
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-thumbnail>
+    </div>
+    <div class="experience-item-summary col-lg-9">
+      <div class="row">
+        <div class="experience-item-title col-lg-8">
+          <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+        </div>
+        <div class="experience-item-actions col-lg-4"></div>
+      </div>
+      <div class="row">
+        <div class="experience-item-description col-lg-6">
+          <ion-skeleton-text animated></ion-skeleton-text>
+        </div>
+        <div class="text-end col-lg-6"></div>
+      </div>
+      <div class="row experience-item-stats">
+        <div class="experience-item-stat col-6 col-md-2">
+          <div class="experience-item-people btn-group dropend">
+            <button type="button" class="btn btn-link shadow-none" disabled="">
+              <ion-icon name="people"></ion-icon>
+              <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+            </button>
+          </div>
+        </div>
+
+        <div class="experience-item-stat col-6 col-md-2">
+          <ion-thumbnail >
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-thumbnail>
+        </div>
+        <div class="experience-item-stat col-6 col-md-2">
+          <ion-thumbnail >
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-thumbnail>
+        </div>
+        <div class="experience-item-stat col-6 col-md-2">
+          <ion-thumbnail >
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-thumbnail>
+        </div>
+        <div class="experience-item-stat col-6 col-md-2">
+          <ion-thumbnail >
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-thumbnail>
+        </div>
+        <div class="experience-item-stat col-6 col-md-2">
+          <ion-thumbnail >
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-thumbnail>
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+
+<article *ngIf="!skeleton" class="experience-item card">
   <div class="row">
     <div class="experience-item-image col-lg-3">
       <img [src]="experience.leadImage || './assets/exp-placeholder.png'" alt="Experience image" (click)="view()" class="cursor-pointer">

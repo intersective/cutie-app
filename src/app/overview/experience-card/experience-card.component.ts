@@ -11,6 +11,7 @@ import { environment } from '@environments/environment';
 })
 export class ExperienceCardComponent {
   @Input() experience: Experience;
+  @Input() skeleton: boolean;
   refreshing = false;
 
   constructor(

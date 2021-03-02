@@ -1,5 +1,14 @@
 <div class="experiences-stat card">
-  <div class="experiences-stat-value">{{ statValue }}</div>
+  <div class="experiences-stat-value">
+    <ng-container *ngIf="skeleton">
+      <ion-thumbnail class="m-auto">
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-thumbnail>
+    </ng-container>
+    <ng-container *ngIf="!skeleton">
+      {{ statValue }}
+    </ng-container>
+  </div>
   <div class="experiences-stat-label text-center">
     <span>{{ statLabel }}</span>
     <button class="btn p-0 shadow-none" type="button" (click)="showInfo()">
