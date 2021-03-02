@@ -1,7 +1,7 @@
 <!-- <app-header></app-header> -->
 
+<ion-content color="light">
 <main>
-
   <header class="title-bar container-fluid">
     <div class="row">
       <div class="col-md-6">
@@ -169,6 +169,12 @@
                 <div class="no-exp">No experiences found</div>
                 <img src="./assets/no-exp.svg">
               </div>
+              <ion-infinite-scroll *ngIf="remainingExperiences.length" threshold="50px" (ionInfinite)="loadMore($event)">
+                <ion-infinite-scroll-content
+                  loadingSpinner="bubbles"
+                  loadingText="Loading more experiences...">
+                </ion-infinite-scroll-content>
+              </ion-infinite-scroll>
             </ng-container>
           </div>
         </section>
@@ -176,7 +182,7 @@
     </div>
 
   </section>
-
 </main>
+</ion-content>
 
 <!-- <app-footer></app-footer> -->
