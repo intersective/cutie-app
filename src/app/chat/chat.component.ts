@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { ChatChannel } from './chat.service';
 
 @Component({
@@ -9,7 +9,7 @@ import { ChatChannel } from './chat.service';
 export class ChatComponent implements OnInit {
 
   chatChannel: ChatChannel;
-
+  @Input() skeletonOnly: boolean;
   @ViewChild('chatList') chatList;
   @ViewChild('chatRoom') chatRoom;
   constructor() { }

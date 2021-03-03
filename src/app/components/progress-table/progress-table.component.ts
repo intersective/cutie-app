@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewChildren, ElementRef, QueryList } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ViewChildren, ElementRef, QueryList } from '@angular/core';
 import { ProgressTableService, Enrolment, Team } from './progress-table.service';
 import { UtilsService } from '@services/utils.service';
 import { PopoverController } from '@ionic/angular';
@@ -28,6 +28,7 @@ export class ProgressTableComponent implements OnInit {
   searching = false;
   // the value of the search bar
   filter = '';
+  @Input() skeletonOnly: boolean;
   @ViewChildren('progressRef', {read: ElementRef}) progressRefs: QueryList<ElementRef>;
 
   constructor(
@@ -35,6 +36,9 @@ export class ProgressTableComponent implements OnInit {
     public utils: UtilsService,
     public popoverController: PopoverController
   ) {
+    if (this.skeletonOnly) {
+      return;
+    }
     this.utils.getEvent('student-progress').subscribe(event => {
       let index = this.rows.findIndex(row => {
         return row.uid === event.user_uid;
@@ -58,6 +62,10 @@ export class ProgressTableComponent implements OnInit {
 
   ngOnInit() {
     this.type = 'student';
+    if (this.skeletonOnly) {
+      this.loading = true;
+      return;
+    }
     this.getEnrolments();
   }
 
