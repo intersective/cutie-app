@@ -4,21 +4,17 @@ import { IonicModule } from '@ionic/angular';
 
 import { AuthRoutingModule } from './auth-routing.module';
 import { AuthComponent } from './auth.component';
-import { OverviewComponent } from '../overview/overview.component';
-import { StatCardComponent } from '../overview/stat-card/stat-card.component';
-import { ExperienceCardComponent } from '../overview/experience-card/experience-card.component';
+import { OverviewModule } from '../overview/overview.module';
 
 @NgModule({
   declarations: [
     AuthComponent,
-    OverviewComponent,
-    StatCardComponent,
-    ExperienceCardComponent,
   ],
   imports: [
     CommonModule,
     IonicModule,
     AuthRoutingModule,
+    OverviewModule,
   ]
 })
 export class AuthModule { }
