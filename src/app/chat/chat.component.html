@@ -1,16 +1,16 @@
 <ion-split-pane contentId="main">
-    <app-chat-list
-      #chatList
-      style="display: flex"
-      [currentChat]="chatChannel"
-      (navigate)="goto($event)"
-      (chatListReady)="selectFirstChat($event)">
-    </app-chat-list>
-    <ion-content color="light" id="main">
-      <app-chat-room
-        #chatRoom
-        *ngIf="chatChannel"
-        [chatChannel]="chatChannel"
-      ></app-chat-room>
-    </ion-content>
-  </ion-split-pane>
+  <app-chat-list
+    #chatList
+    style="display: flex"
+    [currentChat]="chatChannel"
+    (navigate)="goto($event)"
+    (chatListReady)="selectFirstChat($event)">
+  </app-chat-list>
+  <ion-content color="light" id="main">
+    <app-chat-room
+      #chatRoom
+      *ngIf="chatChannel"
+      [chatChannel]="chatChannel"
+    ></app-chat-room>
+  </ion-content>
+</ion-split-pane>

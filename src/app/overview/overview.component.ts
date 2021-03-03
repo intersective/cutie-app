@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Experience, Statistics, Tag, OverviewService } from './overview.service';
 import { UtilsService } from '@services/utils.service';
 import { PopupService } from '@shared/popup/popup.service';
@@ -54,6 +54,7 @@ export class OverviewComponent implements OnInit {
   types = ['all'];
   status = 'all';
   type = 'all';
+  @Input() skeletonOnly: boolean;
 
   loadingExps = false;
   experiencesRaw: Experience[] = [];
@@ -67,6 +68,10 @@ export class OverviewComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    if (this.skeletonOnly) {
+      this.loadingExps = true;
+      return;
+    }
     this.loadExperiences();
 
     // when experience tags get updated, update the experiences data
@@ -100,7 +105,7 @@ export class OverviewComponent implements OnInit {
       this.types = [...['all'], ...this.experiencesRaw.map(exp => exp.type)];
       this.types = [...new Set(this.types)];
       this.filterAndOrder();
-      this.loadingExps = false;
+      setTimeout(() => this.loadingExps = false, 500);
     });
   }
 

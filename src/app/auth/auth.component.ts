@@ -10,6 +10,8 @@ import { NotificationService } from '@services/notification.service';
 })
 export class AuthComponent implements OnInit {
 
+  redirect: string;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -18,6 +20,7 @@ export class AuthComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.redirect = this.route.snapshot.paramMap.get('redirect');
     const token = this.route.snapshot.paramMap.get('token');
     // auth token login
     if (token) {
@@ -39,8 +42,7 @@ export class AuthComponent implements OnInit {
   }
 
   private _handleRedirection() {
-    const redirect = this.route.snapshot.paramMap.get('redirect');
-    switch (redirect) {
+    switch (this.redirect) {
       case 'progress-only':
         this.router.navigate(['progress-only']);
         break;
