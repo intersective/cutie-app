@@ -2,6 +2,7 @@
   <app-chat-list
     #chatList
     style="display: flex"
+    [skeletonOnly]="skeletonOnly"
     [currentChat]="chatChannel"
     (navigate)="goto($event)"
     (chatListReady)="selectFirstChat($event)">
@@ -10,6 +11,7 @@
     <app-chat-room
       #chatRoom
       *ngIf="chatChannel"
+      [skeletonOnly]="skeletonOnly"
       [chatChannel]="chatChannel"
     ></app-chat-room>
   </ion-content>

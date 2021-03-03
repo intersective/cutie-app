@@ -4,6 +4,14 @@
       <app-overview skeletonOnly="true"></app-overview>
     </ng-container>
 
+    <ng-container *ngSwitchCase="'chat-only'">
+      <app-chat skeletonOnly="true"></app-chat>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'progress-only'">
+      <app-progress skeletonOnly="true"></app-progress>
+    </ng-container>
+
     <ng-container *ngSwitchDefault>
       <div class="logo ion-text-center">
         <img src="./assets/loading.gif" width="60px" class="vertical-middle">
