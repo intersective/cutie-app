@@ -101,7 +101,11 @@ export class OverviewService {
             lastUpdated
           }
         }
-      }`
+      }`,
+      {},
+      {
+        noCache: true,
+      }
     ).pipe(map(this._handleExperiences));
   }
 
