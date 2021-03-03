@@ -15,10 +15,19 @@
 
   <section class="experiences-stats">
     <div class="container-fluid">
-      <div class="row">
+      <div *ngIf="!loadingExps" class="row">
         <div class="col-md-6 col-xl-3" *ngFor="let stat of stats">
           <app-stat-card
             [statValue]="stat.value"
+            [statLabel]="stat.label"
+            [statDescription]="stat.description"
+          ></app-stat-card>
+        </div>
+      </div>
+      <div *ngIf="loadingExps" class="row">
+        <div class="col-md-6 col-xl-3" *ngFor="let stat of stats">
+          <app-stat-card
+            skeleton="true"
             [statLabel]="stat.label"
             [statDescription]="stat.description"
           ></app-stat-card>
@@ -47,7 +56,12 @@
       <div class="row">
         <aside class="experiences-aside col-md-3">
           <h3>Filter by tags</h3>
-          <div>
+          <div *ngIf="loadingExps">
+            <button *ngFor="let a of [1,2,3]" class="experience-tag btn btn-sm" disabled>
+              <ion-skeleton-text animated style="width: 60px; height: 25px"></ion-skeleton-text>
+            </button>
+          </div>
+          <div *ngIf="!loadingExps">
             <button
               *ngFor="let tag of tags; let i = index"
               type="button"
@@ -144,15 +158,18 @@
           </div>
 
           <div class="experiences-list">
-            <ng-container *ngFor="let exp of experiences">
-              <app-experience-card
-                [experience]="exp"
-              ></app-experience-card>
+            <app-experience-card *ngIf="loadingExps" skeleton="true"></app-experience-card>
+            <ng-container *ngIf="!loadingExps">
+              <ng-container *ngFor="let exp of experiences">
+                <app-experience-card
+                  [experience]="exp"
+                ></app-experience-card>
+              </ng-container>
+              <div *ngIf="experiences.length === 0" class="text-center mt-3">
+                <div class="no-exp">No experiences found</div>
+                <img src="./assets/no-exp.svg">
+              </div>
             </ng-container>
-            <div *ngIf="experiences.length === 0" class="text-center mt-3">
-              <div class="no-exp">No experiences found</div>
-              <img src="./assets/no-exp.svg">
-            </div>
           </div>
         </section>
       </div>
