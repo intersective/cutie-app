@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Experience, Statistics, Tag, OverviewService } from './overview.service';
 import { UtilsService } from '@services/utils.service';
 import { PopupService } from '@shared/popup/popup.service';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-overview',
@@ -315,6 +316,110 @@ export class OverviewComponent implements OnInit {
 
   add() {
     this.popupService.showCreateExp();
+  }
+
+  createReport() {
+    let reportOverview: (string | number)[][] = [
+      [
+        'Experiences Overview',
+        'Value',
+        'Description'
+      ]
+    ];
+    this.stats.forEach(s => reportOverview.push([s.label, s.value, s.description]));
+    reportOverview = [
+      ...reportOverview,
+      ...[
+        [],
+        ['filters'],
+        [
+          'Status',
+          'Type',
+          'Sort by',
+          'Sort order',
+        ],
+        [
+          this.status,
+          this.type,
+          this.sortBy,
+          this.sortDesc ? 'Desc' : 'Asc'
+        ],
+        [],
+        ['filter by tags'],
+        ['selected']
+      ],
+      ...this.tags.filter(t => t.active).map(a => [a.name]),
+    ];
+
+    const reportPerExp: (string | number)[][] = [
+      [
+        'Experience',
+        'Type',
+        'Description',
+        'Tags list',
+        'Status',
+        'no. of issues',
+        'Enrolment - Total',
+        'Enrolment - Admin',
+        'Enrolment - Coordinator',
+        'Enrolment - Mentor',
+        'Enrolment - Participant',
+        'Registered - Total',
+        'Registered - Admin',
+        'Registered - Coordinator',
+        'Registered - Mentor',
+        'Registered - Participant',
+        'On-track',
+        'Recent activity - Participant',
+        'Recent activity - Mentor',
+        'Feedback Loops - Completed',
+        'Feedback Loops - Started',
+        'Feedback Quality Score',
+      ]
+    ];
+    [...this.experiences, ...this.remainingExperiences].forEach(exp => {
+      let totalEnrolled = 0;
+      let totalRegistered = 0;
+      for (const c of ['admin', 'coordinator', 'mentor', 'participant']) {
+        totalEnrolled += exp.statistics.enrolledUserCount[c];
+        totalRegistered += exp.statistics.registeredUserCount[c];
+      }
+      reportPerExp.push([
+        exp.name,
+        exp.type,
+        exp.description,
+        exp.tags.join(','),
+        exp.status,
+        exp.todoItemCount,
+        totalEnrolled,
+        exp.statistics.enrolledUserCount.admin,
+        exp.statistics.enrolledUserCount.coordinator,
+        exp.statistics.enrolledUserCount.mentor,
+        exp.statistics.enrolledUserCount.participant,
+        totalRegistered,
+        exp.statistics.registeredUserCount.admin,
+        exp.statistics.registeredUserCount.coordinator,
+        exp.statistics.registeredUserCount.mentor,
+        exp.statistics.registeredUserCount.participant,
+        exp.statistics.onTrackRatio < 0 ? '-' : exp.statistics.onTrackRatio,
+        exp.statistics.activeUserCount.participant,
+        exp.statistics.activeUserCount.mentor,
+        exp.statistics.feedbackLoopCompleted,
+        exp.statistics.feedbackLoopStarted,
+        exp.statistics.reviewRatingAvg,
+      ]);
+    });
+
+    // generate worksheet
+    const ws1: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(reportOverview);
+    const ws2: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(reportPerExp);
+    // generate workbook and add the worksheet
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws1, 'Overview');
+    XLSX.utils.book_append_sheet(wb, ws2, 'Reporting per experience');
+
+    // save to file
+    XLSX.writeFile(wb, 'report.xlsx');
   }
 
 }
