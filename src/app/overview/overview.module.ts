@@ -26,6 +26,12 @@ import { DescriptionComponent } from '@components/description/description.compon
       }
     ])
   ],
+  exports: [
+    OverviewComponent,
+    StatCardComponent,
+    ExperienceCardComponent,
+    DescriptionComponent,
+  ],
   providers: [OverviewService]
 })
 export class OverviewModule { }
