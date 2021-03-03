@@ -29,6 +29,11 @@ import { DirectChatComponent } from './direct-chat/direct-chat.component';
       }
     ])
   ],
+  exports: [
+    ChatComponent,
+    ChatListComponent,
+    ChatRoomComponent,
+  ],
   entryComponents: [ChatPreviewComponent, ChatInfoComponent, DirectChatComponent],
   providers: [ChatService],
 })

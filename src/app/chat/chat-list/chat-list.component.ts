@@ -17,6 +17,7 @@ export class ChatListComponent {
   @Output() navigate = new EventEmitter();
   @Output() chatListReady = new EventEmitter();
   @Input() currentChat: ChatChannel;
+  @Input() skeletonOnly: boolean;
   chatChannels: ChatChannel[];
   groupChatChannels: ChatChannel[];
   directChatChannels: ChatChannel[];
@@ -41,6 +42,10 @@ export class ChatListComponent {
   }
 
   onEnter() {
+    if (this.skeletonOnly) {
+      this.loadingChatList = true;
+      return;
+    }
     this._initialise();
     this._checkAndSubscribePusherChannels();
     this._loadChatData();

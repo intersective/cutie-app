@@ -15,6 +15,7 @@ import { ProgressComponent } from './progress.component';
       }
     ]),
     ProgressTableModule,
-  ]
+  ],
+  exports: [ProgressComponent]
 })
 export class ProgressModule { }
