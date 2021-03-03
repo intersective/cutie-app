@@ -473,7 +473,7 @@ export class DemoService {
     const expire = new Date();
     expire.setHours(expire.getHours() + 1);
     this.storage.set('expire', expire.toString());
-    return {
+    return of({
       data: {
         apikey: 'demo-apikey',
         timeline_id: 2,
@@ -499,7 +499,7 @@ export class DemoService {
           }
         ]
       }
-    };
+    }).pipe(delay(2000));
   }
 
   // auth.service
