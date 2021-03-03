@@ -58,6 +58,7 @@ export class OverviewComponent implements OnInit {
   loadingExps = false;
   experiencesRaw: Experience[] = [];
   experiences: Experience[] = [];
+  remainingExperiences: Experience[] = [];
 
   constructor(
     private service: OverviewService,
@@ -96,11 +97,40 @@ export class OverviewComponent implements OnInit {
       // get all tags
       this._getAllTags();
       // get all types
-      this.types = [...['all'], ...res.map(exp => exp.type)];
+      this.types = [...['all'], ...this.experiencesRaw.map(exp => exp.type)];
       this.types = [...new Set(this.types)];
       this.filterAndOrder();
       this.loadingExps = false;
     });
+  }
+
+  loadMore(event) {
+    setTimeout(
+      () => {
+        this._renderExperiences(false);
+        event.target.complete();
+      },
+      500
+    );
+  }
+
+  private _renderExperiences(init = true) {
+    const maxExp = 7;
+    if (init) {
+      // only display 7 experiences at once
+      this.remainingExperiences = [];
+      if (this.experiences.length > maxExp) {
+        this.remainingExperiences = this.experiences.splice(maxExp, this.experiences.length - maxExp);
+      }
+    } else {
+      // load 7 more experiences
+      if (this.remainingExperiences.length <= maxExp) {
+        this.experiences = [...this.experiences, ...this.remainingExperiences];
+        this.remainingExperiences = [];
+      } else {
+        this.experiences = [...this.experiences, ...this.remainingExperiences.splice(0, maxExp)];
+      }
+    }
   }
 
   /**
@@ -149,6 +179,7 @@ export class OverviewComponent implements OnInit {
     this._filterByType();
     this._sort();
     this._calculateStatistics();
+    this._renderExperiences();
   }
 
   private _filterByTag() {
