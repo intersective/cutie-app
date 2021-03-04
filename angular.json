@@ -185,9 +185,15 @@
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
             "styles": [
-              "./node_modules/ngx-bootstrap/datepicker/bs-datepicker.css"
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "src/theme/variables.scss",
+              "src/global.scss",
+              "src/styles.scss"
             ],
-            "scripts": [],
+            "scripts": [
+              "node_modules/pusher-js/dist/web/pusher.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+            ],
             "assets": [
               {
                 "glob": "favicon.ico",
@@ -200,6 +206,12 @@
                 "output": "/assets"
               }
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "node_modules/bootstrap/scss",
+                "src/theme"
+              ]
+            },
             "codeCoverage": true
           },
           "configurations": {
