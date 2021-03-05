@@ -30,7 +30,7 @@ describe('PopupService', () => {
   it('call dismiss()', () => {
     service.dismiss();
     expect(modalSpy.dismiss).toHaveBeenCalled();
-  })
+  });
 
   describe('call showModal()', () => {
     beforeEach(() => {
@@ -42,59 +42,59 @@ describe('PopupService', () => {
 
     afterEach(() => {
       expect(modalSpy.create).toHaveBeenCalled();
-    })
+    });
 
     it('no event', async () => {
       await service.showModal('component', 'props');
-    })
+    });
 
     it('have event', async () => {
       await service.showModal('component', 'props', null, 'event');
-    })
-  })
+    });
+  });
 
   it('call showAlert()', async () => {
     alertSpy.create = jasmine.createSpy().and.returnValue({ present: () => {} });
     await service.showAlert(null);
     expect(alertSpy.create).toHaveBeenCalled();
-  })
+  });
 
   it('call showToast()', async () => {
     toastSpy.create = jasmine.createSpy().and.returnValue({ present: () => {} });
     await service.showToast('');
     expect(toastSpy.create).toHaveBeenCalled();
-  })
+  });
 
   it('call showLoading()', async () => {
     loadingSpy.create = jasmine.createSpy().and.returnValue({ present: () => {} });
     await service.showLoading(null);
     expect(loadingSpy.create).toHaveBeenCalled();
-  })
+  });
 
   it('call dismissLoading()', () => {
     service.loading = { dismiss: jasmine.createSpy() };
     service.dismissLoading();
     expect(service.loading.dismiss).toHaveBeenCalled();
-  })
+  });
 
   it('call showDescription()', async () => {
     await service.showDescription('title', 'content');
     expect(modalSpy.create).toHaveBeenCalled();
-  })
+  });
 
   it('call showTags()', async () => {
     await service.showTags({ tags: '', type: '', data: '', title: '' });
     expect(modalSpy.create).toHaveBeenCalled();
-  })
+  });
 
   it('call showTagsView()', async () => {
     await service.showTagsView({ tags: '', title: '' });
     expect(modalSpy.create).toHaveBeenCalled();
-  })
+  });
 
   it('call showCreateExp()', async () => {
     await service.showCreateExp();
     expect(modalSpy.create).toHaveBeenCalled();
-  })
+  });
 
 });
