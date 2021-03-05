@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { RequestService } from '@shared/request/request.service';
 import { map } from 'rxjs/operators';
-import { UtilsService } from '@services/utils.service';
 import { environment } from '@environments/environment';
 import { DemoService } from '@services/demo.service';
 
@@ -52,7 +51,6 @@ export class OverviewService {
   constructor(
     private request: RequestService,
     private demo: DemoService,
-    private utils: UtilsService,
   ) { }
 
   getExperiences() {

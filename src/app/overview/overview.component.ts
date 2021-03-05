@@ -77,6 +77,9 @@ export class OverviewComponent implements OnInit {
 
     // when experience tags get updated, update the experiences data
     this.utils.getEvent('exp-tags-updated').subscribe(event => {
+      if (!this.utils.has(event, 'experience') || !this.utils.has(event, 'tags')) {
+        return ;
+      }
       this.experiences = this._updateTags(this.experiences, event.experience, event.tags);
       this.experiencesRaw = this._updateTags(this.experiencesRaw, event.experience, event.tags);
       this._getAllTags();
@@ -84,6 +87,9 @@ export class OverviewComponent implements OnInit {
 
     // when experience statistics get updated, update the experience statistics
     this.utils.getEvent('exp-statistics-updated').subscribe(event => {
+      if (!this.utils.has(event, 'experience') || !this.utils.has(event, 'statistics')) {
+        return ;
+      }
       this.experiences = this._updateStatistics(this.experiences, event.experience, event.statistics);
       this.experiencesRaw = this._updateStatistics(this.experiencesRaw, event.experience, event.statistics);
       this._getAllTags();
@@ -106,7 +112,7 @@ export class OverviewComponent implements OnInit {
       this.types = [...['all'], ...this.experiencesRaw.map(exp => exp.type)];
       this.types = [...new Set(this.types)];
       this.filterAndOrder();
-      setTimeout(() => this.loadingExps = false, 500);
+      this.loadingExps = false;
     });
   }
 
