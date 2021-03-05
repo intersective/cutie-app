@@ -42,7 +42,7 @@ describe('TagsService', () => {
     let expectResult;
     afterEach(() => {
       service.getTagsBy('ta').subscribe(res => expect(res).toEqual(expectResult));
-    })
+    });
     it('demo resopnse', () => {
       environment.demo = true;
       expectResult = [];
@@ -79,7 +79,7 @@ describe('TagsService', () => {
     afterEach(() => {
       service.updateExperienceTags(exp, ['a', 'b']).subscribe(res => expect(res).toEqual(result));
       expect(utilsSpy.broadcastEvent).toHaveBeenCalled();
-    })
+    });
     it('demo resopnse', () => {
       environment.demo = true;
       demoSpy.updateExperienceTags = jasmine.createSpy().and.returnValue(of({

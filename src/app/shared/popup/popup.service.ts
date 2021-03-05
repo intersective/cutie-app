@@ -33,7 +33,7 @@ export class PopupService {
       ...{ component, componentProps },
       ...options
     });
-
+console.log(modal);
     if (event) {
       modal.onDidDismiss().then(event);
     }
@@ -70,9 +70,9 @@ export class PopupService {
   /**
    * show description pop up message
    * this is using description.component.ts as the view
-   * put redirect = false if don't need to redirect
+   * put redirect = null if don't need to redirect
    */
-  showDescription(title, content, redirect: any = false) {
+  showDescription(title, content, redirect: any = null) {
     const component = DescriptionComponent;
     const componentProps = {
       title,

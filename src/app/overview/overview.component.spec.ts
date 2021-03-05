@@ -185,7 +185,7 @@ describe('OverviewComponent', () => {
       component.filterAndOrder();
       expect(component.experiencesRaw).toEqual(exps);
       expect(component.experiences).toEqual(expsResult);
-    })
+    });
     it('by created time asc', () => {
       component.sortBy = component.sortList[0];
       component.sortDesc = false;
@@ -273,7 +273,7 @@ describe('OverviewComponent', () => {
               uuid: exps[0].uuid
             },
             tags: ['tag1', 'tag3']
-          }
+          };
           break;
         case 'exp-statistics-updated':
           eventData = {
@@ -281,7 +281,7 @@ describe('OverviewComponent', () => {
               uuid: exps[0].uuid
             },
             statistics: exps[1].statistics
-          }
+          };
           break;
       }
       return of(eventData);

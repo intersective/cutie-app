@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 
 @Component({
@@ -12,7 +11,6 @@ export class TagsViewComponent {
   tags: string[];
 
   constructor(
-    private router: Router,
     public modalController: ModalController
   ) {}
 

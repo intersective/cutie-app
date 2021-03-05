@@ -75,7 +75,7 @@ describe('OverviewService', () => {
     let result;
     afterEach(() => {
       service.getExpStatistics(exp).subscribe(res => expect(res).toEqual(result));
-    })
+    });
     it('demo resopnse', () => {
       environment.demo = true;
       demoService.getExpStatistics = jasmine.createSpy().and.returnValue(of({}));
@@ -96,7 +96,7 @@ describe('OverviewService', () => {
     let result;
     afterEach(() => {
       service.deleteExperience(exp).subscribe(res => expect(res).toEqual(result));
-    })
+    });
     it('demo resopnse', () => {
       environment.demo = true;
       demoService.deleteExperience = jasmine.createSpy().and.returnValue(of({
@@ -129,7 +129,7 @@ describe('OverviewService', () => {
     let result;
     afterEach(() => {
       service.archiveExperience(exp).subscribe(res => expect(res).toEqual(result));
-    })
+    });
     it('demo resopnse', () => {
       environment.demo = true;
       demoService.archiveExperience = jasmine.createSpy().and.returnValue(of({

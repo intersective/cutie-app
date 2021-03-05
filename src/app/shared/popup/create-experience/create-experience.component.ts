@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 
 @Component({
@@ -10,7 +9,6 @@ import { ModalController } from '@ionic/angular';
 export class CreateExperienceComponent {
 
   constructor(
-    private router: Router,
     public modalController: ModalController
   ) {}
 
