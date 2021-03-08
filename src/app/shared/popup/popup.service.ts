@@ -33,7 +33,7 @@ export class PopupService {
       ...{ component, componentProps },
       ...options
     });
-console.log(modal);
+
     if (event) {
       modal.onDidDismiss().then(event);
     }
