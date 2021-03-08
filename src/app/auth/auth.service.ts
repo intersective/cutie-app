@@ -126,7 +126,7 @@ export class AuthService {
     return this.request.graphQLQuery(
       `query user {
         user {
-            enrolmentUuid
+          enrolmentUuid
         }
       }`,
       {}
