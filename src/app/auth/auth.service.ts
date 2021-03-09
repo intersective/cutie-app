@@ -73,14 +73,14 @@ export class AuthService {
         timelineUuid: data.timeline_uuid ? data.timeline_uuid : null,
         programId: data.program_id ? data.program_id : null
       });
-      const programs = data.Timelines.map(function(timeline) {
+      const programs = data.Timelines ? data.Timelines.map(function(timeline) {
         return {
           enrolment: timeline.Enrolment,
           program: timeline.Program,
           project: timeline.Project,
           timeline: timeline.Timeline
         };
-      });
+      }) : [];
       this.storage.set('programs', programs);
     }
     this.getMyInfo().subscribe();
@@ -126,7 +126,7 @@ export class AuthService {
     return this.request.graphQLQuery(
       `query user {
         user {
-            enrolmentUuid
+          enrolmentUuid
         }
       }`,
       {}
