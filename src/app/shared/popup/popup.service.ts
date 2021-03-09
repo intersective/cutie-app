@@ -5,6 +5,7 @@ import { DescriptionComponent } from './description/description.component';
 import { TagsComponent } from './tags/tags.component';
 import { TagsViewComponent } from './tags-view/tags-view.component';
 import { CreateExperienceComponent } from './create-experience/create-experience.component';
+import { DuplicateExperienceComponent } from './duplicate-experience/duplicate-experience.component';
 
 export interface CustomTostOptions {
   message: string;
@@ -126,6 +127,21 @@ export class PopupService {
   showCreateExp() {
     const component = CreateExperienceComponent;
     const componentProps = {};
+    const options = {
+      cssClass: 'practera-popup'
+    };
+    return this.showModal(component, componentProps, options);
+  }
+
+  /**
+   * show tags pop up message
+   * this is using tags.component.ts as the view
+   */
+  showDuplicateExp(experienceUuid: string) {
+    const component = DuplicateExperienceComponent;
+    const componentProps = {
+      experienceUuid,
+    };
     const options = {
       cssClass: 'practera-popup'
     };

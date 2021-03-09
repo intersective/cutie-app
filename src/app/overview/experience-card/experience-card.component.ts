@@ -138,7 +138,7 @@ export class ExperienceCardComponent {
   }
 
   duplicate() {
-
+    this.popupService.showDuplicateExp(this.experience.uuid);
   }
 
   delete() {
