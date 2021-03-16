@@ -1,7 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { PopupService } from './popup.service';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { ModalController, AlertController, ToastController, LoadingController } from '@ionic/angular';
+import { UtilsService } from '@services/utils.service';
 
 describe('PopupService', () => {
   let service: PopupService;
@@ -9,6 +10,10 @@ describe('PopupService', () => {
   const alertSpy = jasmine.createSpyObj('AlertController', ['create']);
   const toastSpy = jasmine.createSpyObj('ToastController', ['create']);
   const loadingSpy = jasmine.createSpyObj('LoadingController', ['create', 'dismiss']);
+  const utilsSpy = jasmine.createSpyObj('UtilsService', ['getEvent']);
+  utilsSpy.getEvent = jasmine.createSpy().and.returnValue({
+    subscribe: () => {}
+  });
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -18,6 +23,7 @@ describe('PopupService', () => {
         { provide: AlertController, useValue: alertSpy },
         { provide: ToastController, useValue: toastSpy },
         { provide: LoadingController, useValue: loadingSpy },
+        { provide: UtilsService, useValue: utilsSpy },
       ]
     });
     service = TestBed.inject(PopupService);
@@ -25,6 +31,7 @@ describe('PopupService', () => {
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+    expect(utilsSpy.getEvent).toHaveBeenCalledTimes(2);
   });
 
   it('call dismiss()', () => {
@@ -94,6 +101,11 @@ describe('PopupService', () => {
 
   it('call showCreateExp()', async () => {
     await service.showCreateExp();
+    expect(modalSpy.create).toHaveBeenCalled();
+  });
+
+  it('call showDuplicateExp()', async () => {
+    await service.showDuplicateExp('1');
     expect(modalSpy.create).toHaveBeenCalled();
   });
 

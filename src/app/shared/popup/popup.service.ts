@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ModalController, AlertController, ToastController, LoadingController } from '@ionic/angular';
 import { AlertOptions, ToastOptions, ModalOptions, LoadingOptions } from '@ionic/core';
+import { UtilsService } from '@services/utils.service';
 import { DescriptionComponent } from './description/description.component';
 import { TagsComponent } from './tags/tags.component';
 import { TagsViewComponent } from './tags-view/tags-view.component';
@@ -23,7 +24,16 @@ export class PopupService {
     private alertController: AlertController,
     private toastController: ToastController,
     private loadingController: LoadingController,
-  ) {}
+    private utils: UtilsService,
+  ) {
+    this.utils.getEvent('show-loading').subscribe(event => {
+      this.showLoading(event);
+    });
+
+    this.utils.getEvent('dismiss-loading').subscribe(event => {
+      this.dismissLoading();
+    });
+  }
 
   dismiss() {
     return this.modalController.dismiss();

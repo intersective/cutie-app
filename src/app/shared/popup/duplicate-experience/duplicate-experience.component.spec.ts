@@ -5,11 +5,15 @@ import { of } from 'rxjs';
 import { SharedModule } from '@shared/shared.module';
 import { DuplicateExperienceComponent } from './duplicate-experience.component';
 import { ModalController } from '@ionic/angular';
+import { UtilsService } from '@services/utils.service';
+import { OverviewService } from '../../../overview/overview.service';
 
 describe('DuplicateExperienceComponent', () => {
   let component: DuplicateExperienceComponent;
   let fixture: ComponentFixture<DuplicateExperienceComponent>;
   const modalSpy = jasmine.createSpyObj('ModalController', ['dismiss']);
+  const utilsSpy = jasmine.createSpyObj('UtilsService', ['broadcastEvent']);
+  const overviewSpy = jasmine.createSpyObj('OverviewService', ['duplicateExperience']);
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -21,6 +25,14 @@ describe('DuplicateExperienceComponent', () => {
           provide: ModalController,
           useValue: modalSpy,
         },
+        {
+          provide: UtilsService,
+          useValue: utilsSpy,
+        },
+        {
+          provide: OverviewService,
+          useValue: overviewSpy,
+        },
       ]
     })
     .compileComponents();
@@ -29,6 +41,7 @@ describe('DuplicateExperienceComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DuplicateExperienceComponent);
     component = fixture.componentInstance;
+    utilsSpy.broadcastEvent = jasmine.createSpy().and.returnValue(of(true));
   });
 
   it('should create', () => {
@@ -106,7 +119,10 @@ describe('DuplicateExperienceComponent', () => {
   });
 
   it('for confirmed()', () => {
+    overviewSpy.duplicateExperience = jasmine.createSpy().and.returnValue(of(true));
     component.confirmed();
+    expect(utilsSpy.broadcastEvent).toHaveBeenCalledTimes(3);
+    expect(overviewSpy.duplicateExperience).toHaveBeenCalled();
     expect(modalSpy.dismiss).toHaveBeenCalled();
   });
 

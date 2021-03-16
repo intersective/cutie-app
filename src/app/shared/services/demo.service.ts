@@ -1009,6 +1009,11 @@ export class DemoService {
     return of({}).pipe(delay(1000));
   }
 
+  duplicateExperience(uuid, roles) {
+    console.log('duplicate experience uuid', uuid, roles);
+    return of({}).pipe(delay(1000));
+  }
+
   deleteExperience(experience) {
     console.log('delete experience:', experience.uuid);
     return of({}).pipe(delay(1000));

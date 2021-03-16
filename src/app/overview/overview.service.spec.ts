@@ -8,7 +8,7 @@ import { DemoService } from '@services/demo.service';
 describe('OverviewService', () => {
   let service: OverviewService;
   const demoService = jasmine.createSpyObj('DemoService', ['getExperiences', 'getExpStatistics', 'deleteExperience', 'archiveExperience']);
-  const requestService = jasmine.createSpyObj('RequestService', ['graphQLQuery', 'graphQLMutate']);
+  const requestService = jasmine.createSpyObj('RequestService', ['graphQLQuery', 'graphQLMutate', 'post']);
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -113,6 +113,39 @@ describe('OverviewService', () => {
     it('graphql resopnse', () => {
       environment.demo = false;
       requestService.graphQLMutate = jasmine.createSpy().and.returnValue(of({
+        data: {
+          success: true
+        }
+      }));
+      result = {
+        data: {
+          success: true
+        }
+      };
+    });
+  });
+
+  describe('for duplicateExperience', () => {
+    let result;
+    afterEach(() => {
+      service.duplicateExperience(exp, ['mentor']).subscribe(res => expect(res).toEqual(result));
+    });
+    it('demo resopnse', () => {
+      environment.demo = true;
+      demoService.duplicateExperience = jasmine.createSpy().and.returnValue(of({
+        data: {
+          success: false
+        }
+      }));
+      result = {
+        data: {
+          success: false
+        }
+      };
+    });
+    it('graphql resopnse', () => {
+      environment.demo = false;
+      requestService.post = jasmine.createSpy().and.returnValue(of({
         data: {
           success: true
         }

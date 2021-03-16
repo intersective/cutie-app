@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { OverviewService } from '../../../overview/overview.service';
+import { UtilsService } from '@services/utils.service';
 
 @Component({
   selector: 'app-duplicate-experience',
@@ -17,7 +19,9 @@ export class DuplicateExperienceComponent {
   allSelected: boolean;
 
   constructor(
-    public modalController: ModalController
+    public modalController: ModalController,
+    private overviewService: OverviewService,
+    private utils: UtilsService,
   ) {}
 
   select(role?) {
@@ -57,7 +61,17 @@ export class DuplicateExperienceComponent {
   }
 
   confirmed() {
-    console.log('uuid:', this.experienceUuid, 'roles: ', this.roleSelected);
+    this.utils.broadcastEvent('show-loading', { message: 'Duplicating the experience' });
+    const roles = [];
+    for (const role in this.roleSelected) {
+      if (this.roleSelected[role]) {
+        roles.push(role);
+      }
+    }
+    this.overviewService.duplicateExperience(this.experienceUuid, roles).subscribe(res => {
+      this.utils.broadcastEvent('exps-reload', {});
+      this.utils.broadcastEvent('dismiss-loading', {});
+    });
     this.modalController.dismiss();
   }
 
