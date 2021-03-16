@@ -4,6 +4,15 @@ import { map } from 'rxjs/operators';
 import { environment } from '@environments/environment';
 import { DemoService } from '@services/demo.service';
 
+/**
+ * list of api endpoint involved in this service
+ */
+const api = {
+  post: {
+    duplicate: 'api/v2/plan/experience/clone.json'
+  }
+};
+
 export interface Experience {
   id?: number;
   uuid: string;
@@ -181,6 +190,16 @@ export class OverviewService {
         uuid: experience.uuid,
       }
     );
+  }
+
+  duplicateExperience(uuid, roles) {
+    if (environment.demo) {
+      return this.demo.duplicateExperience(uuid, roles);
+    }
+    return this.request.post(api.post.duplicate, {
+      uuid: uuid,
+      roles: roles,
+    });
   }
 
   archiveExperience(experience) {
