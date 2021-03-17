@@ -254,6 +254,7 @@ export class ChatListComponent {
         if (!this._channelExist(data.data.newChannel, 'direct')) {
           this.chatChannels.push(data.data.newChannel);
           this._groupingChatChannels();
+          this.goToChatRoom(data.data.newChannel);
         }
       }
     });
