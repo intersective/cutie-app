@@ -155,22 +155,50 @@ export class ExperienceCardComponent {
   }
 
   delete() {
-    this.popupService.showLoading({
-      message: 'Deleting the experience'
-    });
-    this.service.deleteExperience(this.experience).subscribe(res => {
-      this.utils.broadcastEvent('exps-reload', {});
-      setTimeout(() => this.popupService.dismissLoading(), 500);
+    this.popupService.showAlert({
+      message: 'Are you sure you wanna delete this experience?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+        },
+        {
+          text: 'OK',
+          handler: () => {
+            this.popupService.showLoading({
+              message: 'Deleting the experience'
+            });
+            this.service.deleteExperience(this.experience).subscribe(res => {
+              this.utils.broadcastEvent('exps-reload', {});
+              setTimeout(() => this.popupService.dismissLoading(), 500);
+            });
+          }
+        },
+      ]
     });
   }
 
   archive() {
-    this.popupService.showLoading({
-      message: 'Archiving the experience'
-    });
-    this.service.archiveExperience(this.experience).subscribe(res => {
-      this.utils.broadcastEvent('exps-reload', {});
-      setTimeout(() => this.popupService.dismissLoading(), 500);
+    this.popupService.showAlert({
+      message: 'Are you sure you wanna delete this experience?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+        },
+        {
+          text: 'OK',
+          handler: () => {
+            this.popupService.showLoading({
+              message: 'Archiving the experience'
+            });
+            this.service.archiveExperience(this.experience).subscribe(res => {
+              this.utils.broadcastEvent('exps-reload', {});
+              setTimeout(() => this.popupService.dismissLoading(), 500);
+            });
+          }
+        },
+      ]
     });
   }
 
