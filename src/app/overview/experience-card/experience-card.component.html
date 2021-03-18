@@ -247,8 +247,8 @@
                 </div>
               </div>
               <div class="experience-item-stat-label">
-                <div>{{ onTrack() ? onTrack() + '%' : 'N/A' }} <span class="text-success">on-track</span></div>
-                <div>{{ offTrack() ? offTrack() + '%' : 'N/A' }} <span class="text-danger">off-track</span></div>
+                <div>{{ onTrack() !== null ? onTrack() + '%' : 'N/A' }} <span class="text-success">on-track</span></div>
+                <div>{{ offTrack() !== null ? offTrack() + '%' : 'N/A' }} <span class="text-danger">off-track</span></div>
               </div>
             </div>
             <div class="experience-item-stat col-6 col-md-2">
