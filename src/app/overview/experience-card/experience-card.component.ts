@@ -69,7 +69,7 @@ export class ExperienceCardComponent {
     if (this.experience.statistics.onTrackRatio < 0) {
       return null;
     }
-    return this.experience.statistics.onTrackRatio * 100;
+    return Math.round(this.experience.statistics.onTrackRatio * 100);
   }
 
   offTrack() {
@@ -79,7 +79,7 @@ export class ExperienceCardComponent {
     if (this.experience.statistics.onTrackRatio < 0) {
       return null;
     }
-    return (1 - this.experience.statistics.onTrackRatio) * 100;
+    return Math.round((1 - this.experience.statistics.onTrackRatio) * 100);
   }
 
   onTrackInfo() {
@@ -100,6 +100,16 @@ export class ExperienceCardComponent {
       return Math.round(stat.activeUserCount.mentor * 100 / stat.registeredUserCount.mentor);
     }
     return 0;
+  }
+
+  reviewRatingAvg() {
+    if (this.experience.statistics.reviewRatingAvg > 1) {
+      return 100;
+    }
+    if (this.experience.statistics.reviewRatingAvg < 0) {
+      return 0;
+    }
+    return Math.round(this.experience.statistics.reviewRatingAvg * 100);
   }
 
   view() {

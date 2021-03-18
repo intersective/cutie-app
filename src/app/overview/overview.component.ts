@@ -407,12 +407,12 @@ export class OverviewComponent implements OnInit {
         exp.statistics.registeredUserCount.coordinator,
         exp.statistics.registeredUserCount.mentor,
         exp.statistics.registeredUserCount.participant,
-        exp.statistics.onTrackRatio < 0 ? '-' : exp.statistics.onTrackRatio,
+        exp.statistics.onTrackRatio < 0 ? '-' : exp.statistics.onTrackRatio.toFixed(2),
         exp.statistics.activeUserCount.participant,
         exp.statistics.activeUserCount.mentor,
         exp.statistics.feedbackLoopCompleted,
         exp.statistics.feedbackLoopStarted,
-        exp.statistics.reviewRatingAvg,
+        exp.statistics.reviewRatingAvg > 1 ? 1 : exp.statistics.reviewRatingAvg,
       ]);
     });
 
