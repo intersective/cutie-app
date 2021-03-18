@@ -312,7 +312,7 @@
 
 <ng-template #reviewRating>
   <div class="experience-item-stat-value">
-    {{ experience.statistics.reviewRatingAvg * 100 || 0 }}%
+    {{ reviewRatingAvg() }}%
   </div>
   <div class="experience-item-stat-label">
     <div>feedback quality score</div>

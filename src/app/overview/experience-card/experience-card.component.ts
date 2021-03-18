@@ -102,6 +102,16 @@ export class ExperienceCardComponent {
     return 0;
   }
 
+  reviewRatingAvg() {
+    if (this.experience.statistics.reviewRatingAvg > 1) {
+      return 100;
+    }
+    if (this.experience.statistics.reviewRatingAvg < 0) {
+      return 0;
+    }
+    return Math.round(this.experience.statistics.reviewRatingAvg * 100);
+  }
+
   view() {
     this.popupService.showLoading({
       message: 'Entering the experience'
