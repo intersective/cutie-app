@@ -69,7 +69,7 @@ export class ExperienceCardComponent {
     if (this.experience.statistics.onTrackRatio < 0) {
       return null;
     }
-    return this.experience.statistics.onTrackRatio * 100;
+    return Math.round(this.experience.statistics.onTrackRatio * 100);
   }
 
   offTrack() {
@@ -79,7 +79,7 @@ export class ExperienceCardComponent {
     if (this.experience.statistics.onTrackRatio < 0) {
       return null;
     }
-    return (1 - this.experience.statistics.onTrackRatio) * 100;
+    return Math.round((1 - this.experience.statistics.onTrackRatio) * 100);
   }
 
   onTrackInfo() {
