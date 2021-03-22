@@ -61,7 +61,11 @@
 <article *ngIf="!skeleton" class="experience-item card">
   <div class="row">
     <div class="experience-item-image col-lg-3">
-      <img [src]="experience.leadImage || './assets/exp-placeholder.png'" alt="Experience image" (click)="view()" class="cursor-pointer">
+      <div (click)="view()" class="exp-image" [ngStyle]="{
+        'background-image': 'url(\'' + (experience.leadImage || './assets/exp-placeholder.png') + '\')',
+        'background-color': experience.leadImage ? '' : (experience.color || 'var(--ion-color-primary)')
+      }">
+      </div>
     </div>
     <div class="experience-item-summary col-lg-9">
       <div class="row">
