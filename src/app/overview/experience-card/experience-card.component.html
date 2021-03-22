@@ -152,7 +152,7 @@
           </ng-container>
           <ng-container *ngIf="experience.tags.length">
             <ng-container *ngFor="let tag of experience.tags; let i = index">
-              <span *ngIf="i < 8" class="experience-tag btn-sm btn-tag cursor-auto m-1">{{ tag }}</span>
+              <span *ngIf="i < 8" class="experience-tag btn-round btn-sm btn-tag cursor-auto m-1">{{ tag }}</span>
             </ng-container>
             <a *ngIf="experience.tags.length > 8" class="btn btn-link float-end" (click)="moreTags()">+{{ experience.tags.length - 8 }} more</a>
           </ng-container>
@@ -161,7 +161,7 @@
       <div class="row experience-item-stats">
         <div class="experience-item-stat col-6 col-md-2">
           <div *ngIf="experience.todoItemCount" class="experience-item-issues">
-            <span class="btn btn-sm btn-danger cursor-auto">
+            <span class="btn btn-round btn-sm btn-danger cursor-auto">
               {{ experience.todoItemCount }} issue
             </span>
           </div>
