@@ -21,6 +21,7 @@ export interface Experience {
   description: string;
   type: string;
   status: string;
+  color: string;
   leadImage: string;
   setupStep: string;
   tags: string[];
@@ -75,6 +76,7 @@ export class OverviewService {
           name
           description
           type
+          color
           leadImage
           status
           setupStep
