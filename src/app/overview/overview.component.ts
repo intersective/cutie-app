@@ -166,6 +166,17 @@ export class OverviewComponent implements OnInit {
     });
   }
 
+  private _calculateTags() {
+    this.tags.forEach(t => t.count = 0);
+    this.experiences.forEach(exp => {
+      exp.tags.forEach(t => {
+        const index = this.tags.findIndex(tt => t === tt.name);
+        this.tags[index].count += 1;
+      });
+    });
+    this.tags = [...this.tags];
+  }
+
   private _updateTags(experiences: Experience[], experience: Experience, tags: string[]) {
     return experiences.map(exp => {
       if (exp.uuid === experience.uuid) {
@@ -190,6 +201,7 @@ export class OverviewComponent implements OnInit {
     this._filterByStatus();
     this._filterByType();
     this._sort();
+    this._calculateTags();
     this._calculateStatistics();
     this._renderExperiences();
   }
