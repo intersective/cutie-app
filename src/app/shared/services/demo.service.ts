@@ -313,6 +313,7 @@ export class DemoService {
       setupStep: 'configuration',
       leadImage: '',
       todoItemCount: 0,
+      color: '#ffc107',
       tags: [],
       statistics: {
         enrolledUserCount: {
@@ -348,6 +349,7 @@ export class DemoService {
       status: 'live',
       setupStep: 'visuals',
       leadImage: '',
+      color: '#28a745',
       todoItemCount: 1,
       tags: this.tags.map(t => ({ name: t })),
       statistics: {
@@ -384,6 +386,7 @@ export class DemoService {
       status: 'live',
       setupStep: 'visuals',
       leadImage: '',
+      color: '',
       todoItemCount: 3,
       tags: [{
         name: 'apple'
@@ -428,6 +431,7 @@ export class DemoService {
       status: 'completed',
       setupStep: 'visuals',
       leadImage: '',
+      color: '',
       todoItemCount: 0,
       tags: [{
         name: 'apple'

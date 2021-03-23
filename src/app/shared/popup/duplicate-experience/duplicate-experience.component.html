@@ -1,7 +1,8 @@
 <div class="card">
-  <div class="card-body">
+  <div class="card-header bg-white">
     <h3 class="card-title">Duplicate Experience</h3>
-    <hr/>
+  </div>
+  <div class="card-body">
     <p class="card-text">Which users would you like to copy over to the duplicated experience?</p>
     <div *ngFor="let role of ['admin', 'coordinator', 'mentor', 'participant']" class="form-check form-check-inline">
       <input class="form-check-input" type="checkbox" [id]="'checkbox-' + role" (change)="select()" [(ngModel)]="roleSelected[role]">

@@ -34,6 +34,7 @@ describe('OverviewService', () => {
     type: 'mentoring',
     status: 'live',
     leadImage: '',
+    color: '',
     setupStep: '',
     tags: [],
     todoItemCount: 2,
