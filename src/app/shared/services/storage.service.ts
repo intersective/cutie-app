@@ -16,9 +16,11 @@ export interface User {
   programName?: string;
   experienceId?: number;
   timelineId?: number;
+  timelineUuid?: string;
   projectId?: number;
   teamId?: number;
   userHash?: string;
+  enrolmentUuid?: string;
 }
 
 @Injectable({

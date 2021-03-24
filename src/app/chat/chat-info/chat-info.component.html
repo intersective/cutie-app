@@ -1,6 +1,6 @@
 <ion-header mode="ios">
   <ion-toolbar class="ion-toolbar-absolute">
-    <ion-title class="heading-6 black">{{ selectedChat.channelName }}</ion-title>
+    <ion-title class="heading-6 black">{{ selectedChat.name }}</ion-title>
     <ion-button slot="end" fill="clear" size="small" (click)="close()">
       <ion-icon color="primary" slot="icon-only" name="close-circle"></ion-icon>
     </ion-button>
@@ -30,22 +30,29 @@
         </div>
       </ion-col>
       <ion-col size="6" class="member-container">
-        <p class="subtitle-1 gray-2">{{ selectedChat.members.length }} Members</p>
-        <div class="member-list">
-          <ion-list lines="none" color="light" class="ion-no-padding">
-            <ng-container *ngFor="let member of selectedChat.members">
-              <ion-item>
-                <ion-avatar slot="start">
-                  <img [src]="member.avatar" alt="{{member.name}}">
-                </ion-avatar>
-                <ion-label>
-                  <p class="subtitle-1 black">{{member.name}}</p>
-                  <p class="caption gray-2" *ngIf="member.role !== 'participant'">{{member.role}}</p>
-                </ion-label>
-              </ion-item>
-            </ng-container>
-          </ion-list>
-        </div>
+        <p class="subtitle-1 gray-2">{{ memberList.length }} Members</p>
+        <ng-container *ngIf="loadingMembers">
+          <div class="ion-text-center">
+            <ion-spinner></ion-spinner>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="!loadingMembers">
+          <div class="member-list">
+            <ion-list lines="none" color="light" class="ion-no-padding">
+              <ng-container *ngFor="let member of memberList">
+                <ion-item>
+                  <ion-avatar slot="start">
+                    <img [src]="member.avatar" alt="{{member.name}}">
+                  </ion-avatar>
+                  <ion-label>
+                    <p class="subtitle-1 black">{{member.name}}</p>
+                    <p class="caption gray-2" *ngIf="member.role !== 'participant'">{{member.role}}</p>
+                  </ion-label>
+                </ion-item>
+              </ng-container>
+            </ion-list>
+          </div>
+        </ng-container>
       </ion-col>
     </ion-row>
   </ion-grid>

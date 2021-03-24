@@ -40,10 +40,15 @@ export class AppComponent implements OnInit {
         case 'secure':
           if (searchParams.has('auth_token')) {
             const queries = this.utils.urlQueryToObject(queryString);
-            this.router.navigate(['auth', searchParams.get('auth_token'), queries]);
+            return this.router.navigate(['auth', searchParams.get('auth_token'), queries]);
           }
           break;
       }
+    }
+
+    if (searchParams.has('jwt')) {
+      const queries = this.utils.urlQueryToObject(queryString);
+      return this.router.navigate(['auth/jwt', searchParams.get('jwt'), queries]);
     }
   }
 

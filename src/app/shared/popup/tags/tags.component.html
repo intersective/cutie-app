@@ -1,0 +1,18 @@
+<div class="card">
+  <div class="card-body">
+    <h3 class="card-title">{{ title }}</h3>
+    <hr/>
+    <div class="card-text mb-3">
+      <div class="input-group">
+        <div class="form-control">
+          <span *ngFor="let tag of tags" class="btn-primary btn-sm me-2 d-inline-block">
+            {{ tag }}<span class="ms-2" (click)="remove(tag)">&nbsp;x</span>
+          </span>
+          <input type="text" [(ngModel)]="newTag" [ngbTypeahead]="search" (selectItem)="selected($event)" autofocus placeholder="Add tag..."/>
+        </div>
+      </div>
+    </div>
+    <button type="button" class="btn btn-primary float-end" (click)="confirmed(true)">Save</button>
+    <button type="button" class="btn btn-link float-end me-2" (click)="confirmed(false)">Cancel</button>
+  </div>
+</div>

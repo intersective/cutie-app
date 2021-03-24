@@ -9,9 +9,9 @@
 
 ## Installation
 
-Run `npm install` to install necessary packages
-
-Run `npm run start` to start a development server on your local, and calling sandbox.practera.com for API
+- Run `npm install` to install necessary packages
+- Duplicate `environment.local.ts` under the `src/environments/` folder and rename it to `environment.ts`
+- Run `npm run start` to start a development server on your local, and calling sandbox.practera.com for API
 
 ## Demo
 

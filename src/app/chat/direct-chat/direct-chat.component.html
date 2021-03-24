@@ -1,0 +1,67 @@
+<ion-content class="ion-padding">
+  <ion-grid class="ion-no-padding">
+    <ion-row>
+      <ion-col size="11" class="ion-no-margin title-container">
+        <ion-label>Direct Messages</ion-label>
+      </ion-col>
+      <ion-col size="1" class="ion-no-padding ion-no-margin">
+        <ion-button class="close-button" fill="clear" size="small" (click)="close()">
+          <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <div class="search-bar-container">
+    <ion-input class="search-box" clearInput placeholder="Start a new conversation" [(ngModel)]="searchText"
+      (ionChange)="searchUsers()"></ion-input>
+  </div>
+  <div class="user-list-container">
+    <ng-container *ngIf="userList.length === 0">
+      <div class="empty-status">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="12">
+              <ion-icon name="search-outline"></ion-icon>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="12">
+              <ion-label class="heading-5">Search for people to start a direct message</ion-label>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="userList.length > 0">
+      <ion-label class="body-2 gray-2 ion-padding">Participant</ion-label>
+      <ng-container *ngIf="loadingUsers">
+        <div class="ion-text-center">
+          <ion-spinner></ion-spinner>
+        </div>
+      </ng-container>
+      <ion-list class="desktop-view ion-no-padding" *ngIf="!loadingUsers">
+        <clickable-item class="user-item" *ngFor="let user of userList; let i = index" [lines]="'none'"
+          (click)="createChatChannel(user)">
+          <ion-avatar slot="start" class="ion-text-center">
+            <img [src]="user.avatar" alt="{{user.name}}">
+          </ion-avatar>
+          <ion-label>
+            <div class="chat-name-container caption">
+              <p class="chat-name subtitle-1">{{user.name}}</p>
+              <ng-container *ngIf="user.role && user.role !== 'participant'">
+                <span class="ion-text-capitalize">{{ user.role }}</span>
+              </ng-container>
+            </div>
+            <ng-container *ngIf="user.email">
+              <p class="body-2 gray-2">{{user.email}}</p>
+            </ng-container>
+            <div class="chat-name-container caption" *ngIf="user.team && user.team.name">
+              <span class="ion-text-capitalize">{{ user.team.name }}</span>
+            </div>
+          </ion-label>
+        </clickable-item>
+      </ion-list>
+    </ng-container>
+  </div>
+
+</ion-content>
