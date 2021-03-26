@@ -165,7 +165,7 @@
       <div class="row experience-item-stats">
         <div class="experience-item-stat col-6 col-md-2">
           <div *ngIf="experience.todoItemCount" class="experience-item-issues">
-            <span class="btn btn-round btn-sm btn-danger cursor-auto">
+            <span (click)="view()" class="btn btn-round btn-sm btn-danger cursor-pointer">
               {{ experience.todoItemCount }} issue
             </span>
           </div>
