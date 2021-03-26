@@ -344,7 +344,11 @@ export class OverviewComponent implements OnInit {
         'Description'
       ]
     ];
-    this.stats.forEach(s => reportOverview.push([s.label, s.value, s.description]));
+    this.stats.forEach(s => reportOverview.push([
+      s.label,
+      s.value,
+      s.description.replace(/(<([^>]+)>)/ig, "")
+    ]));
     reportOverview = [
       ...reportOverview,
       ...[
@@ -405,7 +409,7 @@ export class OverviewComponent implements OnInit {
       reportPerExp.push([
         exp.name,
         exp.type,
-        exp.description,
+        exp.description.replace(/(<([^>]+)>)/ig, ""),
         exp.tags.join(','),
         exp.status,
         exp.todoItemCount,
