@@ -10,6 +10,7 @@ export class StatCardComponent {
   @Input() statValue: string;
   @Input() statLabel: string;
   @Input() statDescription: string;
+  @Input() skeleton: boolean;
 
   constructor(
     private popupService: PopupService

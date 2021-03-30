@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Experience, Statistics, Tag, OverviewService } from './overview.service';
 import { UtilsService } from '@services/utils.service';
 import { PopupService } from '@shared/popup/popup.service';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-overview',
@@ -54,10 +55,12 @@ export class OverviewComponent implements OnInit {
   types = ['all'];
   status = 'all';
   type = 'all';
+  @Input() skeletonOnly: boolean;
 
   loadingExps = false;
   experiencesRaw: Experience[] = [];
   experiences: Experience[] = [];
+  remainingExperiences: Experience[] = [];
 
   constructor(
     private service: OverviewService,
@@ -66,10 +69,17 @@ export class OverviewComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    if (this.skeletonOnly) {
+      this.loadingExps = true;
+      return;
+    }
     this.loadExperiences();
 
     // when experience tags get updated, update the experiences data
     this.utils.getEvent('exp-tags-updated').subscribe(event => {
+      if (!this.utils.has(event, 'experience') || !this.utils.has(event, 'tags')) {
+        return ;
+      }
       this.experiences = this._updateTags(this.experiences, event.experience, event.tags);
       this.experiencesRaw = this._updateTags(this.experiencesRaw, event.experience, event.tags);
       this._getAllTags();
@@ -77,6 +87,9 @@ export class OverviewComponent implements OnInit {
 
     // when experience statistics get updated, update the experience statistics
     this.utils.getEvent('exp-statistics-updated').subscribe(event => {
+      if (!this.utils.has(event, 'experience') || !this.utils.has(event, 'statistics')) {
+        return ;
+      }
       this.experiences = this._updateStatistics(this.experiences, event.experience, event.statistics);
       this.experiencesRaw = this._updateStatistics(this.experiencesRaw, event.experience, event.statistics);
       this._getAllTags();
@@ -96,11 +109,40 @@ export class OverviewComponent implements OnInit {
       // get all tags
       this._getAllTags();
       // get all types
-      this.types = [...['all'], ...res.map(exp => exp.type)];
+      this.types = [...['all'], ...this.experiencesRaw.map(exp => exp.type)];
       this.types = [...new Set(this.types)];
       this.filterAndOrder();
       this.loadingExps = false;
     });
+  }
+
+  loadMore(event) {
+    setTimeout(
+      () => {
+        this._renderExperiences(false);
+        event.target.complete();
+      },
+      500
+    );
+  }
+
+  private _renderExperiences(init = true) {
+    const maxExp = 7;
+    if (init) {
+      // only display 7 experiences at once
+      this.remainingExperiences = [];
+      if (this.experiences.length > maxExp) {
+        this.remainingExperiences = this.experiences.splice(maxExp, this.experiences.length - maxExp);
+      }
+    } else {
+      // load 7 more experiences
+      if (this.remainingExperiences.length <= maxExp) {
+        this.experiences = [...this.experiences, ...this.remainingExperiences];
+        this.remainingExperiences = [];
+      } else {
+        this.experiences = [...this.experiences, ...this.remainingExperiences.splice(0, maxExp)];
+      }
+    }
   }
 
   /**
@@ -122,6 +164,17 @@ export class OverviewComponent implements OnInit {
         }
       });
     });
+  }
+
+  private _calculateTags() {
+    this.tags.forEach(t => t.count = 0);
+    this.experiences.forEach(exp => {
+      exp.tags.forEach(t => {
+        const index = this.tags.findIndex(tt => t === tt.name);
+        this.tags[index].count += 1;
+      });
+    });
+    this.tags = [...this.tags];
   }
 
   private _updateTags(experiences: Experience[], experience: Experience, tags: string[]) {
@@ -148,7 +201,9 @@ export class OverviewComponent implements OnInit {
     this._filterByStatus();
     this._filterByType();
     this._sort();
+    this._calculateTags();
     this._calculateStatistics();
+    this._renderExperiences();
   }
 
   private _filterByTag() {
@@ -279,6 +334,114 @@ export class OverviewComponent implements OnInit {
 
   add() {
     this.popupService.showCreateExp();
+  }
+
+  createReport() {
+    let reportOverview: (string | number)[][] = [
+      [
+        'Experiences Overview',
+        'Value',
+        'Description'
+      ]
+    ];
+    this.stats.forEach(s => reportOverview.push([
+      s.label,
+      s.value,
+      s.description.replace(/(<([^>]+)>)/ig, "")
+    ]));
+    reportOverview = [
+      ...reportOverview,
+      ...[
+        [],
+        ['filters'],
+        [
+          'Status',
+          'Type',
+          'Sort by',
+          'Sort order',
+        ],
+        [
+          this.status,
+          this.type,
+          this.sortBy,
+          this.sortDesc ? 'Desc' : 'Asc'
+        ],
+        [],
+        ['filter by tags'],
+        ['selected']
+      ],
+      ...this.tags.filter(t => t.active).map(a => [a.name]),
+    ];
+
+    const reportPerExp: (string | number)[][] = [
+      [
+        'Experience',
+        'Type',
+        'Description',
+        'Tags list',
+        'Status',
+        'no. of issues',
+        'Enrolment - Total',
+        'Enrolment - Admin',
+        'Enrolment - Coordinator',
+        'Enrolment - Mentor',
+        'Enrolment - Participant',
+        'Registered - Total',
+        'Registered - Admin',
+        'Registered - Coordinator',
+        'Registered - Mentor',
+        'Registered - Participant',
+        'On-track',
+        'Recent activity - Participant',
+        'Recent activity - Mentor',
+        'Feedback Loops - Completed',
+        'Feedback Loops - Started',
+        'Feedback Quality Score',
+      ]
+    ];
+    [...this.experiences, ...this.remainingExperiences].forEach(exp => {
+      let totalEnrolled = 0;
+      let totalRegistered = 0;
+      for (const c of ['admin', 'coordinator', 'mentor', 'participant']) {
+        totalEnrolled += exp.statistics.enrolledUserCount[c];
+        totalRegistered += exp.statistics.registeredUserCount[c];
+      }
+      reportPerExp.push([
+        exp.name,
+        exp.type,
+        exp.description.replace(/(<([^>]+)>)/ig, ""),
+        exp.tags.join(','),
+        exp.status,
+        exp.todoItemCount,
+        totalEnrolled,
+        exp.statistics.enrolledUserCount.admin,
+        exp.statistics.enrolledUserCount.coordinator,
+        exp.statistics.enrolledUserCount.mentor,
+        exp.statistics.enrolledUserCount.participant,
+        totalRegistered,
+        exp.statistics.registeredUserCount.admin,
+        exp.statistics.registeredUserCount.coordinator,
+        exp.statistics.registeredUserCount.mentor,
+        exp.statistics.registeredUserCount.participant,
+        exp.statistics.onTrackRatio < 0 ? '-' : exp.statistics.onTrackRatio.toFixed(2),
+        exp.statistics.activeUserCount.participant,
+        exp.statistics.activeUserCount.mentor,
+        exp.statistics.feedbackLoopCompleted,
+        exp.statistics.feedbackLoopStarted,
+        exp.statistics.reviewRatingAvg > 1 ? 1 : exp.statistics.reviewRatingAvg,
+      ]);
+    });
+
+    // generate worksheet
+    const ws1: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(reportOverview);
+    const ws2: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(reportPerExp);
+    // generate workbook and add the worksheet
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws1, 'Overview');
+    XLSX.utils.book_append_sheet(wb, ws2, 'Reporting per experience');
+
+    // save to file
+    XLSX.writeFile(wb, 'report.xlsx');
   }
 
 }

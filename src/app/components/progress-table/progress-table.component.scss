@@ -100,7 +100,7 @@
     }
   }
 }
-.progress {
+.progress-wrapper {
   @include scroll-bar();
   div {
     display: inline-block;

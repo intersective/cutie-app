@@ -18,6 +18,7 @@ import { ChatInfoComponent } from '../chat-info/chat-info.component';
 })
 export class ChatRoomComponent {
   @ViewChild(IonContent) content: IonContent;
+  @Input() skeletonOnly: boolean;
   @Input() chatChannel?: ChatChannel = {
     uuid: '',
     name: '',
@@ -57,7 +58,9 @@ export class ChatRoomComponent {
     private ngZone: NgZone,
     public element: ElementRef
   ) {
-
+    if (this.skeletonOnly) {
+      return;
+    }
     // message by team
     this.utils.getEvent('chat:new-message').subscribe(event => {
       const receivedMessage = this.getMessageFromEvent(event);
@@ -77,6 +80,10 @@ export class ChatRoomComponent {
   }
 
   onEnter() {
+    if (this.skeletonOnly) {
+      this.loadingChatMessages = true;
+      return;
+    }
     this._initialise();
     this._subscribeToPusherChannel();
     this._loadMessages();

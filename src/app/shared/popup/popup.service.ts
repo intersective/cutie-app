@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { ModalController, AlertController, ToastController, LoadingController } from '@ionic/angular';
 import { AlertOptions, ToastOptions, ModalOptions, LoadingOptions } from '@ionic/core';
+import { UtilsService } from '@services/utils.service';
 import { DescriptionComponent } from './description/description.component';
 import { TagsComponent } from './tags/tags.component';
 import { TagsViewComponent } from './tags-view/tags-view.component';
 import { CreateExperienceComponent } from './create-experience/create-experience.component';
+import { DuplicateExperienceComponent } from './duplicate-experience/duplicate-experience.component';
 
 export interface CustomTostOptions {
   message: string;
@@ -22,7 +24,16 @@ export class PopupService {
     private alertController: AlertController,
     private toastController: ToastController,
     private loadingController: LoadingController,
-  ) {}
+    private utils: UtilsService,
+  ) {
+    this.utils.getEvent('show-loading').subscribe(event => {
+      this.showLoading(event);
+    });
+
+    this.utils.getEvent('dismiss-loading').subscribe(event => {
+      this.dismissLoading();
+    });
+  }
 
   dismiss() {
     return this.modalController.dismiss();
@@ -70,9 +81,9 @@ export class PopupService {
   /**
    * show description pop up message
    * this is using description.component.ts as the view
-   * put redirect = false if don't need to redirect
+   * put redirect = null if don't need to redirect
    */
-  showDescription(title, content, redirect: any = false) {
+  showDescription(title, content, redirect: any = null) {
     const component = DescriptionComponent;
     const componentProps = {
       title,
@@ -126,6 +137,21 @@ export class PopupService {
   showCreateExp() {
     const component = CreateExperienceComponent;
     const componentProps = {};
+    const options = {
+      cssClass: 'practera-popup'
+    };
+    return this.showModal(component, componentProps, options);
+  }
+
+  /**
+   * show tags pop up message
+   * this is using tags.component.ts as the view
+   */
+  showDuplicateExp(experienceUuid: string) {
+    const component = DuplicateExperienceComponent;
+    const componentProps = {
+      experienceUuid,
+    };
     const options = {
       cssClass: 'practera-popup'
     };

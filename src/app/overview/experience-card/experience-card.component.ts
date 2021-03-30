@@ -11,6 +11,7 @@ import { environment } from '@environments/environment';
 })
 export class ExperienceCardComponent {
   @Input() experience: Experience;
+  @Input() skeleton: boolean;
   refreshing = false;
 
   constructor(
@@ -21,7 +22,7 @@ export class ExperienceCardComponent {
 
   lastUpdated() {
     if (this.experience && this.experience.statistics.lastUpdated) {
-      const diff = Date.now() - this.experience.statistics.lastUpdated;
+      let diff = Date.now() - this.experience.statistics.lastUpdated;
       if (diff > 1000 * 60 * 60 * 24) {
         return `${ Math.floor(diff / (1000 * 60 * 60 * 24)) }d`;
       }
@@ -30,6 +31,9 @@ export class ExperienceCardComponent {
       }
       if (diff > 1000 * 60) {
         return `${ Math.floor(diff / (1000 * 60)) }m`;
+      }
+      if (diff < 0) {
+        diff = 1000;
       }
       return `${ Math.floor(diff / 1000) }s`;
     }
@@ -65,7 +69,7 @@ export class ExperienceCardComponent {
     if (this.experience.statistics.onTrackRatio < 0) {
       return null;
     }
-    return this.experience.statistics.onTrackRatio * 100;
+    return Math.round(this.experience.statistics.onTrackRatio * 100);
   }
 
   offTrack() {
@@ -75,7 +79,7 @@ export class ExperienceCardComponent {
     if (this.experience.statistics.onTrackRatio < 0) {
       return null;
     }
-    return (1 - this.experience.statistics.onTrackRatio) * 100;
+    return Math.round((1 - this.experience.statistics.onTrackRatio) * 100);
   }
 
   onTrackInfo() {
@@ -96,6 +100,16 @@ export class ExperienceCardComponent {
       return Math.round(stat.activeUserCount.mentor * 100 / stat.registeredUserCount.mentor);
     }
     return 0;
+  }
+
+  reviewRatingAvg() {
+    if (this.experience.statistics.reviewRatingAvg > 1) {
+      return 100;
+    }
+    if (this.experience.statistics.reviewRatingAvg < 0) {
+      return 0;
+    }
+    return Math.round(this.experience.statistics.reviewRatingAvg * 100);
   }
 
   view() {
@@ -137,26 +151,54 @@ export class ExperienceCardComponent {
   }
 
   duplicate() {
-
+    this.popupService.showDuplicateExp(this.experience.uuid);
   }
 
   delete() {
-    this.popupService.showLoading({
-      message: 'Deleting the experience'
-    });
-    this.service.deleteExperience(this.experience).subscribe(res => {
-      this.utils.broadcastEvent('exps-reload', {});
-      setTimeout(() => this.popupService.dismissLoading(), 500);
+    this.popupService.showAlert({
+      message: 'Are you sure you wanna delete this experience?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+        },
+        {
+          text: 'OK',
+          handler: () => {
+            this.popupService.showLoading({
+              message: 'Deleting the experience'
+            });
+            this.service.deleteExperience(this.experience).subscribe(res => {
+              this.utils.broadcastEvent('exps-reload', {});
+              setTimeout(() => this.popupService.dismissLoading(), 500);
+            });
+          }
+        },
+      ]
     });
   }
 
   archive() {
-    this.popupService.showLoading({
-      message: 'Archiving the experience'
-    });
-    this.service.archiveExperience(this.experience).subscribe(res => {
-      this.utils.broadcastEvent('exps-reload', {});
-      setTimeout(() => this.popupService.dismissLoading(), 500);
+    this.popupService.showAlert({
+      message: 'Are you sure you wanna archive this experience?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+        },
+        {
+          text: 'OK',
+          handler: () => {
+            this.popupService.showLoading({
+              message: 'Archiving the experience'
+            });
+            this.service.archiveExperience(this.experience).subscribe(res => {
+              this.utils.broadcastEvent('exps-reload', {});
+              setTimeout(() => this.popupService.dismissLoading(), 500);
+            });
+          }
+        },
+      ]
     });
   }
 

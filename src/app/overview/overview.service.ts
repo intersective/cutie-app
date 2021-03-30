@@ -1,9 +1,17 @@
 import { Injectable } from '@angular/core';
 import { RequestService } from '@shared/request/request.service';
 import { map } from 'rxjs/operators';
-import { UtilsService } from '@services/utils.service';
 import { environment } from '@environments/environment';
 import { DemoService } from '@services/demo.service';
+
+/**
+ * list of api endpoint involved in this service
+ */
+const api = {
+  post: {
+    duplicate: 'api/v2/plan/experience/clone.json'
+  }
+};
 
 export interface Experience {
   id?: number;
@@ -13,6 +21,7 @@ export interface Experience {
   description: string;
   type: string;
   status: string;
+  color: string;
   leadImage: string;
   setupStep: string;
   tags: string[];
@@ -52,7 +61,6 @@ export class OverviewService {
   constructor(
     private request: RequestService,
     private demo: DemoService,
-    private utils: UtilsService,
   ) { }
 
   getExperiences() {
@@ -68,6 +76,7 @@ export class OverviewService {
           name
           description
           type
+          color
           leadImage
           status
           setupStep
@@ -101,7 +110,11 @@ export class OverviewService {
             lastUpdated
           }
         }
-      }`
+      }`,
+      {},
+      {
+        noCache: true,
+      }
     ).pipe(map(this._handleExperiences));
   }
 
@@ -179,6 +192,16 @@ export class OverviewService {
         uuid: experience.uuid,
       }
     );
+  }
+
+  duplicateExperience(uuid, roles) {
+    if (environment.demo) {
+      return this.demo.duplicateExperience(uuid, roles);
+    }
+    return this.request.post(api.post.duplicate, {
+      uuid: uuid,
+      roles: roles,
+    });
   }
 
   archiveExperience(experience) {

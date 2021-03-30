@@ -36,10 +36,9 @@ export class AuthService {
    */
   directLogin(token: string): Observable<any> {
     if (environment.demo) {
-      const response = this.demo.directLogin();
-      this._handleLoginResponse(response);
-      return of(response).pipe(delay(2000));
+      return this.demo.directLogin().pipe(map(this._handleLoginResponse, this));
     }
+    this.logout();
     const body = new HttpParams()
       .set('auth_token', token);
     return this.request.post(api.login, body.toString(), {
@@ -57,6 +56,7 @@ export class AuthService {
       this._handleLoginResponse(response);
       return of(response).pipe(delay(2000));
     }
+    this.logout();
     const body = new HttpParams()
       .set('apikey', jwt);
     return this.request.post(api.login, body.toString(), {
@@ -65,7 +65,6 @@ export class AuthService {
   }
 
   private _handleLoginResponse(response) {
-    this.storage.clear();
     const data = response.data;
     if (data) {
       this.storage.setUser({
@@ -74,14 +73,14 @@ export class AuthService {
         timelineUuid: data.timeline_uuid ? data.timeline_uuid : null,
         programId: data.program_id ? data.program_id : null
       });
-      const programs = data.Timelines.map(function(timeline) {
+      const programs = data.Timelines ? data.Timelines.map(function(timeline) {
         return {
           enrolment: timeline.Enrolment,
           program: timeline.Program,
           project: timeline.Project,
           timeline: timeline.Timeline
         };
-      });
+      }) : [];
       this.storage.set('programs', programs);
     }
     this.getMyInfo().subscribe();
@@ -127,7 +126,7 @@ export class AuthService {
     return this.request.graphQLQuery(
       `query user {
         user {
-            enrolmentUuid
+          enrolmentUuid
         }
       }`,
       {},
@@ -153,6 +152,10 @@ export class AuthService {
       enrolmentUuid: result.enrolmentUuid
     });
     return result;
+  }
+
+  logout() {
+    this.storage.clear();
   }
 
 }

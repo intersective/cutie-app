@@ -5,6 +5,7 @@ import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { DescriptionComponent } from './description/description.component';
 import { TagsComponent } from './tags/tags.component';
 import { TagsViewComponent } from './tags-view/tags-view.component';
+import { DuplicateExperienceComponent } from './duplicate-experience/duplicate-experience.component';
 
 @NgModule({
   imports: [
@@ -18,16 +19,19 @@ import { TagsViewComponent } from './tags-view/tags-view.component';
     DescriptionComponent,
     TagsComponent,
     TagsViewComponent,
+    DuplicateExperienceComponent,
   ],
   exports: [
     DescriptionComponent,
     TagsComponent,
     TagsViewComponent,
+    DuplicateExperienceComponent,
   ],
   entryComponents: [
     DescriptionComponent,
     TagsComponent,
     TagsViewComponent,
+    DuplicateExperienceComponent,
   ]
 })
 

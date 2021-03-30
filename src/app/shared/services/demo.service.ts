@@ -313,6 +313,7 @@ export class DemoService {
       setupStep: 'configuration',
       leadImage: '',
       todoItemCount: 0,
+      color: '#ffc107',
       tags: [],
       statistics: {
         enrolledUserCount: {
@@ -348,6 +349,7 @@ export class DemoService {
       status: 'live',
       setupStep: 'visuals',
       leadImage: '',
+      color: '#28a745',
       todoItemCount: 1,
       tags: this.tags.map(t => ({ name: t })),
       statistics: {
@@ -384,6 +386,7 @@ export class DemoService {
       status: 'live',
       setupStep: 'visuals',
       leadImage: '',
+      color: '',
       todoItemCount: 3,
       tags: [{
         name: 'apple'
@@ -428,6 +431,7 @@ export class DemoService {
       status: 'completed',
       setupStep: 'visuals',
       leadImage: '',
+      color: '',
       todoItemCount: 0,
       tags: [{
         name: 'apple'
@@ -473,7 +477,7 @@ export class DemoService {
     const expire = new Date();
     expire.setHours(expire.getHours() + 1);
     this.storage.set('expire', expire.toString());
-    return {
+    return of({
       data: {
         apikey: 'demo-apikey',
         timeline_id: 2,
@@ -499,7 +503,7 @@ export class DemoService {
           }
         ]
       }
-    };
+    }).pipe(delay(2000));
   }
 
   // auth.service
@@ -987,7 +991,7 @@ export class DemoService {
   getExperiences() {
     return of({
       data: {
-        experiences: this.experiences
+        experiences: [...this.experiences, ...this.experiences, ...this.experiences, ...this.experiences, ...this.experiences]
       }
     }).pipe(delay(1000));
   }
@@ -1006,6 +1010,11 @@ export class DemoService {
 
   updateExperienceTags(experience, tags) {
     console.log('update experience tag:', experience, tags);
+    return of({}).pipe(delay(1000));
+  }
+
+  duplicateExperience(uuid, roles) {
+    console.log('duplicate experience uuid', uuid, roles);
     return of({}).pipe(delay(1000));
   }
 

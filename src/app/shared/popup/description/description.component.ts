@@ -19,7 +19,7 @@ export class DescriptionComponent {
 
   confirmed() {
     this.modalController.dismiss();
-    // if this.redirect == false, don't redirect to another page
+    // if this.redirect == null, don't redirect to another page
     if (this.redirect) {
       this.router.navigate(this.redirect);
     }

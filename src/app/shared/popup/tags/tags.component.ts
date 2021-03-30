@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, switchMap } from 'rxjs/operators';
@@ -21,7 +20,6 @@ export class TagsComponent {
   newTag: string;
 
   constructor(
-    private router: Router,
     private service: TagsService,
     public modalController: ModalController,
   ) {}

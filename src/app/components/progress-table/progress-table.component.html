@@ -116,7 +116,7 @@
             <ion-icon name="arrow-dropleft"></ion-icon>
           </ion-button>
 
-          <div class="progress" (scroll)="scroll(progressRef.scrollLeft)" #progressRef>
+          <div class="progress-wrapper" (scroll)="scroll(progressRef.scrollLeft)" #progressRef>
             <div *ngFor="let progress of value; let i = index" [style.width]="progressWidth(value.length) + '%'" #iconRef>
 
               <ng-container *ngIf="progress.status === 'not started' || progress.status === 'in progress'">
