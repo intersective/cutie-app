@@ -36,7 +36,7 @@
     "@ionic-native/status-bar": "^5.0.0",
     "@ionic/angular": "^5.3.1",
     "@ionic/storage": "^2.3.1",
-    "@ng-bootstrap/ng-bootstrap": "^9.0.2",
+    "@ng-bootstrap/ng-bootstrap": "^9.1.0",
     "@swimlane/ngx-charts": "^14.0.0",
     "@swimlane/ngx-datatable": "^17.1.0",
     "ansi-colors": "^4.1.1",

@@ -9,7 +9,7 @@
           <span *ngFor="let tag of tags" class="btn-primary btn-round btn-sm me-2 mb-1 d-inline-block">
             {{ tag }}<span class="ms-2 cursor-pointer" (click)="remove(tag)">&nbsp;x</span>
           </span>
-          <input type="text" class="border-0 bg-body w-100 my-1" [(ngModel)]="newTag" [ngbTypeahead]="search" (selectItem)="selected($event)" autofocus placeholder="Add tag..."/>
+          <input type="text" class="border-0 bg-body w-100 my-1" [(ngModel)]="newTag" [ngbTypeahead]="search" popupClass="p-0" (selectItem)="selected($event)" autofocus placeholder="Add tag..."/>
         </div>
       </div>
     </div>
