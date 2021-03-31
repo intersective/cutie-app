@@ -1,16 +1,16 @@
 <div class="ion-page" style="background: #ffffff">
-<ion-split-pane class="template-library-container" contentId="main">
-  <ion-menu contentId="main" style="border: none">
-    <div class="search-home-container">
-      <ion-searchbar color="light" class="template-search-bar"></ion-searchbar>
-    </div>
-    <h6 class="menu-header">Categories</h6>
-    <ion-content>
-      <ng-container *ngFor="let category of categories">
-        <p class="cursor-pointer" (click)="viewCategory(category)">{{ category.name }}</p>
-      </ng-container>
-    </ion-content>
-  </ion-menu>
+  <ion-split-pane class="template-library-container" contentId="main">
+    <ion-menu contentId="main" style="border: none">
+      <div class="search-home-container">
+        <ion-searchbar color="light" class="template-search-bar"></ion-searchbar>
+      </div>
+      <h6 class="menu-header">Categories</h6>
+      <ion-content>
+        <ng-container *ngFor="let category of categories">
+          <p class="cursor-pointer" (click)="viewCategory(category)">{{ category.name }}</p>
+        </ng-container>
+      </ion-content>
+    </ion-menu>
 
     <ion-content id="main">
       <ion-grid class="templates-grid-container">
@@ -52,5 +52,5 @@
 
       </ion-grid>
     </ion-content>
-</ion-split-pane>
+  </ion-split-pane>
 </div>
