@@ -10,7 +10,7 @@ describe('TemplateCategoryCardComponent', () => {
   const category = {
     'leadImage': '',
     'name': 'Team Projects',
-    'experienceType': 'team project',
+    'type': 'team project',
     'color': 'rgba(0,64,229, 0.7)',
     'size': 0
   };

@@ -28,7 +28,7 @@ export class TemplateLibraryComponent implements OnInit {
       this.categories.forEach(category => {
         this.categorisedTemplates.push({
           category: category,
-          templates: this.templates.filter(template => template.experienceType === category.experienceType)
+          templates: this.templates.filter(template => template.type === category.type)
         });
       });
 

@@ -472,7 +472,7 @@ export class DemoService {
       leadVideoUrl: '',
       institutionUUID: '70fa9823-2e44-4557-a690-8b4987160741',
       isPublic: true,
-      experienceType: 'work simulation',
+      type: 'work simulation',
       attributes: [],
       modified: 'Thu Oct 29 2015 08:46:30'
     },
@@ -484,7 +484,7 @@ export class DemoService {
       leadVideoUrl: '',
       institutionUUID: '439cb0b9-0158-4285-9bea-79b5abfc9995',
       isPublic: true,
-      experienceType: 'internship',
+      type: 'internship',
       attributes: this.tags.map(t => ({ name: t })),
       modified: 'Thu Oct 29 2015 08:46:30'
     },
@@ -496,7 +496,7 @@ export class DemoService {
       leadVideoUrl: '',
       institutionUUID: '17c63901-8144-461e-b20b-15814b6c816f',
       isPublic: true,
-      experienceType: 'team project',
+      type: 'team project',
       attributes: [{
         name: 'apple'
       },
@@ -516,7 +516,7 @@ export class DemoService {
       leadVideoUrl: '',
       institutionUUID: '6669a1d4-abf3-43fe-a28a-a0a36abded04',
       isPublic: true,
-      experienceType: 'mentoring',
+      type: 'mentoring',
       attributes: [{
         name: 'apple'
       },

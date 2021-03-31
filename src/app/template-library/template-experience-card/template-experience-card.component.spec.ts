@@ -15,7 +15,7 @@ describe('TemplateExperienceCardComponent', () => {
     leadVideoUrl: '',
     institutionUUID: '70fa9823-2e44-4557-a690-8b4987160741',
     isPublic: true,
-    experienceType: 'work simulation',
+    type: 'work simulation',
     attributes: [],
     modified: 'Thu Oct 29 2015 08:46:30'
   }

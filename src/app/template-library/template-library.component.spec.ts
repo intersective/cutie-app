@@ -20,7 +20,7 @@ describe('TemplateLibraryComponent', () => {
       leadVideoUrl: '',
       institutionUUID: '70fa9823-2e44-4557-a690-8b4987160741',
       isPublic: true,
-      experienceType: 'work simulation',
+      type: 'work simulation',
       attributes: [],
       modified: 'Thu Oct 29 2015 08:46:30'
     },
@@ -32,7 +32,7 @@ describe('TemplateLibraryComponent', () => {
       leadVideoUrl: '',
       institutionUUID: '439cb0b9-0158-4285-9bea-79b5abfc9995',
       isPublic: true,
-      experienceType: 'internship',
+      type: 'internship',
       attributes: [],
       modified: 'Thu Oct 29 2015 08:46:30'
     },
@@ -44,7 +44,7 @@ describe('TemplateLibraryComponent', () => {
       leadVideoUrl: '',
       institutionUUID: '17c63901-8144-461e-b20b-15814b6c816f',
       isPublic: true,
-      experienceType: 'team project',
+      type: 'team project',
       attributes: [{
         name: 'apple'
       },
@@ -62,49 +62,49 @@ describe('TemplateLibraryComponent', () => {
     {
       'leadImage': '',
       'name': 'Team Projects',
-      'experienceType': 'team project',
+      'type': 'team project',
       'color': 'rgba(0,64,229, 0.7)',
       'size': 0
     },
     {
       'leadImage': '',
       'name': 'Internships',
-      'experienceType': 'internship',
+      'type': 'internship',
       'color': 'rgba(85, 2, 136, 0.7)',
       'size': 0
     },
     {
       'leadImage': '',
       'name': 'Simulations',
-      'experienceType': 'simulation',
+      'type': 'simulation',
       'color': 'rgba(229, 69, 0, 0.7)',
       'size': 0
     },
     {
       'leadImage': '',
       'name': 'Mentoring',
-      'experienceType': 'mentoring',
+      'type': 'mentoring',
       'color': 'rgba(221, 0, 59, 0.7)',
       'size': 1
     },
     {
       'leadImage': '',
       'name': 'Accelerators',
-      'experienceType': 'accelerator',
+      'type': 'accelerator',
       'color': 'rgba(37, 105, 120, 0.7)',
       'size': 1
     },
     {
       'leadImage': '',
       'name': 'Skills Portfolios',
-      'experienceType': 'skill portfolio',
+      'type': 'skill portfolio',
       'color': 'rgba(9, 129, 7, 0.7)',
       'size': 1
     },
     {
       'leadImage': '',
       'name': 'Others',
-      'experienceType': 'other',
+      'type': 'other',
       'color': 'rgba(69, 40, 48, 0.7)',
       'size': 1
     }

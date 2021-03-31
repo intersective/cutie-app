@@ -14,14 +14,14 @@ export interface Template {
   leadVideoUrl?: string;
   institutionUUID: string;
   isPublic?: boolean;
-  experienceType?: string;
+  type?: string;
   attributes: string[];
   modified?: string;
 }
 
 export interface Category {
   name: string;
-  experienceType: string;
+  type: string;
   leadImage: string;
   color: string;
   size: Size;
@@ -60,7 +60,7 @@ export class TemplateLibraryService {
           leadVideoUrl
           institutionUUID
           isPublic
-          experienceType
+          type
           attributes {
             name
           }
@@ -93,49 +93,49 @@ export class TemplateLibraryService {
       {
         'leadImage': '',
         'name': 'Team Projects',
-        'experienceType': 'team project',
+        'type': 'team project',
         'color': 'rgba(0,64,229, 0.7)',
         'size': Size.LARGE
       },
       {
         'leadImage': '',
         'name': 'Internships',
-        'experienceType': 'internship',
+        'type': 'internship',
         'color': 'rgba(85, 2, 136, 0.7)',
         'size': Size.LARGE
       },
       {
         'leadImage': '',
         'name': 'Simulations',
-        'experienceType': 'simulation',
+        'type': 'simulation',
         'color': 'rgba(229, 69, 0, 0.7)',
         'size': Size.LARGE
       },
       {
         'leadImage': '',
         'name': 'Mentoring',
-        'experienceType': 'mentoring',
+        'type': 'mentoring',
         'color': 'rgba(221, 0, 59, 0.7)',
         'size': Size.SMALL
       },
       {
         'leadImage': '',
         'name': 'Accelerators',
-        'experienceType': 'accelerator',
+        'type': 'accelerator',
         'color': 'rgba(37, 105, 120, 0.7)',
         'size': Size.SMALL
       },
       {
         'leadImage': '',
         'name': 'Skills Portfolios',
-        'experienceType': 'skill portfolio',
+        'type': 'skill portfolio',
         'color': 'rgba(9, 129, 7, 0.7)',
         'size': Size.SMALL
       },
       {
         'leadImage': '',
         'name': 'Others',
-        'experienceType': 'other',
+        'type': 'other',
         'color': 'rgba(69, 40, 48, 0.7)',
         'size': Size.SMALL
       }
