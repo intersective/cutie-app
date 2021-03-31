@@ -18,7 +18,7 @@ describe('TemplateExperienceCardComponent', () => {
     type: 'work simulation',
     attributes: [],
     modified: 'Thu Oct 29 2015 08:46:30'
-  }
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
