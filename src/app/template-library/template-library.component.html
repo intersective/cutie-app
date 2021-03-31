@@ -1,18 +1,26 @@
-<div class="ion-page" style="background: #ffffff">
-<ion-split-pane class="template-library-container" contentId="main">
-  <ion-menu contentId="main" style="border: none">
-    <div class="search-home-container">
-      <ion-searchbar color="light" class="template-search-bar"></ion-searchbar>
-    </div>
-    <h6 class="menu-header">Categories</h6>
-    <ion-content>
-      <ng-container *ngFor="let category of categories">
-        <p class="cursor-pointer" (click)="viewCategory(category)">{{ category.name }}</p>
-      </ng-container>
-    </ion-content>
-  </ion-menu>
+<div class="ion-page bg-white">
+  <ion-split-pane class="template-library-container" contentId="main">
+    <ion-menu contentId="main" class="menu border-0">
+      <div class="search-home-container">
+        <ion-searchbar color="light" class="template-search-bar"></ion-searchbar>
+      </div>
+      <h6 class="menu-header">Categories</h6>
+      <ion-content>
+        <ng-container *ngFor="let category of categories">
+          <p class="cursor-pointer" (click)="viewCategory(category)">{{ category.name }}</p>
+        </ng-container>
+      </ion-content>
+    </ion-menu>
 
     <ion-content id="main">
+
+      <ion-fab class="ion-hide-lg-up" vertical="top" horizontal="start" slot="fixed">
+        <ion-fab-button color="light">
+          <ion-menu-button> </ion-menu-button>
+        </ion-fab-button>
+      </ion-fab>
+
+      <!--      <ion-menu-button> </ion-menu-button>-->
       <ion-grid class="templates-grid-container">
 
         <ion-row>
@@ -31,26 +39,53 @@
           </ng-container>
         </ion-row>
 
-        <ng-container *ngFor="let categorisedTemplate of categorisedTemplates">
-          <ng-container *ngIf="categorisedTemplate.templates.length > 0">
+        <ng-container *ngIf="!loadingTemplates">
+          <ng-container *ngFor="let categorisedTemplate of categorisedTemplates">
+            <ng-container *ngIf="categorisedTemplate.templates.length > 0">
 
-            <ion-row>
-              <ion-col>
-                <h2 class="category-heading cursor-pointer" (click)="viewCategory(categorisedTemplate.category)">{{categorisedTemplate.category.name}} <ion-icon class="align-middle" name="arrow-forward-outline"></ion-icon></h2>
-              </ion-col>
-            </ion-row>
-
-            <ion-row>
-              <ng-container *ngFor="let template of categorisedTemplate.templates.slice(0, 3)">
+              <ion-row>
                 <ion-col>
-                  <app-template-experience-card [template]="template" (click)="viewTemplate(template)"></app-template-experience-card>
+                  <h2 class="category-heading cursor-pointer" (click)="viewCategory(categorisedTemplate.category)">{{categorisedTemplate.category.name}} <ion-icon class="align-middle" name="arrow-forward-outline"></ion-icon></h2>
                 </ion-col>
-              </ng-container>
-            </ion-row>
+              </ion-row>
+
+              <ion-row>
+                <ng-container *ngFor="let template of categorisedTemplate.templates.slice(0, 3)">
+                  <ion-col>
+                    <app-template-experience-card [template]="template" (click)="viewTemplate(template)"></app-template-experience-card>
+                  </ion-col>
+                </ng-container>
+              </ion-row>
+            </ng-container>
           </ng-container>
+        </ng-container>
+
+        <ng-container *ngIf="loadingTemplates">
+          <ion-row class="skeleton-container">
+            <ion-col>
+              <app-template-experience-card [skeleton]="true"></app-template-experience-card>
+            </ion-col>
+            <ion-col>
+              <app-template-experience-card [skeleton]="true"></app-template-experience-card>
+            </ion-col>
+            <ion-col>
+              <app-template-experience-card [skeleton]="true"></app-template-experience-card>
+            </ion-col>
+          </ion-row>
+          <ion-row class="skeleton-container">
+            <ion-col>
+              <app-template-experience-card [skeleton]="true"></app-template-experience-card>
+            </ion-col>
+            <ion-col>
+              <app-template-experience-card [skeleton]="true"></app-template-experience-card>
+            </ion-col>
+            <ion-col>
+              <app-template-experience-card [skeleton]="true"></app-template-experience-card>
+            </ion-col>
+          </ion-row>
         </ng-container>
 
       </ion-grid>
     </ion-content>
-</ion-split-pane>
+  </ion-split-pane>
 </div>

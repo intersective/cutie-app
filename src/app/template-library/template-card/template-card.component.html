@@ -1,0 +1,13 @@
+<ng-container *ngIf="!skeleton">
+  <ion-card class="cursor-pointer">
+    <div class="card-media" [style.background-image]="template.leadImageUrl ? 'url(' + template.leadImageUrl + ')' : 'url(/assets/exp-placeholder.png)'"></div>
+    <ion-card-header>
+      <ion-card-title>{{ template.name }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content class="card-content" [innerHTML]="template.description"></ion-card-content>
+  </ion-card>
+</ng-container>
+
+<ng-container *ngIf="skeleton">
+  <ion-skeleton-text class="card-skeleton" animated="true"></ion-skeleton-text>
+</ng-container>

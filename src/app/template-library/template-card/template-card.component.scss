@@ -10,5 +10,12 @@
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  padding-bottom: 2px;
+  padding-bottom: 4px;
+}
+
+.card-skeleton {
+  width: 95%;
+  margin: auto;
+  height: 260px;
+  border-radius: 7px;
 }

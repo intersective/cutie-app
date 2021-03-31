@@ -11,11 +11,7 @@ export interface Template {
   description?: string;
   leadImageUrl?: string;
   leadVideoUrl?: string;
-  institutionUUID: string;
-  isPublic?: boolean;
   type?: string;
-  attributes: string[];
-  modified?: string;
 }
 
 export interface Category {
@@ -23,16 +19,12 @@ export interface Category {
   type: string;
   leadImage: string;
   color: string;
-  size: Size;
+  isLarge: boolean;
 }
 
 export interface CategorisedTemplates {
   category: Category;
   templates: Template[];
-}
-
-enum Size {
-  'LARGE', 'SMALL'
 }
 
 @Injectable({
@@ -57,19 +49,10 @@ export class TemplateLibraryService {
           description
           leadImageUrl
           leadVideoUrl
-          institutionUUID
-          isPublic
           type
-          attributes {
-            name
-          }
-          modified
         }
       }`,
       {},
-      {
-        noCache: true,
-      }
     ).pipe(map(this._handleTemplates));
   }
 
@@ -77,14 +60,7 @@ export class TemplateLibraryService {
     if (!res.data) {
       return [];
     }
-    return res.data.templates.map(template => {
-      return {
-        ...template,
-        ...{
-          attributes: template.attributes.map(t => t.name)
-        }
-      };
-    });
+    return res.data.templates;
   }
 
   getCategories(): Category[] {
@@ -94,49 +70,49 @@ export class TemplateLibraryService {
         'name': 'Team Projects',
         'type': 'team project',
         'color': 'rgba(0,64,229, 0.7)',
-        'size': Size.LARGE
+        'isLarge': true
       },
       {
         'leadImage': '',
         'name': 'Internships',
         'type': 'internship',
         'color': 'rgba(85, 2, 136, 0.7)',
-        'size': Size.LARGE
+        'isLarge': true
       },
       {
         'leadImage': '',
         'name': 'Simulations',
         'type': 'simulation',
         'color': 'rgba(229, 69, 0, 0.7)',
-        'size': Size.LARGE
+        'isLarge': true
       },
       {
         'leadImage': '',
         'name': 'Mentoring',
         'type': 'mentoring',
         'color': 'rgba(221, 0, 59, 0.7)',
-        'size': Size.SMALL
+        'isLarge': false
       },
       {
         'leadImage': '',
         'name': 'Accelerators',
         'type': 'accelerator',
         'color': 'rgba(37, 105, 120, 0.7)',
-        'size': Size.SMALL
+        'isLarge': false
       },
       {
         'leadImage': '',
         'name': 'Skills Portfolios',
         'type': 'skill portfolio',
         'color': 'rgba(9, 129, 7, 0.7)',
-        'size': Size.SMALL
+        'isLarge': false
       },
       {
         'leadImage': '',
         'name': 'Others',
         'type': 'other',
         'color': 'rgba(69, 40, 48, 0.7)',
-        'size': Size.SMALL
+        'isLarge': false
       }
     ];
   }

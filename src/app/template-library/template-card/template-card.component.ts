@@ -3,12 +3,13 @@ import {Template} from '../../template-library/template-library.service';
 
 @Component({
   selector: 'app-template-experience-card',
-  templateUrl: './template-experience-card.component.html',
-  styleUrls: ['./template-experience-card.component.scss'],
+  templateUrl: './template-card.component.html',
+  styleUrls: ['./template-card.component.scss'],
 })
-export class TemplateExperienceCardComponent implements OnInit {
+export class TemplateCardComponent implements OnInit {
 
   @Input() template: Template;
+  @Input() skeleton: false;
 
   constructor() { }
 

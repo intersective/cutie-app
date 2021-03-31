@@ -10,30 +10,30 @@ export class TemplateLibraryComponent implements OnInit {
 
   constructor(private service: TemplateLibraryService) { }
 
-  loadingExps = false;
+  loadingTemplates = false;
   templates: Template[] = [];
   categories: Category[] = [];
   categorisedTemplates: CategorisedTemplates[] = [];
 
   ngOnInit() {
-    this.loadExperiences();
+    this.loadTemplates();
   }
 
-  loadExperiences() {
-    this.loadingExps = true;
+  loadTemplates() {
+    this.loadingTemplates = true;
+
+    this.categories = this.service.getCategories();
+
     this.service.getTemplates().subscribe(res => {
       this.templates = res;
-      this.loadingExps = false;
-
       this.categories.forEach(category => {
         this.categorisedTemplates.push({
           category: category,
           templates: this.templates.filter(template => template.type === category.type)
         });
       });
-
+      this.loadingTemplates = false;
     });
-    this.categories = this.service.getCategories();
   }
 
   viewCategory(category: Category) {

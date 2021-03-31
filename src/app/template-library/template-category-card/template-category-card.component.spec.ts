@@ -12,7 +12,7 @@ describe('TemplateCategoryCardComponent', () => {
     'name': 'Team Projects',
     'type': 'team project',
     'color': 'rgba(0,64,229, 0.7)',
-    'size': 0
+    'isLarge': true
   };
 
   beforeEach(async(() => {
