@@ -132,7 +132,7 @@ export class OverviewComponent implements OnInit {
         return 1;
       }
       return 0;
-    })]
+    })];
   }
 
   loadMore(event) {
