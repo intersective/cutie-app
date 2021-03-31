@@ -1,0 +1,9 @@
+<div [className]="category.size === 0 ? 'category-card-container cursor-pointer' : 'category-card-container-small cursor-pointer'">
+  <div *ngIf="category.leadImage" class="category-card-background" [style.background-image]="'url(' + category.leadImage + ')'"></div>
+  <div *ngIf="!category.leadImage" class="category-card-background" [style.background-image]="'url(/assets/exp-placeholder.png)'"></div>
+  <div class="category-card-overlay" [style.background-color]="category.color">
+    <div class="category-card-title-container">
+      <span [className]="category.size === 0 ? 'category-card-title' : 'category-card-title-small'">{{ category.name }}</span>
+    </div>
+  </div>
+</div>

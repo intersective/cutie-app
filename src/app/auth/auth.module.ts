@@ -7,6 +7,7 @@ import { AuthComponent } from './auth.component';
 import { OverviewModule } from '../overview/overview.module';
 import { ProgressModule } from '../progress/progress.module';
 import { ChatModule } from '../chat/chat.module';
+import {TemplateLibraryModule} from '../template-library/template-library.module';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { ChatModule } from '../chat/chat.module';
     OverviewModule,
     ProgressModule,
     ChatModule,
+    TemplateLibraryModule
   ]
 })
 export class AuthModule { }

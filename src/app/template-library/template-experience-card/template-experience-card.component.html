@@ -1,0 +1,8 @@
+<ion-card class="cursor-pointer">
+  <div *ngIf="template.leadImageUrl" class="card-media" [style.background-image]="'url(' + template.leadImageUrl + ')'"></div>
+  <div *ngIf="!template.leadImageUrl" class="card-media" [style.background-image]="'url(/assets/exp-placeholder.png)'"></div>
+  <ion-card-header>
+    <ion-card-title>{{ template.name }}</ion-card-title>
+  </ion-card-header>
+  <ion-card-content class="card-content" [innerHTML]="template.description"></ion-card-content>
+</ion-card>
