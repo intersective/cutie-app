@@ -109,11 +109,30 @@ export class OverviewComponent implements OnInit {
       // get all tags
       this._getAllTags();
       // get all types
-      this.types = [...['all'], ...this.experiencesRaw.map(exp => exp.type)];
-      this.types = [...new Set(this.types)];
+      this._getAllTypes();
       this.filterAndOrder();
       this.loadingExps = false;
     });
+  }
+
+  private _getAllTypes() {
+    const typeCounts: any = {};
+    this.experiencesRaw.forEach(exp => {
+      if (typeCounts[exp.type]) {
+        typeCounts[exp.type]++;
+      } else {
+        typeCounts[exp.type] = 1;
+      }
+    });
+    this.types = [...['all'], ...Object.keys(typeCounts).sort((a, b) => {
+      if (typeCounts[a] > typeCounts[b]) {
+        return -1;
+      }
+      if (typeCounts[a] < typeCounts[b]) {
+        return 1;
+      }
+      return 0;
+    })];
   }
 
   loadMore(event) {

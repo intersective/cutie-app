@@ -427,7 +427,7 @@ export class DemoService {
       uuid: '84f14db9-491a-09f7-ae61-9926f3ad8c8d',
       name: 'GROW 2020',
       description: `Practera is the leading platform to power high quality experiential learning programs.<br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services`,
-      type: 'mentoring',
+      type: 'team project',
       status: 'completed',
       setupStep: 'visuals',
       leadImage: '',
