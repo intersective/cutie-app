@@ -1,7 +1,6 @@
 @media (min-width:992px) {
   .template-library-container {
     width: 80%;
-    padding-top: 30px;
     margin: auto;
   }
 }
@@ -10,6 +9,13 @@
   .menu {
     margin-left: 10px;
   }
+}
+
+.category-heading {
+  margin-top: 50px;
+  margin-bottom: 5px;
+  padding-left: 8px;
+  color: #727272;
 }
 
 .templates-grid-container {
@@ -26,8 +32,4 @@
   display: flex;
   margin-bottom: 24px;
   padding-top: 7px;
-}
-
-.skeleton-container {
-  padding-top: 60px;
 }

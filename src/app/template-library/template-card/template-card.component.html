@@ -9,5 +9,13 @@
 </ng-container>
 
 <ng-container *ngIf="skeleton">
-  <ion-skeleton-text class="card-skeleton" animated="true"></ion-skeleton-text>
+  <ion-card>
+    <ion-skeleton-text class="card-media-skeleton" animated="true"></ion-skeleton-text>
+    <ion-card-header>
+      <ion-skeleton-text class="card-title-skeleton" animated="true"></ion-skeleton-text>
+    </ion-card-header>
+    <ion-skeleton-text class="card-content-skeleton" animated="true"></ion-skeleton-text>
+    <ion-skeleton-text class="card-content-skeleton" animated="true"></ion-skeleton-text>
+    <ion-skeleton-text class="card-content-skeleton" animated="true"></ion-skeleton-text>
+  </ion-card>
 </ng-container>

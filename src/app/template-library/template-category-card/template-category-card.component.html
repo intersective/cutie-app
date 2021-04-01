@@ -1,8 +1,8 @@
-<div [className]="category.isLarge ? 'category-card-container cursor-pointer' : 'category-card-container-small cursor-pointer'">
+<div class="cursor-pointer" [ngClass]="category.isLarge ? 'category-card-container' : 'category-card-container-small'">
   <div class="category-card-background" [style.background-image]="category.leadImage ? 'url(' + category.leadImage + ')': 'url(/assets/exp-placeholder.png)'"></div>
   <div class="category-card-overlay" [style.background-color]="category.color">
     <div class="category-card-title-container">
-      <span [className]="category.isLarge === 0 ? 'category-card-title' : 'category-card-title-small'">{{ category.name }}</span>
+      <span [ngClass]="category.isLarge ? 'category-card-title' : 'category-card-title-small'">{{ category.name }}</span>
     </div>
   </div>
 </div>
