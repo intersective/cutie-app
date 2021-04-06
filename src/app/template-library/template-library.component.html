@@ -1,0 +1,111 @@
+<div class="ion-page bg-white">
+  <ion-split-pane class="template-library-container" contentId="main">
+    <ion-menu contentId="main" class="menu border-0">
+      <ion-header>
+        <ion-toolbar>
+          <ion-searchbar class="template-search-bar" color="light"></ion-searchbar>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content>
+        <ion-list lines="none">
+          <ion-item class="menu-header">Categories</ion-item>
+          <ng-container *ngFor="let category of categories">
+            <ion-item button (click)="viewCategory(category)">
+              {{ category.name }}
+            </ion-item>
+          </ng-container>
+        </ion-list>
+      </ion-content>
+    </ion-menu>
+
+    <ion-content id="main">
+
+      <ion-fab class="ion-hide-lg-up" vertical="top" horizontal="start" slot="fixed">
+        <ion-fab-button color="light">
+          <ion-menu-button> </ion-menu-button>
+        </ion-fab-button>
+      </ion-fab>
+
+      <!--      <ion-menu-button> </ion-menu-button>-->
+      <ion-grid class="templates-grid-container">
+
+        <ion-row>
+          <ng-container *ngFor="let category of categories.slice(0,3)">
+            <ion-col>
+              <app-template-category-card [category]="category" (click)="viewCategory(category)"></app-template-category-card>
+            </ion-col>
+          </ng-container>
+        </ion-row>
+
+        <ion-row>
+          <ng-container *ngFor="let category of categories.slice(3,7)">
+            <ion-col>
+              <app-template-category-card [category]="category" (click)="viewCategory(category)"></app-template-category-card>
+            </ion-col>
+          </ng-container>
+        </ion-row>
+
+        <ng-container *ngIf="!loadingTemplates">
+          <ng-container *ngFor="let categorisedTemplate of categorisedTemplates">
+            <ng-container *ngIf="categorisedTemplate.templates.length > 0">
+
+              <ion-row>
+                <ion-col>
+                  <h2 class="category-heading cursor-pointer" (click)="viewCategory(categorisedTemplate.category)">{{categorisedTemplate.category.name}} <ion-icon class="align-middle" name="arrow-forward-outline"></ion-icon></h2>
+                </ion-col>
+              </ion-row>
+
+              <ion-row>
+                <ng-container *ngFor="let template of categorisedTemplate.templates.slice(0, 3)">
+                  <ion-col>
+                    <app-template-card [template]="template" (click)="viewTemplate(template)"></app-template-card>
+                  </ion-col>
+                </ng-container>
+              </ion-row>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+
+        <ng-container *ngIf="loadingTemplates">
+          <ion-row>
+            <ion-col>
+             <h2 class="category-heading"><ion-skeleton-text animated="true" style="height: 20px; width: 180px"></ion-skeleton-text></h2>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col>
+              <app-template-card [skeleton]="true"></app-template-card>
+            </ion-col>
+            <ion-col>
+              <app-template-card [skeleton]="true"></app-template-card>
+            </ion-col>
+            <ion-col>
+              <app-template-card [skeleton]="true"></app-template-card>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col>
+              <h2 class="category-heading"><ion-skeleton-text animated="true" style="height: 20px; width: 180px"></ion-skeleton-text></h2>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col>
+              <app-template-card [skeleton]="true"></app-template-card>
+            </ion-col>
+            <ion-col>
+              <app-template-card [skeleton]="true"></app-template-card>
+            </ion-col>
+            <ion-col>
+              <app-template-card [skeleton]="true"></app-template-card>
+            </ion-col>
+          </ion-row>
+        </ng-container>
+
+      </ion-grid>
+    </ion-content>
+  </ion-split-pane>
+</div>

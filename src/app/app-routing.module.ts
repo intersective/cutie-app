@@ -23,6 +23,10 @@ const routes: Routes = [
     loadChildren: './overview/overview.module#OverviewModule'
   },
   {
+    path: 'templates',
+    loadChildren: './template-library/template-library.module#TemplateLibraryModule'
+  },
+  {
     path: '',
     loadChildren: './menu/menu.module#MenuModule'
   }
