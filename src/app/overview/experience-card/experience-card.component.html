@@ -156,9 +156,9 @@
           </ng-container>
           <ng-container *ngIf="experience.tags.length">
             <ng-container *ngFor="let tag of experience.tags; let i = index">
-              <span *ngIf="i < 8" class="experience-tag btn-round btn-sm btn-tag cursor-auto m-1">{{ tag }}</span>
+              <span *ngIf="i < 4" class="experience-tag btn-round btn-sm btn-tag cursor-auto m-1">{{ tag }}</span>
             </ng-container>
-            <a *ngIf="experience.tags.length > 8" class="btn btn-link float-end" (click)="moreTags()">+{{ experience.tags.length - 8 }} more</a>
+            <a *ngIf="experience.tags.length > 4" class="btn btn-link float-end" (click)="moreTags()">+{{ experience.tags.length - 4 }} more</a>
           </ng-container>
         </div>
       </div>
