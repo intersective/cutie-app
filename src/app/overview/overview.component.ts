@@ -428,7 +428,7 @@ export class OverviewComponent implements OnInit {
       reportPerExp.push([
         exp.name,
         exp.type,
-        exp.description.replace(/(<([^>]+)>)/ig, ''),
+        exp.description ? exp.description.replace(/(<([^>]+)>)/ig, '') : '',
         exp.tags.join(','),
         exp.status,
         exp.todoItemCount,
