@@ -191,7 +191,9 @@ export class OverviewComponent implements OnInit {
     this.experiences.forEach(exp => {
       exp.tags.forEach(t => {
         const index = this.tags.findIndex(tt => t === tt.name);
-        this.tags[index].count += 1;
+        if (index > -1) {
+          this.tags[index].count += 1;
+        }
       });
     });
     this.tags = [...this.tags];
