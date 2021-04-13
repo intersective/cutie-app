@@ -261,6 +261,16 @@ describe('OverviewComponent', () => {
       component.sortDesc = false;
       expsResult = [exps[1], exps[0]];
     });
+    it('by todoItemCount desc', () => {
+      component.sortBy = component.sortList[8];
+      component.sortDesc = true;
+      expsResult = [exps[1], exps[0]];
+    });
+    it('by todoItemCount asc', () => {
+      component.sortBy = component.sortList[8];
+      component.sortDesc = false;
+      expsResult = [exps[0], exps[1]];
+    });
   });
 
   it('handle events', () => {
