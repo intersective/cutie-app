@@ -4,7 +4,7 @@ import { of } from 'rxjs';
 
 import { SharedModule } from '@shared/shared.module';
 import { OverviewComponent } from './overview.component';
-import { OverviewService } from './overview.service';
+import { OverviewService, Experience } from './overview.service';
 import { UtilsService } from '@services/utils.service';
 import { PopupService } from '@shared/popup/popup.service';
 import * as XLSX from 'xlsx';
@@ -16,13 +16,14 @@ describe('OverviewComponent', () => {
   const utilsSpy = jasmine.createSpyObj('UtilsService', ['getEvent', 'has']);
   const popupSpy = jasmine.createSpyObj('PopupService', ['showCreateExp']);
 
-  const exps = [
+  const exps: Experience[] = [
     {
       uuid: '16c3d514-b459-b9d1-05c8-2bd1f582447c',
       name: 'XCELERY 2.0',
       description: `Practera is the leading platform to power high quality experiential learning programs.<br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services`,
       type: 'internship',
       status: 'live',
+      color: '',
       setupStep: 'visuals',
       leadImage: '',
       todoItemCount: 1,
@@ -59,6 +60,7 @@ describe('OverviewComponent', () => {
       description: `Practera is the leading platform to power high quality experiential learning programs.<br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services`,
       type: 'team project',
       status: 'completed',
+      color: '',
       setupStep: 'visuals',
       leadImage: '',
       todoItemCount: 3,
@@ -260,6 +262,16 @@ describe('OverviewComponent', () => {
       component.sortBy = component.sortList[7];
       component.sortDesc = false;
       expsResult = [exps[1], exps[0]];
+    });
+    it('by todoItemCount desc', () => {
+      component.sortBy = component.sortList[8];
+      component.sortDesc = true;
+      expsResult = [exps[1], exps[0]];
+    });
+    it('by todoItemCount asc', () => {
+      component.sortBy = component.sortList[8];
+      component.sortDesc = false;
+      expsResult = [exps[0], exps[1]];
     });
   });
 
