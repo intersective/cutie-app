@@ -129,7 +129,10 @@ export class AuthService {
           enrolmentUuid
         }
       }`,
-      {}
+      {},
+      {
+        noCache: true
+      }
     ).pipe(
       map(response => {
         if (response.data) {

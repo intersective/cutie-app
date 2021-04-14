@@ -48,6 +48,7 @@ export class OverviewComponent implements OnInit {
     'feedback loops completed',
     'on-track/off-track',
     'feedback quality score',
+    'issue',
   ];
   sortDesc = true;
   sortBy = this.sortList[0];
@@ -190,7 +191,9 @@ export class OverviewComponent implements OnInit {
     this.experiences.forEach(exp => {
       exp.tags.forEach(t => {
         const index = this.tags.findIndex(tt => t === tt.name);
-        this.tags[index].count += 1;
+        if (index > -1) {
+          this.tags[index].count += 1;
+        }
       });
     });
     this.tags = [...this.tags];
@@ -317,6 +320,15 @@ export class OverviewComponent implements OnInit {
             return a.statistics.reviewRatingAvg > b.statistics.reviewRatingAvg ? -1 : 1;
           }
           return a.statistics.reviewRatingAvg < b.statistics.reviewRatingAvg ? -1 : 1;
+        });
+        break;
+
+      case 8:
+        this.experiences.sort((a, b) => {
+          if (this.sortDesc) {
+            return a.todoItemCount > b.todoItemCount ? -1 : 1;
+          }
+          return a.todoItemCount < b.todoItemCount ? -1 : 1;
         });
         break;
     }
