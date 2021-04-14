@@ -153,6 +153,25 @@ export class DemoService {
       lastMessageCreated: '2020-07-15 06:20:37',
       lastMessage: `I'm inevitable`,
       canEdit: false
+    },
+    {
+      uuid: '6',
+      name: null,
+      avatar: CHARACTERS.thanos.avatar,
+      targetUser: {
+        email: CHARACTERS.thanos.email,
+        role: 'mentor',
+        teamName: CHARACTERS.thanos.name
+      },
+      pusherChannel: 'private-develop-team-1447-322-20',
+      roles: ['participant', 'mentor'],
+      isAnnouncement: false,
+      isDirectMessage: true,
+      readonly: false,
+      unreadMessageCount: 2,
+      lastMessageCreated: '2020-07-15 06:20:37',
+      lastMessage: `I'm inevitable`,
+      canEdit: false
     }
   ];
   chatMessages = [
