@@ -1,0 +1,35 @@
+@media (min-width:992px) {
+  .template-library-container {
+    width: 80%;
+    margin: auto;
+  }
+}
+
+@media (max-width:991px) {
+  .menu {
+    margin-left: 10px;
+  }
+}
+
+.category-heading {
+  margin-top: 50px;
+  margin-bottom: 5px;
+  padding-left: 8px;
+  color: #727272;
+}
+
+.templates-grid-container {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.template-search-bar {
+  padding: 4px 5px 0px 2px;
+  --box-shadow: none;
+}
+
+.search-home-container {
+  display: flex;
+  margin-bottom: 24px;
+  padding-top: 7px;
+}

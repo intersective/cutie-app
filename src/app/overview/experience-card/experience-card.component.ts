@@ -156,7 +156,7 @@ export class ExperienceCardComponent {
 
   delete() {
     this.popupService.showAlert({
-      message: 'Are you sure you wanna delete this experience?',
+      message: 'Are you sure you want to delete this experience?',
       buttons: [
         {
           text: 'Cancel',
@@ -180,7 +180,7 @@ export class ExperienceCardComponent {
 
   archive() {
     this.popupService.showAlert({
-      message: 'Are you sure you wanna archive this experience?',
+      message: 'Are you sure you want to archive this experience?',
       buttons: [
         {
           text: 'Cancel',

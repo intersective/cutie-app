@@ -18,7 +18,7 @@ import { ChatModule } from '../chat/chat.module';
     AuthRoutingModule,
     OverviewModule,
     ProgressModule,
-    ChatModule,
+    ChatModule
   ]
 })
 export class AuthModule { }
