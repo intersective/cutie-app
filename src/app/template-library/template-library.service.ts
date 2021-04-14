@@ -12,6 +12,9 @@ export interface Template {
   leadImageUrl?: string;
   leadVideoUrl?: string;
   type?: string;
+  attributes?: string[];
+  designMapUrl?: string;
+  operationsManualUrl?: string;
 }
 
 export interface Category {
@@ -48,12 +51,78 @@ export class TemplateLibraryService {
           name
           description
           leadImageUrl
-          leadVideoUrl
           type
         }
       }`,
       {},
     ).pipe(map(this._handleTemplates));
+  }
+
+  getTemplatesByCategory(category: string): Observable<Template[]> {
+    if (environment.demo) {
+      return this.demo.getTemplates().pipe(map(this._handleTemplates));
+    }
+    return this.request.graphQLQuery(
+      `query templates($experienceType: String!) {
+        templates(experienceType: $experienceType) {
+          uuid
+          name
+          description
+          leadImageUrl
+          leadVideoUrl
+          type
+        }
+      }`,
+      {category},
+    ).pipe(map(this._handleTemplates));
+  }
+
+  getTemplatesByFilter(filter: string): Observable<Template[]> {
+    if (environment.demo) {
+      return this.demo.getTemplates().pipe(map(this._handleTemplates));
+    }
+    return this.request.graphQLQuery(
+      `query templates($filter: String!) {
+        templates(filter: $filter) {
+          uuid
+          name
+          description
+          leadImageUrl
+          leadVideoUrl
+          type
+        }
+      }`,
+      {filter},
+    ).pipe(map(this._handleTemplates));
+  }
+
+  getTemplate(uuid: string): Observable<Template> {
+    if (environment.demo) {
+      return this.demo.getTemplate().pipe(map(this._handleTemplate));
+    }
+    return this.request.graphQLQuery(
+      `query templates($uuid: String!) {
+        templates(uuid: $uuid) {
+          uuid
+          name
+          description
+          leadImageUrl
+          leadVideoUrl
+          type
+          attributes
+          designMapUrl
+          operationsManualUrl
+        }
+      }`,
+      {uuid},
+    ).pipe(map(this._handleTemplate));
+  }
+
+  private _handleTemplate(res) {
+    if (!res.data) {
+      return [];
+    }
+    return res.data.templates[0];
   }
 
   private _handleTemplates(res) {

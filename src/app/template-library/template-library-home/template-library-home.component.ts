@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import {CategorisedTemplates, Category, Template, TemplateLibraryService} from './template-library.service';
+import {CategorisedTemplates, Category, Template, TemplateLibraryService} from '../template-library.service';
 import {Router} from '@angular/router';
 
 @Component({
-  selector: 'app-template-library',
-  templateUrl: './template-library.component.html',
-  styleUrls: ['./template-library.component.scss'],
+  selector: 'app-template-library-home',
+  templateUrl: './template-library-home.component.html',
+  styleUrls: ['./template-library-home.component.scss'],
 })
-export class TemplateLibraryComponent implements OnInit {
+export class TemplateLibraryHomeComponent implements OnInit {
 
   constructor(private service: TemplateLibraryService, private router: Router) { }
 
@@ -19,10 +19,6 @@ export class TemplateLibraryComponent implements OnInit {
 
   ngOnInit() {
     this.loadTemplates();
-  }
-
-  encodeURI(param) {
-    return encodeURI(param);
   }
 
   loadTemplates() {
@@ -43,20 +39,12 @@ export class TemplateLibraryComponent implements OnInit {
   }
 
   viewCategory(category: Category) {
-    // this.router.navigate( ['templates', category.name]);
+    console.log('View category: TO BE IMPLEMENTED');
+    this.selectedCategory = category;
   }
 
   viewTemplate(template: Template) {
     console.log('View template: TO BE IMPLEMENTED');
-  }
-
-  onSearch(event: CustomEvent) {
-    console.log(event.detail.value);
-    if (event.detail.value) {
-      this.router.navigate( ['templates', 'search', event.detail.value]);
-    } else {
-      this.router.navigate( ['templates']);
-    }
   }
 
 }
