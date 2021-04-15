@@ -499,7 +499,7 @@ export class DemoService {
       operationsManualUrl: '/assets/icon/logo.svg',
     },
     {
-      uuid: '16c3d514-b459-b9d1-05c8-2bd1f582447c',
+      uuid: '34c3d514-b459-b9d1-05c8-2bd1f582447c',
       name: 'XCELERY 2.0',
       description: `Practera is the leading platform to power high quality experiential learning programs.<br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services`,
       leadImageUrl: '',

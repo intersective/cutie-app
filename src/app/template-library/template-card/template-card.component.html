@@ -1,11 +1,11 @@
 <ng-container *ngIf="!skeleton">
   <a routerLink="/templates/view/{{template.uuid}}">
-    <ion-card class="cursor-pointer">
+    <ion-card class="template-card cursor-pointer">
       <div class="card-media" [style.background-image]="template.leadImageUrl ? 'url(' + template.leadImageUrl + ')' : 'url(/assets/exp-placeholder.png)'"></div>
-      <ion-card-header>
-        <ion-card-title>{{ template.name }}</ion-card-title>
+      <ion-card-header class="template-card-header">
+        <ion-card-title class="template-card-title" style="font-size: 18px">{{ template.name }}</ion-card-title>
       </ion-card-header>
-      <ion-card-content class="card-content" [innerHTML]="template.description"></ion-card-content>
+      <ion-card-content class="template-card-content card-content" [innerHTML]="template.description"></ion-card-content>
     </ion-card>
   </a>
 </ng-container>

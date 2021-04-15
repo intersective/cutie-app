@@ -119,8 +119,8 @@ export class TemplateLibraryService {
   }
 
   private _handleTemplate(res) {
-    if (!res.data) {
-      return [];
+    if (!res.data || !res.data.templates || !Array.isArray(res.data.templates)) {
+      return {};
     }
     return res.data.templates[0];
   }
@@ -151,7 +151,7 @@ export class TemplateLibraryService {
       {
         'leadImage': '',
         'name': 'Simulations',
-        'type': 'simulation',
+        'type': 'work simulation',
         'color': 'rgba(229, 69, 0, 0.7)',
         'isLarge': true
       },

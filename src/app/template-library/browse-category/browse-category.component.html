@@ -1,57 +1,68 @@
-<ion-grid class="templates-grid-container overflow-scroll">
+<ion-content>
+  <ion-grid class="templates-grid-container overflow-scroll">
 
-  <ng-container *ngIf="!loadingTemplates">
-    <ion-row>
-      <ion-col>
-        <h1 class="template-category-heading">{{selectedCategory.name}}</h1>
-      </ion-col>
-    </ion-row>
-
-    <ion-row>
-      <ng-container *ngFor="let template of templates">
-        <ion-col sizeLg="4">
-          <app-template-card [template]="template" (click)="viewTemplate(template)"></app-template-card>
+    <ng-container *ngIf="!loadingTemplates">
+      <ion-row>
+        <ion-col>
+          <h1 class="template-category-heading">{{selectedCategory.name}}</h1>
         </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ng-container *ngFor="let template of templates">
+          <ion-col sizeLg="4">
+            <app-template-card [template]="template" (click)="viewTemplate(template)"></app-template-card>
+          </ion-col>
+        </ng-container>
+      </ion-row>
+
+      <ng-container *ngIf="templates.length === 0" >
+        <ion-row>
+          <ion-col class="ion-margin-top">
+            <app-empty-results emptyResultsString="Could not find any templates for category - {{selectedCategory.name}}"></app-empty-results>
+          </ion-col>
+        </ion-row>
       </ng-container>
-    </ion-row>
-  </ng-container>
 
-  <ng-container *ngIf="loadingTemplates">
-    <ion-row>
-      <ion-col>
-        <h2 class="category-heading"><ion-skeleton-text animated="true" style="height: 20px; width: 180px"></ion-skeleton-text></h2>
-      </ion-col>
-    </ion-row>
+    </ng-container>
 
-    <ion-row>
-      <ion-col sizeLg="4">
-        <app-template-card [skeleton]="true"></app-template-card>
-      </ion-col>
-      <ion-col sizeLg="4">
-        <app-template-card [skeleton]="true"></app-template-card>
-      </ion-col>
-      <ion-col sizeLg="4">
-        <app-template-card [skeleton]="true"></app-template-card>
-      </ion-col>
-      <ion-col sizeLg="4">
-        <app-template-card [skeleton]="true"></app-template-card>
-      </ion-col>
-      <ion-col sizeLg="4">
-        <app-template-card [skeleton]="true"></app-template-card>
-      </ion-col>
-      <ion-col sizeLg="4">
-        <app-template-card [skeleton]="true"></app-template-card>
-      </ion-col>
-      <ion-col sizeLg="4">
-        <app-template-card [skeleton]="true"></app-template-card>
-      </ion-col>
-      <ion-col sizeLg="4">
-        <app-template-card [skeleton]="true"></app-template-card>
-      </ion-col>
-      <ion-col sizeLg="4">
-        <app-template-card [skeleton]="true"></app-template-card>
-      </ion-col>
-    </ion-row>
-  </ng-container>
+    <ng-container *ngIf="loadingTemplates">
+      <ion-row>
+        <ion-col>
+          <h2 class="category-heading"><ion-skeleton-text animated="true" style="height: 20px; width: 180px"></ion-skeleton-text></h2>
+        </ion-col>
+      </ion-row>
 
-</ion-grid>
+      <ion-row>
+        <ion-col sizeLg="4">
+          <app-template-card [skeleton]="true"></app-template-card>
+        </ion-col>
+        <ion-col sizeLg="4">
+          <app-template-card [skeleton]="true"></app-template-card>
+        </ion-col>
+        <ion-col sizeLg="4">
+          <app-template-card [skeleton]="true"></app-template-card>
+        </ion-col>
+        <ion-col sizeLg="4">
+          <app-template-card [skeleton]="true"></app-template-card>
+        </ion-col>
+        <ion-col sizeLg="4">
+          <app-template-card [skeleton]="true"></app-template-card>
+        </ion-col>
+        <ion-col sizeLg="4">
+          <app-template-card [skeleton]="true"></app-template-card>
+        </ion-col>
+        <ion-col sizeLg="4">
+          <app-template-card [skeleton]="true"></app-template-card>
+        </ion-col>
+        <ion-col sizeLg="4">
+          <app-template-card [skeleton]="true"></app-template-card>
+        </ion-col>
+        <ion-col sizeLg="4">
+          <app-template-card [skeleton]="true"></app-template-card>
+        </ion-col>
+      </ion-row>
+    </ng-container>
+
+  </ion-grid>
+</ion-content>

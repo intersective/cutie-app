@@ -17,24 +17,35 @@
     </ion-row>
 
     <ng-container *ngIf="!loadingTemplates">
-      <ng-container *ngFor="let categorisedTemplate of categorisedTemplates">
-        <ng-container *ngIf="categorisedTemplate.templates.length > 0">
+      <ng-container *ngIf="categorisedTemplates.length > 0">
+        <ng-container *ngFor="let categorisedTemplate of categorisedTemplates">
+          <ng-container *ngIf="categorisedTemplate.templates.length > 0">
 
-          <ion-row>
-            <ion-col>
-              <h2 class="category-heading cursor-pointer" (click)="router.navigate( ['templates', categorisedTemplate.category.name])">{{categorisedTemplate.category.name}} <ion-icon class="align-middle" name="arrow-forward-outline"></ion-icon></h2>
-            </ion-col>
-          </ion-row>
-
-          <ion-row>
-            <ng-container *ngFor="let template of categorisedTemplate.templates.slice(0, 3)">
+            <ion-row>
               <ion-col>
-                <app-template-card [template]="template"></app-template-card>
+                <h2 class="category-heading cursor-pointer" (click)="router.navigate( ['templates', categorisedTemplate.category.name])">{{categorisedTemplate.category.name}} <ion-icon class="align-middle" name="arrow-forward-outline"></ion-icon></h2>
               </ion-col>
-            </ng-container>
-          </ion-row>
+            </ion-row>
+
+            <ion-row>
+              <ng-container *ngFor="let template of categorisedTemplate.templates.slice(0, 3)">
+                <ion-col>
+                  <app-template-card [template]="template"></app-template-card>
+                </ion-col>
+              </ng-container>
+            </ion-row>
+          </ng-container>
         </ng-container>
       </ng-container>
+
+      <ng-container *ngIf="categorisedTemplates.length === 0" >
+        <ion-row>
+          <ion-col class="ion-margin-top">
+            <app-empty-results></app-empty-results>
+          </ion-col>
+        </ion-row>
+      </ng-container>
+
     </ng-container>
 
     <ng-container *ngIf="loadingTemplates">

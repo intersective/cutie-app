@@ -10,6 +10,7 @@ import {BrowseCategoryComponent} from './browse-category/browse-category.compone
 import {TemplateDetailsComponent} from './template-details/template-details.component';
 import {ResourceDownloadCardComponent} from './resource-download-card/resource-download-card.component';
 import {SearchResultsComponent} from './search-results/search-results.component';
+import {EmptyResultsComponent} from './empty-results/empty-results.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import {SearchResultsComponent} from './search-results/search-results.component'
     BrowseCategoryComponent,
     TemplateDetailsComponent,
     ResourceDownloadCardComponent,
-    SearchResultsComponent
+    SearchResultsComponent,
+    EmptyResultsComponent
   ],
   imports: [
     SharedModule,
