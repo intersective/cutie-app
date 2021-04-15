@@ -16,20 +16,19 @@ export class TemplateLibraryComponent implements OnInit {
   categories: Category[] = [];
 
   ngOnInit() {
-    // this.categories = this.service.getCategories();
+    this.categories = this.service.getCategories();
   }
 
   encodeURI(param) {
-    // return encodeURI(param);
-    return param;
+    return encodeURI(param);
   }
 
   onSearch(event: CustomEvent) {
-    // if (event.detail.value) {
-    //   this.router.navigate( ['templates', 'search', event.detail.value]);
-    // } else {
-    //   this.router.navigate( ['templates']);
-    // }
+    if (event.detail.value) {
+      this.router.navigate( ['templates', 'search', event.detail.value]);
+    } else {
+      this.router.navigate( ['templates']);
+    }
   }
 
 }

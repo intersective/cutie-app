@@ -10,11 +10,11 @@
       <ion-content>
         <ion-list lines="none">
           <ion-item class="menu-header">Categories</ion-item>
-<!--          <ion-item routerLink="/templates" [ngClass]="router.url === '/templates' ? 'active' : ''" >Home</ion-item>-->
-<!--          <ion-item routerLink="/templates" [ngClass]="router.url === '/templates' ? 'active' : ''" >Home</ion-item>-->
-<!--          <ng-container *ngFor="let category of categories">-->
-<!--            <ion-item (click)="router.navigate( ['templates', category.name])" [ngClass]="router.url === '/templates/' + encodeURI(category.name) ? 'active' : ''" button>{{ category.name }}</ion-item>-->
-<!--          </ng-container>-->
+          <ion-item routerLink="/templates" [ngClass]="router.url === '/templates' ? 'active' : ''" >Home</ion-item>
+          <ion-item routerLink="/templates" [ngClass]="router.url === '/templates' ? 'active' : ''" >Home</ion-item>
+          <ng-container *ngFor="let category of categories">
+            <ion-item (click)="router.navigate( ['templates', category.name])" [ngClass]="router.url === '/templates/' + encodeURI(category.name) ? 'active' : ''" button>{{ category.name }}</ion-item>
+          </ng-container>
         </ion-list>
       </ion-content>
     </ion-menu>
