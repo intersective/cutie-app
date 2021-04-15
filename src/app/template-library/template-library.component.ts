@@ -10,24 +10,26 @@ import {Router} from '@angular/router';
 export class TemplateLibraryComponent implements OnInit {
 
   constructor(private service: TemplateLibraryService,
-              private router: Router) { }
+              private router: Router) {
+  }
 
   categories: Category[] = [];
 
   ngOnInit() {
-    this.categories = this.service.getCategories();
+    // this.categories = this.service.getCategories();
   }
 
   encodeURI(param) {
-    return encodeURI(param);
+    // return encodeURI(param);
+    return param;
   }
 
   onSearch(event: CustomEvent) {
-    if (event.detail.value) {
-      this.router.navigate( ['templates', 'search', event.detail.value]);
-    } else {
-      this.router.navigate( ['templates']);
-    }
+    // if (event.detail.value) {
+    //   this.router.navigate( ['templates', 'search', event.detail.value]);
+    // } else {
+    //   this.router.navigate( ['templates']);
+    // }
   }
 
 }

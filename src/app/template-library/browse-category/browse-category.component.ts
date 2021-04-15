@@ -12,7 +12,6 @@ export class BrowseCategoryComponent implements OnInit {
   loadingTemplates = true;
   templates: Template[] = [];
   categories: Category[] = [];
-  categorisedTemplates: CategorisedTemplates[] = [];
   selectedCategory: Category = null;
 
   constructor(private route: ActivatedRoute, private service: TemplateLibraryService) {
@@ -34,25 +33,10 @@ export class BrowseCategoryComponent implements OnInit {
       }
     });
 
-    this.service.getTemplates().subscribe(res => {
+    this.service.getTemplatesByCategory(categoryName).subscribe(res => {
       this.templates = res;
-      this.categories.forEach(category => {
-        this.categorisedTemplates.push({
-          category: category,
-          templates: this.templates.filter(template => template.type === category.type)
-        });
-      });
       this.loadingTemplates = false;
     });
-  }
-
-  viewCategory(category: Category) {
-    console.log('View category: TO BE IMPLEMENTED');
-    this.selectedCategory = category;
-  }
-
-  viewTemplate(template: Template) {
-    console.log('View template: TO BE IMPLEMENTED');
   }
 
 }

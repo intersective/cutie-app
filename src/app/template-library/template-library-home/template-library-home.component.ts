@@ -36,8 +36,6 @@ export class TemplateLibraryHomeComponent implements OnInit {
           });
         });
       }
-      console.log(this.categorisedTemplates);
-      console.log(this.categorisedTemplates.length);
       this.loadingTemplates = false;
     });
   }
