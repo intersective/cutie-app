@@ -102,6 +102,10 @@ describe('BrowseCategoryComponent', () => {
     }
   ];
 
+  const params = {
+    categoryName: 'Category Name'
+  };
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ BrowseCategoryComponent ],
@@ -121,10 +125,6 @@ describe('BrowseCategoryComponent', () => {
     })
     .compileComponents();
   }));
-
-  const params = {
-    categoryName: 'Category Name'
-  };
 
   beforeEach(() => {
     fixture = TestBed.createComponent(BrowseCategoryComponent);
