@@ -18,10 +18,15 @@ describe('EmptyResultsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(EmptyResultsComponent);
     component = fixture.componentInstance;
+    component.emptyResultsString = 'No results';
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  afterEach(() => {
+    fixture.destroy();
   });
 });

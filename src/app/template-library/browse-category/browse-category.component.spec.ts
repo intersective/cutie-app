@@ -130,11 +130,15 @@ describe('BrowseCategoryComponent', () => {
     fixture = TestBed.createComponent(BrowseCategoryComponent);
     component = fixture.componentInstance;
     templateLibraryServiceSpy.getTemplatesByCategory = jasmine.createSpy().and.returnValue(of(templates));
-    templateLibraryServiceSpy.getCategories = jasmine.createSpy().and.returnValue(categories);
+    templateLibraryServiceSpy.getCategories = jasmine.createSpy().and.returnValue([categories]);
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  afterEach(() => {
+    fixture.destroy();
   });
 });

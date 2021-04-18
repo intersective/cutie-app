@@ -20,9 +20,6 @@ describe('TemplateLibraryHomeComponent', () => {
       leadImageUrl: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2252&q=80',
       leadVideoUrl: 'https://cdn.videvo.net/videvo_files/video/free/2013-08/small_watermarked/hd0992_preview.webm',
       type: 'work simulation',
-      attributes: ['teambased projects', '12-weeks', 'feedback loops'],
-      designMapUrl: '/assets/icon/favicon.png',
-      operationsManualUrl: '/assets/icon/logo.svg',
     },
     {
       uuid: '34c3d514-b459-b9d1-05c8-2bd1f582447c',
@@ -130,5 +127,9 @@ describe('TemplateLibraryHomeComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  afterEach(() => {
+    fixture.destroy();
   });
 });

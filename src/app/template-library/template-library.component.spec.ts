@@ -3,14 +3,12 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {TemplateLibraryComponent} from './template-library.component';
 import {TemplateLibraryService} from './template-library.service';
-import {Router} from '@angular/router';
 import {RouterTestingModule} from '@angular/router/testing';
 
 describe('TemplateLibraryComponent', () => {
   let component: TemplateLibraryComponent;
   let fixture: ComponentFixture<TemplateLibraryComponent>;
   const templateLibraryServiceSpy = jasmine.createSpyObj('TemplateLibraryService', ['getCategories']);
-  const routerSpy = { navigate: jasmine.createSpy('navigate'),  };
 
   const categories = [
     {
@@ -73,10 +71,6 @@ describe('TemplateLibraryComponent', () => {
         {
           provide: TemplateLibraryService,
           useValue: templateLibraryServiceSpy
-        },
-        {
-          provide: Router,
-          useValue: routerSpy
         }
       ]
     })
@@ -92,5 +86,9 @@ describe('TemplateLibraryComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  afterEach(() => {
+    fixture.destroy();
   });
 });
