@@ -9,9 +9,10 @@ import {Router} from '@angular/router';
 })
 export class TemplateLibraryComponent implements OnInit {
 
-  constructor(private service: TemplateLibraryService,
-              private router: Router) {
-  }
+  constructor(
+    private service: TemplateLibraryService,
+    private router: Router
+  ) {}
 
   categories: Category[] = [];
 
