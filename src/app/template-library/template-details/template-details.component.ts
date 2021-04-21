@@ -23,8 +23,6 @@ export class TemplateDetailsComponent implements OnInit {
     this.service.getTemplate(templateId).subscribe(res => {
       this.template = res;
       this.loadingTemplate = false;
-      console.log(this.template);
-      console.log(this.loadingTemplate);
     });
   }
 

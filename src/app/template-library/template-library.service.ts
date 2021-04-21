@@ -63,8 +63,8 @@ export class TemplateLibraryService {
       return this.demo.getTemplates().pipe(map(this._handleTemplates));
     }
     return this.request.graphQLQuery(
-      `query templates($experienceType: String!) {
-        templates(experienceType: $experienceType) {
+      `query templates(type: String!) {
+        templates(type: type) {
           uuid
           name
           description

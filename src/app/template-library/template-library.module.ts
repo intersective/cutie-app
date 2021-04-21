@@ -6,10 +6,9 @@ import {TemplateCardComponent} from './template-card/template-card.component';
 import {TemplateCategoryCardComponent} from './template-category-card/template-category-card.component';
 import {TemplateLibraryService} from './template-library.service';
 import {TemplateLibraryHomeComponent} from './template-library-home/template-library-home.component';
-import {BrowseCategoryComponent} from './browse-category/browse-category.component';
 import {TemplateDetailsComponent} from './template-details/template-details.component';
 import {ResourceDownloadCardComponent} from './resource-download-card/resource-download-card.component';
-import {SearchResultsComponent} from './search-results/search-results.component';
+import {BrowseTemplatesComponent} from './browse-templates/browse-templates.component';
 import {EmptyResultsComponent} from './empty-results/empty-results.component';
 
 
@@ -19,10 +18,9 @@ import {EmptyResultsComponent} from './empty-results/empty-results.component';
     TemplateCardComponent,
     TemplateCategoryCardComponent,
     TemplateLibraryHomeComponent,
-    BrowseCategoryComponent,
     TemplateDetailsComponent,
     ResourceDownloadCardComponent,
-    SearchResultsComponent,
+    BrowseTemplatesComponent,
     EmptyResultsComponent
   ],
   imports: [
@@ -38,7 +36,7 @@ import {EmptyResultsComponent} from './empty-results/empty-results.component';
           },
           {
             path: ':categoryName',
-            component: BrowseCategoryComponent
+            component: BrowseTemplatesComponent
           },
           {
             path: 'view/:templateId',
@@ -46,7 +44,7 @@ import {EmptyResultsComponent} from './empty-results/empty-results.component';
           },
           {
             path: 'search/:filter',
-            component: SearchResultsComponent
+            component: BrowseTemplatesComponent
           }
         ]
       },
@@ -57,9 +55,8 @@ import {EmptyResultsComponent} from './empty-results/empty-results.component';
     TemplateCardComponent,
     TemplateCategoryCardComponent,
     TemplateLibraryHomeComponent,
-    BrowseCategoryComponent,
     TemplateDetailsComponent,
-    SearchResultsComponent
+    BrowseTemplatesComponent
   ],
   providers: [TemplateLibraryService]
 })

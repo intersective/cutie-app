@@ -1,14 +1,14 @@
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {SearchResultsComponent} from './search-results.component';
+import {BrowseTemplatesComponent} from './browse-templates.component';
 import {ActivatedRoute} from '@angular/router';
 import {TemplateLibraryService} from '../template-library.service';
 import {of} from 'rxjs';
 
 describe('SearchResultsComponent', () => {
-  let component: SearchResultsComponent;
-  let fixture: ComponentFixture<SearchResultsComponent>;
+  let component: BrowseTemplatesComponent;
+  let fixture: ComponentFixture<BrowseTemplatesComponent>;
   const templateLibraryServiceSpy = jasmine.createSpyObj('TemplateLibraryService', ['getTemplatesByFilter']);
 
   const templates = [
@@ -44,7 +44,7 @@ describe('SearchResultsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SearchResultsComponent ],
+      declarations: [ BrowseTemplatesComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
         {
@@ -63,7 +63,7 @@ describe('SearchResultsComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SearchResultsComponent);
+    fixture = TestBed.createComponent(BrowseTemplatesComponent);
     component = fixture.componentInstance;
     templateLibraryServiceSpy.getTemplatesByFilter = jasmine.createSpy().and.returnValue(of(templates));
     fixture.detectChanges();

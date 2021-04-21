@@ -1,10 +1,15 @@
 <ion-content>
-  <ion-grid class="templates-grid-container overflow-scroll">
+  <ion-grid class="templates-grid-container">
 
     <ng-container *ngIf="!loadingTemplates">
       <ion-row>
         <ion-col>
-          <h1 class="template-category-heading">{{templates.length}} results for <span class="filter">{{filter}}</span></h1>
+            <h1 class="template-category-heading">
+              {{heading}}
+              <ng-container *ngIf="headingHighlight">
+                <span class="filter">{{headingHighlight}}</span>
+              </ng-container>
+            </h1>
         </ion-col>
       </ion-row>
 
@@ -19,7 +24,7 @@
       <ng-container *ngIf="templates.length === 0" >
         <ion-row>
           <ion-col class="ion-margin-top">
-            <app-empty-results emptyResultsString="No results for {{filter}}"></app-empty-results>
+            <app-empty-results [emptyResultsString]=emptyResultsString></app-empty-results>
           </ion-col>
         </ion-row>
       </ng-container>
