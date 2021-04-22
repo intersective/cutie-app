@@ -5,6 +5,7 @@ import { TemplateDetailsComponent } from './template-details.component';
 import {ActivatedRoute} from '@angular/router';
 import {of} from 'rxjs';
 import {TemplateLibraryService} from '../template-library.service';
+import {By} from '@angular/platform-browser';
 
 describe('TemplateDetailsComponent', () => {
   let component: TemplateDetailsComponent;
@@ -56,6 +57,24 @@ describe('TemplateDetailsComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should render skeleton when it is loading the template', () => {
+    component.loadingTemplate = true;
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.css('ion-skeleton-text'))).toBeTruthy();
+  });
+
+  it('should not render skeleton when it is not loading the template', () => {
+    component.loadingTemplate = false;
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.css('ion-skeleton-text'))).toBeNull();
+  });
+
+  it('should render template name', () => {
+    component.loadingTemplate = false;
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.css('.template-title')).nativeElement.innerText).toEqual(template.name);
   });
 
   afterEach(() => {

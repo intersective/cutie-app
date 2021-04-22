@@ -2,6 +2,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ResourceDownloadCardComponent } from './resource-download-card.component';
+import { By } from '@angular/platform-browser';
 
 describe('ResourceDownloadCardComponent', () => {
   let component: ResourceDownloadCardComponent;
@@ -23,6 +24,25 @@ describe('ResourceDownloadCardComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should render skeleton when skeleton is set to true', () => {
+    component.skeleton = true;
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.css('ion-skeleton-text'))).toBeTruthy();
+  });
+
+  it('should not render skeleton when skeleton is set to false', () => {
+    component.skeleton = false;
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.css('ion-skeleton-text'))).toBeNull();
+  });
+
+  it('should not render skeleton when skeleton is set to false', () => {
+    const prompt = 'This is the prompt';
+    component.skeleton = false;
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.css('ion-skeleton-text'))).toBeNull();
   });
 
   afterEach(() => {

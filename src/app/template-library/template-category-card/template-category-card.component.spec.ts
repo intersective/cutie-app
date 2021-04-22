@@ -4,6 +4,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {TemplateCategoryCardComponent} from './template-category-card.component';
 import {RouterTestingModule} from '@angular/router/testing';
 import {Router} from '@angular/router';
+import {By} from '@angular/platform-browser';
 
 describe('TemplateCategoryCardComponent', () => {
   let component: TemplateCategoryCardComponent;
@@ -44,6 +45,10 @@ describe('TemplateCategoryCardComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should render category name',  () => {
+    expect(fixture.debugElement.query(By.css('.category-card-title-container > span')).nativeElement.innerText).toEqual(category.name);
   });
 
   afterEach(() => {

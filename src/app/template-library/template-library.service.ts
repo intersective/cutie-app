@@ -119,14 +119,14 @@ export class TemplateLibraryService {
   }
 
   private _handleTemplate(res) {
-    if (!res.data || !res.data.templates || !Array.isArray(res.data.templates)) {
+    if (!res || !res.data || !res.data.templates || !Array.isArray(res.data.templates)) {
       return {};
     }
     return res.data.templates[0];
   }
 
   private _handleTemplates(res) {
-    if (!res.data) {
+    if (!res || !res.data) {
       return [];
     }
     return res.data.templates;

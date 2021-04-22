@@ -7,7 +7,7 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class ResourceDownloadCardComponent implements OnInit {
 
-  @Input() skeleton: false;
+  @Input() skeleton = false;
   @Input() prompt: string;
   @Input() leadImage: string;
   @Input() src: string;

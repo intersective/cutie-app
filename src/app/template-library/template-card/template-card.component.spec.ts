@@ -1,8 +1,9 @@
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, DebugElement} from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TemplateCardComponent } from './template-card.component';
-import {RouterTestingModule} from '@angular/router/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { By } from '@angular/platform-browser';
 
 describe('TemplateCardComponent', () => {
   let component: TemplateCardComponent;
@@ -33,12 +34,27 @@ describe('TemplateCardComponent', () => {
     fixture = TestBed.createComponent(TemplateCardComponent);
     component = fixture.componentInstance;
     component.template = template;
-    component.skeleton = false;
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should render the skeletons when skeleton is set to true', () => {
+    component.skeleton = true;
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.css('ion-skeleton-text'))).toBeTruthy();
+  });
+
+  it('should not render the skeletons when skeleton is set to false', () => {
+    component.skeleton = false;
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.css('ion-skeleton-text'))).toBeNull();
+  });
+
+  it('should render the template\'s title', () => {
+    expect(fixture.debugElement.query(By.css('.template-card-title')).nativeElement.innerText).toEqual(template.name);
   });
 
   afterEach(() => {

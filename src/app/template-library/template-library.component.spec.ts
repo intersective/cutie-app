@@ -1,14 +1,18 @@
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {async, ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
 
 import {TemplateLibraryComponent} from './template-library.component';
 import {TemplateLibraryService} from './template-library.service';
 import {RouterTestingModule} from '@angular/router/testing';
+import {BrowseTemplatesComponent} from './browse-templates/browse-templates.component';
+import {Location} from '@angular/common';
+import {HomeComponent} from '../home/home.component';
 
 describe('TemplateLibraryComponent', () => {
   let component: TemplateLibraryComponent;
   let fixture: ComponentFixture<TemplateLibraryComponent>;
   const templateLibraryServiceSpy = jasmine.createSpyObj('TemplateLibraryService', ['getCategories']);
+  let location: Location;
 
   const categories = [
     {
@@ -64,7 +68,11 @@ describe('TemplateLibraryComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
+      imports: [RouterTestingModule.withRoutes([
+          { path: 'templates/search/:filter', component: BrowseTemplatesComponent },
+          { path: 'templates', component: HomeComponent },
+        ])
+      ],
       declarations: [ TemplateLibraryComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
@@ -87,6 +95,39 @@ describe('TemplateLibraryComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should encode uri values correctly', () => {
+    const value = 'This is a value with spaces $ & !';
+    expect(component.encodeURI(value)).toEqual(encodeURI(value));
+  });
+
+  it('should update the route when the search is invoked', fakeAsync(() => {
+    fixture.ngZone.run(() => {
+      // @ts-ignore
+      component.onSearch({
+        detail: {
+          value: 'filterValue'
+        }
+      });
+      tick();
+      location = TestBed.get(Location);
+      expect(location.path()).toEqual('/templates/search/filterValue');
+    });
+  }));
+
+  it('should route to home when the search value is empty', fakeAsync(() => {
+    fixture.ngZone.run(() => {
+      // @ts-ignore
+      component.onSearch({
+        detail: {
+          value: ''
+        }
+      });
+      tick();
+      location = TestBed.get(Location);
+      expect(location.path()).toEqual('/templates');
+    });
+  }));
 
   afterEach(() => {
     fixture.destroy();

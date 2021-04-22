@@ -1,20 +1,25 @@
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {async, ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
 
 import {BrowseTemplatesComponent} from './browse-templates.component';
 import {ActivatedRoute} from '@angular/router';
 import {TemplateLibraryService} from '../template-library.service';
 import {of} from 'rxjs';
+import {RouterTestingModule} from '@angular/router/testing';
+import {By} from '@angular/platform-browser';
 
-describe('SearchResultsComponent', () => {
+describe('BrowseTemplatesComponent', () => {
   let component: BrowseTemplatesComponent;
   let fixture: ComponentFixture<BrowseTemplatesComponent>;
-  const templateLibraryServiceSpy = jasmine.createSpyObj('TemplateLibraryService', ['getTemplatesByFilter']);
+  const templateLibraryServiceSpy = jasmine.createSpyObj('TemplateLibraryService', ['getTemplatesByFilter', 'getTemplatesByCategory']);
+  const path = {
+    path: ''
+  };
 
-  const templates = [
+  const filterTemplates = [
     {
       uuid: '000f562e-0ed0-4afe-af53-7a8d20558ce1',
-      name: 'Tech PM',
+      name: 'filterTemplates',
       description: `Practera is the leading platform to power high quality experiential learning programs.<br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services`,
       leadImageUrl: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2252&q=80',
       leadVideoUrl: '',
@@ -38,6 +43,25 @@ describe('SearchResultsComponent', () => {
     }
   ];
 
+  const categoryTemplates = [
+    {
+      uuid: '000f562e-0ed0-4afe-af53-7a8d20558ce1',
+      name: 'categoryTemplates',
+      description: `Practera is the leading platform to power high quality experiential learning programs.<br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services`,
+      leadImageUrl: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2252&q=80',
+      leadVideoUrl: '',
+      type: 'work simulation'
+    },
+    {
+      uuid: '16c3d514-b459-b9d1-05c8-2bd1f582447c',
+      name: 'XCELERY 2.0',
+      description: `Practera is the leading platform to power high quality experiential learning programs.<br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services`,
+      leadImageUrl: 'https://images.unsplash.com/photo-1580391564590-aeca65c5e2d3?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=934&q=80',
+      leadVideoUrl: '',
+      type: 'internship'
+    }
+  ];
+
   const params = {
     filter: 'filter string'
   };
@@ -45,12 +69,14 @@ describe('SearchResultsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ BrowseTemplatesComponent ],
+      imports: [RouterTestingModule],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
         {
           provide: ActivatedRoute,
           useValue: {
             params: of(params),
+            url: of([path])
           },
         },
         {
@@ -65,12 +91,60 @@ describe('SearchResultsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(BrowseTemplatesComponent);
     component = fixture.componentInstance;
-    templateLibraryServiceSpy.getTemplatesByFilter = jasmine.createSpy().and.returnValue(of(templates));
+    templateLibraryServiceSpy.getTemplatesByFilter = jasmine.createSpy().and.returnValue(of(filterTemplates));
+    templateLibraryServiceSpy.getTemplatesByCategory = jasmine.createSpy().and.returnValue(of(categoryTemplates));
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should get back the filtered templates', () => {
+    path.path = 'search';
+    fixture = TestBed.createComponent(BrowseTemplatesComponent);
+    expect(fixture.componentInstance.templates).toBe(filterTemplates);
+  });
+
+  it('should get back the category templates', () => {
+    path.path = 'category';
+    fixture = TestBed.createComponent(BrowseTemplatesComponent);
+    expect(fixture.componentInstance.templates).toBe(categoryTemplates);
+  });
+
+  it('should render skeleton when loading templates is set to true', () => {
+    component.loadingTemplates = true;
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.css('ion-skeleton-text'))).toBeTruthy();
+  });
+
+  it('should not render skeleton when loading templates is set to false', () => {
+    component.loadingTemplates = false;
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.css('ion-skeleton-text'))).toBeNull();
+  });
+
+  it('should render heading highlight when there is a highlight', () => {
+    component.headingHighlight = 'Highlight';
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.css('span.filter'))).toBeTruthy();
+  });
+
+  it('should not render heading highlight when there is not a highlight', () => {
+    component.headingHighlight = '';
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.css('span.filter'))).toBeNull();
+  });
+
+  it('should render empty results when there are no templates', () => {
+    component.templates = [];
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.css('app-empty-results'))).toBeTruthy();
+  });
+
+  it('should not render empty results when there are templates', () => {
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.css('app-empty-results'))).toBeNull();
   });
 
   afterEach(() => {

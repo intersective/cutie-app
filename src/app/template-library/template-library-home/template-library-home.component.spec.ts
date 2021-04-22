@@ -5,6 +5,7 @@ import {TemplateLibraryHomeComponent} from './template-library-home.component';
 import {TemplateLibraryService} from '../template-library.service';
 import {of} from 'rxjs';
 import {Router} from '@angular/router';
+import {By} from '@angular/platform-browser';
 
 describe('TemplateLibraryHomeComponent', () => {
   let component: TemplateLibraryHomeComponent;
@@ -19,7 +20,7 @@ describe('TemplateLibraryHomeComponent', () => {
       description: `Practera is the leading platform to power high quality experiential learning programs.<br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services`,
       leadImageUrl: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2252&q=80',
       leadVideoUrl: 'https://cdn.videvo.net/videvo_files/video/free/2013-08/small_watermarked/hd0992_preview.webm',
-      type: 'work simulation',
+      type: 'simulation',
     },
     {
       uuid: '34c3d514-b459-b9d1-05c8-2bd1f582447c',
@@ -53,49 +54,49 @@ describe('TemplateLibraryHomeComponent', () => {
       'name': 'Team Projects',
       'type': 'team project',
       'color': 'rgba(0,64,229, 0.7)',
-      'size': 0
+      'isLarge': true
     },
     {
       'leadImage': '',
       'name': 'Internships',
       'type': 'internship',
       'color': 'rgba(85, 2, 136, 0.7)',
-      'size': 0
+      'isLarge': true
     },
     {
       'leadImage': '',
       'name': 'Simulations',
       'type': 'simulation',
       'color': 'rgba(229, 69, 0, 0.7)',
-      'size': 0
+      'isLarge': true
     },
     {
       'leadImage': '',
       'name': 'Mentoring',
       'type': 'mentoring',
       'color': 'rgba(221, 0, 59, 0.7)',
-      'size': 1
+      'isLarge': false
     },
     {
       'leadImage': '',
       'name': 'Accelerators',
       'type': 'accelerator',
       'color': 'rgba(37, 105, 120, 0.7)',
-      'size': 1
+      'isLarge': false
     },
     {
       'leadImage': '',
       'name': 'Skills Portfolios',
       'type': 'skill portfolio',
       'color': 'rgba(9, 129, 7, 0.7)',
-      'size': 1
+      'isLarge': false
     },
     {
       'leadImage': '',
       'name': 'Others',
       'type': 'other',
       'color': 'rgba(69, 40, 48, 0.7)',
-      'size': 1
+      'isLarge': false
     }
   ];
 
@@ -127,6 +128,57 @@ describe('TemplateLibraryHomeComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should show skeletons when loading', () => {
+    component.loadingTemplates = true;
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.css('ion-skeleton-text'))).toBeTruthy();
+  });
+
+  it('should not show skeletons when not loading', () => {
+    component.loadingTemplates = false;
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.css('ion-skeleton-text'))).toBeNull();
+  });
+
+  it('should categorise templates correctly', () => {
+    const categorisedTemplates = [
+      {
+        category: categories[0],
+        templates: [templates[2]],
+      },
+      {
+        category: categories[1],
+        templates: [templates[1]],
+      },
+      {
+        category: categories[2],
+        templates: [templates[0]],
+      },
+      {
+        category: categories[3],
+        templates: [templates[3]],
+      },
+      {
+        category: categories[4],
+        templates: [],
+      },
+      {
+        category: categories[5],
+        templates: [],
+      },
+      {
+        category: categories[6],
+        templates: [],
+      }
+    ];
+
+    expect(component.categorisedTemplates).toEqual(categorisedTemplates);
+  });
+
+  it('should only show the category rows for the categories with more than 0 templates', () => {
+    expect(fixture.debugElement.queryAll(By.css('.category-heading')).length).toEqual(4);
   });
 
   afterEach(() => {
