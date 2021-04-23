@@ -129,7 +129,7 @@ describe('TemplateLibraryService', () => {
       environment.demo = false;
       requestService.graphQLQuery = jasmine.createSpy().and.returnValue(of({
         data: {
-          templates: [dummyTemplate]
+          template: dummyTemplate
         }
       }));
       service.getTemplate('abc123').subscribe(res => expect(res).toEqual(dummyTemplate));

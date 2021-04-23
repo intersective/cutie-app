@@ -63,8 +63,8 @@ export class TemplateLibraryService {
       return this.demo.getTemplates().pipe(map(this._handleTemplates));
     }
     return this.request.graphQLQuery(
-      `query templates(type: String!) {
-        templates(type: type) {
+      `query templates($type: String) {
+        templates(type: $type) {
           uuid
           name
           description
@@ -73,7 +73,9 @@ export class TemplateLibraryService {
           type
         }
       }`,
-      {category},
+      {
+        type: category
+      },
     ).pipe(map(this._handleTemplates));
   }
 
@@ -82,7 +84,7 @@ export class TemplateLibraryService {
       return this.demo.getTemplates().pipe(map(this._handleTemplates));
     }
     return this.request.graphQLQuery(
-      `query templates($filter: String!) {
+      `query templates($filter: String) {
         templates(filter: $filter) {
           uuid
           name
@@ -119,10 +121,10 @@ export class TemplateLibraryService {
   }
 
   private _handleTemplate(res) {
-    if (!res || !res.data || !res.data.templates || !Array.isArray(res.data.templates)) {
+    if (!res || !res.data) {
       return {};
     }
-    return res.data.templates[0];
+    return res.data.template;
   }
 
   private _handleTemplates(res) {
