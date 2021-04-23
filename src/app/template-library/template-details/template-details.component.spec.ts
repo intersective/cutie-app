@@ -1,13 +1,20 @@
-import {CUSTOM_ELEMENTS_SCHEMA, DebugElement} from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TemplateCardComponent } from './template-card.component';
-import { RouterTestingModule } from '@angular/router/testing';
-import { By } from '@angular/platform-browser';
+import { TemplateDetailsComponent } from './template-details.component';
+import {ActivatedRoute} from '@angular/router';
+import {of} from 'rxjs';
+import {TemplateLibraryService} from '../template-library.service';
+import {By} from '@angular/platform-browser';
 
-describe('TemplateCardComponent', () => {
-  let component: TemplateCardComponent;
-  let fixture: ComponentFixture<TemplateCardComponent>;
+describe('TemplateDetailsComponent', () => {
+  let component: TemplateDetailsComponent;
+  let fixture: ComponentFixture<TemplateDetailsComponent>;
+  const templateLibraryServiceSpy = jasmine.createSpyObj('TemplateLibraryService', ['getTemplate']);
+
+  const params = {
+    templateId: 'abc123'
+  };
 
   const template = {
     uuid: '000f562e-0ed0-4afe-af53-7a8d20558ce1',
@@ -23,17 +30,28 @@ describe('TemplateCardComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
-      declarations: [ TemplateCardComponent ],
+      declarations: [ TemplateDetailsComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      providers: [
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            params: of(params),
+          },
+        },
+        {
+          provide: TemplateLibraryService,
+          useValue: templateLibraryServiceSpy
+        }
+      ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TemplateCardComponent);
+    fixture = TestBed.createComponent(TemplateDetailsComponent);
     component = fixture.componentInstance;
-    component.template = template;
+    templateLibraryServiceSpy.getTemplate = jasmine.createSpy().and.returnValue(of(template));
     fixture.detectChanges();
   });
 
@@ -41,20 +59,22 @@ describe('TemplateCardComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render the skeletons when skeleton is set to true', () => {
-    component.skeleton = true;
+  it('should render skeleton when it is loading the template', () => {
+    component.loadingTemplate = true;
     fixture.detectChanges();
     expect(fixture.debugElement.query(By.css('ion-skeleton-text'))).toBeTruthy();
   });
 
-  it('should not render the skeletons when skeleton is set to false', () => {
-    component.skeleton = false;
+  it('should not render skeleton when it is not loading the template', () => {
+    component.loadingTemplate = false;
     fixture.detectChanges();
     expect(fixture.debugElement.query(By.css('ion-skeleton-text'))).toBeNull();
   });
 
-  it('should render the template\'s title', () => {
-    expect(fixture.debugElement.query(By.css('.template-card-title')).nativeElement.innerText).toEqual(template.name);
+  it('should render template name', () => {
+    component.loadingTemplate = false;
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.css('.template-title')).nativeElement.innerText).toEqual(template.name);
   });
 
   afterEach(() => {

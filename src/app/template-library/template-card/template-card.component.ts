@@ -9,7 +9,7 @@ import {Template} from '../../template-library/template-library.service';
 export class TemplateCardComponent implements OnInit {
 
   @Input() template: Template;
-  @Input() skeleton: false;
+  @Input() skeleton = false;
 
   constructor() { }
 

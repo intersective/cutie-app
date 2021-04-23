@@ -12,6 +12,9 @@ export interface Template {
   leadImageUrl?: string;
   leadVideoUrl?: string;
   type?: string;
+  attributes?: string[];
+  designMapUrl?: string;
+  operationsManualUrl?: string;
 }
 
 export interface Category {
@@ -48,7 +51,6 @@ export class TemplateLibraryService {
           name
           description
           leadImageUrl
-          leadVideoUrl
           type
         }
       }`,
@@ -56,8 +58,77 @@ export class TemplateLibraryService {
     ).pipe(map(this._handleTemplates));
   }
 
+  getTemplatesByCategory(category: string): Observable<Template[]> {
+    if (environment.demo) {
+      return this.demo.getTemplates().pipe(map(this._handleTemplates));
+    }
+    return this.request.graphQLQuery(
+      `query templates($type: String) {
+        templates(type: $type) {
+          uuid
+          name
+          description
+          leadImageUrl
+          leadVideoUrl
+          type
+        }
+      }`,
+      {
+        type: category
+      },
+    ).pipe(map(this._handleTemplates));
+  }
+
+  getTemplatesByFilter(filter: string): Observable<Template[]> {
+    if (environment.demo) {
+      return this.demo.getTemplates().pipe(map(this._handleTemplates));
+    }
+    return this.request.graphQLQuery(
+      `query templates($filter: String) {
+        templates(filter: $filter) {
+          uuid
+          name
+          description
+          leadImageUrl
+          leadVideoUrl
+          type
+        }
+      }`,
+      {filter},
+    ).pipe(map(this._handleTemplates));
+  }
+
+  getTemplate(uuid: string): Observable<Template> {
+    if (environment.demo) {
+      return this.demo.getTemplate().pipe(map(this._handleTemplate));
+    }
+    return this.request.graphQLQuery(
+      `query templates($uuid: String!) {
+        templates(uuid: $uuid) {
+          uuid
+          name
+          description
+          leadImageUrl
+          leadVideoUrl
+          type
+          attributes
+          designMapUrl
+          operationsManualUrl
+        }
+      }`,
+      {uuid},
+    ).pipe(map(this._handleTemplate));
+  }
+
+  private _handleTemplate(res) {
+    if (!res || !res.data) {
+      return {};
+    }
+    return res.data.template;
+  }
+
   private _handleTemplates(res) {
-    if (!res.data) {
+    if (!res || !res.data) {
       return [];
     }
     return res.data.templates;
@@ -82,7 +153,7 @@ export class TemplateLibraryService {
       {
         'leadImage': '',
         'name': 'Simulations',
-        'type': 'simulation',
+        'type': 'work simulation',
         'color': 'rgba(229, 69, 0, 0.7)',
         'isLarge': true
       },

@@ -1,0 +1,127 @@
+<ion-content>
+  <ng-container *ngIf="!loadingTemplate">
+    <ng-container *ngIf="template.name">
+      <ion-grid class="templates-grid-container">
+        <ion-row>
+          <ion-col size="12">
+            <div class="card-media" [style.background-image]="template.leadImageUrl ? 'url(' + template.leadImageUrl + ')' : 'url(/assets/exp-placeholder.png)'"></div>
+          </ion-col>
+        </ion-row>
+        <ion-row class="template-details-title-row">
+          <ion-col size="8">
+            <div>
+              <span class="template-title">{{ template.name }}</span>
+            </div>
+          </ion-col>
+          <ion-col size="3" offset="1">
+            <div><ion-button class="use-experience-button" expand="block">Use Experience</ion-button></div>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="template-tags-row">
+          <ion-col size="8">
+            <div>
+              <span *ngFor="let attribute of template.attributes" class="template-tags">#{{attribute}}</span>
+            </div>
+          </ion-col>
+          <ion-col size="3" offset="1">
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col size="8">
+            <div>
+              <video class="lead-video" preload="auto" controls>
+                <source [src]=[template.leadVideoUrl] type="video/webm" />
+              </video>
+            </div>
+            <div>
+              <span [innerHTML]=[template.description]></span>
+            </div>
+          </ion-col>
+          <ion-col size="3" offset="1">
+            <div class="download-resources">
+              <span class="download-resources-subheader">Download Resources</span>
+            </div>
+            <div class="download-resources">
+              <app-resource-download-card prompt="Download Design Map" src="{{template.designMapUrl}}" leadImage="https://images.pexels.com/photos/1181311/pexels-photo-1181311.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"></app-resource-download-card>
+            </div>
+            <div class="download-resources">
+              <app-resource-download-card prompt="Download Operations Manual" src="{{template.operationsManualUrl}}" leadImage="https://images.pexels.com/photos/5805485/pexels-photo-5805485.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"></app-resource-download-card>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ng-container>
+
+    <ng-container *ngIf="!template.name">
+      <div class="no-results-container">
+        <app-empty-results emptyResultsString="Could not find the template"></app-empty-results>
+      </div>
+    </ng-container>
+  </ng-container>
+
+  <ng-container *ngIf="loadingTemplate">
+    <ion-grid class="templates-grid-container">
+      <ion-row>
+        <ion-col size="12">
+          <ion-skeleton-text animated="true" style="height: 200px; width: 100%"></ion-skeleton-text>
+        </ion-col>
+      </ion-row>
+      <ion-row class="template-details-title-row">
+        <ion-col size="8">
+          <div>
+            <ion-skeleton-text animated="true" style="height: 60px; width: 400px"></ion-skeleton-text>
+          </div>
+        </ion-col>
+        <ion-col size="3" offset="1">
+          <div>
+            <ion-skeleton-text animated="true" style="height: 60px; width: 100%"></ion-skeleton-text>
+          </div>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="template-tags-row">
+        <ion-col size="8">
+          <div>
+            <ion-skeleton-text animated="true" style="height: 24px; width: 100%" ></ion-skeleton-text>
+          </div>
+        </ion-col>
+        <ion-col size="3" offset="1">
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="8">
+          <div>
+            <ion-skeleton-text animated="true" style="height: 400px; width: 100%"></ion-skeleton-text>
+          </div>
+          <div style="margin-top: 30px">
+            <ion-skeleton-text animated="true" style="height: 19px;"></ion-skeleton-text>
+            <ion-skeleton-text animated="true" style="height: 19px;"></ion-skeleton-text>
+            <ion-skeleton-text animated="true" style="height: 19px;"></ion-skeleton-text>
+            <ion-skeleton-text animated="true" style="height: 19px;"></ion-skeleton-text>
+            <ion-skeleton-text animated="true" style="height: 19px;"></ion-skeleton-text>
+            <ion-skeleton-text animated="true" style="height: 19px;"></ion-skeleton-text>
+          </div>
+        </ion-col>
+        <ion-col size="3" offset="1">
+          <div class="download-resources">
+            <ion-skeleton-text animated="true" style="height: 19px; width: 150px"></ion-skeleton-text>
+          </div>
+          <div class="download-resources">
+            <app-resource-download-card [skeleton]="true"></app-resource-download-card>
+          </div>
+          <div class="download-resources">
+            <app-resource-download-card [skeleton]="true"></app-resource-download-card>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ng-container>
+
+</ion-content>
+
+
+<!--</ion-grid>-->
+

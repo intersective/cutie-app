@@ -1,6 +1,7 @@
 @media (min-width:992px) {
   .template-library-container {
-    width: 80%;
+    //width: 85%;
+    max-width: 1200px;
     margin: auto;
   }
 }
@@ -9,18 +10,6 @@
   .menu {
     margin-left: 10px;
   }
-}
-
-.category-heading {
-  margin-top: 50px;
-  margin-bottom: 5px;
-  padding-left: 8px;
-  color: #727272;
-}
-
-.templates-grid-container {
-  padding-left: 20px;
-  padding-right: 20px;
 }
 
 .template-search-bar {
@@ -32,4 +21,8 @@
   display: flex;
   margin-bottom: 24px;
   padding-top: 7px;
+}
+
+ion-item.active {
+  font-weight: bold;
 }
