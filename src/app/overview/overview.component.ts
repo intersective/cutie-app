@@ -86,16 +86,6 @@ export class OverviewComponent implements OnInit {
       this._getAllTags();
     });
 
-    // when experience statistics get updated, update the experience statistics
-    this.utils.getEvent('exp-statistics-updated').subscribe(event => {
-      if (!this.utils.has(event, 'experience') || !this.utils.has(event, 'statistics')) {
-        return ;
-      }
-      this.experiences = this._updateStatistics(this.experiences, event.experience, event.statistics);
-      this.experiencesRaw = this._updateStatistics(this.experiencesRaw, event.experience, event.statistics);
-      this._getAllTags();
-    });
-
     // when experience get archived/deleted, reload the experiences data
     this.utils.getEvent('exps-reload').subscribe(event => {
       this.loadExperiences();
@@ -112,6 +102,7 @@ export class OverviewComponent implements OnInit {
       // get all types
       this._getAllTypes();
       this.filterAndOrder();
+      this._refreshLiveExpStats();
       this.loadingExps = false;
     });
   }
@@ -203,15 +194,6 @@ export class OverviewComponent implements OnInit {
     return experiences.map(exp => {
       if (exp.uuid === experience.uuid) {
         exp.tags = tags;
-      }
-      return exp;
-    });
-  }
-
-  private _updateStatistics(experiences: Experience[], experience: Experience, statistics: Statistics) {
-    return experiences.map(exp => {
-      if (exp.uuid === experience.uuid) {
-        exp.statistics = statistics;
       }
       return exp;
     });
@@ -361,6 +343,29 @@ export class OverviewComponent implements OnInit {
     this.stats[1].value = totalUsers ? `${ Math.round(activeUsers * 100 / totalUsers) }%` : '0%';
     this.stats[2].value = fbStarted ? `${ fbCompleted }/${ fbStarted }` : '0/0';
     this.stats[3].value = `${ Math.round(reviewRatingAvg * 100) }%`;
+  }
+
+  private _refreshLiveExpStats() {
+    this.experiencesRaw.forEach(exp => {
+      // only refresh stats for live experiences
+      if (exp.status !== 'live') {
+        return;
+      }
+      this.service.getExpStatistics(exp).subscribe(res => {
+        if (!res) {
+          return;
+        }
+        // update both experiencesRaw and experiences
+        const expRawIndex = this.experiencesRaw.findIndex(e => e.uuid === exp.uuid);
+        if (expRawIndex >= 0 && !this.utils.isEqual(this.experiencesRaw[expRawIndex].statistics, res)) {
+          this.experiencesRaw[expRawIndex].statistics = res;
+        }
+        const expIndex = this.experiences.findIndex(e => e.uuid === exp.uuid);
+        if (expIndex >= 0 && !this.utils.isEqual(this.experiences[expIndex].statistics, res)) {
+          this.experiences[expIndex].statistics = res;
+        }
+      });
+    });
   }
 
   add() {

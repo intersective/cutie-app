@@ -12,8 +12,8 @@ import * as XLSX from 'xlsx';
 describe('OverviewComponent', () => {
   let component: OverviewComponent;
   let fixture: ComponentFixture<OverviewComponent>;
-  const overviewSpy = jasmine.createSpyObj('OverviewService', ['getExperiences']);
-  const utilsSpy = jasmine.createSpyObj('UtilsService', ['getEvent', 'has']);
+  const overviewSpy = jasmine.createSpyObj('OverviewService', ['getExperiences', 'getExpStatistics']);
+  const utilsSpy = jasmine.createSpyObj('UtilsService', ['getEvent', 'has', 'isEqual']);
   const popupSpy = jasmine.createSpyObj('PopupService', ['showCreateExp']);
 
   const exps: Experience[] = [
@@ -55,6 +55,43 @@ describe('OverviewComponent', () => {
       }
     },
     {
+      uuid: '16c3d514-b459-b9d1-05c8-2bd1f582447e',
+      name: 'Teamnovation',
+      description: `Practera is the leading platform to power high quality experiential learning programs.<br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services`,
+      type: 'team project',
+      status: 'live',
+      color: '',
+      setupStep: 'visuals',
+      leadImage: '',
+      todoItemCount: 2,
+      tags: ['apple', 'banana', 'watermelon'],
+      statistics: {
+        enrolledUserCount: {
+          admin: 4,
+          coordinator: 3,
+          mentor: 5,
+          participant: 53
+        },
+        registeredUserCount: {
+          admin: 4,
+          coordinator: 3,
+          mentor: 4,
+          participant: 49
+        },
+        activeUserCount: {
+          admin: 1,
+          coordinator: 3,
+          mentor: 3,
+          participant: 22
+        },
+        feedbackLoopStarted: 49,
+        feedbackLoopCompleted: 2,
+        reviewRatingAvg: 0.6,
+        onTrackRatio: 0.6,
+        lastUpdated: 1612775394684
+      }
+    },
+    {
       uuid: '16c3d514-b459-b9d1-05c8-2bd1f582447d',
       name: 'Teamnovation',
       description: `Practera is the leading platform to power high quality experiential learning programs.<br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services`,
@@ -75,13 +112,13 @@ describe('OverviewComponent', () => {
         registeredUserCount: {
           admin: 4,
           coordinator: 3,
-          mentor: 4,
+          mentor: 5,
           participant: 50
         },
         activeUserCount: {
           admin: 1,
           coordinator: 3,
-          mentor: 3,
+          mentor: 4,
           participant: 23
         },
         feedbackLoopStarted: 50,
@@ -93,7 +130,7 @@ describe('OverviewComponent', () => {
     }
   ];
 
-  beforeEach(async(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule],
       declarations: [ OverviewComponent ],
@@ -114,13 +151,15 @@ describe('OverviewComponent', () => {
       ]
     })
     .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(OverviewComponent);
     component = fixture.componentInstance;
-    overviewSpy.getExperiences = jasmine.createSpy().and.returnValue(of(exps));
+    overviewSpy.getExperiences = jasmine.createSpy().and.returnValue(of(JSON.parse(JSON.stringify(exps))));
+    overviewSpy.getExpStatistics = jasmine.createSpy().and.returnValue(of(null));
     utilsSpy.getEvent = jasmine.createSpy().and.returnValue(of({}));
+    utilsSpy.isEqual = jasmine.createSpy().and.callFake((value, other) => JSON.stringify(value) === JSON.stringify(other));
     utilsSpy.has = jasmine.createSpy().and.callFake((obj, key) => obj.hasOwnProperty(key));
   });
 
@@ -139,19 +178,35 @@ describe('OverviewComponent', () => {
     fixture.detectChanges();
     expect(component.experiencesRaw).toEqual(exps);
     expect(component.experiences).toEqual(exps);
-    expect(component.types).toEqual(['all', exps[0].type, exps[1].type]);
+    expect(component.types).toEqual(['all', exps[1].type, exps[0].type]);
     expect(component.tags).toEqual([
       { name: 'tag1', count: 1, active: false },
       { name: 'tag2', count: 1, active: false },
-      { name: 'apple', count: 2, active: false },
-      { name: 'banana', count: 1, active: false },
-      { name: 'watermelon', count: 1, active: false },
+      { name: 'apple', count: 3, active: false },
+      { name: 'banana', count: 2, active: false },
+      { name: 'watermelon', count: 2, active: false },
+    ]);
+    expect(component.loadingExps).toEqual(false);
+  });
+
+  it('should get experiences data. (after stats updated)', () => {
+    overviewSpy.getExpStatistics = jasmine.createSpy().and.returnValue(of(exps[0].statistics));
+    fixture.detectChanges();
+    expect(component.experiencesRaw[1].statistics).toEqual(exps[0].statistics);
+    expect(component.experiences[1].statistics).toEqual(exps[0].statistics);
+    expect(component.types).toEqual(['all', exps[1].type, exps[0].type]);
+    expect(component.tags).toEqual([
+      { name: 'tag1', count: 1, active: false },
+      { name: 'tag2', count: 1, active: false },
+      { name: 'apple', count: 3, active: false },
+      { name: 'banana', count: 2, active: false },
+      { name: 'watermelon', count: 2, active: false },
     ]);
     expect(component.loadingExps).toEqual(false);
   });
 
   it('should get experiences data filtered by tag', () => {
-    component.experiencesRaw = exps;
+    component.experiencesRaw = JSON.parse(JSON.stringify(exps));
     component.tags = [
       { name: 'tag1', count: 1, active: true },
       { name: 'tag2', count: 1, active: false },
@@ -165,15 +220,15 @@ describe('OverviewComponent', () => {
   });
 
   it('should get experiences data filtered by status', () => {
-    component.experiencesRaw = exps;
-    component.status = exps[0].status;
+    component.experiencesRaw = JSON.parse(JSON.stringify(exps));
+    component.status = exps[2].status;
     component.filterAndOrder();
     expect(component.experiencesRaw).toEqual(exps);
-    expect(component.experiences).toEqual([exps[0]]);
+    expect(component.experiences).toEqual([exps[2]]);
   });
 
   it('should get experiences data filtered by type', () => {
-    component.experiencesRaw = exps;
+    component.experiencesRaw = JSON.parse(JSON.stringify(exps));
     component.type = exps[0].type;
     component.filterAndOrder();
     expect(component.experiencesRaw).toEqual(exps);
@@ -181,9 +236,13 @@ describe('OverviewComponent', () => {
   });
 
   describe('should get experiences data sorted', () => {
+    console.log(exps);
     let expsResult;
+    beforeEach(() => {
+      overviewSpy.getExpStatistics = jasmine.createSpy().and.returnValue(of(null));
+    });
     afterEach(() => {
-      component.experiencesRaw = exps;
+      component.experiencesRaw = JSON.parse(JSON.stringify(exps));
       component.filterAndOrder();
       expect(component.experiencesRaw).toEqual(exps);
       expect(component.experiences).toEqual(expsResult);
@@ -191,87 +250,87 @@ describe('OverviewComponent', () => {
     it('by created time asc', () => {
       component.sortBy = component.sortList[0];
       component.sortDesc = false;
-      expsResult = [exps[1], exps[0]];
+      expsResult = [exps[2], exps[1], exps[0]];
     });
     it('by participant count desc', () => {
       component.sortBy = component.sortList[1];
       component.sortDesc = true;
-      expsResult = [exps[1], exps[0]];
+      expsResult = [exps[2], exps[1], exps[0]];
     });
     it('by participant count asc', () => {
       component.sortBy = component.sortList[1];
       component.sortDesc = false;
-      expsResult = [exps[0], exps[1]];
+      expsResult = [exps[0], exps[1], exps[2]];
     });
     it('by mentor count desc', () => {
       component.sortBy = component.sortList[2];
       component.sortDesc = true;
-      expsResult = [exps[1], exps[0]];
+      expsResult = [exps[2], exps[1], exps[0]];
     });
     it('by mentor count asc', () => {
       component.sortBy = component.sortList[2];
       component.sortDesc = false;
-      expsResult = [exps[0], exps[1]];
+      expsResult = [exps[0], exps[1], exps[2]];
     });
     it('by recent active participants desc', () => {
       component.sortBy = component.sortList[3];
       component.sortDesc = true;
-      expsResult = [exps[1], exps[0]];
+      expsResult = [exps[2], exps[1], exps[0]];
     });
     it('by recent active participants asc', () => {
       component.sortBy = component.sortList[3];
       component.sortDesc = false;
-      expsResult = [exps[0], exps[1]];
+      expsResult = [exps[0], exps[1], exps[2]];
     });
     it('by recent active mentors desc', () => {
       component.sortBy = component.sortList[4];
       component.sortDesc = true;
-      expsResult = [exps[1], exps[0]];
+      expsResult = [exps[2], exps[1], exps[0]];
     });
     it('by recent active mentors asc', () => {
       component.sortBy = component.sortList[4];
       component.sortDesc = false;
-      expsResult = [exps[0], exps[1]];
+      expsResult = [exps[0], exps[1], exps[2]];
     });
     it('by feedback loops completed desc', () => {
       component.sortBy = component.sortList[5];
       component.sortDesc = true;
-      expsResult = [exps[0], exps[1]];
+      expsResult = [exps[0], exps[2], exps[1]];
     });
     it('by feedback loops completed asc', () => {
       component.sortBy = component.sortList[5];
       component.sortDesc = false;
-      expsResult = [exps[1], exps[0]];
+      expsResult = [exps[1], exps[2], exps[0]];
     });
     it('by on-track/off-track desc', () => {
       component.sortBy = component.sortList[6];
       component.sortDesc = true;
-      expsResult = [exps[0], exps[1]];
+      expsResult = [exps[0], exps[1], exps[2]];
     });
     it('by on-track/off-track asc', () => {
       component.sortBy = component.sortList[6];
       component.sortDesc = false;
-      expsResult = [exps[1], exps[0]];
+      expsResult = [exps[2], exps[1], exps[0]];
     });
     it('by feedback quality score desc', () => {
       component.sortBy = component.sortList[7];
       component.sortDesc = true;
-      expsResult = [exps[0], exps[1]];
+      expsResult = [exps[0], exps[2], exps[1]];
     });
     it('by feedback quality score asc', () => {
       component.sortBy = component.sortList[7];
       component.sortDesc = false;
-      expsResult = [exps[1], exps[0]];
+      expsResult = [exps[1], exps[2], exps[0]];
     });
     it('by todoItemCount desc', () => {
       component.sortBy = component.sortList[8];
       component.sortDesc = true;
-      expsResult = [exps[1], exps[0]];
+      expsResult = [exps[2], exps[1], exps[0]];
     });
     it('by todoItemCount asc', () => {
       component.sortBy = component.sortList[8];
       component.sortDesc = false;
-      expsResult = [exps[0], exps[1]];
+      expsResult = [exps[0], exps[1], exps[2]];
     });
   });
 
@@ -287,14 +346,6 @@ describe('OverviewComponent', () => {
             tags: ['tag1', 'tag3']
           };
           break;
-        case 'exp-statistics-updated':
-          eventData = {
-            experience: {
-              uuid: exps[0].uuid
-            },
-            statistics: exps[1].statistics
-          };
-          break;
       }
       return of(eventData);
     });
@@ -305,24 +356,24 @@ describe('OverviewComponent', () => {
     overviewSpy.getExperiences = jasmine.createSpy().and.returnValue(of([...exps, ...exps, ...exps, ...exps]));
     fixture.detectChanges();
     expect(component.experiences.length).toEqual(7);
-    expect(component.remainingExperiences.length).toEqual(1);
+    expect(component.remainingExperiences.length).toEqual(5);
   });
 
   describe('load more', () => {
     it('remaining more than 7 exps', fakeAsync(() => {
-      component.experiences = exps;
+      component.experiences = JSON.parse(JSON.stringify(exps));
       component.remainingExperiences = [...exps, ...exps, ...exps, ...exps];
       component.loadMore({ target: { complete: () => {} }});
       tick(600);
-      expect(component.experiences.length).toEqual(9);
-      expect(component.remainingExperiences.length).toEqual(1);
+      expect(component.experiences.length).toEqual(10);
+      expect(component.remainingExperiences.length).toEqual(5);
     }));
     it('remaining less than 7 exps', fakeAsync(() => {
-      component.experiences = exps;
-      component.remainingExperiences = exps;
+      component.experiences = JSON.parse(JSON.stringify(exps));
+      component.remainingExperiences = JSON.parse(JSON.stringify(exps));
       component.loadMore({ target: { complete: () => {} }});
       tick(600);
-      expect(component.experiences.length).toEqual(4);
+      expect(component.experiences.length).toEqual(6);
       expect(component.remainingExperiences.length).toEqual(0);
     }));
   });
@@ -340,10 +391,9 @@ describe('OverviewComponent', () => {
       { name: 'banana', count: 1, active: false },
       { name: 'watermelon', count: 1, active: false },
     ];
-    component.experiences = exps;
+    component.experiences = JSON.parse(JSON.stringify(exps));
     const writeFile = spyOn(XLSX, 'writeFile');
     component.createReport();
     expect(writeFile).toHaveBeenCalled();
   });
-
 });

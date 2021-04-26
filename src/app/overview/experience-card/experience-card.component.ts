@@ -20,26 +20,6 @@ export class ExperienceCardComponent {
     private utils: UtilsService,
   ) { }
 
-  lastUpdated() {
-    if (this.experience && this.experience.statistics.lastUpdated) {
-      let diff = Date.now() - this.experience.statistics.lastUpdated;
-      if (diff > 1000 * 60 * 60 * 24) {
-        return `${ Math.floor(diff / (1000 * 60 * 60 * 24)) }d`;
-      }
-      if (diff > 1000 * 60 * 60) {
-        return `${ Math.floor(diff / (1000 * 60 * 60)) }h`;
-      }
-      if (diff > 1000 * 60) {
-        return `${ Math.floor(diff / (1000 * 60)) }m`;
-      }
-      if (diff < 0) {
-        diff = 1000;
-      }
-      return `${ Math.floor(diff / 1000) }s`;
-    }
-    return '';
-  }
-
   userCount() {
     if (!this.experience.statistics.enrolledUserCount) {
       return 0;
@@ -199,17 +179,6 @@ export class ExperienceCardComponent {
           }
         },
       ]
-    });
-  }
-
-  refresh() {
-    this.refreshing = true;
-    this.service.getExpStatistics(this.experience).subscribe(res => {
-      this.utils.broadcastEvent('exp-statistics-updated', {
-        experience: this.experience,
-        statistics: res
-      });
-      this.refreshing = false;
     });
   }
 }
