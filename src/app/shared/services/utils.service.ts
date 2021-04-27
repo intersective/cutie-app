@@ -33,6 +33,10 @@ export class UtilsService {
     return this.lodash.isEmpty(value);
   }
 
+  isEqual(value: any, other: any): boolean {
+    return this.lodash.isEqual(value, other);
+  }
+
   each(collections, callback) {
     return this.lodash.each(collections, callback);
   }
