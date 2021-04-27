@@ -347,8 +347,8 @@ export class OverviewComponent implements OnInit {
 
   private _refreshLiveExpStats() {
     this.experiencesRaw.forEach(exp => {
-      // only refresh stats for live experiences
-      if (exp.status !== 'live') {
+      // only refresh stats for live/draft experiences
+      if (!['live', 'draft'].includes(exp.status)) {
         return;
       }
       this.service.getExpStatistics(exp).subscribe(res => {
