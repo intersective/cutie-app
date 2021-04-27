@@ -10,7 +10,7 @@ import {Router} from '@angular/router';
 export class TemplateLibraryHomeComponent implements OnInit {
 
   constructor(private service: TemplateLibraryService,
-              private router: Router) { }
+              public router: Router) { }
 
   loadingTemplates = false;
   templates: Template[] = [];

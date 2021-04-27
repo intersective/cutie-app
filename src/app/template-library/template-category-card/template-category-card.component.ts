@@ -11,7 +11,7 @@ export class TemplateCategoryCardComponent implements OnInit {
 
   @Input() category: Category;
 
-  constructor(private router: Router) { }
+  constructor(public router: Router) { }
 
   ngOnInit() {}
 
