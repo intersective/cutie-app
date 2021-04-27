@@ -11,7 +11,7 @@ export class TemplateLibraryComponent implements OnInit {
 
   constructor(
     private service: TemplateLibraryService,
-    private router: Router
+    public router: Router
   ) {}
 
   categories: Category[] = [];

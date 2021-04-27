@@ -1064,7 +1064,7 @@ export class DemoService {
   getTemplate() {
     return of({
       data: {
-        templates: [this.templates[0]]
+        template: this.templates[0]
       }
     }).pipe(delay(1000));
   }
