@@ -173,9 +173,9 @@ jobs:
 ##############################################################
       - name: Serverless deployment
         run: |
-          echo "Serverless Deploying Appv2"
+          echo "Serverless Deploying cutie-app"
           node_modules/.bin/serverless deploy
-          rm serverless.yml .env
+          rm serverless.yml
         env:
           CUTIES3BUCKET: cutie-app.${{ env.PUBLICZONENAME }}
           S3VERSIONING: true 
