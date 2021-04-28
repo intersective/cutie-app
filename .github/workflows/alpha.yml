@@ -208,7 +208,6 @@ jobs:
           CUSTOM_PATH_IMAGE: /appv2/${{ env.ENV }}/uploads/
           CUSTOM_AWS_REGION: ${{ env.REGION }}
           CUSTOM_PATH_ANY: /appv2/${{ env.ENV }}/uploads/
-          CUSTOM_PRACTERCORE: https://admin.${{ env.PUBLICZONENAME }}
           CUSTOM_S3_BUCKET: practera-aus
           CUSTOM_APIENDPOINT: https://cutie-api.${{ env.PUBLICZONENAME }}
           CUSTOM_APIENDPOINTOLD: https://admin.${{ env.PUBLICZONENAME }}
