@@ -37,7 +37,7 @@ jobs:
       STATUSREPORTS3Bucket: deployment-status.practera.com
       STATUS: DEPLOYED
       ENDPOINT: NA
-      SLEEPTIMER: 0 #Mandatory inorder to other ci to update
+      SLEEPTIMER: 10 #Mandatory inorder to other ci to update
 
 
 
