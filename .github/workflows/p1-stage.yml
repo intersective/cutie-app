@@ -89,34 +89,6 @@ jobs:
         run:  npm install
 
 
-
-################################################
-#  PERFORM LINT TEST
-################################################
-      - name: Run lint test if present
-        run:  |
-          node_modules/.bin/ng lint
-
-
-###############################################################
-#  PERFORM UNIT TEST
-##############################################################
-      - name: Performing Unit test
-        run: |
-          node_modules/.bin/ng test --no-watch --code-coverage --browsers ChromeHeadless --karmaConfig=karma.conf.sonar.js
-
-
-###############################################################
-#  SONARCLOUD SCANNER
-##############################################################
-      - name: Performing Sonarcloud Scanner
-        uses: SonarSource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-
-
 ################################################
 #  AWS CLI CONFIGURATION - DEVOPS 
 ################################################ 
@@ -163,6 +135,32 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ steps.DeploySecret.outputs.P1_STAGE_AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ steps.DeploySecret.outputs.P1_STAGE_AWS_SECRET_ACCESS_KEY }}
+
+
+################################################
+#  PERFORM LINT TEST
+################################################
+      - name: Run lint test if present
+        run:  |
+          node_modules/.bin/ng lint
+
+
+# ###############################################################
+# #  PERFORM UNIT TEST
+# ##############################################################
+#       - name: Performing Unit test
+#         run: |
+#           node_modules/.bin/ng test --no-watch --code-coverage --browsers ChromeHeadless --karmaConfig=karma.conf.sonar.js
+
+
+# ###############################################################
+# #  SONARCLOUD SCANNER
+# ##############################################################
+#       - name: Performing Sonarcloud Scanner
+#         uses: SonarSource/sonarcloud-github-action@master
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+#           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
 
 ##########################################################
