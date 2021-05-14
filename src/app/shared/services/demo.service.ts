@@ -1069,6 +1069,14 @@ export class DemoService {
     }).pipe(delay(1000));
   }
 
+  importExperienceResponse() {
+    return of({
+      data: {
+        experienceUuid: '000f562e-0ed0-4afe-af53-7a8d20558ce1'
+      }
+    }).pipe(delay(1000));
+  }
+
   getTags() {
     return of({
       data: {

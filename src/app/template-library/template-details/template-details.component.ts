@@ -11,6 +11,7 @@ export class TemplateDetailsComponent implements OnInit {
 
   template: Template;
   loadingTemplate = true;
+  importingTemplate = false;
 
   constructor(private route: ActivatedRoute, private service: TemplateLibraryService) {
     this.route.params.subscribe(params => {
@@ -23,6 +24,14 @@ export class TemplateDetailsComponent implements OnInit {
     this.service.getTemplate(templateId).subscribe(res => {
       this.template = res;
       this.loadingTemplate = false;
+    });
+  }
+
+  importTemplate(templateId: string) {
+    this.importingTemplate = true;
+    this.service.importExperience(templateId).subscribe(res => {
+      this.importingTemplate = false;
+      console.log('Navigate the user somewhere?');
     });
   }
 

@@ -10,7 +10,7 @@ import {By} from '@angular/platform-browser';
 describe('TemplateDetailsComponent', () => {
   let component: TemplateDetailsComponent;
   let fixture: ComponentFixture<TemplateDetailsComponent>;
-  const templateLibraryServiceSpy = jasmine.createSpyObj('TemplateLibraryService', ['getTemplate']);
+  const templateLibraryServiceSpy = jasmine.createSpyObj('TemplateLibraryService', ['getTemplate', 'importExperience']);
 
   const params = {
     templateId: 'abc123'
@@ -52,6 +52,7 @@ describe('TemplateDetailsComponent', () => {
     fixture = TestBed.createComponent(TemplateDetailsComponent);
     component = fixture.componentInstance;
     templateLibraryServiceSpy.getTemplate = jasmine.createSpy().and.returnValue(of(template));
+    templateLibraryServiceSpy.importExperience = jasmine.createSpy().and.returnValue(of({experienceUuid: 'abc123'}));
     fixture.detectChanges();
   });
 
@@ -75,6 +76,11 @@ describe('TemplateDetailsComponent', () => {
     component.loadingTemplate = false;
     fixture.detectChanges();
     expect(fixture.debugElement.query(By.css('.template-title')).nativeElement.innerText).toEqual(template.name);
+  });
+
+  it('should call import experience', () => {
+    component.importTemplate('abc123');
+    expect(templateLibraryServiceSpy.importExperience).toHaveBeenCalledWith('abc123');
   });
 
   afterEach(() => {

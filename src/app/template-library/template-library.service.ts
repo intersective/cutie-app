@@ -30,6 +30,10 @@ export interface CategorisedTemplates {
   templates: Template[];
 }
 
+export interface ImportExperienceResponse {
+  experienceUuid: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -118,6 +122,27 @@ export class TemplateLibraryService {
       }`,
       {uuid},
     ).pipe(map(this._handleTemplate));
+  }
+
+  importExperience(templateUuid: string): Observable<ImportExperienceResponse> {
+    if (environment.demo) {
+      return this.demo.importExperienceResponse().pipe(map(this._handleImportedExperienceResponse));
+    }
+    return this.request.graphQLQuery(
+      `mutation importExperience($templateUuid: String!) {
+        importExperience(templateUuid: $templateUuid) {
+          experienceUuid
+        }
+      }`,
+      {templateUuid},
+    ).pipe(map(this._handleImportedExperienceResponse));
+  }
+
+  private _handleImportedExperienceResponse(res) {
+    if (!res || !res.data) {
+      return {};
+    }
+    return res.data;
   }
 
   private _handleTemplate(res) {

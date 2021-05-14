@@ -14,7 +14,7 @@
             </div>
           </ion-col>
           <ion-col size="3" offset="1">
-            <div><ion-button class="use-experience-button" expand="block">Use Experience</ion-button></div>
+            <div><ion-button class="use-experience-button" expand="block" (click)="importTemplate(template.uuid)"><ion-spinner *ngIf="importingTemplate"></ion-spinner><span *ngIf="!importingTemplate">Use Experience</span></ion-button></div>
           </ion-col>
         </ion-row>
 
