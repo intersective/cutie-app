@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-create-experience',
@@ -9,12 +10,12 @@ import { ModalController } from '@ionic/angular';
 export class CreateExperienceComponent {
 
   constructor(
-    public modalController: ModalController
+    public modalController: ModalController,
+    private router: Router
   ) {}
 
   browse() {
     this.modalController.dismiss();
-    console.log('navigate to catalog');
-    // this.router.navigate([]);
+    this.router.navigate(['/templates']);
   }
 }
