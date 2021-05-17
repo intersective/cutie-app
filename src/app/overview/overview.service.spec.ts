@@ -75,7 +75,7 @@ describe('OverviewService', () => {
   describe('for getExpsStatistics', () => {
     let result;
     afterEach(() => {
-      service.getExpsStatistics(exp).subscribe(res => expect(res).toEqual(result));
+      service.getExpsStatistics(['uuid']).subscribe(res => expect(res).toEqual(result));
     });
     it('demo resopnse', () => {
       environment.demo = true;
@@ -86,7 +86,7 @@ describe('OverviewService', () => {
       environment.demo = false;
       requestService.graphQLQuery = jasmine.createSpy().and.returnValue(of({
         data: {
-          expStatistics: 'stats-data'
+          expsStatistics: 'stats-data'
         }
       }));
       result = 'stats-data';

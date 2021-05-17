@@ -361,7 +361,7 @@ export class OverviewComponent implements OnInit {
         if (expIndex >= 0 && !this.utils.isEqual(this.experiences[expIndex].statistics, exp.statistics)) {
           this.experiences[expIndex].statistics = exp.statistics;
         }
-      })
+      });
     });
   }
 

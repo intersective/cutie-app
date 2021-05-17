@@ -190,7 +190,10 @@ describe('OverviewComponent', () => {
   });
 
   it('should get experiences data. (after stats updated)', () => {
-    overviewSpy.getExpsStatistics = jasmine.createSpy().and.returnValue(of(exps[0].statistics));
+    overviewSpy.getExpsStatistics = jasmine.createSpy().and.returnValue(of([{
+      uuid: exps[1].uuid,
+      statistics: exps[0].statistics,
+    }]));
     fixture.detectChanges();
     expect(component.experiencesRaw[1].statistics).toEqual(exps[0].statistics);
     expect(component.experiences[1].statistics).toEqual(exps[0].statistics);
