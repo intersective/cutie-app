@@ -1109,15 +1109,18 @@ export class DemoService {
     return of({}).pipe(delay(1000));
   }
 
-  getExpStatistics(experience) {
+  getExpsStatistics(uuids) {
     return of({
       data: {
-        expStatistics: {
-          ...this.experiences[1].statistics,
-          ...{
-            lastUpdated: Date.now()
+        expsStatistics: uuids.map(u => ({
+          uuid: u,
+          statistics: {
+            ...this.experiences[1].statistics,
+            ...{
+              lastUpdated: Date.now()
+            }
           }
-        }
+        }))
       }
     }).pipe(delay(1000));
   }

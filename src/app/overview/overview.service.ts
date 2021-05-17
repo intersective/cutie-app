@@ -132,49 +132,52 @@ export class OverviewService {
     });
   }
 
-  getExpStatistics(experience: Experience) {
+  getExpsStatistics(uuids: string[]) {
     if (environment.demo) {
-      return this.demo.getExpStatistics(experience).pipe(map(this._handleExpStatistics));
+      return this.demo.getExpsStatistics(uuids).pipe(map(this._handleExpsStatistics));
     }
     return this.request.graphQLQuery(
-      `query expStatistics($uuid: String){
-        expStatistics(uuid: $uuid) {
-          enrolledUserCount {
-            admin
-            coordinator
-            mentor
-            participant
+      `query expsStatistics($uuids: [ID]){
+        expsStatistics(uuids: $uuids) {
+          uuid
+          statistics {
+            enrolledUserCount {
+              admin
+              coordinator
+              mentor
+              participant
+            }
+            registeredUserCount{
+              admin
+              coordinator
+              mentor
+              participant
+            }
+            activeUserCount{
+              admin
+              coordinator
+              mentor
+              participant
+            }
+            feedbackLoopStarted
+            feedbackLoopCompleted
+            reviewRatingAvg
+            onTrackRatio
+            lastUpdated
           }
-          registeredUserCount{
-            admin
-            coordinator
-            mentor
-            participant
-          }
-          activeUserCount{
-            admin
-            coordinator
-            mentor
-            participant
-          }
-          feedbackLoopStarted
-          feedbackLoopCompleted
-          reviewRatingAvg
-          onTrackRatio
-          lastUpdated
         }
       }`,
       {
-        uuid: experience.uuid
+        uuids
       }
-    ).pipe(map(this._handleExpStatistics));
+    ).pipe(map(this._handleExpsStatistics));
   }
 
-  private _handleExpStatistics(res) {
-    if (!res.data || !res.data.expStatistics) {
+  private _handleExpsStatistics(res) {
+    if (!res.data || !res.data.expsStatistics) {
       return null;
     }
-    return res.data.expStatistics;
+    return res.data.expsStatistics;
   }
 
   deleteExperience(experience) {

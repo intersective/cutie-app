@@ -346,23 +346,20 @@ export class OverviewComponent implements OnInit {
   }
 
   private _refreshLiveExpStats() {
-    this.experiencesRaw.forEach(exp => {
-      // only refresh stats for live/draft experiences
-      if (!['live', 'draft'].includes(exp.status)) {
+    const uuids = this.experiencesRaw.filter(e => ['live', 'draft'].includes(e.status)).map(e => e.uuid);
+    this.service.getExpsStatistics(uuids).subscribe(res => {
+      if (!res) {
         return;
       }
-      this.service.getExpStatistics(exp).subscribe(res => {
-        if (!res) {
-          return;
-        }
+      res.forEach(exp => {
         // update both experiencesRaw and experiences
         const expRawIndex = this.experiencesRaw.findIndex(e => e.uuid === exp.uuid);
-        if (expRawIndex >= 0 && !this.utils.isEqual(this.experiencesRaw[expRawIndex].statistics, res)) {
-          this.experiencesRaw[expRawIndex].statistics = res;
+        if (expRawIndex >= 0 && !this.utils.isEqual(this.experiencesRaw[expRawIndex].statistics, exp.statistics)) {
+          this.experiencesRaw[expRawIndex].statistics = exp.statistics;
         }
         const expIndex = this.experiences.findIndex(e => e.uuid === exp.uuid);
-        if (expIndex >= 0 && !this.utils.isEqual(this.experiences[expIndex].statistics, res)) {
-          this.experiences[expIndex].statistics = res;
+        if (expIndex >= 0 && !this.utils.isEqual(this.experiences[expIndex].statistics, exp.statistics)) {
+          this.experiences[expIndex].statistics = exp.statistics;
         }
       });
     });

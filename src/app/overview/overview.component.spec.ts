@@ -12,7 +12,7 @@ import * as XLSX from 'xlsx';
 describe('OverviewComponent', () => {
   let component: OverviewComponent;
   let fixture: ComponentFixture<OverviewComponent>;
-  const overviewSpy = jasmine.createSpyObj('OverviewService', ['getExperiences', 'getExpStatistics']);
+  const overviewSpy = jasmine.createSpyObj('OverviewService', ['getExperiences', 'getExpsStatistics']);
   const utilsSpy = jasmine.createSpyObj('UtilsService', ['getEvent', 'has', 'isEqual']);
   const popupSpy = jasmine.createSpyObj('PopupService', ['showCreateExp']);
 
@@ -157,7 +157,7 @@ describe('OverviewComponent', () => {
     fixture = TestBed.createComponent(OverviewComponent);
     component = fixture.componentInstance;
     overviewSpy.getExperiences = jasmine.createSpy().and.returnValue(of(JSON.parse(JSON.stringify(exps))));
-    overviewSpy.getExpStatistics = jasmine.createSpy().and.returnValue(of(null));
+    overviewSpy.getExpsStatistics = jasmine.createSpy().and.returnValue(of(null));
     utilsSpy.getEvent = jasmine.createSpy().and.returnValue(of({}));
     utilsSpy.isEqual = jasmine.createSpy().and.callFake((value, other) => JSON.stringify(value) === JSON.stringify(other));
     utilsSpy.has = jasmine.createSpy().and.callFake((obj, key) => obj.hasOwnProperty(key));
@@ -190,7 +190,10 @@ describe('OverviewComponent', () => {
   });
 
   it('should get experiences data. (after stats updated)', () => {
-    overviewSpy.getExpStatistics = jasmine.createSpy().and.returnValue(of(exps[0].statistics));
+    overviewSpy.getExpsStatistics = jasmine.createSpy().and.returnValue(of([{
+      uuid: exps[1].uuid,
+      statistics: exps[0].statistics,
+    }]));
     fixture.detectChanges();
     expect(component.experiencesRaw[1].statistics).toEqual(exps[0].statistics);
     expect(component.experiences[1].statistics).toEqual(exps[0].statistics);
@@ -239,7 +242,7 @@ describe('OverviewComponent', () => {
     console.log(exps);
     let expsResult;
     beforeEach(() => {
-      overviewSpy.getExpStatistics = jasmine.createSpy().and.returnValue(of(null));
+      overviewSpy.getExpsStatistics = jasmine.createSpy().and.returnValue(of(null));
     });
     afterEach(() => {
       component.experiencesRaw = JSON.parse(JSON.stringify(exps));
