@@ -10,7 +10,7 @@ name: Deploy to p2-sandbox environment
 on:
   workflow_dispatch:
   push:
-    branches: [ 'develop' ]
+    branches: [ 'feature/new-stack' ]
     
 
 ################################################
@@ -284,57 +284,3 @@ jobs:
       #       }
 
 
-# ################################################
-# #  STATUS VARIABLE UPDATE
-# ################################################ 
-      - name: Deployment status variable update
-        if: ${{ failure() }}
-        run: |
-          echo "STATUS=FAILURE" >> $GITHUB_ENV
-
-# ################################################
-# #  DEVOPS-DEPLOYMENT REPORT
-# ################################################ 
-      - name: DevOps Deployment Reporting
-        if: always()
-        run: |
-          pip install --upgrade pip
-          pip install --upgrade csvtotable
-          sleep $SLEEPTIMER 
-          aws s3 cp s3://$STATUSREPORTS3Bucket/deploy-reporting.sh deploy-reporting.sh
-          chmod +x deploy-reporting.sh && ./deploy-reporting.sh
-          echo "LINK="${GITHUB_REPOSITORY##*/}.html >> $GITHUB_ENV
-        env:
-          ENDPOINT: ${{ env.ROOTSTACK }}.${{env.PUBLICZONENAME}}
-
-# ##########################################################
-# #  DEPLOYMENT NOTIFICATION
-# ##########################################################  
-      - name: Slack Notification
-        if: always() # Pick up events even if the job fails or is canceled.
-        uses: 8398a7/action-slack@v3
-        with:
-          status: custom
-          custom_payload: |
-            {
-              text: "Deployment Notification",
-              attachments: [{
-                "author_name": `${process.env.AS_REPO}`, // json
-                fallback: 'fallback',
-                color: 'good',
-                title: 'Deployment status report for ${{ env.ROOTSTACK }} deployed to ${{ env.ENV }} environemnt in ${{ env.STACK_NAME }} AWS account',
-                text: 'http://deployment-status.practera.com.s3-website-ap-southeast-2.amazonaws.com/${{env.LINK}}',
-                fields: [
-                  {
-                    title: 'All Practera repo deployment status overview',
-                    value: 'http://deployment-status.practera.com.s3-website-ap-southeast-2.amazonaws.com'
-                  }],
-                "image_url": "https://practera.com/wp-content/uploads/2020/11/Practera-logo-2.svg",
-                "thumb_url": "https://practera.com/wp-content/uploads/2020/11/Practera-logo-2.svg",
-                actions: [{
-                }]
-              }]
-            }
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
-          
