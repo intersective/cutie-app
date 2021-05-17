@@ -33,9 +33,13 @@ jobs:
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
       
-      # Setup Node Environemnt
-      - name: Node.js environment
-        uses: actions/setup-node@v1
+################################################
+#  NODE ENV
+################################################    
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
       
       # Install Serverless Framework
       - name: Install Serverless Framework
