@@ -107,8 +107,8 @@ export class TemplateLibraryService {
       return this.demo.getTemplate().pipe(map(this._handleTemplate));
     }
     return this.request.graphQLQuery(
-      `query templates($uuid: String!) {
-        templates(uuid: $uuid) {
+      `query template($uuid: String!) {
+        template(uuid: $uuid) {
           uuid
           name
           description
