@@ -110,7 +110,7 @@ describe('TemplateLibraryComponent', () => {
         }
       });
       tick();
-      location = TestBed.get(Location);
+      location = TestBed.inject(Location);
       expect(location.path()).toEqual('/templates/search/filterValue');
     });
   }));
@@ -124,7 +124,7 @@ describe('TemplateLibraryComponent', () => {
         }
       });
       tick();
-      location = TestBed.get(Location);
+      location = TestBed.inject(Location);
       expect(location.path()).toEqual('/templates');
     });
   }));

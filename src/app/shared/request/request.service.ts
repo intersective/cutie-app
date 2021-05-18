@@ -8,6 +8,7 @@ import { StorageService } from '@services/storage.service';
 import { environment } from '@environments/environment';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
+import { urlFormatter } from 'helper';
 
 export class QueryEncoder implements HttpParameterCodec {
   encodeKey(k: string): string {
@@ -85,7 +86,7 @@ export class RequestService {
     if (!this.utils.has(httpOptions, 'params')) {
       httpOptions.params = '';
     }
-    return this.http.get<any>(this.getPrefixUrl(endPoint) + endPoint, {
+    return this.http.get<any>(urlFormatter(this.getPrefixUrl(endPoint), endPoint), {
       headers: this.appendHeaders(httpOptions.headers),
       params: this.setParams(httpOptions.params)
     })
@@ -111,7 +112,7 @@ export class RequestService {
     if (!this.utils.has(httpOptions, 'params')) {
       httpOptions.params = '';
     }
-    return this.http.post<any>(this.getPrefixUrl(endPoint) + endPoint, data, {
+    return this.http.post<any>(urlFormatter(this.getPrefixUrl(endPoint), endPoint), data, {
       headers: this.appendHeaders(httpOptions.headers),
       params: this.setParams(httpOptions.params)
     })
@@ -137,7 +138,7 @@ export class RequestService {
     if (!this.utils.has(httpOptions, 'params')) {
       httpOptions.params = '';
     }
-    return this.http.delete<any>(this.getPrefixUrl(endPoint) + endPoint, {
+    return this.http.delete<any>(urlFormatter(this.getPrefixUrl(endPoint), endPoint), {
       headers: this.appendHeaders(httpOptions.headers),
       params: this.setParams(httpOptions.params)
     })

@@ -3,6 +3,7 @@ import { Experience, OverviewService } from '../overview.service';
 import { PopupService } from '@shared/popup/popup.service';
 import { UtilsService } from '@services/utils.service';
 import { environment } from '@environments/environment';
+import { urlFormatter } from 'helper';
 
 @Component({
   selector: 'app-experience-card',
@@ -97,7 +98,7 @@ export class ExperienceCardComponent {
       message: 'Entering the experience'
     });
     if (this.experience.timelineId) {
-      window.top.location.href = `${ environment.Practera }/users/change/timeline/${ this.experience.timelineId }`;
+      window.top.location.href = urlFormatter(environment.Practera, `/users/change/timeline/${ this.experience.timelineId }`);
     } else {
       setTimeout(() => this.popupService.dismissLoading(), 1000);
     }
@@ -108,7 +109,7 @@ export class ExperienceCardComponent {
       message: 'Going to edit the experience'
     });
     if (this.experience.timelineId && this.experience.id) {
-      window.top.location.href = `${ environment.Practera }/users/change/timeline/${ this.experience.timelineId }?redirect=/admin/experiences/edit/${ this.experience.id }`;
+      window.top.location.href = urlFormatter(environment.Practera, `/users/change/timeline/${this.experience.timelineId}?redirect=/admin/experiences/edit/${this.experience.id}`);
     } else {
       setTimeout(() => this.popupService.dismissLoading(), 1000);
     }

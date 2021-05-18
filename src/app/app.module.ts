@@ -18,6 +18,7 @@ import { PusherModule } from '@shared/pusher/pusher.module';
 import { UtilsService } from '@services/utils.service';
 import { PopupModule } from '@shared/popup/popup.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { urlFormatter } from 'helper';
 
 @NgModule({
   declarations: [AppComponent],
@@ -29,7 +30,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     AppRoutingModule,
     RequestModule,
     PusherModule.forRoot({
-      apiurl: environment.APIEndpointOld,
+      apiurl: urlFormatter(environment.APIEndpointOld),
       pusherKey: environment.pusherKey,
     }),
     ApolloModule,
@@ -53,7 +54,7 @@ export class AppModule {
     this.apollo.create(
       {
         link: httpLink.create({
-          uri: environment.chatGraphQL
+          uri: urlFormatter(environment.chatGraphQL)
         }),
         cache: new InMemoryCache(),
       },
@@ -63,7 +64,7 @@ export class AppModule {
     this.apollo.create(
       {
         link: httpLink.create({
-          uri: environment.graphQL
+          uri: urlFormatter(environment.graphQL)
         }),
         cache: new InMemoryCache(),
       },
