@@ -107,7 +107,7 @@ export class TemplateLibraryService {
       return this.demo.getTemplate().pipe(map(this._handleTemplate));
     }
     return this.request.graphQLQuery(
-      `query template($uuid: String!) {
+      `query template($uuid: ID!) {
         template(uuid: $uuid) {
           uuid
           name
@@ -129,7 +129,7 @@ export class TemplateLibraryService {
       return this.demo.importExperienceResponse().pipe(map(this._handleImportedExperienceResponse));
     }
     return this.request.graphQLQuery(
-      `mutation importExperience($templateUuid: String!) {
+      `mutation importExperience($templateUuid: ID!) {
         importExperience(templateUuid: $templateUuid) {
           experienceUuid
         }
