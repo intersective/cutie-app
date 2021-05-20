@@ -32,6 +32,7 @@ export class TemplateDetailsComponent implements OnInit {
     this.service.importExperience(templateId).subscribe(res => {
       this.importingTemplate = false;
       console.log('Navigate the user somewhere?');
+      console.log(res);
     });
   }
 

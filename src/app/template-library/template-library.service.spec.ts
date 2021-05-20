@@ -9,7 +9,7 @@ import {of} from 'rxjs';
 describe('TemplateLibraryService', () => {
   let service: TemplateLibraryService;
   const demoService = jasmine.createSpyObj('DemoService', ['getTemplates', 'getTemplate', 'importExperience']);
-  const requestService = jasmine.createSpyObj('RequestService', ['graphQLQuery']);
+  const requestService = jasmine.createSpyObj('RequestService', ['graphQLQuery', 'graphQLMutate']);
 
   const dummyTemplate = {
     name: 'exp',
@@ -157,7 +157,7 @@ describe('TemplateLibraryService', () => {
     });
     it('graphql response', () => {
       environment.demo = false;
-      requestService.graphQLQuery = jasmine.createSpy().and.returnValue(of({
+      requestService.graphQLMutate = jasmine.createSpy().and.returnValue(of({
         data: {
           experienceUuid: 'abc123'
         }
@@ -166,13 +166,13 @@ describe('TemplateLibraryService', () => {
     });
     it('handles undefined graphql response', () => {
       environment.demo = false;
-      requestService.graphQLQuery = jasmine.createSpy().and.returnValue(of(undefined));
+      requestService.graphQLMutate = jasmine.createSpy().and.returnValue(of(undefined));
       // @ts-ignore
       service.importExperience('abc123').subscribe(res => expect(res).toEqual({}));
     });
     it('handles undefined data from graphql response', () => {
       environment.demo = false;
-      requestService.graphQLQuery = jasmine.createSpy().and.returnValue(of({data: undefined}));
+      requestService.graphQLMutate = jasmine.createSpy().and.returnValue(of({data: undefined}));
       // @ts-ignore
       service.importExperience('abc123').subscribe(res => expect(res).toEqual({}));
     });

@@ -59,6 +59,9 @@ export class TemplateLibraryService {
         }
       }`,
       {},
+      {
+        noCache: true
+      }
     ).pipe(map(this._handleTemplates));
   }
 
@@ -80,6 +83,9 @@ export class TemplateLibraryService {
       {
         type: category
       },
+      {
+        noCache: true
+      }
     ).pipe(map(this._handleTemplates));
   }
 
@@ -99,6 +105,9 @@ export class TemplateLibraryService {
         }
       }`,
       {filter},
+      {
+        noCache: true
+      }
     ).pipe(map(this._handleTemplates));
   }
 
@@ -121,6 +130,9 @@ export class TemplateLibraryService {
         }
       }`,
       {uuid},
+      {
+        noCache: true
+      }
     ).pipe(map(this._handleTemplate));
   }
 
@@ -128,13 +140,13 @@ export class TemplateLibraryService {
     if (environment.demo) {
       return this.demo.importExperienceResponse().pipe(map(this._handleImportedExperienceResponse));
     }
-    return this.request.graphQLQuery(
+    return this.request.graphQLMutate(
       `mutation importExperience($templateUuid: ID!) {
         importExperience(templateUuid: $templateUuid) {
           experienceUuid
         }
       }`,
-      {templateUuid},
+      {templateUuid}
     ).pipe(map(this._handleImportedExperienceResponse));
   }
 
