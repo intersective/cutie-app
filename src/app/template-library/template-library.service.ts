@@ -156,7 +156,8 @@ export class TemplateLibraryService {
   }
 
   private _handleTemplates(res) {
-    if (res === null) {
+    // we are using Apollo client cache, so it will return undefined initially, we should treat this as we are still loading the data
+    if (res.data === undefined) {
       return null;
     }
 
