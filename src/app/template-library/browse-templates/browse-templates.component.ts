@@ -32,6 +32,9 @@ export class BrowseTemplatesComponent implements OnInit {
     this.loadingTemplates = true;
 
     this.service.getTemplatesByFilter(filter).subscribe(res => {
+      if (res === null) {
+        return;
+      }
       this.templates = res;
       this.heading = this.templates.length + ' results for ';
       this.headingHighlight = filter;
@@ -45,6 +48,9 @@ export class BrowseTemplatesComponent implements OnInit {
     this.loadingTemplates = true;
 
     this.service.getTemplatesByCategory(categoryName).subscribe(res => {
+      if (res === null) {
+        return;
+      }
       this.templates = res;
       this.heading = categoryName;
       this.emptyResultsString = 'Could not find any templates for category - ' + categoryName;

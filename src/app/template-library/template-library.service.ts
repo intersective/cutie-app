@@ -58,10 +58,7 @@ export class TemplateLibraryService {
           type
         }
       }`,
-      {},
-      {
-        noCache: true
-      }
+      {}
     ).pipe(map(this._handleTemplates));
   }
 
@@ -82,9 +79,6 @@ export class TemplateLibraryService {
       }`,
       {
         type: category
-      },
-      {
-        noCache: true
       }
     ).pipe(map(this._handleTemplates));
   }
@@ -104,10 +98,7 @@ export class TemplateLibraryService {
           type
         }
       }`,
-      {filter},
-      {
-        noCache: true
-      }
+      {filter}
     ).pipe(map(this._handleTemplates));
   }
 
@@ -129,10 +120,7 @@ export class TemplateLibraryService {
           operationsManualUrl
         }
       }`,
-      {uuid},
-      {
-        noCache: true
-      }
+      {uuid}
     ).pipe(map(this._handleTemplate));
   }
 
@@ -158,6 +146,9 @@ export class TemplateLibraryService {
   }
 
   private _handleTemplate(res) {
+    if (res === null) {
+      return null;
+    }
     if (!res || !res.data) {
       return {};
     }
@@ -165,6 +156,10 @@ export class TemplateLibraryService {
   }
 
   private _handleTemplates(res) {
+    if (res === null) {
+      return null;
+    }
+
     if (!res || !res.data) {
       return [];
     }

@@ -22,6 +22,9 @@ export class TemplateDetailsComponent implements OnInit {
   fetchTemplate(templateId: string) {
     this.loadingTemplate = true;
     this.service.getTemplate(templateId).subscribe(res => {
+      if (res === null) {
+        return;
+      }
       this.template = res;
       this.loadingTemplate = false;
     });
