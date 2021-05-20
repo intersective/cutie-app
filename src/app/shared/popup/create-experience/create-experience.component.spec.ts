@@ -5,11 +5,13 @@ import { of } from 'rxjs';
 import { SharedModule } from '@shared/shared.module';
 import { CreateExperienceComponent } from './create-experience.component';
 import { ModalController } from '@ionic/angular';
+import {Router} from '@angular/router';
 
 describe('CreateExperienceComponent', () => {
   let component: CreateExperienceComponent;
   let fixture: ComponentFixture<CreateExperienceComponent>;
   const modalSpy = jasmine.createSpyObj('ModalController', ['dismiss']);
+  const routerSpy = { navigate: jasmine.createSpy('navigate') };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -20,6 +22,10 @@ describe('CreateExperienceComponent', () => {
         {
           provide: ModalController,
           useValue: modalSpy,
+        },
+        {
+          provide: Router,
+          useValue: routerSpy,
         },
       ]
     })
@@ -38,6 +44,7 @@ describe('CreateExperienceComponent', () => {
   it('for comfirmed()', () => {
     component.browse();
     expect(modalSpy.dismiss).toHaveBeenCalled();
+    expect(routerSpy.navigate).toHaveBeenCalledWith(['/templates']);
   });
 
 });

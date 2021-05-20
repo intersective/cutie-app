@@ -446,7 +446,7 @@ export class DemoService {
       uuid: '84f14db9-491a-09f7-ae61-9926f3ad8c8d',
       name: 'GROW 2020',
       description: `Practera is the leading platform to power high quality experiential learning programs.<br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services`,
-      type: 'mentoring',
+      type: 'team project',
       status: 'completed',
       setupStep: 'visuals',
       leadImage: '',
@@ -483,6 +483,44 @@ export class DemoService {
         onTrackRatio: -1,
         lastUpdated: 1612493090322
       }
+    }
+  ];
+
+  templates = [
+    {
+      uuid: '000f562e-0ed0-4afe-af53-7a8d20558ce1',
+      name: 'Consulting Project Experience',
+      description: `Practera is the leading platform to power high quality experiential learning programs.<br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services`,
+      leadImageUrl: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2252&q=80',
+      leadVideoUrl: 'https://cdn.videvo.net/videvo_files/video/free/2013-08/small_watermarked/hd0992_preview.webm',
+      type: 'Simulations',
+      attributes: ['teambased projects', '12-weeks', 'feedback loops'],
+      designMapUrl: '/assets/icon/favicon.png',
+      operationsManualUrl: '/assets/icon/logo.svg',
+    },
+    {
+      uuid: '34c3d514-b459-b9d1-05c8-2bd1f582447c',
+      name: 'XCELERY 2.0',
+      description: `Practera is the leading platform to power high quality experiential learning programs.<br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services`,
+      leadImageUrl: '',
+      leadVideoUrl: '',
+      type: 'Internships',
+    },
+    {
+      uuid: '16c3d514-b459-b9d1-05c8-2bd1f582447d',
+      name: 'Teamnovation',
+      description: `Practera is the leading platform to power high quality experiential learning programs.<br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services`,
+      leadImageUrl: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=2250&q=80',
+      leadVideoUrl: '',
+      type: 'Team Projects'
+    },
+    {
+      uuid: '84f14db9-491a-09f7-ae61-9926f3ad8c8d',
+      name: 'GROW 2020',
+      description: `Practera is the leading platform to power high quality experiential learning programs.<br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services`,
+      leadImageUrl: 'https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2250&q=80',
+      leadVideoUrl: '',
+      type: 'Mentoring'
     }
   ];
 
@@ -1015,6 +1053,30 @@ export class DemoService {
     }).pipe(delay(1000));
   }
 
+  getTemplates() {
+    return of({
+      data: {
+        templates: [...this.templates, ...this.templates, ...this.templates, ...this.templates, ...this.templates]
+      }
+    }).pipe(delay(1000));
+  }
+
+  getTemplate() {
+    return of({
+      data: {
+        template: this.templates[0]
+      }
+    }).pipe(delay(1000));
+  }
+
+  importExperienceResponse() {
+    return of({
+      data: {
+        experienceUuid: '000f562e-0ed0-4afe-af53-7a8d20558ce1'
+      }
+    }).pipe(delay(1000));
+  }
+
   getTags() {
     return of({
       data: {
@@ -1047,15 +1109,18 @@ export class DemoService {
     return of({}).pipe(delay(1000));
   }
 
-  getExpStatistics(experience) {
+  getExpsStatistics(uuids) {
     return of({
       data: {
-        expStatistics: {
-          ...this.experiences[1].statistics,
-          ...{
-            lastUpdated: Date.now()
+        expsStatistics: uuids.map(u => ({
+          uuid: u,
+          statistics: {
+            ...this.experiences[1].statistics,
+            ...{
+              lastUpdated: Date.now()
+            }
           }
-        }
+        }))
       }
     }).pipe(delay(1000));
   }

@@ -1,0 +1,200 @@
+service: ${env:STACK_NAME}-cutie-app
+frameworkVersion: '2'
+useDotenv: true
+enableLocalInstallationFallback: true
+
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: ${env:REGION}
+  stage: ${env:ENV}
+  deploymentBucket:
+    blockPublicAccess: true 
+    serverSideEncryption: AES256 
+    tags: 
+      StackName: ${env:STACK_NAME}
+      Env: ${env:ENV}
+      RootStack: ${env:ROOTSTACK}
+  stackTags: # Optional CF stack tags
+    StackName: ${env:STACK_NAME}
+    Env: ${env:ENV}
+    RootStack: ${env:ROOTSTACK}
+  tags: # Optional service wide function tags
+    StackName: ${env:STACK_NAME}
+    Env: ${env:ENV}
+    RootStack: ${env:ROOTSTACK}
+  notificationArns:
+    - ${env:ChatBotSNSTopicARN}
+
+
+resources:
+
+  Conditions:
+    HasCutieBucketName: !Not [!Equals [ '${env:CUTIES3BUCKET}', '']]
+    HasVersioning: !Equals [ '${env:S3VERSIONING}', true]
+    HadVersioning: !Equals [ '${env:S3VERSIONING}', 'false-but-was-true']
+    HasNoncurrentVersionExpirationInDays: !Not [!Equals [ '${env:NONCURRENTVERSION_EXPIREINDAYS}', 0]]
+    # HasExpirationInDays: !Not [!Equals [ '${env:DEFAULT_EXPIREINDAYS}', 0]]
+    
+  Resources:
+    ## Specifying the S3 Bucket
+    CUTIES3BUCKET:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: !If [HasCutieBucketName, '${env:CUTIES3BUCKET}', !Ref 'AWS::NoValue']
+        BucketEncryption: 
+          ServerSideEncryptionConfiguration: 
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+        LifecycleConfiguration:
+          Rules:
+          - AbortIncompleteMultipartUpload:
+              DaysAfterInitiation: 7
+            Status: Enabled
+          - NoncurrentVersionExpirationInDays: !If [HasNoncurrentVersionExpirationInDays, '${env:NONCURRENTVERSION_EXPIREINDAYS}', 1]
+            Status: !If [HasNoncurrentVersionExpirationInDays, Enabled, Disabled]
+          # - ExpirationInDays: !If [HasExpirationInDays, '${env:DEFAULT_EXPIREINDAYS}', 1]
+          #   Status: !If [HasExpirationInDays, Enabled, Disabled]
+        VersioningConfiguration: !If [HasVersioning, {Status: Enabled}, !If [HadVersioning, {Status: Suspended}, !Ref 'AWS::NoValue']]
+
+
+    ## Specifying the policies to make sure all files inside the Bucket are avaialble to CloudFront
+    CUTIES3BUCKETPolicy:
+      DependsOn: [CutieCloudFrontOriginAccessIdentity]
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket:
+          Ref: CUTIES3BUCKET
+        PolicyDocument:
+          Statement:
+          - Sid: S3-Bucket-Accesible via CDN OAI only
+            Action: 's3:GetObject'
+            Effect: Allow
+            Resource: !Sub 'arn:aws:s3:::${CUTIES3BUCKET}/*'
+            Principal:
+              CanonicalUser: !GetAtt CutieCloudFrontOriginAccessIdentity.S3CanonicalUserId 
+          - Sid: AllowSSLRequestsOnly # AWS Foundational Security Best Practices v1.0.0 S3.5
+            Effect: Deny
+            Principal: '*'
+            Action: 's3:*'
+            Resource:
+            - !Sub 'arn:aws:s3:::${CUTIES3BUCKET}'
+            - !Sub 'arn:aws:s3:::${CUTIES3BUCKET}/*'
+            Condition:
+              Bool:
+                'aws:SecureTransport': false
+
+    ## Specifying the CloudFront Origin Access Identity CDN Distribution to server your Web Application
+    CutieCloudFrontOriginAccessIdentity:
+      Type: 'AWS::CloudFront::CloudFrontOriginAccessIdentity'
+      Properties:
+        CloudFrontOriginAccessIdentityConfig:
+          Comment: "Cloudfront Origin identity for ${env:CUTIES3BUCKET}"
+
+    ## Specifying the CloudFront Distribution to server your Web Application
+    CutieCloudFrontDistribution:
+      Type: AWS::CloudFront::Distribution
+      Properties:
+        DistributionConfig:
+          Aliases:
+            - ${env:CUTIES3BUCKET}
+          Comment: "Cloudfront Origin identity for ${env:CUTIES3BUCKET}"
+          DefaultCacheBehavior:
+            AllowedMethods:
+            - GET
+            - HEAD
+            - OPTIONS
+            CachedMethods:
+            - GET
+            - HEAD
+            - OPTIONS
+            Compress: true
+            DefaultTTL: 3600 # in seconds
+            ForwardedValues:
+              Cookies:
+                Forward: none
+              QueryString: false
+            MaxTTL: 86400 # in seconds
+            MinTTL: 60 # in seconds
+            TargetOriginId: ${env:CUTIES3BUCKET}
+            ViewerProtocolPolicy: 'redirect-to-https'
+          DefaultRootObject: index.html
+          CustomErrorResponses:
+            - ErrorCode: 404
+              ResponseCode: 200
+              ResponsePagePath: /index.html
+            - ErrorCode: 403
+              ResponseCode: 200
+              ResponsePagePath: /index.html
+          Enabled: true
+          HttpVersion: http2
+          IPV6Enabled: true
+          Origins:
+          - DomainName: !GetAtt 'CUTIES3BUCKET.RegionalDomainName'
+            Id: ${env:CUTIES3BUCKET}
+            S3OriginConfig:
+              OriginAccessIdentity: !Sub 'origin-access-identity/cloudfront/${CutieCloudFrontOriginAccessIdentity}'
+          PriceClass: 'PriceClass_All'
+          ViewerCertificate:
+            AcmCertificateArn: {'Fn::ImportValue': '${env:STACK_NAME}-CDNSharedACMCertificateArn-${env:ENV}'}
+            MinimumProtocolVersion: 'TLSv1.2_2019'
+            SslSupportMethod: 'sni-only'
+    
+    Route53RecordV2:
+      Type: 'AWS::Route53::RecordSetGroup'
+      Properties:
+        HostedZoneId: {'Fn::ImportValue': '${env:STACK_NAME}-PublicHostedZoneId-${env:ENV}'}
+        RecordSets:
+        - Name: ${env:CUTIES3BUCKET}
+          Type: CNAME
+          TTL: '3200'
+          ResourceRecords:
+            - !GetAtt 'CutieCloudFrontDistribution.DomainName'
+
+
+    HTTPCodeTarget5XXTooHighAlarm:
+      Type: 'AWS::CloudWatch::Alarm'
+      Properties:
+        AlarmDescription: '${env:CUTIES3BUCKET} - receives 5XX HTTP status codes from targets'
+        Namespace: 'AWS/CloudFront'
+        MetricName: HTTPCode_Target_5XX_Count
+        Statistic: Sum
+        Period: 60
+        EvaluationPeriods: 1
+        ComparisonOperator: GreaterThanThreshold
+        Threshold: 0
+        AlarmActions:
+        - {'Fn::ImportValue': '${env:STACK_NAME}-ChatBotSNSTopicARN-${env:ENV}'}
+        Dimensions:
+        - Name: Region
+          Value: Global
+        - Name: DistributionId
+          Value: !Ref CutieCloudFrontDistribution
+        TreatMissingData: notBreaching
+
+
+  Outputs:
+    CutieCloudFrontDistributionOutput:
+      Value:
+        'Fn::GetAtt': [ CutieCloudFrontDistribution, DomainName ]
+      Export:
+        Name: ${env:STACK_NAME}-CutieCloudFrontDistributionOutput-${env:ENV}
+    
+    CUTIES3BUCKET:
+      Description: 'Name of the S3 bucket storing the static files.'
+      Value: !Ref CUTIES3BUCKET
+      Export:
+        Name: ${env:STACK_NAME}-CUTIES3BUCKET-${env:ENV}
+
+    CUTIES3BUCKETURL:
+      Description: 'URL to static website.'
+      Value: https://${env:CUTIES3BUCKET}
+      Export:
+        Name: ${env:STACK_NAME}-CUTIES3BUCKETURL-${env:ENV}
+
+    CutieCloudFrontDistributionID:
+      Description: 'CloudFront distribution id'
+      Value: !Ref CutieCloudFrontDistribution
+      Export:
+        Name: ${env:STACK_NAME}-CutieCloudFrontDistributionID-${env:ENV}

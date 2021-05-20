@@ -1,0 +1,16 @@
+<ng-container *ngIf="!skeleton">
+  <a href="{{src}}" download>
+    <div class="cursor-pointer resource-download-card-container">
+      <div class="resource-download-card-background" [style.background-image]="leadImage ? 'url(' + leadImage + ')': 'url(/assets/exp-placeholder.png)'"></div>
+      <div class="resource-download-card-overlay"></div>
+      <div class="resource-download-card-title-container">
+        <span class="resource-download-card-title"><ion-icon name="download-outline"></ion-icon></span>
+      </div>
+      <div class="resource-download-name">{{prompt}}</div>
+    </div>
+  </a>
+</ng-container>
+
+<ng-container *ngIf="skeleton">
+  <ion-skeleton-text animated="true" style="height: 125px;width: 100%;"></ion-skeleton-text>
+</ng-container>

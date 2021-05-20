@@ -48,6 +48,7 @@ export class OverviewComponent implements OnInit {
     'feedback loops completed',
     'on-track/off-track',
     'feedback quality score',
+    'issue',
   ];
   sortDesc = true;
   sortBy = this.sortList[0];
@@ -85,16 +86,6 @@ export class OverviewComponent implements OnInit {
       this._getAllTags();
     });
 
-    // when experience statistics get updated, update the experience statistics
-    this.utils.getEvent('exp-statistics-updated').subscribe(event => {
-      if (!this.utils.has(event, 'experience') || !this.utils.has(event, 'statistics')) {
-        return ;
-      }
-      this.experiences = this._updateStatistics(this.experiences, event.experience, event.statistics);
-      this.experiencesRaw = this._updateStatistics(this.experiencesRaw, event.experience, event.statistics);
-      this._getAllTags();
-    });
-
     // when experience get archived/deleted, reload the experiences data
     this.utils.getEvent('exps-reload').subscribe(event => {
       this.loadExperiences();
@@ -109,11 +100,31 @@ export class OverviewComponent implements OnInit {
       // get all tags
       this._getAllTags();
       // get all types
-      this.types = [...['all'], ...this.experiencesRaw.map(exp => exp.type)];
-      this.types = [...new Set(this.types)];
+      this._getAllTypes();
       this.filterAndOrder();
+      this._refreshLiveExpStats();
       this.loadingExps = false;
     });
+  }
+
+  private _getAllTypes() {
+    const typeCounts: any = {};
+    this.experiencesRaw.forEach(exp => {
+      if (typeCounts[exp.type]) {
+        typeCounts[exp.type]++;
+      } else {
+        typeCounts[exp.type] = 1;
+      }
+    });
+    this.types = [...['all'], ...Object.keys(typeCounts).sort((a, b) => {
+      if (typeCounts[a] > typeCounts[b]) {
+        return -1;
+      }
+      if (typeCounts[a] < typeCounts[b]) {
+        return 1;
+      }
+      return 0;
+    })];
   }
 
   loadMore(event) {
@@ -171,7 +182,9 @@ export class OverviewComponent implements OnInit {
     this.experiences.forEach(exp => {
       exp.tags.forEach(t => {
         const index = this.tags.findIndex(tt => t === tt.name);
-        this.tags[index].count += 1;
+        if (index > -1) {
+          this.tags[index].count += 1;
+        }
       });
     });
     this.tags = [...this.tags];
@@ -181,15 +194,6 @@ export class OverviewComponent implements OnInit {
     return experiences.map(exp => {
       if (exp.uuid === experience.uuid) {
         exp.tags = tags;
-      }
-      return exp;
-    });
-  }
-
-  private _updateStatistics(experiences: Experience[], experience: Experience, statistics: Statistics) {
-    return experiences.map(exp => {
-      if (exp.uuid === experience.uuid) {
-        exp.statistics = statistics;
       }
       return exp;
     });
@@ -300,6 +304,15 @@ export class OverviewComponent implements OnInit {
           return a.statistics.reviewRatingAvg < b.statistics.reviewRatingAvg ? -1 : 1;
         });
         break;
+
+      case 8:
+        this.experiences.sort((a, b) => {
+          if (this.sortDesc) {
+            return a.todoItemCount > b.todoItemCount ? -1 : 1;
+          }
+          return a.todoItemCount < b.todoItemCount ? -1 : 1;
+        });
+        break;
     }
   }
 
@@ -330,6 +343,26 @@ export class OverviewComponent implements OnInit {
     this.stats[1].value = totalUsers ? `${ Math.round(activeUsers * 100 / totalUsers) }%` : '0%';
     this.stats[2].value = fbStarted ? `${ fbCompleted }/${ fbStarted }` : '0/0';
     this.stats[3].value = `${ Math.round(reviewRatingAvg * 100) }%`;
+  }
+
+  private _refreshLiveExpStats() {
+    const uuids = this.experiencesRaw.filter(e => ['live', 'draft'].includes(e.status)).map(e => e.uuid);
+    this.service.getExpsStatistics(uuids).subscribe(res => {
+      if (!res) {
+        return;
+      }
+      res.forEach(exp => {
+        // update both experiencesRaw and experiences
+        const expRawIndex = this.experiencesRaw.findIndex(e => e.uuid === exp.uuid);
+        if (expRawIndex >= 0 && !this.utils.isEqual(this.experiencesRaw[expRawIndex].statistics, exp.statistics)) {
+          this.experiencesRaw[expRawIndex].statistics = exp.statistics;
+        }
+        const expIndex = this.experiences.findIndex(e => e.uuid === exp.uuid);
+        if (expIndex >= 0 && !this.utils.isEqual(this.experiences[expIndex].statistics, exp.statistics)) {
+          this.experiences[expIndex].statistics = exp.statistics;
+        }
+      });
+    });
   }
 
   add() {
@@ -409,7 +442,7 @@ export class OverviewComponent implements OnInit {
       reportPerExp.push([
         exp.name,
         exp.type,
-        exp.description.replace(/(<([^>]+)>)/ig, ''),
+        exp.description ? exp.description.replace(/(<([^>]+)>)/ig, '') : '',
         exp.tags.join(','),
         exp.status,
         exp.todoItemCount,

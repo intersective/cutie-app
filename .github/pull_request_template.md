@@ -6,10 +6,9 @@
 
 **Checklist:**
 
-- [ x ] Unit test completed?: (Y/N)
-- [ x ] Docs folder up to date?: (Y/N)
-- [ x ] Add if anything missed: (Y/N)
-- [ x ] Add if anything missed: (Y/N)
+- [x] Unit test completed?: (Y/N)
+- [x] Docs folder up to date?: (Y/N)
+- [x] Add if anything missed: (Y/N)
 
 All Checklist are okay.
 

@@ -1,0 +1,33 @@
+<div class="ion-page bg-white">
+  <ion-split-pane class="template-library-container" contentId="main">
+    <ion-menu contentId="main" class="menu border-0">
+      <ion-header>
+        <ion-toolbar>
+          <ion-searchbar class="template-search-bar" color="light" (ionChange)="onSearch($event)"></ion-searchbar>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content>
+        <ion-list lines="none">
+          <ion-item class="menu-header">Categories</ion-item>
+          <ion-item routerLink="/templates" [ngClass]="router.url === '/templates' ? 'active' : ''" >Home</ion-item>
+          <ng-container *ngFor="let category of categories">
+            <ion-item (click)="router.navigate( ['templates', category.name])" [ngClass]="router.url === '/templates/' + encodeURI(category.name) ? 'active' : ''" button>{{ category.name }}</ion-item>
+          </ng-container>
+        </ion-list>
+      </ion-content>
+    </ion-menu>
+
+    <ion-content id="main">
+
+      <ion-fab class="ion-hide-lg-up" vertical="top" horizontal="start" slot="fixed">
+        <ion-fab-button color="light">
+          <ion-menu-button> </ion-menu-button>
+        </ion-fab-button>
+      </ion-fab>
+
+      <ion-router-outlet></ion-router-outlet>
+
+    </ion-content>
+  </ion-split-pane>
+</div>

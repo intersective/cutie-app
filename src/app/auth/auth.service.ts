@@ -84,7 +84,9 @@ export class AuthService {
       this.storage.set('programs', programs);
     }
     this.getMyInfo().subscribe();
-    this.getUserEnrolmentUuid().subscribe();
+    if (data.timeline_id || data.timeline_uuid) {
+      this.getUserEnrolmentUuid().subscribe();
+    }
     return response;
   }
 

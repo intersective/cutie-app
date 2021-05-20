@@ -1,0 +1,28 @@
+@media (min-width:992px) {
+  .template-library-container {
+    //width: 85%;
+    max-width: 1200px;
+    margin: auto;
+  }
+}
+
+@media (max-width:991px) {
+  .menu {
+    margin-left: 10px;
+  }
+}
+
+.template-search-bar {
+  padding: 4px 5px 0px 2px;
+  --box-shadow: none;
+}
+
+.search-home-container {
+  display: flex;
+  margin-bottom: 24px;
+  padding-top: 7px;
+}
+
+ion-item.active {
+  font-weight: bold;
+}

@@ -84,23 +84,6 @@
           <ng-container *ngIf="experience.status === 'draft'">
             <!-- <a class="btn btn-link">Resume building</a> -->
           </ng-container>
-          <ng-container *ngIf="experience.status !== 'draft'">
-            <ion-spinner *ngIf="refreshing"></ion-spinner>
-            <button class="btn btn-link shadow-none" type="button" [id]="'last-update-' + experience.uuid" data-bs-toggle="dropdown" aria-expanded="false" [disabled]="refreshing">
-              <span class="experience-item-timestamp">
-                {{ lastUpdated() }}<ion-icon name="time-outline"></ion-icon>
-              </span>
-            </button>
-            <ul class="dropdown-menu" [attr.aria-labelledby]="'last-update-' + experience.uuid">
-              <li class="px-3 gray-2">Statistics last updated {{ lastUpdated() }} ago</li>
-              <li><hr class="dropdown-divider"></li>
-              <li>
-                <a class="dropdown-item" (click)="refresh()">
-                  <ion-icon name="refresh"></ion-icon><span class="ms-2">Refresh Now</span>
-                </a>
-              </li>
-            </ul>
-          </ng-container>
           <ng-container *ngIf="experience.status !== 'archived'">
             <button class="btn btn-link shadow-none" type="button" [id]="'option-' + experience.uuid" data-bs-toggle="dropdown"  aria-expanded="false">
               <ion-icon name="ellipsis-horizontal"></ion-icon>
@@ -156,9 +139,9 @@
           </ng-container>
           <ng-container *ngIf="experience.tags.length">
             <ng-container *ngFor="let tag of experience.tags; let i = index">
-              <span *ngIf="i < 8" class="experience-tag btn-round btn-sm btn-tag cursor-auto m-1">{{ tag }}</span>
+              <span *ngIf="i < 4" class="experience-tag btn-round btn-sm btn-tag cursor-auto m-1">{{ tag }}</span>
             </ng-container>
-            <a *ngIf="experience.tags.length > 8" class="btn btn-link float-end" (click)="moreTags()">+{{ experience.tags.length - 8 }} more</a>
+            <a *ngIf="experience.tags.length > 4" class="btn btn-link float-end" (click)="moreTags()">+{{ experience.tags.length - 4 }} more</a>
           </ng-container>
         </div>
       </div>

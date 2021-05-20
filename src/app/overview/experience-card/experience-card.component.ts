@@ -3,6 +3,7 @@ import { Experience, OverviewService } from '../overview.service';
 import { PopupService } from '@shared/popup/popup.service';
 import { UtilsService } from '@services/utils.service';
 import { environment } from '@environments/environment';
+import { urlFormatter } from 'helper';
 
 @Component({
   selector: 'app-experience-card',
@@ -19,26 +20,6 @@ export class ExperienceCardComponent {
     private service: OverviewService,
     private utils: UtilsService,
   ) { }
-
-  lastUpdated() {
-    if (this.experience && this.experience.statistics.lastUpdated) {
-      let diff = Date.now() - this.experience.statistics.lastUpdated;
-      if (diff > 1000 * 60 * 60 * 24) {
-        return `${ Math.floor(diff / (1000 * 60 * 60 * 24)) }d`;
-      }
-      if (diff > 1000 * 60 * 60) {
-        return `${ Math.floor(diff / (1000 * 60 * 60)) }h`;
-      }
-      if (diff > 1000 * 60) {
-        return `${ Math.floor(diff / (1000 * 60)) }m`;
-      }
-      if (diff < 0) {
-        diff = 1000;
-      }
-      return `${ Math.floor(diff / 1000) }s`;
-    }
-    return '';
-  }
 
   userCount() {
     if (!this.experience.statistics.enrolledUserCount) {
@@ -117,7 +98,7 @@ export class ExperienceCardComponent {
       message: 'Entering the experience'
     });
     if (this.experience.timelineId) {
-      window.top.location.href = `${ environment.Practera }/users/change/timeline/${ this.experience.timelineId }`;
+      window.top.location.href = urlFormatter(environment.Practera, `/users/change/timeline/${ this.experience.timelineId }`);
     } else {
       setTimeout(() => this.popupService.dismissLoading(), 1000);
     }
@@ -128,7 +109,7 @@ export class ExperienceCardComponent {
       message: 'Going to edit the experience'
     });
     if (this.experience.timelineId && this.experience.id) {
-      window.top.location.href = `${ environment.Practera }/users/change/timeline/${ this.experience.timelineId }?redirect=/admin/experiences/edit/${ this.experience.id }`;
+      window.top.location.href = urlFormatter(environment.Practera, `/users/change/timeline/${this.experience.timelineId}?redirect=/admin/experiences/edit/${this.experience.id}`);
     } else {
       setTimeout(() => this.popupService.dismissLoading(), 1000);
     }
@@ -156,7 +137,7 @@ export class ExperienceCardComponent {
 
   delete() {
     this.popupService.showAlert({
-      message: 'Are you sure you wanna delete this experience?',
+      message: 'Are you sure you want to delete this experience?',
       buttons: [
         {
           text: 'Cancel',
@@ -180,7 +161,7 @@ export class ExperienceCardComponent {
 
   archive() {
     this.popupService.showAlert({
-      message: 'Are you sure you wanna archive this experience?',
+      message: 'Are you sure you want to archive this experience?',
       buttons: [
         {
           text: 'Cancel',
@@ -199,17 +180,6 @@ export class ExperienceCardComponent {
           }
         },
       ]
-    });
-  }
-
-  refresh() {
-    this.refreshing = true;
-    this.service.getExpStatistics(this.experience).subscribe(res => {
-      this.utils.broadcastEvent('exp-statistics-updated', {
-        experience: this.experience,
-        statistics: res
-      });
-      this.refreshing = false;
     });
   }
 }
