@@ -140,29 +140,23 @@ export class TemplateLibraryService {
 
   private _handleImportedExperienceResponse(res) {
     if (!res || !res.data) {
-      return {};
+      return null;
     }
     return res.data;
   }
 
   private _handleTemplate(res) {
-    if (res === null) {
-      return null;
-    }
+    // we are using Apollo client cache, so it will return undefined initially, we should treat this as we are still loading the data
     if (!res || !res.data) {
-      return {};
+      return null;
     }
     return res.data.template;
   }
 
   private _handleTemplates(res) {
     // we are using Apollo client cache, so it will return undefined initially, we should treat this as we are still loading the data
-    if (res.data === undefined) {
-      return null;
-    }
-
     if (!res || !res.data) {
-      return [];
+      return null;
     }
     return res.data.templates;
   }
