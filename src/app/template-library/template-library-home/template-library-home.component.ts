@@ -27,14 +27,17 @@ export class TemplateLibraryHomeComponent implements OnInit {
     this.categories = this.service.getCategories();
 
     this.service.getTemplates().subscribe(res => {
+      if (res === null) {
+        return;
+      }
       this.templates = res;
       if (res && Array.isArray(res) && res.length > 0) {
-        this.categories.forEach(category => {
+        for (const category of this.categories) {
           this.categorisedTemplates.push({
             category: category,
             templates: this.templates.filter(template => template.type === category.name)
           });
-        });
+        }
       }
       this.loadingTemplates = false;
     });

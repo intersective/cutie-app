@@ -58,7 +58,7 @@ export class TemplateLibraryService {
           type
         }
       }`,
-      {},
+      {}
     ).pipe(map(this._handleTemplates));
   }
 
@@ -79,7 +79,7 @@ export class TemplateLibraryService {
       }`,
       {
         type: category
-      },
+      }
     ).pipe(map(this._handleTemplates));
   }
 
@@ -98,7 +98,7 @@ export class TemplateLibraryService {
           type
         }
       }`,
-      {filter},
+      {filter}
     ).pipe(map(this._handleTemplates));
   }
 
@@ -120,7 +120,7 @@ export class TemplateLibraryService {
           operationsManualUrl
         }
       }`,
-      {uuid},
+      {uuid}
     ).pipe(map(this._handleTemplate));
   }
 
@@ -128,13 +128,13 @@ export class TemplateLibraryService {
     if (environment.demo) {
       return this.demo.importExperienceResponse().pipe(map(this._handleImportedExperienceResponse));
     }
-    return this.request.graphQLQuery(
+    return this.request.graphQLMutate(
       `mutation importExperience($templateUuid: ID!) {
         importExperience(templateUuid: $templateUuid) {
           experienceUuid
         }
       }`,
-      {templateUuid},
+      {templateUuid}
     ).pipe(map(this._handleImportedExperienceResponse));
   }
 
@@ -146,6 +146,9 @@ export class TemplateLibraryService {
   }
 
   private _handleTemplate(res) {
+    if (res === null) {
+      return null;
+    }
     if (!res || !res.data) {
       return {};
     }
@@ -153,6 +156,10 @@ export class TemplateLibraryService {
   }
 
   private _handleTemplates(res) {
+    if (res === null) {
+      return null;
+    }
+
     if (!res || !res.data) {
       return [];
     }
