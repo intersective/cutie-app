@@ -41,7 +41,7 @@ describe('TemplateLibraryService', () => {
     it('demo response', () => {
       environment.demo = true;
       demoService.getTemplates = jasmine.createSpy().and.returnValue(of({}));
-      service.getTemplates().subscribe(res => expect(res).toEqual([]));
+      service.getTemplates().subscribe(res => expect(res).toEqual(null));
     });
     it('graphql response', () => {
       environment.demo = false;
@@ -55,12 +55,12 @@ describe('TemplateLibraryService', () => {
     it('handles undefined graphql response', () => {
       environment.demo = false;
       requestService.graphQLQuery = jasmine.createSpy().and.returnValue(of(undefined));
-      service.getTemplates().subscribe(res => expect(res).toEqual([]));
+      service.getTemplates().subscribe(res => expect(res).toEqual(null));
     });
     it('handles undefined data from graphql response', () => {
       environment.demo = false;
       requestService.graphQLQuery = jasmine.createSpy().and.returnValue(of({data: undefined}));
-      service.getTemplates().subscribe(res => expect(res).toEqual([]));
+      service.getTemplates().subscribe(res => expect(res).toEqual(null));
     });
   });
 
@@ -68,7 +68,7 @@ describe('TemplateLibraryService', () => {
     it('demo response', () => {
       environment.demo = true;
       demoService.getTemplates = jasmine.createSpy().and.returnValue(of({}));
-      service.getTemplatesByCategory('category').subscribe(res => expect(res).toEqual([]));
+      service.getTemplatesByCategory('category').subscribe(res => expect(res).toEqual(null));
     });
     it('graphql response', () => {
       environment.demo = false;
@@ -82,12 +82,12 @@ describe('TemplateLibraryService', () => {
     it('handles undefined graphql response', () => {
       environment.demo = false;
       requestService.graphQLQuery = jasmine.createSpy().and.returnValue(of(undefined));
-      service.getTemplatesByCategory('category').subscribe(res => expect(res).toEqual([]));
+      service.getTemplatesByCategory('category').subscribe(res => expect(res).toEqual(null));
     });
     it('handles undefined data from graphql response', () => {
       environment.demo = false;
       requestService.graphQLQuery = jasmine.createSpy().and.returnValue(of({data: undefined}));
-      service.getTemplatesByCategory('category').subscribe(res => expect(res).toEqual([]));
+      service.getTemplatesByCategory('category').subscribe(res => expect(res).toEqual(null));
     });
   });
 
@@ -95,7 +95,7 @@ describe('TemplateLibraryService', () => {
     it('demo response', () => {
       environment.demo = true;
       demoService.getTemplates = jasmine.createSpy().and.returnValue(of({}));
-      service.getTemplatesByFilter('filter').subscribe(res => expect(res).toEqual([]));
+      service.getTemplatesByFilter('filter').subscribe(res => expect(res).toEqual(null));
     });
     it('graphql response', () => {
       environment.demo = false;
@@ -109,12 +109,12 @@ describe('TemplateLibraryService', () => {
     it('handles undefined graphql response', () => {
       environment.demo = false;
       requestService.graphQLQuery = jasmine.createSpy().and.returnValue(of(undefined));
-      service.getTemplatesByFilter('filter').subscribe(res => expect(res).toEqual([]));
+      service.getTemplatesByFilter('filter').subscribe(res => expect(res).toEqual(null));
     });
     it('handles undefined data from graphql response', () => {
       environment.demo = false;
       requestService.graphQLQuery = jasmine.createSpy().and.returnValue(of({data: undefined}));
-      service.getTemplatesByFilter('filter').subscribe(res => expect(res).toEqual([]));
+      service.getTemplatesByFilter('filter').subscribe(res => expect(res).toEqual(null));
     });
   });
 
@@ -123,7 +123,7 @@ describe('TemplateLibraryService', () => {
       environment.demo = true;
       demoService.getTemplate = jasmine.createSpy().and.returnValue(of({}));
       // @ts-ignore
-      service.getTemplate('abc123').subscribe(res => expect(res).toEqual({}));
+      service.getTemplate('abc123').subscribe(res => expect(res).toEqual(null));
     });
     it('graphql response', () => {
       environment.demo = false;
@@ -138,13 +138,13 @@ describe('TemplateLibraryService', () => {
       environment.demo = false;
       requestService.graphQLQuery = jasmine.createSpy().and.returnValue(of(undefined));
       // @ts-ignore
-      service.getTemplate('abc123').subscribe(res => expect(res).toEqual({}));
+      service.getTemplate('abc123').subscribe(res => expect(res).toEqual(null));
     });
     it('handles undefined data from graphql response', () => {
       environment.demo = false;
       requestService.graphQLQuery = jasmine.createSpy().and.returnValue(of({data: undefined}));
       // @ts-ignore
-      service.getTemplate('abc123').subscribe(res => expect(res).toEqual({}));
+      service.getTemplate('abc123').subscribe(res => expect(res).toEqual(null));
     });
   });
 
@@ -153,7 +153,7 @@ describe('TemplateLibraryService', () => {
       environment.demo = true;
       demoService.importExperienceResponse = jasmine.createSpy().and.returnValue(of({}));
       // @ts-ignore
-      service.importExperience('abc123').subscribe(res => expect(res).toEqual({}));
+      service.importExperience('abc123').subscribe(res => expect(res).toEqual(null));
     });
     it('graphql response', () => {
       environment.demo = false;
@@ -168,13 +168,13 @@ describe('TemplateLibraryService', () => {
       environment.demo = false;
       requestService.graphQLMutate = jasmine.createSpy().and.returnValue(of(undefined));
       // @ts-ignore
-      service.importExperience('abc123').subscribe(res => expect(res).toEqual({}));
+      service.importExperience('abc123').subscribe(res => expect(res).toEqual(null));
     });
     it('handles undefined data from graphql response', () => {
       environment.demo = false;
       requestService.graphQLMutate = jasmine.createSpy().and.returnValue(of({data: undefined}));
       // @ts-ignore
-      service.importExperience('abc123').subscribe(res => expect(res).toEqual({}));
+      service.importExperience('abc123').subscribe(res => expect(res).toEqual(null));
     });
   });
 
