@@ -8,6 +8,7 @@ import { UtilsService } from '@services/utils.service';
 import { StorageService } from '@services/storage.service';
 import { PusherStatic, Pusher, Config, Channel } from 'pusher-js';
 import * as PusherLib from 'pusher-js';
+import { urlFormatter } from 'helper';
 
 const api = {
   pusherAuth: 'api/v2/message/notify/pusher_auth.json',
@@ -139,7 +140,7 @@ export class PusherService {
       const config: Config = {
         cluster: 'mt1',
         forceTLS: true,
-        authEndpoint: this.apiurl + api.pusherAuth,
+        authEndpoint: urlFormatter(this.apiurl, api.pusherAuth),
         auth: {
           headers: {
             'Authorization': 'pusherKey=' + this.pusherKey,
