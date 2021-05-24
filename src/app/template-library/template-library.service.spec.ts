@@ -37,66 +37,6 @@ describe('TemplateLibraryService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('Standardised template category equality ignores special characters', () => {
-    it('simple strings', () => {
-      expect(TemplateLibraryService.isInCategory('internship', 'internship')).toBeTruthy();
-    });
-    it('capital letters', () => {
-      expect(TemplateLibraryService.isInCategory('INTERNSHIP', 'interNshiP')).toBeTruthy();
-    });
-    it('white space', () => {
-      expect(TemplateLibraryService.isInCategory('inte rns h ip', ' int ernsh ip   ')).toBeTruthy();
-    });
-    it('dashes', () => {
-      expect(TemplateLibraryService.isInCategory('inter-n-ship', 'in-ternsh-ip')).toBeTruthy();
-    });
-    it('underscores', () => {
-      expect(TemplateLibraryService.isInCategory('inter_n_ship', 'i_n_t_ernship____')).toBeTruthy();
-    });
-    it('periods', () => {
-      expect(TemplateLibraryService.isInCategory('.internship.', 'inte.rnship')).toBeTruthy();
-    });
-    it('dollars', () => {
-      expect(TemplateLibraryService.isInCategory('int$er$n$ship$$', '$$in$ternship')).toBeTruthy();
-    });
-    it('ampersands', () => {
-      expect(TemplateLibraryService.isInCategory('i&&nt&er&nship', 'internship&&&&')).toBeTruthy();
-    });
-    it('asterisk', () => {
-      expect(TemplateLibraryService.isInCategory('in**ternship***', '*i*n*t*e*r*n*s*h**i*p*')).toBeTruthy();
-    });
-    it('percentage', () => {
-      expect(TemplateLibraryService.isInCategory('%in%%ternship%%', '%in%t%e%r%n%s%h%%i%p%')).toBeTruthy();
-    });
-    it('exclamation mark', () => {
-      expect(TemplateLibraryService.isInCategory('in!ter!nship!', 'i!n!t!e!rnsh!!ip!!!')).toBeTruthy();
-    });
-    it('at symbol', () => {
-      expect(TemplateLibraryService.isInCategory('@@internship@@', 'i@n@t@e@r@n@s@h@@@i@p')).toBeTruthy();
-    });
-    it('hash', () => {
-      expect(TemplateLibraryService.isInCategory('in#ter###nship', '#i#n#ternsh###ip')).toBeTruthy();
-    });
-    it('carrot', () => {
-      expect(TemplateLibraryService.isInCategory('in^ter^^^nship', '^i^ntern^sh^ip^^')).toBeTruthy();
-    });
-    it('all', () => {
-      expect(TemplateLibraryService.isInCategory(' *^^@!#!% & %$ .iNte__ %%%rn!!#@^-shIp.', '-^@#!@#^- i n__T_e.r%%$n--s    h#!!%___  _i  $$&-$- *  - P_')).toBeTruthy();
-    });
-    it('Fails if the word is different', () => {
-      expect(TemplateLibraryService.isInCategory('internship', 'different')).toBeFalsy();
-    });
-    it('Fails if word is a little different', () => {
-      expect(TemplateLibraryService.isInCategory('internship', 'internshipp')).toBeFalsy();
-    });
-    it('Fails if word is a little different and has special characters', () => {
-      expect(TemplateLibraryService.isInCategory('internship $', ' internshipp ')).toBeFalsy();
-    });
-    it('Fails if word has different numbers', () => {
-      expect(TemplateLibraryService.isInCategory('1 internship', '2 internship')).toBeFalsy();
-    });
-  });
-
   describe('for getTemplates', () => {
     it('demo response', () => {
       environment.demo = true;
