@@ -35,7 +35,7 @@ export class TemplateLibraryHomeComponent implements OnInit {
         for (const category of this.categories) {
           this.categorisedTemplates.push({
             category: category,
-            templates: this.templates.filter(template => template.type === category.name)
+            templates: this.templates.filter(template => TemplateLibraryService.isInCategory(template.type, category.name))
           });
         }
       }
