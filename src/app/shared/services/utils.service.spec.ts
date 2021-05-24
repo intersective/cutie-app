@@ -1,5 +1,4 @@
 import { UtilsService } from './utils.service';
-import {TemplateLibraryService} from '../../template-library/template-library.service';
 
 describe('UtilsService', () => {
   let service: UtilsService;
