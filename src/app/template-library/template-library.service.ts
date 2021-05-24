@@ -4,6 +4,7 @@ import {environment} from '@environments/environment';
 import {DemoService} from '@services/demo.service';
 import {RequestService} from '../shared/request/request.service';
 import {Observable} from 'rxjs/Observable';
+import {UtilsService} from '../shared/services/utils.service';
 
 export interface Template {
   uuid: string;
@@ -44,13 +45,7 @@ export class TemplateLibraryService {
   ) { }
 
   static isInCategory(templateType: string, categoryType: string): boolean {
-    return TemplateLibraryService._standardiseType(templateType) === TemplateLibraryService._standardiseType(categoryType);
-  }
-
-  private static _standardiseType(type: string): string {
-    type = type.replace(/[!@#^_.$&*%\s\-]/g,''); // tslint:disable-line
-    type = type.toLowerCase();
-    return type;
+    return UtilsService.removeAllSpecialCharactersAndToLower(templateType) === UtilsService.removeAllSpecialCharactersAndToLower(categoryType);
   }
 
   getTemplates(): Observable<Template[]> {
