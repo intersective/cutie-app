@@ -3,6 +3,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {TemplateLibraryHomeComponent} from './template-library-home.component';
 import {TemplateLibraryService} from '../template-library.service';
+import { UtilsService } from '@services/utils.service';
 import {of} from 'rxjs';
 import {Router} from '@angular/router';
 import {By} from '@angular/platform-browser';
@@ -12,6 +13,7 @@ describe('TemplateLibraryHomeComponent', () => {
   let fixture: ComponentFixture<TemplateLibraryHomeComponent>;
   const templateLibraryServiceSpy = jasmine.createSpyObj('TemplateLibraryService', ['getTemplates', 'getCategories']);
   const routerSpy = { navigate: jasmine.createSpy('navigate') };
+  const utilsSpy = jasmine.createSpyObj('UtilsService', ['removeAllSpecialCharactersAndToLower']);
 
   const templates = [
     {
@@ -52,49 +54,42 @@ describe('TemplateLibraryHomeComponent', () => {
     {
       'leadImage': '',
       'name': 'Team Projects',
-      'type': 'team project',
       'color': 'rgba(0,64,229, 0.7)',
       'isLarge': true
     },
     {
       'leadImage': '',
       'name': 'Internships',
-      'type': 'internship',
       'color': 'rgba(85, 2, 136, 0.7)',
       'isLarge': true
     },
     {
       'leadImage': '',
       'name': 'Simulations',
-      'type': 'simulation',
       'color': 'rgba(229, 69, 0, 0.7)',
       'isLarge': true
     },
     {
       'leadImage': '',
       'name': 'Mentoring',
-      'type': 'mentoring',
       'color': 'rgba(221, 0, 59, 0.7)',
       'isLarge': false
     },
     {
       'leadImage': '',
       'name': 'Accelerators',
-      'type': 'accelerator',
       'color': 'rgba(37, 105, 120, 0.7)',
       'isLarge': false
     },
     {
       'leadImage': '',
       'name': 'Skills Portfolios',
-      'type': 'skill portfolio',
       'color': 'rgba(9, 129, 7, 0.7)',
       'isLarge': false
     },
     {
       'leadImage': '',
       'name': 'Others',
-      'type': 'other',
       'color': 'rgba(69, 40, 48, 0.7)',
       'isLarge': false
     }
@@ -110,6 +105,10 @@ describe('TemplateLibraryHomeComponent', () => {
           useValue: templateLibraryServiceSpy
         },
         {
+          provide: UtilsService,
+          useValue: utilsSpy
+        },
+        {
           provide: Router,
           useValue: routerSpy
         }
@@ -123,6 +122,7 @@ describe('TemplateLibraryHomeComponent', () => {
     component = fixture.componentInstance;
     templateLibraryServiceSpy.getTemplates = jasmine.createSpy().and.returnValue(of(templates));
     templateLibraryServiceSpy.getCategories = jasmine.createSpy().and.returnValue(categories);
+    utilsSpy.removeAllSpecialCharactersAndToLower = jasmine.createSpy().and.callFake(value => value);
     fixture.detectChanges();
   });
 

@@ -185,49 +185,42 @@ describe('TemplateLibraryService', () => {
         {
           'leadImage': '',
           'name': 'Team Projects',
-          'type': 'team project',
           'color': 'rgba(0,64,229, 0.7)',
           'isLarge': true
         },
         {
           'leadImage': '',
           'name': 'Internships',
-          'type': 'internship',
           'color': 'rgba(85, 2, 136, 0.7)',
           'isLarge': true
         },
         {
           'leadImage': '',
           'name': 'Simulations',
-          'type': 'work simulation',
           'color': 'rgba(229, 69, 0, 0.7)',
           'isLarge': true
         },
         {
           'leadImage': '',
           'name': 'Mentoring',
-          'type': 'mentoring',
           'color': 'rgba(221, 0, 59, 0.7)',
           'isLarge': false
         },
         {
           'leadImage': '',
           'name': 'Accelerators',
-          'type': 'accelerator',
           'color': 'rgba(37, 105, 120, 0.7)',
           'isLarge': false
         },
         {
           'leadImage': '',
           'name': 'Skills Portfolios',
-          'type': 'skill portfolio',
           'color': 'rgba(9, 129, 7, 0.7)',
           'isLarge': false
         },
         {
           'leadImage': '',
           'name': 'Others',
-          'type': 'other',
           'color': 'rgba(69, 40, 48, 0.7)',
           'isLarge': false
         }
