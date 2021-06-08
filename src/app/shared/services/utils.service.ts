@@ -240,7 +240,7 @@ export class UtilsService {
     return this.http.get('https://ipapi.co/json');
   }
 
-  static removeAllSpecialCharactersAndToLower(type: string): string {
+  removeAllSpecialCharactersAndToLower(type: string): string {
     type = type.replace(/[!@#^_.$&*%\s\-]/g,''); // tslint:disable-line
     type = type.toLowerCase();
     return type;

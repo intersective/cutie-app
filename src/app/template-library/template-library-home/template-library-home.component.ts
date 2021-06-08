@@ -10,8 +10,11 @@ import {UtilsService} from '../../shared/services/utils.service';
 })
 export class TemplateLibraryHomeComponent implements OnInit {
 
-  constructor(private service: TemplateLibraryService,
-              public router: Router) { }
+  constructor(
+    private service: TemplateLibraryService,
+    public router: Router,
+    private utils: UtilsService,
+  ) { }
 
   loadingTemplates = false;
   templates: Template[] = [];
@@ -36,7 +39,7 @@ export class TemplateLibraryHomeComponent implements OnInit {
         for (const category of this.categories) {
           this.categorisedTemplates.push({
             category: category,
-            templates: this.templates.filter(template => UtilsService.removeAllSpecialCharactersAndToLower(template.type) === UtilsService.removeAllSpecialCharactersAndToLower(category.name))
+            templates: this.templates.filter(template => this.utils.removeAllSpecialCharactersAndToLower(template.type) === this.utils.removeAllSpecialCharactersAndToLower(category.name))
           });
         }
       }
