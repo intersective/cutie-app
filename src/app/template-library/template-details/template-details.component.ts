@@ -42,7 +42,7 @@ export class TemplateDetailsComponent implements OnInit {
       if (res && res.experienceUuid) {
         window.top.location.href = urlFormatter(environment.Practera, `/users/change/experience/${res.experienceUuid}?redirect=/design`);
       } else {
-        this.popupService.showToast('Failed to import the template!');
+        this.popupService.showToast('Failed to import the experience!');
       }
     });
   }
