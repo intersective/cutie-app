@@ -78,11 +78,6 @@ describe('TemplateDetailsComponent', () => {
     expect(fixture.debugElement.query(By.css('.template-title')).nativeElement.innerText).toEqual(template.name);
   });
 
-  it('should call import experience', () => {
-    component.importTemplate('abc123');
-    expect(templateLibraryServiceSpy.importExperience).toHaveBeenCalledWith('abc123');
-  });
-
   afterEach(() => {
     fixture.destroy();
   });

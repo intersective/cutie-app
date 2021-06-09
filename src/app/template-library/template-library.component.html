@@ -2,7 +2,8 @@
   <ion-split-pane class="template-library-container" contentId="main">
     <ion-menu contentId="main" class="menu border-0">
       <ion-header>
-        <ion-toolbar>
+        <ion-toolbar class="template-library-toolbar">
+          <ion-button href="/overview-only" color="medium" slot="start"><ion-icon name="home"></ion-icon></ion-button>
           <ion-searchbar class="template-search-bar" color="light" (ionChange)="onSearch($event)"></ion-searchbar>
         </ion-toolbar>
       </ion-header>
