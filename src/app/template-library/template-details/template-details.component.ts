@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Template, TemplateLibraryService} from '../template-library.service';
+import { environment } from '@environments/environment';
+import { urlFormatter } from '../../../helper';
 
 @Component({
   selector: 'app-template-details',
@@ -36,6 +38,7 @@ export class TemplateDetailsComponent implements OnInit {
       this.importingTemplate = false;
       console.log('Navigate the user somewhere?');
       console.log(res);
+      window.top.location.href = urlFormatter(environment.Practera, `/users/change/experience/${res.experienceUuid}?redirect=/design`);
     });
   }
 

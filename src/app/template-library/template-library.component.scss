@@ -1,6 +1,11 @@
+.template-library-container {
+  padding-top: 20px;
+}
+
 @media (min-width:992px) {
   .template-library-container {
     //width: 85%;
+    padding-top: 20px;
     max-width: 1200px;
     margin: auto;
   }
@@ -13,7 +18,7 @@
 }
 
 .template-search-bar {
-  padding: 4px 5px 0px 2px;
+  padding: 0px 5px 0px 2px;
   --box-shadow: none;
 }
 
@@ -25,4 +30,8 @@
 
 ion-item.active {
   font-weight: bold;
+}
+
+.template-library-toolbar {
+  padding-left: 16px
 }
