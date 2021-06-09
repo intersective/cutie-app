@@ -3,6 +3,7 @@ import {ActivatedRoute} from '@angular/router';
 import {Template, TemplateLibraryService} from '../template-library.service';
 import { environment } from '@environments/environment';
 import { urlFormatter } from '../../../helper';
+import {PopupService} from '../../shared/popup/popup.service';
 
 @Component({
   selector: 'app-template-details',
@@ -15,7 +16,9 @@ export class TemplateDetailsComponent implements OnInit {
   loadingTemplate = true;
   importingTemplate = false;
 
-  constructor(private route: ActivatedRoute, private service: TemplateLibraryService) {
+  constructor(private route: ActivatedRoute,
+              private service: TemplateLibraryService,
+              private popupService: PopupService) {
     this.route.params.subscribe(params => {
       this.fetchTemplate(params.templateId);
     });
@@ -36,7 +39,11 @@ export class TemplateDetailsComponent implements OnInit {
     this.importingTemplate = true;
     this.service.importExperience(templateId).subscribe(res => {
       this.importingTemplate = false;
-      window.top.location.href = urlFormatter(environment.Practera, `/users/change/experience/${res.experienceUuid}?redirect=/design`);
+      if (res && res.experienceUuid) {
+        window.top.location.href = urlFormatter(environment.Practera, `/users/change/experience/${res.experienceUuid}?redirect=/design`);
+      } else {
+        this.popupService.showToast('Failed to import the experience!');
+      }
     });
   }
 
