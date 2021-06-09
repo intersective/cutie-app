@@ -36,8 +36,6 @@ export class TemplateDetailsComponent implements OnInit {
     this.importingTemplate = true;
     this.service.importExperience(templateId).subscribe(res => {
       this.importingTemplate = false;
-      console.log('Navigate the user somewhere?');
-      console.log(res);
       window.top.location.href = urlFormatter(environment.Practera, `/users/change/experience/${res.experienceUuid}?redirect=/design`);
     });
   }
