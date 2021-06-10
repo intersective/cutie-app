@@ -162,10 +162,6 @@ export class TemplateLibraryService {
     return res.data.templates;
   }
 
-  // Large category card: 280 * 220    14 : 11
-  // Small category card: 207.5 * 120  26 : 15
-  // Category hero card : 860 * 200    43 : 10
-
   getCategories(): Category[] {
     return [
       {
