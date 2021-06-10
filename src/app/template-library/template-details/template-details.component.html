@@ -42,15 +42,21 @@
             </div>
           </ion-col>
           <ion-col size="3" offset="1">
-            <div class="download-resources">
-              <span class="download-resources-subheader">Download Resources</span>
-            </div>
-            <div class="download-resources">
-              <app-resource-download-card prompt="Download Design Map" src="{{template.designMapUrl}}" leadImage="/assets/template-library/designMap.png"></app-resource-download-card>
-            </div>
-            <div class="download-resources">
-              <app-resource-download-card prompt="Download Operations Manual" src="{{template.operationsManualUrl}}" leadImage="/assets/template-library/operationsManual.png"></app-resource-download-card>
-            </div>
+            <ng-container *ngIf="template.designMapUrl || template.operationsManualUrl">
+              <div class="download-resources">
+                <span class="download-resources-subheader">Download Resources</span>
+              </div>
+            </ng-container>
+            <ng-container *ngIf="template.designMapUrl">
+              <div class="download-resources">
+                <app-resource-download-card prompt="Download Design Map" src="{{template.designMapUrl}}" leadImage="/assets/template-library/designMap.png"></app-resource-download-card>
+              </div>
+            </ng-container>
+            <ng-container *ngIf="template.operationsManualUrl">
+              <div class="download-resources">
+                <app-resource-download-card prompt="Download Operations Manual" src="{{template.operationsManualUrl}}" leadImage="/assets/template-library/operationsManual.png"></app-resource-download-card>
+              </div>
+            </ng-container>
           </ion-col>
         </ion-row>
       </ion-grid>
