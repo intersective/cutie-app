@@ -4,7 +4,7 @@
       <ion-grid class="templates-grid-container">
         <ion-row>
           <ion-col size="12">
-            <div class="card-media" [style.background-image]="template.leadImageUrl ? 'url(' + template.leadImageUrl + ')' : 'url(/assets/exp-placeholder.png)'"></div>
+            <div class="card-media" [style.background-image]="template.leadImageUrl ? 'url(' + template.leadImageUrl + ')' : 'url(' + categoryLeadImage + ')'"></div>
           </ion-col>
         </ion-row>
         <ion-row class="template-details-title-row">
@@ -18,15 +18,17 @@
           </ion-col>
         </ion-row>
 
-        <ion-row class="template-tags-row">
-          <ion-col size="8">
-            <div>
-              <span *ngFor="let attribute of template.attributes" class="template-tags">#{{attribute}}</span>
-            </div>
-          </ion-col>
-          <ion-col size="3" offset="1">
-          </ion-col>
-        </ion-row>
+        <ng-container *ngIf="template.attributes && template.attributes.length">
+          <ion-row class="template-tags-row">
+            <ion-col size="8">
+              <div>
+                <span *ngFor="let attribute of template.attributes" class="template-tags">#{{attribute}}</span>
+              </div>
+            </ion-col>
+            <ion-col size="3" offset="1">
+            </ion-col>
+          </ion-row>
+        </ng-container>
 
         <ion-row>
           <ion-col size="8">

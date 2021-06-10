@@ -15,6 +15,7 @@ export class TemplateDetailsComponent implements OnInit {
   template: Template;
   loadingTemplate = true;
   importingTemplate = false;
+  categoryLeadImage = '/assets/exp-placeholder.png';
 
   constructor(private route: ActivatedRoute,
               private service: TemplateLibraryService,
@@ -31,6 +32,13 @@ export class TemplateDetailsComponent implements OnInit {
         return;
       }
       this.template = res;
+
+      this.service.getCategories().forEach(category => {
+        if (category.id === res.type) {
+          this.categoryLeadImage = category.leadImage;
+        }
+      });
+
       this.loadingTemplate = false;
     });
   }
