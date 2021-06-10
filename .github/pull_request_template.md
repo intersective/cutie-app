@@ -10,6 +10,6 @@
 - [x] Docs folder up to date?: (Y/N)
 - [x] Add if anything missed: (Y/N)
 
-All Checklist are okay.
+All checklist are okay.
 
 This PR looks great - it's ready to merge! Please review and let's ship it. :)
