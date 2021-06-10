@@ -88,7 +88,7 @@ describe('TemplateDetailsComponent', () => {
     templateLibraryServiceSpy.importExperience = jasmine.createSpy().and.returnValue(of({experienceUuid: null}));
     component.importTemplate('abc123');
     expect(templateLibraryServiceSpy.importExperience).toHaveBeenCalledWith('abc123');
-    expect(popupServiceSpy.showToast).toHaveBeenCalledWith('Failed to import the template!');
+    expect(popupServiceSpy.showToast).toHaveBeenCalledWith('Failed to import the experience!');
   });
 
   afterEach(() => {
