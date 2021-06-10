@@ -169,12 +169,23 @@ jobs:
           aws s3 cp serverless.yml s3://$CFNS3BucketName/$STACK_NAME/$REGION/$ROOTSTACK/sls-templates/serverless.yml
 
 
+##########################################################
+#  CLOUDFORMATION EXPORT VARIABLES
+##########################################################
+      - name: Cloudformation Export variables
+        run: |
+          cat >> .env <<EOF
+          CDNSharedACMCertificateArn=$(aws cloudformation list-exports --query "Exports[?Name==\`$STACK_NAME-CDNSharedACMCertificateArn-$ENV\`].Value" --no-paginate --output text)
+          ChatBotSNSTopicARN=$(aws cloudformation list-exports --query "Exports[?Name==\`$STACK_NAME-ChatBotSNSTopicARN-$ENV\`].Value" --no-paginate --output text)
+          
+          
+          EOF
+
 ###############################################################
 #  SERVERLESS DEPLOYMENT
 ##############################################################
       - name: Serverless deployment
         run: |
-          export "ChatBotSNSTopicARN="$(aws cloudformation list-exports --query "Exports[?Name==\`$STACK_NAME-ChatBotSNSTopicARN-$ENV\`].Value" --no-paginate --output text)
           echo "Serverless Deploying"
           node_modules/.bin/serverless deploy
           rm serverless.yml
@@ -183,6 +194,7 @@ jobs:
           S3VERSIONING: true 
           NONCURRENTVERSION_EXPIREINDAYS: 30
           # DEFAULT_EXPIREINDAYS: 0 # Mandatory to disable
+
 
 
 ###############################################################
