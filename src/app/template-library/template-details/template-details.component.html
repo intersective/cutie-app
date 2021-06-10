@@ -30,11 +30,13 @@
 
         <ion-row>
           <ion-col size="8">
-            <div>
-              <video class="lead-video" preload="auto" controls>
-                <source [src]=[template.leadVideoUrl] type="video/webm" />
-              </video>
-            </div>
+            <ng-container *ngIf="template.leadVideoUrl">
+              <div>
+                <video class="lead-video" preload="auto" controls>
+                  <source [src]=[template.leadVideoUrl] type="video/webm" />
+                </video>
+              </div>
+            </ng-container>
             <div>
               <span [innerHTML]=[template.description]></span>
             </div>
