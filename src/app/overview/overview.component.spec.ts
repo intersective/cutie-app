@@ -8,6 +8,7 @@ import { OverviewService, Experience } from './overview.service';
 import { UtilsService } from '@services/utils.service';
 import { PopupService } from '@shared/popup/popup.service';
 import * as XLSX from 'xlsx';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('OverviewComponent', () => {
   let component: OverviewComponent;
@@ -132,7 +133,7 @@ describe('OverviewComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule],
+      imports: [SharedModule, RouterTestingModule],
       declarations: [ OverviewComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
