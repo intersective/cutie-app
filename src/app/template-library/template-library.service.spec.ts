@@ -159,7 +159,9 @@ describe('TemplateLibraryService', () => {
       environment.demo = false;
       requestService.graphQLMutate = jasmine.createSpy().and.returnValue(of({
         data: {
-          experienceUuid: 'abc123'
+          importExperience: {
+            experienceUuid: 'abc123'
+          }
         }
       }));
       service.importExperience('abc123').subscribe(res => expect(res).toEqual({experienceUuid: 'abc123'}));

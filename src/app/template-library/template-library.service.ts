@@ -143,7 +143,7 @@ export class TemplateLibraryService {
     if (!res || !res.data) {
       return null;
     }
-    return res.data;
+    return res.data.importExperience;
   }
 
   private _handleTemplate(res) {
