@@ -25,7 +25,7 @@ provider:
     Env: ${env:ENV}
     RootStack: ${env:ROOTSTACK}
   notificationArns:
-    - ${env:ChatBotSNSTopicARN}
+    - '${env:ChatBotSNSTopicARN}'
 
 
 resources:
@@ -137,7 +137,7 @@ resources:
               OriginAccessIdentity: !Sub 'origin-access-identity/cloudfront/${CutieCloudFrontOriginAccessIdentity}'
           PriceClass: 'PriceClass_All'
           ViewerCertificate:
-            AcmCertificateArn: {'Fn::ImportValue': '${env:STACK_NAME}-CDNSharedACMCertificateArn-${env:ENV}'}
+            AcmCertificateArn: '${env:CDNSharedACMCertificateArn}'
             MinimumProtocolVersion: 'TLSv1.2_2019'
             SslSupportMethod: 'sni-only'
     
