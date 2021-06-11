@@ -49,14 +49,16 @@ export class BrowseTemplatesComponent implements OnInit {
   loadTemplatesByCategory(categoryId: string) {
     this.loadingTemplates = true;
 
-    this.service.getCategories().forEach(category => {
-      if (category.id === categoryId) {
-        this.leadImage = category.leadImage;
-        this.description = category.description;
-        this.heading = category.name;
-        this.emptyResultsString = 'Could not find any templates for category - ' + category.name;
-      }
-    });
+    if (categoryId) {
+      this.service.getCategories().forEach(category => {
+        if (category.id === categoryId) {
+          this.leadImage = category.leadImage;
+          this.description = category.description;
+          this.heading = category.name;
+          this.emptyResultsString = 'Could not find any templates for category - ' + category.name;
+        }
+      });
+    }
 
     this.service.getTemplatesByCategory(categoryId).subscribe(res => {
       if (res === null) {
