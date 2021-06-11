@@ -39,7 +39,7 @@ export class TemplateLibraryHomeComponent implements OnInit {
         for (const category of this.categories) {
           this.categorisedTemplates.push({
             category: category,
-            templates: this.templates.filter(template => this.utils.removeAllSpecialCharactersAndToLower(template.type) === this.utils.removeAllSpecialCharactersAndToLower(category.name))
+            templates: this.templates.filter(template => this.utils.removeAllSpecialCharactersAndToLower(template.type) === this.utils.removeAllSpecialCharactersAndToLower(category.id))
           });
         }
       }
