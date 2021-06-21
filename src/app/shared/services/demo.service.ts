@@ -4,6 +4,8 @@ import { StorageService } from '@services/storage.service';
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { delay } from 'rxjs/internal/operators';
+import { environment } from '@environments/environment';
+import { urlFormatter } from 'helper';
 
 const CHARACTERS = {
   avengers: {
@@ -1069,10 +1071,22 @@ export class DemoService {
     }).pipe(delay(1000));
   }
 
-  importExperienceResponse() {
+  importExperience() {
     return of({
       data: {
-        experienceUuid: '000f562e-0ed0-4afe-af53-7a8d20558ce1'
+        importExperience: {
+          experienceUuid: '000f562e-0ed0-4afe-af53-7a8d20558ce1'
+        }
+      }
+    }).pipe(delay(1000));
+  }
+
+  importExperienceUrl(uuid: string) {
+    return of({
+      data: {
+        importExperienceUrl: {
+          url: urlFormatter(environment.Practera, `api/v2/plan/experience/importsse?template_url=127.0.0.1:3000/template/${uuid}`)
+        }
       }
     }).pipe(delay(1000));
   }

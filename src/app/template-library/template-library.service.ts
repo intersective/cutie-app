@@ -127,7 +127,7 @@ export class TemplateLibraryService {
 
   importExperience(templateUuid: string): Observable<ImportExperienceResponse> {
     if (environment.demo) {
-      return this.demo.importExperienceResponse().pipe(map(this._handleImportedExperienceResponse));
+      return this.demo.importExperience().pipe(map(this._handleImportedExperienceResponse));
     }
     return this.request.graphQLMutate(
       `mutation importExperience($templateUuid: ID!) {
@@ -144,6 +144,27 @@ export class TemplateLibraryService {
       return null;
     }
     return res.data.importExperience;
+  }
+
+  importExperienceUrl(templateUuid: string): Observable<string> {
+    if (environment.demo) {
+      return this.demo.importExperienceUrl(templateUuid).pipe(map(this._handleImportedExperienceUrlResponse));
+    }
+    return this.request.graphQLQuery(
+      `query importExperienceUrl($templateUuid: ID!) {
+        importExperienceUrl(templateUuid: $templateUuid) {
+          url
+        }
+      }`,
+      { templateUuid }
+    ).pipe(map(this._handleImportedExperienceUrlResponse));
+  }
+
+  private _handleImportedExperienceUrlResponse(res): string {
+    if (!res || !res.data) {
+      return null;
+    }
+    return res.data.importExperienceUrl.url;
   }
 
   private _handleTemplate(res) {

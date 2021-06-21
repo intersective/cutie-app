@@ -1,25 +1,28 @@
-import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {Template, TemplateLibraryService} from '../template-library.service';
+import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Template, TemplateLibraryService } from '../template-library.service';
+import { PopupService } from '../../shared/popup/popup.service';
+import { StorageService } from '@services/storage.service';
 import { environment } from '@environments/environment';
-import { urlFormatter } from '../../../helper';
-import {PopupService} from '../../shared/popup/popup.service';
 
 @Component({
   selector: 'app-template-details',
   templateUrl: './template-details.component.html',
   styleUrls: ['./template-details.component.scss'],
 })
-export class TemplateDetailsComponent implements OnInit {
+export class TemplateDetailsComponent {
 
   template: Template;
   loadingTemplate = true;
   importingTemplate = false;
   categoryLeadImage = '/assets/exp-placeholder.png';
 
-  constructor(private route: ActivatedRoute,
-              private service: TemplateLibraryService,
-              private popupService: PopupService) {
+  constructor(
+    private route: ActivatedRoute,
+    private service: TemplateLibraryService,
+    private popupService: PopupService,
+    private storage: StorageService,
+  ) {
     this.route.params.subscribe(params => {
       this.fetchTemplate(params.templateId);
     });
@@ -45,16 +48,16 @@ export class TemplateDetailsComponent implements OnInit {
 
   importTemplate(templateId: string) {
     this.importingTemplate = true;
-    this.service.importExperience(templateId).subscribe(res => {
+    this.service.importExperienceUrl(templateId).subscribe(res => {
       this.importingTemplate = false;
-      if (res && res.experienceUuid) {
-        window.top.location.href = urlFormatter(environment.Practera, `/users/change/experience/${res.experienceUuid}?redirect=/design`);
-      } else {
-        this.popupService.showToast('Failed to import the experience!');
+      const apikey = this.storage.getUser().apikey;
+      if (!res || !apikey) {
+        this.popupService.showToast('Failed to create the experience!');
+        return;
       }
+      this.popupService.showImportExp(`${res}&appkey=${environment.appkey}&apikey=${apikey}`);
     });
   }
 
-  ngOnInit() {}
 
 }
