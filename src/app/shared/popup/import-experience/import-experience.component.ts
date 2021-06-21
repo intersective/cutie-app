@@ -22,19 +22,20 @@ export class ImportExperienceComponent implements OnInit {
       const eventSource = new EventSource(this.url);
       eventSource.onopen = () => { console.log('connection open') };
       eventSource.onmessage = (message) => {
-        console.log(message, typeof message.data);
-        if (message.data.progress) {
-          this.progress = message.data.progress;
+        const messageData = JSON.parse(message.data);
+        if (messageData.progress) {
+          this.progress = messageData.progress;
         }
-        if (message.data.experienceUuid) {
+        if (messageData.experienceUuid) {
           eventSource.close();
-          window.top.location.href = urlFormatter(environment.Practera, `/users/change/experience/${message.data.experienceUuid}?redirect=/design`);
+          window.top.location.href = urlFormatter(environment.Practera, `/users/change/experience/${messageData.experienceUuid}?redirect=/design`);
         }
-      }
-      eventSource.onerror = () => {
-        console.error('connection failed');
+      };
+      eventSource.onerror = (err) => {
+        console.error('connection failed', err);
         this.showToast('Failed to use this experience, please try again later.')
         this.modalController.dismiss();
+        eventSource.close();
       };
     }
   }
