@@ -20,7 +20,7 @@ export class ImportExperienceComponent implements OnInit {
   ngOnInit() {
     if (this.url) {
       const eventSource = new EventSource(this.url);
-      eventSource.onopen = () => { console.log('connection open') };
+      eventSource.onopen = () => { console.log('connection open'); };
       eventSource.onmessage = (message) => {
         const messageData = JSON.parse(message.data);
         if (messageData.progress) {
@@ -33,7 +33,7 @@ export class ImportExperienceComponent implements OnInit {
       };
       eventSource.onerror = (err) => {
         console.error('connection failed', err);
-        this.showToast('Failed to use this experience, please try again later.')
+        this.showToast('Failed to use this experience, please try again later.');
         this.modalController.dismiss();
         eventSource.close();
       };

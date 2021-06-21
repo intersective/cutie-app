@@ -1082,11 +1082,10 @@ export class DemoService {
   }
 
   importExperienceUrl(uuid: string) {
+    const temUrl = `http://127.0.0.1:3000/template/${uuid}`;
     return of({
       data: {
-        importExperienceUrl: {
-          url: urlFormatter(environment.Practera, `api/v2/plan/experience/importsse?template_url=127.0.0.1:3000/template/${uuid}`)
-        }
+        importExperienceUrl: urlFormatter(environment.Practera, `api/v2/plan/experience/importsse?template_url=${encodeURIComponent(temUrl)}`)
       }
     }).pipe(delay(1000));
   }

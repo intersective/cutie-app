@@ -152,9 +152,7 @@ export class TemplateLibraryService {
     }
     return this.request.graphQLQuery(
       `query importExperienceUrl($templateUuid: ID!) {
-        importExperienceUrl(templateUuid: $templateUuid) {
-          url
-        }
+        importExperienceUrl(templateUuid: $templateUuid)
       }`,
       { templateUuid }
     ).pipe(map(this._handleImportedExperienceUrlResponse));
