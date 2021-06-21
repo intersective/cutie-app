@@ -23,13 +23,13 @@
 
             <ion-row>
               <ion-col>
-                <h2 class="category-heading cursor-pointer" (click)="router.navigate( ['templates', categorisedTemplate.category.name])">{{categorisedTemplate.category.name}} <ion-icon class="align-middle" name="arrow-forward-outline"></ion-icon></h2>
+                <h2 class="category-heading cursor-pointer" (click)="router.navigate( ['templates', categorisedTemplate.category.id])">{{categorisedTemplate.category.name}} <ion-icon class="align-middle" name="arrow-forward-outline"></ion-icon></h2>
               </ion-col>
             </ion-row>
 
             <ion-row>
               <ng-container *ngFor="let template of categorisedTemplate.templates.slice(0, 3)">
-                <ion-col>
+                <ion-col size="4">
                   <app-template-card [template]="template"></app-template-card>
                 </ion-col>
               </ng-container>

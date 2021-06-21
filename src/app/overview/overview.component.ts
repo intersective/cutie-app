@@ -365,6 +365,10 @@ export class OverviewComponent implements OnInit {
     });
   }
 
+  /**
+   * Deprecated. We are redirecting user to the template library directly now.
+   * Keep the code here, so that when we allow user to manually create experience, we can use back this function
+   */
   add() {
     this.popupService.showCreateExp();
   }

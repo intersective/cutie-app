@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {CategorisedTemplates, Category, Template, TemplateLibraryService} from '../template-library.service';
 import {Router} from '@angular/router';
+import {UtilsService} from '../../shared/services/utils.service';
 
 @Component({
   selector: 'app-template-library-home',
@@ -9,8 +10,11 @@ import {Router} from '@angular/router';
 })
 export class TemplateLibraryHomeComponent implements OnInit {
 
-  constructor(private service: TemplateLibraryService,
-              public router: Router) { }
+  constructor(
+    private service: TemplateLibraryService,
+    public router: Router,
+    private utils: UtilsService,
+  ) { }
 
   loadingTemplates = false;
   templates: Template[] = [];
@@ -35,7 +39,7 @@ export class TemplateLibraryHomeComponent implements OnInit {
         for (const category of this.categories) {
           this.categorisedTemplates.push({
             category: category,
-            templates: this.templates.filter(template => template.type === category.name)
+            templates: this.templates.filter(template => this.utils.removeAllSpecialCharactersAndToLower(template.type) === this.utils.removeAllSpecialCharactersAndToLower(category.id))
           });
         }
       }

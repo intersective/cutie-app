@@ -5,12 +5,14 @@ import { TemplateDetailsComponent } from './template-details.component';
 import {ActivatedRoute} from '@angular/router';
 import {of} from 'rxjs';
 import {TemplateLibraryService} from '../template-library.service';
+import {PopupService} from '../../shared/popup/popup.service';
 import {By} from '@angular/platform-browser';
 
 describe('TemplateDetailsComponent', () => {
   let component: TemplateDetailsComponent;
   let fixture: ComponentFixture<TemplateDetailsComponent>;
   const templateLibraryServiceSpy = jasmine.createSpyObj('TemplateLibraryService', ['getTemplate', 'importExperience']);
+  const popupServiceSpy = jasmine.createSpyObj('PopupService', ['showToast']);
 
   const params = {
     templateId: 'abc123'
@@ -42,6 +44,10 @@ describe('TemplateDetailsComponent', () => {
         {
           provide: TemplateLibraryService,
           useValue: templateLibraryServiceSpy
+        },
+        {
+          provide: PopupService,
+          useValue: popupServiceSpy
         }
       ]
     })
@@ -79,8 +85,10 @@ describe('TemplateDetailsComponent', () => {
   });
 
   it('should call import experience', () => {
+    templateLibraryServiceSpy.importExperience = jasmine.createSpy().and.returnValue(of({experienceUuid: null}));
     component.importTemplate('abc123');
     expect(templateLibraryServiceSpy.importExperience).toHaveBeenCalledWith('abc123');
+    expect(popupServiceSpy.showToast).toHaveBeenCalledWith('Failed to import the experience!');
   });
 
   afterEach(() => {

@@ -4,14 +4,14 @@ name: Deploy to AWS - Release/UK Branch (Live environment)
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the develop branch
-on:
+on: 
   workflow_dispatch:
-  push:
-    paths-ignore:
-      - 'docs/**'
-      - '**.md'
-      - '.gitignore'
-    branches: [release/uk]
+    inputs:
+      BRANCH_TAG_NAME:
+        description: 'New tag version based on create-release-tag workflow'     
+        required: true
+        default: ''
+
 
 jobs:
   Build-Deploy:
@@ -32,6 +32,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+          ref: ${{ github.event.inputs.BRANCH_TAG_NAME }}
       
 ################################################
 #  NODE ENV

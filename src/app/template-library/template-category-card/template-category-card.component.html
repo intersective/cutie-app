@@ -1,4 +1,4 @@
-<div (click)="router.navigate( ['templates', category.name])" class="cursor-pointer" [ngClass]="category.isLarge ? 'category-card-container' : 'category-card-container-small'">
+<div (click)="router.navigate( ['templates', category.id])" class="cursor-pointer" [ngClass]="category.isLarge ? 'category-card-container' : 'category-card-container-small'">
   <div class="category-card-background" [style.background-image]="category.leadImage ? 'url(' + category.leadImage + ')': 'url(/assets/exp-placeholder.png)'"></div>
   <div class="category-card-overlay" [style.background-color]="category.color">
     <div class="category-card-title-container">

@@ -18,8 +18,9 @@ export interface Template {
 }
 
 export interface Category {
+  id: string;
   name: string;
-  type: string;
+  description: string;
   leadImage: string;
   color: string;
   isLarge: boolean;
@@ -142,7 +143,7 @@ export class TemplateLibraryService {
     if (!res || !res.data) {
       return null;
     }
-    return res.data;
+    return res.data.importExperience;
   }
 
   private _handleTemplate(res) {
@@ -164,51 +165,59 @@ export class TemplateLibraryService {
   getCategories(): Category[] {
     return [
       {
-        'leadImage': '',
+        'leadImage': '/assets/template-library/teamProjects.png',
         'name': 'Team Projects',
-        'type': 'team project',
+        'id': 'Team Project',
+        'description': 'Create teams of learners who complete a project with multiple feedback loops from industry experts\n' +
+          'Use and edit our pre-loaded content with step by step instructions used by more than 10,000 students. Team-based project require a client brief and someone to provide feedback for each learner team (If you don’t have projects for your learners, send us a note!)',
         'color': 'rgba(0,64,229, 0.7)',
         'isLarge': true
       },
       {
-        'leadImage': '',
+        'leadImage': '/assets/template-library/internship.png',
         'name': 'Internships',
-        'type': 'internship',
+        'id': 'Internship',
+        'description': 'Monitor and quality assure your (virtual) internship program at scale with our fully editable content with step by step instructions used by more than 10,000 students. Use our step by step instructions for both intern and supervisor to engage in regular feedback, reflection and planning loops. Internships require a placement and supervisor to provide feedback for each learner.',
         'color': 'rgba(85, 2, 136, 0.7)',
         'isLarge': true
       },
       {
-        'leadImage': '',
-        'name': 'Simulations',
-        'type': 'work simulation',
+        'leadImage': '/assets/template-library/simulation.png',
+        'name': 'Work Simulations',
+        'id': 'Work Simulation',
+        'description': 'Scaling authentic work-integrated learning experiences is hard - but did you know that you can simulate real world tasks in an authentic way that gives students an insight into their potential future job? We have created a range of realistic and authentic work simulation experiences that students love!',
         'color': 'rgba(229, 69, 0, 0.7)',
         'isLarge': true
       },
       {
-        'leadImage': '',
+        'leadImage': '/assets/template-library/mentoring.png',
         'name': 'Mentoring',
-        'type': 'mentoring',
+        'id': 'Mentoring',
+        'description': 'Support mentees and mentors engage in a structured mentoring relationship. Our fully editable pre-loaded content comes with step by step instructions for both mentor and mentee to engage in regular feedback, reflection and planning loops. Mentoring experiences require pairs or groups of mentors and mentees.',
         'color': 'rgba(221, 0, 59, 0.7)',
         'isLarge': false
       },
       {
-        'leadImage': '',
+        'leadImage': '/assets/template-library/accelerators.png',
         'name': 'Accelerators',
-        'type': 'accelerator',
+        'id': 'Accelerator',
+        'description': 'Run your accelerator program effectively and efficiently with our editable pre-loaded content with step by step instructions. Support teams of learners go through an innovation process with multiple feedback loops and manage quality assurance for your cohort to guarantee success.',
         'color': 'rgba(37, 105, 120, 0.7)',
         'isLarge': false
       },
       {
-        'leadImage': '',
+        'leadImage': '/assets/template-library/skillsPortfolio.png',
         'name': 'Skills Portfolios',
-        'type': 'skill portfolio',
+        'id': 'Skills Portfolio',
+        'description': 'With our Skills Portfolio experiences, you can support learners to build portfolios of their real world learning experiences and achievements against competency frameworks. You can use any competency framework and drive skill development tracking with reflective learning and feedback loops.',
         'color': 'rgba(9, 129, 7, 0.7)',
         'isLarge': false
       },
       {
-        'leadImage': '',
+        'leadImage': '/assets/template-library/other.jpg',
         'name': 'Others',
-        'type': 'other',
+        'id': 'Other',
+        'description': 'Practera supports any type of experiential learning. Below are some examples of other experiences our customers have used in the past.',
         'color': 'rgba(69, 40, 48, 0.7)',
         'isLarge': false
       }

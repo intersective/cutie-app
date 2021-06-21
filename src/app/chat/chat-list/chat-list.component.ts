@@ -86,7 +86,22 @@ export class ChatListComponent {
         this.groupChatChannels.push(chat);
       }
     });
+    // sort both chat channels after grouping them.
+    this.directChatChannels = this._sortChatList(this.directChatChannels);
+    this.groupChatChannels = this._sortChatList(this.groupChatChannels);
   }
+
+  /**
+   * Sort chat channel list to show latest chat to on top.
+   * @param chatList Array of chat channels.
+   * @returns ChatChannel[]
+   */
+     private _sortChatList(chatList: ChatChannel[]) {
+      chatList.sort(function(a, b) {
+        return new Date(b.lastMessageCreated).getTime() - new Date(a.lastMessageCreated).getTime();
+      });
+      return chatList;
+    }
 
   /**
    * Filter the channels by the search text

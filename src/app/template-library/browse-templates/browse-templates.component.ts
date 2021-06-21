@@ -14,6 +14,8 @@ export class BrowseTemplatesComponent implements OnInit {
   emptyResultsString: string;
   templates: Template[] = [];
   loadingTemplates = true;
+  leadImage: string;
+  description: string;
 
   constructor(private route: ActivatedRoute, private service: TemplateLibraryService) {
 
@@ -44,17 +46,25 @@ export class BrowseTemplatesComponent implements OnInit {
     });
   }
 
-  loadTemplatesByCategory(categoryName: string) {
+  loadTemplatesByCategory(categoryId: string) {
     this.loadingTemplates = true;
 
-    this.service.getTemplatesByCategory(categoryName).subscribe(res => {
+    if (categoryId) {
+      this.service.getCategories().forEach(category => {
+        if (category.id === categoryId) {
+          this.leadImage = category.leadImage;
+          this.description = category.description;
+          this.heading = category.name;
+          this.emptyResultsString = 'Could not find any templates for category - ' + category.name;
+        }
+      });
+    }
+
+    this.service.getTemplatesByCategory(categoryId).subscribe(res => {
       if (res === null) {
         return;
       }
       this.templates = res;
-      this.heading = categoryName;
-      this.emptyResultsString = 'Could not find any templates for category - ' + categoryName;
-
       this.loadingTemplates = false;
     });
   }

@@ -492,11 +492,11 @@ export class DemoService {
       name: 'Consulting Project Experience',
       description: `Practera is the leading platform to power high quality experiential learning programs.<br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services`,
       leadImageUrl: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2252&q=80',
-      leadVideoUrl: 'https://cdn.videvo.net/videvo_files/video/free/2013-08/small_watermarked/hd0992_preview.webm',
-      type: 'Simulations',
+      leadVideoUrl: 'https://www.filepicker.io/api/file/2i8R83noQbaJcbA9woIL',
+      type: 'Work Simulation',
       attributes: ['teambased projects', '12-weeks', 'feedback loops'],
-      designMapUrl: '/assets/icon/favicon.png',
-      operationsManualUrl: '/assets/icon/logo.svg',
+      designMapUrl: 'https://www.filepicker.io/api/file/NvgFmnp3RhmIypodBlVZ',
+      operationsManualUrl: 'https://www.filepicker.io/api/file/vFYhEyoTRaCBXZrdtNge',
     },
     {
       uuid: '34c3d514-b459-b9d1-05c8-2bd1f582447c',
@@ -504,7 +504,7 @@ export class DemoService {
       description: `Practera is the leading platform to power high quality experiential learning programs.<br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services`,
       leadImageUrl: '',
       leadVideoUrl: '',
-      type: 'Internships',
+      type: 'Internship',
     },
     {
       uuid: '16c3d514-b459-b9d1-05c8-2bd1f582447d',
@@ -512,7 +512,7 @@ export class DemoService {
       description: `Practera is the leading platform to power high quality experiential learning programs.<br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services`,
       leadImageUrl: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=2250&q=80',
       leadVideoUrl: '',
-      type: 'Team Projects'
+      type: 'Team Project'
     },
     {
       uuid: '84f14db9-491a-09f7-ae61-9926f3ad8c8d',

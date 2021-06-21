@@ -4,7 +4,7 @@
       <ion-grid class="templates-grid-container">
         <ion-row>
           <ion-col size="12">
-            <div class="card-media" [style.background-image]="template.leadImageUrl ? 'url(' + template.leadImageUrl + ')' : 'url(/assets/exp-placeholder.png)'"></div>
+            <div class="card-media" [style.background-image]="template.leadImageUrl ? 'url(' + template.leadImageUrl + ')' : 'url(' + categoryLeadImage + ')'"></div>
           </ion-col>
         </ion-row>
         <ion-row class="template-details-title-row">
@@ -18,37 +18,45 @@
           </ion-col>
         </ion-row>
 
-        <ion-row class="template-tags-row">
-          <ion-col size="8">
-            <div>
-              <span *ngFor="let attribute of template.attributes" class="template-tags">#{{attribute}}</span>
-            </div>
-          </ion-col>
-          <ion-col size="3" offset="1">
-          </ion-col>
-        </ion-row>
+        <ng-container *ngIf="template.attributes && template.attributes.length">
+          <ion-row class="template-tags-row">
+            <ion-col size="8">
+              <div>
+                <span *ngFor="let attribute of template.attributes" class="template-tags">#{{attribute}}</span>
+              </div>
+            </ion-col>
+            <ion-col size="3" offset="1">
+            </ion-col>
+          </ion-row>
+        </ng-container>
 
         <ion-row>
           <ion-col size="8">
-            <div>
-              <video class="lead-video" preload="auto" controls>
-                <source [src]=[template.leadVideoUrl] type="video/webm" />
-              </video>
-            </div>
+            <ng-container *ngIf="template.leadVideoUrl">
+              <div>
+                <video class="lead-video" preload="auto" controls [src]=[template.leadVideoUrl]></video>
+              </div>
+            </ng-container>
             <div>
               <span [innerHTML]=[template.description]></span>
             </div>
           </ion-col>
           <ion-col size="3" offset="1">
-            <div class="download-resources">
-              <span class="download-resources-subheader">Download Resources</span>
-            </div>
-            <div class="download-resources">
-              <app-resource-download-card prompt="Download Design Map" src="{{template.designMapUrl}}" leadImage="https://images.pexels.com/photos/1181311/pexels-photo-1181311.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"></app-resource-download-card>
-            </div>
-            <div class="download-resources">
-              <app-resource-download-card prompt="Download Operations Manual" src="{{template.operationsManualUrl}}" leadImage="https://images.pexels.com/photos/5805485/pexels-photo-5805485.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"></app-resource-download-card>
-            </div>
+            <ng-container *ngIf="template.designMapUrl || template.operationsManualUrl">
+              <div class="download-resources">
+                <span class="download-resources-subheader">Download Resources</span>
+              </div>
+            </ng-container>
+            <ng-container *ngIf="template.designMapUrl">
+              <div class="download-resources">
+                <app-resource-download-card prompt="Download Design Map" src="{{template.designMapUrl}}" leadImage="/assets/template-library/designMap.png"></app-resource-download-card>
+              </div>
+            </ng-container>
+            <ng-container *ngIf="template.operationsManualUrl">
+              <div class="download-resources">
+                <app-resource-download-card prompt="Download Operations Manual" src="{{template.operationsManualUrl}}" leadImage="/assets/template-library/operationsManual.png"></app-resource-download-card>
+              </div>
+            </ng-container>
           </ion-col>
         </ion-row>
       </ion-grid>
