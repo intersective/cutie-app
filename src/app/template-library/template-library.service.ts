@@ -148,7 +148,7 @@ export class TemplateLibraryService {
 
   importExperienceUrl(templateUuid: string): Observable<string> {
     if (environment.demo) {
-      return this.demo.importExperienceUrl().pipe(map(this._handleImportedExperienceUrlResponse));
+      return this.demo.importExperienceUrl(templateUuid).pipe(map(this._handleImportedExperienceUrlResponse));
     }
     return this.request.graphQLMutate(
       `mutation importExperienceUrl($templateUuid: ID!) {

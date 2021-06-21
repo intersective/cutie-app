@@ -1,23 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Template, TemplateLibraryService } from '../template-library.service';
 import { PopupService } from '../../shared/popup/popup.service';
+import { StorageService } from '@services/storage.service';
+import { environment } from '@environments/environment';
 
 @Component({
   selector: 'app-template-details',
   templateUrl: './template-details.component.html',
   styleUrls: ['./template-details.component.scss'],
 })
-export class TemplateDetailsComponent implements OnInit {
+export class TemplateDetailsComponent {
 
   template: Template;
   loadingTemplate = true;
   importingTemplate = false;
   categoryLeadImage = '/assets/exp-placeholder.png';
 
-  constructor(private route: ActivatedRoute,
-              private service: TemplateLibraryService,
-              private popupService: PopupService) {
+  constructor(
+    private route: ActivatedRoute,
+    private service: TemplateLibraryService,
+    private popupService: PopupService,
+    private storage: StorageService,
+  ) {
     this.route.params.subscribe(params => {
       this.fetchTemplate(params.templateId);
     });
@@ -45,13 +50,14 @@ export class TemplateDetailsComponent implements OnInit {
     this.importingTemplate = true;
     this.service.importExperienceUrl(templateId).subscribe(res => {
       this.importingTemplate = false;
-      if (!res) {
+      const apikey = this.storage.getUser().apikey;
+      if (!res || !apikey) {
         this.popupService.showToast('Failed to create the experience!');
+        return;
       }
-      this.popupService.showImportExp(res);
+      this.popupService.showImportExp(`${res}&appkey=${environment.appkey}&apikey=${apikey}`);
     });
   }
 
-  ngOnInit() {}
 
 }
