@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {Template, TemplateLibraryService} from '../template-library.service';
-import { environment } from '@environments/environment';
-import { urlFormatter } from '../../../helper';
-import {PopupService} from '../../shared/popup/popup.service';
+import { ActivatedRoute } from '@angular/router';
+import { Template, TemplateLibraryService } from '../template-library.service';
+import { PopupService } from '../../shared/popup/popup.service';
 
 @Component({
   selector: 'app-template-details',
@@ -45,13 +43,12 @@ export class TemplateDetailsComponent implements OnInit {
 
   importTemplate(templateId: string) {
     this.importingTemplate = true;
-    this.service.importExperience(templateId).subscribe(res => {
+    this.service.importExperienceUrl(templateId).subscribe(res => {
       this.importingTemplate = false;
-      if (res && res.experienceUuid) {
-        window.top.location.href = urlFormatter(environment.Practera, `/users/change/experience/${res.experienceUuid}?redirect=/design`);
-      } else {
-        this.popupService.showToast('Failed to import the experience!');
+      if (!res) {
+        this.popupService.showToast('Failed to create the experience!');
       }
+      this.popupService.showImportExp(res);
     });
   }
 

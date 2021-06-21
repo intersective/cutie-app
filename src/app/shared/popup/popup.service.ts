@@ -7,6 +7,7 @@ import { TagsComponent } from './tags/tags.component';
 import { TagsViewComponent } from './tags-view/tags-view.component';
 import { CreateExperienceComponent } from './create-experience/create-experience.component';
 import { DuplicateExperienceComponent } from './duplicate-experience/duplicate-experience.component';
+import { ImportExperienceComponent } from './import-experience/import-experience.component';
 
 export interface CustomTostOptions {
   message: string;
@@ -144,8 +145,8 @@ export class PopupService {
   }
 
   /**
-   * show tags pop up message
-   * this is using tags.component.ts as the view
+   * show duplicate experience pop up message
+   * this is using duplicate-experience.component.ts as the view
    */
   showDuplicateExp(experienceUuid: string) {
     const component = DuplicateExperienceComponent;
@@ -153,6 +154,22 @@ export class PopupService {
       experienceUuid,
     };
     const options = {
+      cssClass: 'practera-popup'
+    };
+    return this.showModal(component, componentProps, options);
+  }
+
+  /**
+   * show import experience pop up message
+   * this is using import-experience.component.ts as the view
+   */
+  showImportExp(url: string) {
+    const component = ImportExperienceComponent;
+    const componentProps = {
+      url,
+    };
+    const options = {
+      backdropDismiss: false,
       cssClass: 'practera-popup'
     };
     return this.showModal(component, componentProps, options);

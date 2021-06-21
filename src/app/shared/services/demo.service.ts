@@ -1069,10 +1069,22 @@ export class DemoService {
     }).pipe(delay(1000));
   }
 
-  importExperienceResponse() {
+  importExperience() {
     return of({
       data: {
-        experienceUuid: '000f562e-0ed0-4afe-af53-7a8d20558ce1'
+        importExperience: {
+          experienceUuid: '000f562e-0ed0-4afe-af53-7a8d20558ce1'
+        }
+      }
+    }).pipe(delay(1000));
+  }
+
+  importExperienceUrl() {
+    return of({
+      data: {
+        importExperienceUrl: {
+          url: 'http://127.0.0.1:8080'
+        }
       }
     }).pipe(delay(1000));
   }
