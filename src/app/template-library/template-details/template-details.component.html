@@ -34,9 +34,7 @@
           <ion-col size="8">
             <ng-container *ngIf="template.leadVideoUrl">
               <div>
-                <video class="lead-video" preload="auto" controls>
-                  <source [src]=[template.leadVideoUrl] type="video/webm" />
-                </video>
+                <video class="lead-video" preload="auto" controls [src]=[template.leadVideoUrl]></video>
               </div>
             </ng-container>
             <div>
