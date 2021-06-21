@@ -150,8 +150,8 @@ export class TemplateLibraryService {
     if (environment.demo) {
       return this.demo.importExperienceUrl(templateUuid).pipe(map(this._handleImportedExperienceUrlResponse));
     }
-    return this.request.graphQLMutate(
-      `mutation importExperienceUrl($templateUuid: ID!) {
+    return this.request.graphQLQuery(
+      `query importExperienceUrl($templateUuid: ID!) {
         importExperienceUrl(templateUuid: $templateUuid) {
           url
         }
