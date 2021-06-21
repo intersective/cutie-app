@@ -1084,9 +1084,7 @@ export class DemoService {
   importExperienceUrl(uuid: string) {
     return of({
       data: {
-        importExperienceUrl: {
-          url: urlFormatter(environment.Practera, `api/v2/plan/experience/importsse?template_url=127.0.0.1:3000/template/${uuid}`)
-        }
+        importExperienceUrl: urlFormatter(environment.Practera, `api/v2/plan/experience/importsse?template_url=http://127.0.0.1:3000/template/${uuid}`)
       }
     }).pipe(delay(1000));
   }
