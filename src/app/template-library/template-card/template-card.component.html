@@ -5,7 +5,9 @@
       <ion-card-header class="template-card-header">
         <ion-card-title class="template-card-title" style="font-size: 18px">{{ template.name }}</ion-card-title>
       </ion-card-header>
-      <ion-card-content class="template-card-content card-content" [innerHTML]="template.description"></ion-card-content>
+      <ion-card-content class="template-card-content card-content">
+        <div [innerHTML]="template.description"></div>
+      </ion-card-content>
     </ion-card>
   </a>
 </ng-container>
