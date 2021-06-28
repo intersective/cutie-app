@@ -162,7 +162,7 @@ export class TemplateLibraryService {
     if (!res || !res.data) {
       return null;
     }
-    return res.data.importExperienceUrl.url;
+    return res.data.importExperienceUrl;
   }
 
   private _handleTemplate(res) {
