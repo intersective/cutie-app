@@ -49,9 +49,12 @@ export class TemplateDetailsComponent {
   importTemplate(templateId: string) {
     this.importingTemplate = true;
     this.service.importExperienceUrl(templateId).subscribe(res => {
+      if (!res) {
+        return;
+      }
       this.importingTemplate = false;
       const apikey = this.storage.getUser().apikey;
-      if (!res || !apikey) {
+      if (!apikey) {
         this.popupService.showToast('Failed to create the experience!');
         return;
       }
