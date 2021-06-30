@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { urlFormatter } from 'helper';
 import { ModalController, ToastController } from '@ionic/angular';
 import { ToastOptions } from '@ionic/core';
 import { environment } from '@environments/environment';
+import { TemplateLibraryService } from '@app/template-library/template-library.service';
 
 @Component({
   selector: 'app-import-experience',
@@ -15,28 +15,38 @@ export class ImportExperienceComponent implements OnInit {
   constructor(
     private modalController: ModalController,
     private toastController: ToastController,
+    private service: TemplateLibraryService
   ) { }
 
   ngOnInit() {
+    // mock the progress bar behaviour
+    if (environment.demo) {
+      const interval = setInterval(() => {
+        this.progress += 10;
+        if (this.progress === 100) {
+          clearInterval(interval);
+          this.modalController.dismiss();
+        }
+      }, 200);
+      return;
+    }
     if (this.url) {
-      const eventSource = new EventSource(this.url);
-      eventSource.onopen = () => { console.log('connection open'); };
-      eventSource.onmessage = (message) => {
-        const messageData = JSON.parse(message.data);
-        if (messageData.progress) {
-          this.progress = messageData.progress;
+      this.service.importExperienceSSE(this.url).subscribe(
+        data => {
+          if (data.progress) {
+            this.progress = data.progress;
+            console.log(this.progress);
+            return;
+          }
+          if (data.redirect) {
+            window.top.location.href = data.redirect;
+          }
+        },
+        err => {
+          this.showToast('Failed to use this experience, please try again later.');
+          this.modalController.dismiss();
         }
-        if (messageData.experienceUuid) {
-          eventSource.close();
-          window.top.location.href = urlFormatter(environment.Practera, `/users/change/experience/${messageData.experienceUuid}?redirect=/design`);
-        }
-      };
-      eventSource.onerror = (err) => {
-        console.error('connection failed', err);
-        this.showToast('Failed to use this experience, please try again later.');
-        this.modalController.dismiss();
-        eventSource.close();
-      };
+      );
     }
   }
 
