@@ -18,6 +18,17 @@ export class ImportExperienceComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    // mock the progress bar behaviour
+    if (environment.demo) {
+      let interval = setInterval(() => {
+        this.progress += 10;
+        if (this.progress === 100) {
+          clearInterval(interval);
+          this.modalController.dismiss();
+        }
+      }, 200);
+      return;
+    }
     if (this.url) {
       const eventSource = new EventSource(this.url);
       eventSource.onopen = () => { console.log('connection open'); };
