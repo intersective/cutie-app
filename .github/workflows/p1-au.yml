@@ -1,7 +1,7 @@
 ################################################
 #  GITHUB ACTION WORKFLOW NAME
 ################################################
-name: Deploy to p2-usa live environment
+name: Deploy to p1-au live environment
 
 
 ################################################
@@ -20,8 +20,8 @@ on:
 #  GITHUB ACTION JOBS
 ################################################
 jobs:
-  deploy-p2-usa-live:
-    name: deploy-p2-usa-live
+  deploy-p1-au-live:
+    name: deploy-p1-au-live
     runs-on: ubuntu-latest
 
 
@@ -29,18 +29,21 @@ jobs:
 #  GITHUB ACTIONS GLOBAL ENV VARIABLES  
 ################################################
     env:
-      REGION : us-east-2
+      REGION : ap-southeast-2
       ENV : live # Valid values are dev,test,live only
-      STACK_NAME: p2-usa # Valid values are au,us,uk,p2,lf,nu,p1-sandbox,p1-stage,p2-sandbox,shared only
+      STACK_NAME: p1-au # Valid values are au,us,uk,p2,lf,nu,p1-sandbox,p1-stage,p2-sandbox,shared only
       ROOTSTACK: cutie-app
       CFNS3BucketName: devops-cfn-templates
       PRIVATES3BucketName: devops-shared-private
-      PUBLICZONENAME: usa.practera.com
+      PUBLICZONENAME: au.practera.com
       BUILD_CONFIG: custom
       STATUSREPORTS3Bucket: deployment-status.practera.com
       STATUS: DEPLOYED
-      ENDPOINT: cutie-app.usa.practera.com
+      ENDPOINT: https://cutie.api.practera.com
       BRANCH_TAG_NAME: ${{ github.event.inputs.BRANCH_TAG_NAME }}
+      CUTIEAPPS3: new-admin-live
+      CUTIEAPPCDN: E3OEURB5XY00QG
+      
 
 
 
@@ -91,6 +94,7 @@ jobs:
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run:  npm install
 
+
 ################################################
 #  AWS CLI CONFIGURATION - DEVOPS 
 ################################################ 
@@ -113,13 +117,13 @@ jobs:
           echo "::add-mask::$SLACK_WEBHOOK_URL"
           echo "::set-output name=SLACK_WEBHOOK_URL::$SLACK_WEBHOOK_URL"
     
-          echo "Enable P2 USA ACCOUNT CLI Login"
-          P2_USA_AWS_ACCESS_KEY_ID=$(aws secretsmanager get-secret-value --secret-id $STACK_NAME-DEPLOY-$ENV| jq --raw-output '.SecretString' | jq -r .P2_USA_AWS_ACCESS_KEY_ID)
-          P2_USA_AWS_SECRET_ACCESS_KEY=$(aws secretsmanager get-secret-value --secret-id $STACK_NAME-DEPLOY-$ENV| jq --raw-output '.SecretString' | jq -r .P2_USA_AWS_SECRET_ACCESS_KEY)
-          echo "::add-mask::$P2_USA_AWS_ACCESS_KEY_ID"
-          echo "::add-mask::$P2_USA_AWS_SECRET_ACCESS_KEY"
-          echo "::set-output name=P2_USA_AWS_ACCESS_KEY_ID::$P2_USA_AWS_ACCESS_KEY_ID"
-          echo "::set-output name=P2_USA_AWS_SECRET_ACCESS_KEY::$P2_USA_AWS_SECRET_ACCESS_KEY"
+          echo "Enable P1 AU ACCOUNT CLI Login"
+          P1_PROD_AWS_ACCESS_KEY_ID=$(aws secretsmanager get-secret-value --secret-id $STACK_NAME-DEPLOY-$ENV| jq --raw-output '.SecretString' | jq -r .P1_PROD_AWS_ACCESS_KEY_ID)
+          P1_PROD_AWS_SECRET_ACCESS_KEY=$(aws secretsmanager get-secret-value --secret-id $STACK_NAME-DEPLOY-$ENV| jq --raw-output '.SecretString' | jq -r .P1_PROD_AWS_SECRET_ACCESS_KEY)
+          echo "::add-mask::$P1_PROD_AWS_ACCESS_KEY_ID"
+          echo "::add-mask::$P1_PROD_AWS_SECRET_ACCESS_KEY"
+          echo "::set-output name=P1_PROD_AWS_ACCESS_KEY_ID::$P1_PROD_AWS_ACCESS_KEY_ID"
+          echo "::set-output name=P1_PROD_AWS_SECRET_ACCESS_KEY::$P1_PROD_AWS_SECRET_ACCESS_KEY"
         
         env:  #TODO: Update once manually to new stack accordingly
           STACK_NAME: shared # Valid values are au,us,uk,p2,lf,nu,p1-sandbox,p1-stage,p2-sandbox,shared only
@@ -127,17 +131,18 @@ jobs:
 
 
 ##########################################################
-#  AWS P2 USA ACCOUNT STEPS BELOW
+#  AWS P1 AU ACCOUNT STEPS BELOW
 ##########################################################
       - name: Configure AWS credentials from $STACK_NAME account in $REGION region
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ steps.DeploySecret.outputs.P2_USA_AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ steps.DeploySecret.outputs.P2_USA_AWS_SECRET_ACCESS_KEY }}
+          aws-access-key-id: ${{ steps.DeploySecret.outputs.P1_PROD_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ steps.DeploySecret.outputs.P1_PROD_AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{env.REGION}}
         env:
-          AWS_ACCESS_KEY_ID: ${{ steps.DeploySecret.outputs.P2_USA_AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ steps.DeploySecret.outputs.P2_USA_AWS_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ steps.DeploySecret.outputs.P1_PROD_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ steps.DeploySecret.outputs.P1_PROD_AWS_SECRET_ACCESS_KEY }}
+   
 
           
 
@@ -167,40 +172,40 @@ jobs:
 #           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
 
-##########################################################
-#  AWS S3 SYNC - SERVERLESS TEMPLATES 
-##########################################################
-      - name: AWS S3 Sync operation
-        run: |
-          rm serverless.yml && mv new-serverless.yml serverless.yml
-          aws s3 cp serverless.yml s3://$CFNS3BucketName/$STACK_NAME/$REGION/$ROOTSTACK/sls-templates/serverless.yml
+# ##########################################################
+# #  AWS S3 SYNC - SERVERLESS TEMPLATES 
+# ##########################################################
+#       - name: AWS S3 Sync operation
+#         run: |
+#           rm serverless.yml && mv new-serverless.yml serverless.yml
+#           aws s3 cp serverless.yml s3://$CFNS3BucketName/$STACK_NAME/$REGION/$ROOTSTACK/sls-templates/serverless.yml
 
 
-##########################################################
-#  CLOUDFORMATION EXPORT VARIABLES
-##########################################################
-      - name: Cloudformation Export variables
-        run: |
-          cat >> .env <<EOF
-          CDNSharedACMCertificateArn=$(aws cloudformation list-exports --query "Exports[?Name==\`$STACK_NAME-CDNSharedACMCertificateArn-$ENV\`].Value" --no-paginate --output text)
-          ChatBotSNSTopicARN=$(aws cloudformation list-exports --query "Exports[?Name==\`$STACK_NAME-ChatBotSNSTopicARN-$ENV\`].Value" --no-paginate --output text)
+# ##########################################################
+# #  CLOUDFORMATION EXPORT VARIABLES
+# ##########################################################
+#       - name: Cloudformation Export variables
+#         run: |
+#           cat >> .env <<EOF
+#           CDNSharedACMCertificateArn=$(aws cloudformation list-exports --query "Exports[?Name==\`$STACK_NAME-CDNSharedACMCertificateArn-$ENV\`].Value" --no-paginate --output text)
+#           ChatBotSNSTopicARN=$(aws cloudformation list-exports --query "Exports[?Name==\`$STACK_NAME-ChatBotSNSTopicARN-$ENV\`].Value" --no-paginate --output text)
           
           
-          EOF
+#           EOF
 
-###############################################################
-#  SERVERLESS DEPLOYMENT
-##############################################################
-      - name: Serverless deployment
-        run: |
-          echo "Serverless Deploying"
-          node_modules/.bin/serverless deploy
-          rm serverless.yml
-        env:
-          CUTIES3BUCKET: cutie-app.${{ env.PUBLICZONENAME }}
-          S3VERSIONING: true 
-          NONCURRENTVERSION_EXPIREINDAYS: 30
-          # DEFAULT_EXPIREINDAYS: 0 # Mandatory to disable
+# ###############################################################
+# #  SERVERLESS DEPLOYMENT
+# ##############################################################
+#       - name: Serverless deployment
+#         run: |
+#           echo "Serverless Deploying"
+#           node_modules/.bin/serverless deploy
+#           rm serverless.yml
+#         env:
+#           CUTIES3BUCKET: cutie-app.${{ env.PUBLICZONENAME }}
+#           S3VERSIONING: true 
+#           NONCURRENTVERSION_EXPIREINDAYS: 30
+#           # DEFAULT_EXPIREINDAYS: 0 # Mandatory to disable
 
 
 ###############################################################
@@ -208,33 +213,13 @@ jobs:
 ##############################################################
       - name: Angular Environment creation
         run: |
+          
           printf "Creating required secret variables for angular environment variable creation\n\n"
-
-          export CUSTOM_APPKEY=$(aws secretsmanager get-secret-value --secret-id $STACK_NAME-AppKeySecret-$ENV| jq --raw-output '.SecretString' | jq -r .appkey) 
-          export CUSTOM_FILESTACK_SIGNATURE=$(aws secretsmanager get-secret-value --secret-id $STACK_NAME-FilestackSecret-$ENV| jq --raw-output '.SecretString' | jq -r .signature) 
-          export CUSTOM_FILESTACK_VIRUS_DETECTION=$(aws secretsmanager get-secret-value --secret-id $STACK_NAME-FilestackSecret-$ENV| jq --raw-output '.SecretString' | jq -r .virusdetection) 
-          export CUSTOM_FILESTACK_KEY=$(aws secretsmanager get-secret-value --secret-id $STACK_NAME-FilestackSecret-$ENV| jq --raw-output '.SecretString' | jq -r .apikey)
-          export CUSTOM_FILESTACK_POLICY=$(aws secretsmanager get-secret-value --secret-id $STACK_NAME-FilestackSecret-$ENV| jq --raw-output '.SecretString' | jq -r .policy)
-          export CUSTOM_PUSHERKEY=$(aws secretsmanager get-secret-value --secret-id $STACK_NAME-PusherSecret-$ENV| jq --raw-output '.SecretString' | jq -r .key) 
-         
+          ${{ secrets.P1_CUTIE_AU_SECRETS }}
           printf "Angular environment variable creation  complete\n\n"
           printf "Executing env.sh script\n\n"
           chmod +x env.sh && ./env.sh
-        env:
-          CUSTOM_APPENV: ${{ env.ENV }}
-          CUSTOM_AWS_REGION_CHINA: ap-northeast-2  #TODO CHECK
-          CUSTOM_S3_BUCKET_CHINA: practera-seoul-1 #TODO CHECK
-          CUSTOM_CHATGEAPHQLENDPOINT: https://chat-api.${{ env.PUBLICZONENAME }}/
-          CUSTOM_PATH_IMAGE: /appv2/${{ env.ENV }}/uploads/
-          CUSTOM_AWS_REGION: ${{ env.REGION }}
-          CUSTOM_PATH_ANY: /appv2/${{ env.ENV }}/uploads/
-          CUSTOM_S3_BUCKET: practera-aus
-          CUSTOM_APIENDPOINT: https://cutie-api.${{ env.PUBLICZONENAME }}/
-          CUSTOM_APIENDPOINTOLD: https://${{ env.PUBLICZONENAME }}/
-          CUSTOM_PRACTERCORE: https://${{ env.PUBLICZONENAME }}/
-          CUSTOM_PATH_VIDEO: /appv2/${{ env.ENV }}/video/upload/
-          CUSTOM_GEAPHQLENDPOINT: https://core-graphql-api.${{ env.PUBLICZONENAME }}/
-          
+        
           
 ###############################################################
 #  BUILD WEB PACKAGES
@@ -250,7 +235,7 @@ jobs:
 ##########################################################
       - name: AWS S3 Sync Operations
         run: |
-          CUTIEAPPS3=$(aws cloudformation list-exports --query "Exports[?Name==\`$STACK_NAME-CUTIES3BUCKET-$ENV\`].Value" --no-paginate --output text)
+          # CUTIEAPPS3=$(aws cloudformation list-exports --query "Exports[?Name==\`$STACK_NAME-CUTIES3BUCKET-$ENV\`].Value" --no-paginate --output text)
           aws s3 sync www/ s3://$CUTIEAPPS3 --delete
 
 
@@ -260,7 +245,7 @@ jobs:
 ##########################################################
       - name: AWS Cloudfront Cache invalidation
         run: |
-          CUTIEAPPCDN=$(aws cloudformation list-exports --query "Exports[?Name==\`$STACK_NAME-CutieCloudFrontDistributionID-$ENV\`].Value" --no-paginate --output text)
+          # CUTIEAPPCDN=$(aws cloudformation list-exports --query "Exports[?Name==\`$STACK_NAME-CutieCloudFrontDistributionID-$ENV\`].Value" --no-paginate --output text)
           for i in $CUTIEAPPCDN;do aws cloudfront create-invalidation --distribution-id $i --paths "/*";done
 
 
@@ -279,7 +264,7 @@ jobs:
           author_name: ${{ env.ROOTSTACK }} deployed to ${{ env.ENV }} environemnt in ${{ env.STACK_NAME }} AWS account
           mention: 'here'
           if_mention: failure,cancelled
-          job_name: deploy-p2-usa-live # Match the name above.
+          job_name: deploy-p1-au-live # Match the name above.
           fields: repo,commit,eventName,ref,workflow,message,author,job,took
           custom_payload: |
             {

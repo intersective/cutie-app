@@ -1,9 +1,10 @@
-import {Injectable} from '@angular/core';
-import {map} from 'rxjs/operators';
-import {environment} from '@environments/environment';
-import {DemoService} from '@services/demo.service';
-import {RequestService} from '../shared/request/request.service';
-import {Observable} from 'rxjs/Observable';
+import { Injectable, NgZone } from '@angular/core';
+import { map } from 'rxjs/operators';
+import { environment } from '@environments/environment';
+import { DemoService } from '@services/demo.service';
+import { RequestService } from '../shared/request/request.service';
+import { Observable } from 'rxjs/Observable';
+import { urlFormatter } from 'helper';
 
 export interface Template {
   uuid: string;
@@ -43,6 +44,7 @@ export class TemplateLibraryService {
   constructor(
     private request: RequestService,
     private demo: DemoService,
+    private _zone: NgZone
   ) { }
 
   getTemplates(): Observable<Template[]> {
@@ -127,7 +129,7 @@ export class TemplateLibraryService {
 
   importExperience(templateUuid: string): Observable<ImportExperienceResponse> {
     if (environment.demo) {
-      return this.demo.importExperienceResponse().pipe(map(this._handleImportedExperienceResponse));
+      return this.demo.importExperience().pipe(map(this._handleImportedExperienceResponse));
     }
     return this.request.graphQLMutate(
       `mutation importExperience($templateUuid: ID!) {
@@ -144,6 +146,53 @@ export class TemplateLibraryService {
       return null;
     }
     return res.data.importExperience;
+  }
+
+  importExperienceUrl(templateUuid: string): Observable<string> {
+    if (environment.demo) {
+      return this.demo.importExperienceUrl(templateUuid).pipe(map(this._handleImportedExperienceUrlResponse));
+    }
+    return this.request.graphQLQuery(
+      `query importExperienceUrl($templateUuid: ID!) {
+        importExperienceUrl(templateUuid: $templateUuid)
+      }`,
+      { templateUuid }
+    ).pipe(map(this._handleImportedExperienceUrlResponse));
+  }
+
+  private _handleImportedExperienceUrlResponse(res): string {
+    if (!res || !res.data) {
+      return null;
+    }
+    return res.data.importExperienceUrl;
+  }
+
+  importExperienceSSE(url: string): Observable<{ progress?: number; redirect?: string }> {
+    return Observable.create(observer => {
+      const eventSource = new EventSource(url);
+      eventSource.onopen = () => { console.log('connection open'); };
+      eventSource.onmessage = (message) => {
+        const messageData = JSON.parse(message.data);
+        if (messageData.progress) {
+          this._zone.run(() => {
+            observer.next({ progress: messageData.progress });
+          });
+        }
+        if (messageData.experienceUuid) {
+          eventSource.close();
+          this._zone.run(() => {
+            observer.next({ redirect: urlFormatter(environment.Practera, `/users/change/experience/${messageData.experienceUuid}?redirect=/design`) });
+          });
+        }
+      };
+      eventSource.onerror = (err) => {
+        console.error('connection failed', err);
+        eventSource.close();
+        this._zone.run(() => {
+          observer.error();
+        });
+      };
+    });
   }
 
   private _handleTemplate(res) {
