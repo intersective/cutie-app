@@ -21,7 +21,7 @@ export class ImportExperienceComponent implements OnInit {
   ngOnInit() {
     // mock the progress bar behaviour
     if (environment.demo) {
-      let interval = setInterval(() => {
+      const interval = setInterval(() => {
         this.progress += 10;
         if (this.progress === 100) {
           clearInterval(interval);
