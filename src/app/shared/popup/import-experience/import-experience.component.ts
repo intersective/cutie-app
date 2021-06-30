@@ -36,6 +36,7 @@ export class ImportExperienceComponent implements OnInit {
         const messageData = JSON.parse(message.data);
         if (messageData.progress) {
           this.progress = messageData.progress;
+          console.log(this.progress);
         }
         if (messageData.experienceUuid) {
           eventSource.close();
