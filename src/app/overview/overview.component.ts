@@ -28,7 +28,7 @@ export class OverviewComponent implements OnInit {
         <p>Reflects the started and completed feedback loops. A feedback loop counts as completed if all stages are completed:</p>
         <ul>
           <li>Assessment submitted by a team</li>
-          <li>Mentor reviewed assessment and submitted feedback</li>
+          <li>Expert reviewed assessment and submitted feedback</li>
           <li>Team members read feedback</li>
         </ul>
         <p>A feedback loop helps participants to process the way they learn in practice and is triggered after certain events (e.g. moderated assessment) which can happen multiple times over the duration of a program.</p>`
@@ -419,18 +419,18 @@ export class OverviewComponent implements OnInit {
         'Status',
         'no. of issues',
         'Enrolment - Total',
-        'Enrolment - Admin',
+        'Enrolment - Author',
         'Enrolment - Coordinator',
-        'Enrolment - Mentor',
-        'Enrolment - Participant',
+        'Enrolment - Expert',
+        'Enrolment - Learner',
         'Registered - Total',
-        'Registered - Admin',
+        'Registered - Author',
         'Registered - Coordinator',
-        'Registered - Mentor',
-        'Registered - Participant',
+        'Registered - Expert',
+        'Registered - Learner',
         'On-track',
-        'Recent activity - Participant',
-        'Recent activity - Mentor',
+        'Recent activity - Learner',
+        'Recent activity - Expert',
         'Feedback Loops - Completed',
         'Feedback Loops - Started',
         'Feedback Quality Score',
