@@ -145,82 +145,40 @@ jobs:
    
 
           
-
-################################################
-#  PERFORM LINT TEST
-################################################
-      - name: Run lint test if present
-        run:  |
-          node_modules/.bin/ng lint
-
-
-# ###############################################################
-# #  PERFORM UNIT TEST
-# ##############################################################
-#       - name: Performing Unit test
-#         run: |
-#           node_modules/.bin/ng test --no-watch --code-coverage --browsers ChromeHeadless --karmaConfig=karma.conf.sonar.js
-
-
-# ###############################################################
-# #  SONARCLOUD SCANNER
-# ##############################################################
-#       - name: Performing Sonarcloud Scanner
-#         uses: SonarSource/sonarcloud-github-action@master
-#         env:
-#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
-#           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-
-# ##########################################################
-# #  AWS S3 SYNC - SERVERLESS TEMPLATES 
-# ##########################################################
-#       - name: AWS S3 Sync operation
-#         run: |
-#           rm serverless.yml && mv new-serverless.yml serverless.yml
-#           aws s3 cp serverless.yml s3://$CFNS3BucketName/$STACK_NAME/$REGION/$ROOTSTACK/sls-templates/serverless.yml
-
-
-# ##########################################################
-# #  CLOUDFORMATION EXPORT VARIABLES
-# ##########################################################
-#       - name: Cloudformation Export variables
-#         run: |
-#           cat >> .env <<EOF
-#           CDNSharedACMCertificateArn=$(aws cloudformation list-exports --query "Exports[?Name==\`$STACK_NAME-CDNSharedACMCertificateArn-$ENV\`].Value" --no-paginate --output text)
-#           ChatBotSNSTopicARN=$(aws cloudformation list-exports --query "Exports[?Name==\`$STACK_NAME-ChatBotSNSTopicARN-$ENV\`].Value" --no-paginate --output text)
-          
-          
-#           EOF
-
-# ###############################################################
-# #  SERVERLESS DEPLOYMENT
-# ##############################################################
-#       - name: Serverless deployment
-#         run: |
-#           echo "Serverless Deploying"
-#           node_modules/.bin/serverless deploy
-#           rm serverless.yml
-#         env:
-#           CUTIES3BUCKET: cutie-app.${{ env.PUBLICZONENAME }}
-#           S3VERSIONING: true 
-#           NONCURRENTVERSION_EXPIREINDAYS: 30
-#           # DEFAULT_EXPIREINDAYS: 0 # Mandatory to disable
-
-
 ###############################################################
 #  ANGULAR ENVIRONMENT CREATION
 ##############################################################
       - name: Angular Environment creation
         run: |
-          
           printf "Creating required secret variables for angular environment variable creation\n\n"
-          ${{ secrets.P1_CUTIE_AU_SECRETS }}
+
+          export CUSTOM_APPKEY=$(aws secretsmanager get-secret-value --secret-id live/api/appkey | jq --raw-output '.SecretString' | jq -r .appkey)
+          export CUSTOM_FILESTACK_SIGNATURE=$(aws secretsmanager get-secret-value --secret-id live/api/filestack | jq --raw-output '.SecretString' | jq -r .signature)
+          export CUSTOM_FILESTACK_VIRUS_DETECTION=$(aws secretsmanager get-secret-value --secret-id live/api/filestack | jq --raw-output '.SecretString' | jq -r .virusdetection)
+          export CUSTOM_FILESTACK_KEY=$(aws secretsmanager get-secret-value --secret-id live/api/filestack | jq --raw-output '.SecretString' | jq -r .apikey)
+          export CUSTOM_FILESTACK_POLICY=$(aws secretsmanager get-secret-value --secret-id live/api/filestack | jq --raw-output '.SecretString' | jq -r .policy)
+          export CUSTOM_PUSHERKEY=$(aws secretsmanager get-secret-value --secret-id live/api/pusher | jq --raw-output '.SecretString' | jq -r .key)
+         
           printf "Angular environment variable creation  complete\n\n"
           printf "Executing env.sh script\n\n"
           chmod +x env.sh && ./env.sh
-        
+        env:
+          CUSTOM_APPENV: live
+          CUSTOM_AWS_REGION_CHINA: ap-northeast-2
+          CUSTOM_S3_BUCKET_CHINA: practera-seoul-1
+          CUSTOM_CHATGEAPHQLENDPOINT: https://chat-api.au.practera.com/graphql
+          CUSTOM_PATH_IMAGE: /appv2/live/uploads/
+          CUSTOM_AWS_REGION: ap-southeast-2
+          CUSTOM_PATH_ANY: /appv2/live/uploads/
+          CUSTOM_S3_BUCKET: practera-aus
+          CUSTOM_APIENDPOINT: https://cutie.api.practera.com/
+          CUSTOM_APIENDPOINTOLD: https://api.practera.com/
+          CUSTOM_PRACTERCORE: https://my.practera.com
+          CUSTOM_PATH_VIDEO: /media/fpvideo/upload/
+          CUSTOM_GEAPHQLENDPOINT: https://core-graphql-api.au.practera.com/
           
+
+ 
 ###############################################################
 #  BUILD WEB PACKAGES
 ##############################################################
@@ -261,7 +219,7 @@ jobs:
           MATRIX_CONTEXT: ${{ toJson(matrix) }} # required
         with:
           status: ${{ job.status }}
-          author_name: ${{ env.ROOTSTACK }} deployed to ${{ env.ENV }} environemnt in ${{ env.STACK_NAME }} AWS account
+          author_name: ${{ env.BRANCH_TAG_NAME }} -  ${{ env.ROOTSTACK }} deployed to ${{ env.ENV }} environemnt in ${{ env.STACK_NAME }} AWS account
           mention: 'here'
           if_mention: failure,cancelled
           job_name: deploy-p1-au-live # Match the name above.
