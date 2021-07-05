@@ -134,30 +134,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ steps.DeploySecret.outputs.P1_SANDBOX_AWS_SECRET_ACCESS_KEY }}
           
 
-################################################
-#  PERFORM LINT TEST
-################################################
-      - name: Run lint test if present
-        run:  |
-          node_modules/.bin/ng lint
 
-
-# ###############################################################
-# #  PERFORM UNIT TEST
-# ##############################################################
-#       - name: Performing Unit test
-#         run: |
-#           node_modules/.bin/ng test --no-watch --code-coverage --browsers ChromeHeadless --karmaConfig=karma.conf.sonar.js
-
-
-# ###############################################################
-# #  SONARCLOUD SCANNER
-# ##############################################################
-#       - name: Performing Sonarcloud Scanner
-#         uses: SonarSource/sonarcloud-github-action@master
-#         env:
-#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
-#           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
 
 ##########################################################
@@ -165,7 +142,7 @@ jobs:
 ##########################################################
       - name: AWS S3 Sync operation
         run: |
-          rm serverless.yml && mv new-serverless.yml serverless.yml
+          
           aws s3 cp serverless.yml s3://$CFNS3BucketName/$STACK_NAME/$REGION/$ROOTSTACK/sls-templates/serverless.yml
 
 
@@ -270,7 +247,7 @@ jobs:
           MATRIX_CONTEXT: ${{ toJson(matrix) }} # required
         with:
           status: ${{ job.status }}
-          author_name: ${{ env.ROOTSTACK }} deployed to ${{ env.ENV }} environemnt in ${{ env.STACK_NAME }} AWS account
+          author_name: ${{ env.BRANCH_TAG_NAME }} -  ${{ env.ROOTSTACK }} deployed to ${{ env.ENV }} environemnt in ${{ env.STACK_NAME }} AWS account
           mention: 'here'
           if_mention: failure,cancelled
           job_name: deploy-p1-sandbox # Match the name above.
