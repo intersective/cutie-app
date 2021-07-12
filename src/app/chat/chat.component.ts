@@ -25,12 +25,12 @@ export class ChatComponent implements OnInit {
   }
 
   goto(event) {
-    if (this.chatRoom) {
-      this.chatChannel = event;
-      setTimeout(() => {
+    this.chatChannel = event;
+    setTimeout(() => {
+      if (this.chatRoom) {
         this.chatRoom.onEnter();
-      });
-    }
+      }
+    });
   }
 
   /**

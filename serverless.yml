@@ -1,109 +1,105 @@
-service: ${env:prefix}-${env:repo-name}
-
+service: ${env:STACK_NAME}-cutie-app
+frameworkVersion: '2'
 useDotenv: true
+enableLocalInstallationFallback: true
 
-plugins:
-  - serverless-certificate-creator
-
-package:
-  exclude:
-    - .github/**
-  include:
-    - artifacts/**/*
-    - serverless.yml
-    - .env
-    - package.json
-    - package-lock.json
 
 provider:
   name: aws
-  runtime: nodejs12.x
-  region: ${env:region}
-  stage: ${opt:stage, 'dev'}
+  runtime: nodejs14.x
+  region: ${env:REGION}
+  stage: ${env:ENV}
+  deploymentBucket:
+    blockPublicAccess: true 
+    serverSideEncryption: AES256 
+    tags: 
+      StackName: ${env:STACK_NAME}
+      Env: ${env:ENV}
+      RootStack: ${env:ROOTSTACK}
+  stackTags: # Optional CF stack tags
+    StackName: ${env:STACK_NAME}
+    Env: ${env:ENV}
+    RootStack: ${env:ROOTSTACK}
+  tags: # Optional service wide function tags
+    StackName: ${env:STACK_NAME}
+    Env: ${env:ENV}
+    RootStack: ${env:ROOTSTACK}
+  notificationArns:
+    - '${env:ChatBotSNSTopicARN}'
 
-custom:
-  s3Bucket:
-    prod: ${env:subdomain}.${env:domain}
-    sandbox: ${env:subdomain}.${env:deploy}.${env:domain}
-    stage: ${env:subdomain}.${env:deploy}.${env:domain}
-  customCertificate:
-      certificateName: "${env:subdomain}.${env:domain}"
-      hostedZoneName: "${env:domain}"
-      hostedZoneId: "${env:hostedZoneId}"
-      subjectAlternativeNames :
-        - "${env:subdomain}.sandbox.${env:domain}"
-        - "${env:subdomain}.stage.${env:domain}"
-      tags:
-        Name: ${env:subdomain}.${env:domain}
-        Environment: ${env:stage}
-      rewriteRecords: false
 
 resources:
 
+  Conditions:
+    HasCutieBucketName: !Not [!Equals [ '${env:CUTIES3BUCKET}', '']]
+    HasVersioning: !Equals [ '${env:S3VERSIONING}', true]
+    HadVersioning: !Equals [ '${env:S3VERSIONING}', 'false-but-was-true']
+    HasNoncurrentVersionExpirationInDays: !Not [!Equals [ '${env:NONCURRENTVERSION_EXPIREINDAYS}', 0]]
+    # HasExpirationInDays: !Not [!Equals [ '${env:DEFAULT_EXPIREINDAYS}', 0]]
+    
   Resources:
-
     ## Specifying the S3 Bucket
-    CutieAppS3Bucket:
+    CUTIES3BUCKET:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: ${self:custom.s3Bucket.${env:deploy}}
+        BucketName: !If [HasCutieBucketName, '${env:CUTIES3BUCKET}', !Ref 'AWS::NoValue']
         BucketEncryption: 
           ServerSideEncryptionConfiguration: 
           - ServerSideEncryptionByDefault:
               SSEAlgorithm: AES256
-        # NotificationConfiguration:
-        #   TopicConfigurations:
-        #     - Event: s3:ObjectCreated:*
-        #       Topic:
-        #         Ref: !Ref SysAdminAlertSNSTopic
-        #       Filter:
-        #         S3Key:
-        #           Rules:
-        #             - Name: suffix
-        #               Value: ".html"
+        LifecycleConfiguration:
+          Rules:
+          - AbortIncompleteMultipartUpload:
+              DaysAfterInitiation: 7
+            Status: Enabled
+          - NoncurrentVersionExpirationInDays: !If [HasNoncurrentVersionExpirationInDays, '${env:NONCURRENTVERSION_EXPIREINDAYS}', 1]
+            Status: !If [HasNoncurrentVersionExpirationInDays, Enabled, Disabled]
+          # - ExpirationInDays: !If [HasExpirationInDays, '${env:DEFAULT_EXPIREINDAYS}', 1]
+          #   Status: !If [HasExpirationInDays, Enabled, Disabled]
+        VersioningConfiguration: !If [HasVersioning, {Status: Enabled}, !If [HadVersioning, {Status: Suspended}, !Ref 'AWS::NoValue']]
 
 
     ## Specifying the policies to make sure all files inside the Bucket are avaialble to CloudFront
-    CutieAppS3BucketPolicy:
-      DependsOn: [CutieAppCloudFrontOriginAccessIdentity]
+    CUTIES3BUCKETPolicy:
+      DependsOn: [CutieCloudFrontOriginAccessIdentity]
       Type: AWS::S3::BucketPolicy
       Properties:
         Bucket:
-          Ref: CutieAppS3Bucket
+          Ref: CUTIES3BUCKET
         PolicyDocument:
           Statement:
           - Sid: S3-Bucket-Accesible via CDN OAI only
             Action: 's3:GetObject'
             Effect: Allow
-            Resource: !Sub 'arn:aws:s3:::${CutieAppS3Bucket}/*'
+            Resource: !Sub 'arn:aws:s3:::${CUTIES3BUCKET}/*'
             Principal:
-              CanonicalUser: !GetAtt CutieAppCloudFrontOriginAccessIdentity.S3CanonicalUserId 
+              CanonicalUser: !GetAtt CutieCloudFrontOriginAccessIdentity.S3CanonicalUserId 
           - Sid: AllowSSLRequestsOnly # AWS Foundational Security Best Practices v1.0.0 S3.5
             Effect: Deny
             Principal: '*'
             Action: 's3:*'
             Resource:
-            - !GetAtt 'CutieAppS3Bucket.Arn'
-            - !Sub '${CutieAppS3Bucket.Arn}/*'
+            - !Sub 'arn:aws:s3:::${CUTIES3BUCKET}'
+            - !Sub 'arn:aws:s3:::${CUTIES3BUCKET}/*'
             Condition:
               Bool:
                 'aws:SecureTransport': false
 
     ## Specifying the CloudFront Origin Access Identity CDN Distribution to server your Web Application
-    CutieAppCloudFrontOriginAccessIdentity:
+    CutieCloudFrontOriginAccessIdentity:
       Type: 'AWS::CloudFront::CloudFrontOriginAccessIdentity'
       Properties:
         CloudFrontOriginAccessIdentityConfig:
-          Comment: !Sub "Cloudfront Origin identity for ${self:custom.s3Bucket.${env:deploy}}"
+          Comment: "Cloudfront Origin identity for ${env:CUTIES3BUCKET}"
 
     ## Specifying the CloudFront Distribution to server your Web Application
-    CutieAppCloudFrontDistribution:
+    CutieCloudFrontDistribution:
       Type: AWS::CloudFront::Distribution
       Properties:
         DistributionConfig:
           Aliases:
-            - ${self:custom.s3Bucket.${env:deploy}}
-          Comment: !Sub "Cloudfront Origin identity for ${self:custom.s3Bucket.${env:deploy}}"
+            - ${env:CUTIES3BUCKET}
+          Comment: "Cloudfront Origin identity for ${env:CUTIES3BUCKET}"
           DefaultCacheBehavior:
             AllowedMethods:
             - GET
@@ -121,7 +117,7 @@ resources:
               QueryString: false
             MaxTTL: 86400 # in seconds
             MinTTL: 60 # in seconds
-            TargetOriginId: ${self:custom.s3Bucket.${env:deploy}}
+            TargetOriginId: ${env:CUTIES3BUCKET}
             ViewerProtocolPolicy: 'redirect-to-https'
           DefaultRootObject: index.html
           CustomErrorResponses:
@@ -135,86 +131,70 @@ resources:
           HttpVersion: http2
           IPV6Enabled: true
           Origins:
-          - DomainName: !GetAtt 'CutieAppS3Bucket.RegionalDomainName'
-            Id: ${self:custom.s3Bucket.${env:deploy}}
+          - DomainName: !GetAtt 'CUTIES3BUCKET.RegionalDomainName'
+            Id: ${env:CUTIES3BUCKET}
             S3OriginConfig:
-              OriginAccessIdentity: !Sub 'origin-access-identity/cloudfront/${CutieAppCloudFrontOriginAccessIdentity}'
+              OriginAccessIdentity: !Sub 'origin-access-identity/cloudfront/${CutieCloudFrontOriginAccessIdentity}'
           PriceClass: 'PriceClass_All'
           ViewerCertificate:
-            AcmCertificateArn: ${certificate:${self:custom.customCertificate.certificateName}:CertificateArn}
+            AcmCertificateArn: '${env:CDNSharedACMCertificateArn}'
             MinimumProtocolVersion: 'TLSv1.2_2019'
             SslSupportMethod: 'sni-only'
-          ## Uncomment the following section in case you want to enable logging for CloudFront requests
-          # Logging:
-          #   IncludeCookies: 'false'
-          #   Bucket: mylogs.s3.amazonaws.com
-          #   Prefix: myprefix
-    
     
     Route53RecordV2:
       Type: 'AWS::Route53::RecordSetGroup'
       Properties:
-        HostedZoneId: "${env:hostedZoneId}"
+        HostedZoneId: {'Fn::ImportValue': '${env:STACK_NAME}-PublicHostedZoneId-${env:ENV}'}
         RecordSets:
-        - Name: ${self:custom.s3Bucket.${env:deploy}}
-          Type: A
-          AliasTarget:
-            HostedZoneId: Z2FDTNDATAQYW2 # Magic CloudFront number
-            DNSName: !GetAtt 'CutieAppCloudFrontDistribution.DomainName'
+        - Name: ${env:CUTIES3BUCKET}
+          Type: CNAME
+          TTL: '3200'
+          ResourceRecords:
+            - !GetAtt 'CutieCloudFrontDistribution.DomainName'
 
-    Route53RecordIPv6:
-      Type: 'AWS::Route53::RecordSetGroup'
+
+    HTTPCodeTarget5XXTooHighAlarm:
+      Type: 'AWS::CloudWatch::Alarm'
       Properties:
-        HostedZoneId: "${env:hostedZoneId}"
-        RecordSets:
-        - Name: ${self:custom.s3Bucket.${env:deploy}}
-          Type: AAAA
-          AliasTarget:
-            HostedZoneId: Z2FDTNDATAQYW2 # Magic CloudFront number
-            DNSName: !GetAtt 'CutieAppCloudFrontDistribution.DomainName'
-    
-    # 5xxErrorRateTooHighAlarm:
-    #   Type: 'AWS::CloudWatch::Alarm'
-    #   Properties:
-    #     AlarmActions:
-    #     # - !Ref SysAdminAlertSNSTopic 
-    #     - !Sub 'arn:aws:sns:${AWS::Region}:${AWS::AccountId}:P2-AWSChatBotSNSService-Syd'
-    #     AlarmDescription: '${self:custom.s3Bucket.${env:deploy}}-5xx errors'
-    #     ComparisonOperator: GreaterThanThreshold
-    #     Dimensions:
-    #     - Name: Region
-    #       Value: Global
-    #     - Name: DistributionId
-    #       Value: !Ref CutieAppCloudFrontDistribution
-    #     EvaluationPeriods: 1
-    #     MetricName: 5xxErrorRate
-    #     Namespace: 'AWS/CloudFront'
-    #     OKActions: 
-    #     # - !Ref SysAdminAlertSNSTopic
-    #     - !Sub 'arn:aws:sns:${AWS::Region}:${AWS::AccountId}:P2-AWSChatBotSNSService-Syd'
-    #     Period: 60
-    #     Statistic: Average
-    #     Threshold: 1
-    #     TreatMissingData: notBreaching
+        AlarmDescription: '${env:CUTIES3BUCKET} - receives 5XX HTTP status codes from targets'
+        Namespace: 'AWS/CloudFront'
+        MetricName: HTTPCode_Target_5XX_Count
+        Statistic: Sum
+        Period: 180
+        EvaluationPeriods: 3
+        ComparisonOperator: GreaterThanThreshold
+        Threshold: 3
+        AlarmActions:
+        - {'Fn::ImportValue': '${env:STACK_NAME}-ChatBotSNSTopicARN-${env:ENV}'}
+        Dimensions:
+        - Name: Region
+          Value: Global
+        - Name: DistributionId
+          Value: !Ref CutieCloudFrontDistribution
+        TreatMissingData: notBreaching
 
-  ## In order to print out the hosted domain via `serverless info` we need to define the DomainName output for CloudFormation
+
   Outputs:
-    CutieAppCloudFrontDistributionOutput:
+    CutieCloudFrontDistributionOutput:
       Value:
-        'Fn::GetAtt': [ CutieAppCloudFrontDistribution, DomainName ]
+        'Fn::GetAtt': [ CutieCloudFrontDistribution, DomainName ]
+      Export:
+        Name: ${env:STACK_NAME}-CutieCloudFrontDistributionOutput-${env:ENV}
     
-    CutieAppS3Bucket:
+    CUTIES3BUCKET:
       Description: 'Name of the S3 bucket storing the static files.'
-      Value: !Ref CutieAppS3Bucket
+      Value: !Ref CUTIES3BUCKET
       Export:
-        Name: ${env:prefix}-CutieAppS3Bucket-${env:deploy}
+        Name: ${env:STACK_NAME}-CUTIES3BUCKET-${env:ENV}
 
-    CutieAppS3BucketURL:
+    CUTIES3BUCKETURL:
       Description: 'URL to static website.'
-      Value: https://${self:custom.s3Bucket.${env:deploy}}
-
-    CutieAppCloudFrontDistributionID:
-      Description: 'CloudFront distribution id'
-      Value: !Ref CutieAppCloudFrontDistribution
+      Value: https://${env:CUTIES3BUCKET}
       Export:
-        Name: ${env:prefix}-CutieAppCloudFrontDistributionID-${env:deploy}
+        Name: ${env:STACK_NAME}-CUTIES3BUCKETURL-${env:ENV}
+
+    CutieCloudFrontDistributionID:
+      Description: 'CloudFront distribution id'
+      Value: !Ref CutieCloudFrontDistribution
+      Export:
+        Name: ${env:STACK_NAME}-CutieCloudFrontDistributionID-${env:ENV}
