@@ -71,7 +71,7 @@ describe('OverviewComponent', () => {
           admin: 4,
           coordinator: 3,
           mentor: 5,
-          participant: 53
+          participant: 52
         },
         registeredUserCount: {
           admin: 4,
