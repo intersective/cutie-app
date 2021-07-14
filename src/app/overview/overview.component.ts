@@ -245,18 +245,18 @@ export class OverviewComponent implements OnInit {
       case 1:
         this.experiences.sort((a, b) => {
           if (this.sortDesc) {
-            return a.statistics.registeredUserCount.participant > b.statistics.registeredUserCount.participant ? -1 : 1;
+            return a.statistics.enrolledUserCount.participant > b.statistics.enrolledUserCount.participant ? -1 : 1;
           }
-          return a.statistics.registeredUserCount.participant < b.statistics.registeredUserCount.participant ? -1 : 1;
+          return a.statistics.enrolledUserCount.participant < b.statistics.enrolledUserCount.participant ? -1 : 1;
         });
         break;
 
       case 2:
         this.experiences.sort((a, b) => {
           if (this.sortDesc) {
-            return a.statistics.registeredUserCount.mentor > b.statistics.registeredUserCount.mentor ? -1 : 1;
+            return a.statistics.enrolledUserCount.mentor > b.statistics.enrolledUserCount.mentor ? -1 : 1;
           }
-          return a.statistics.registeredUserCount.mentor < b.statistics.registeredUserCount.mentor ? -1 : 1;
+          return a.statistics.enrolledUserCount.mentor < b.statistics.enrolledUserCount.mentor ? -1 : 1;
         });
         break;
 
