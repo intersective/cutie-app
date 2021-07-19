@@ -276,22 +276,22 @@ describe('OverviewComponent', () => {
       component.sortDesc = false;
       expsResult = [exps[0], exps[1], exps[2]];
     });
-    it('by recent active participants desc', () => {
+    it('by recent active learners desc', () => {
       component.sortBy = component.sortList[3];
       component.sortDesc = true;
       expsResult = [exps[2], exps[1], exps[0]];
     });
-    it('by recent active participants asc', () => {
+    it('by recent active learners asc', () => {
       component.sortBy = component.sortList[3];
       component.sortDesc = false;
       expsResult = [exps[0], exps[1], exps[2]];
     });
-    it('by recent active mentors desc', () => {
+    it('by recent active experts desc', () => {
       component.sortBy = component.sortList[4];
       component.sortDesc = true;
       expsResult = [exps[2], exps[1], exps[0]];
     });
-    it('by recent active mentors asc', () => {
+    it('by recent active experts asc', () => {
       component.sortBy = component.sortList[4];
       component.sortDesc = false;
       expsResult = [exps[0], exps[1], exps[2]];
