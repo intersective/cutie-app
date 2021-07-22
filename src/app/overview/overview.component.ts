@@ -17,9 +17,9 @@ export class OverviewComponent implements OnInit {
       description: 'Displays all experiences which are currently live. An experience is live when the status is moved from "Draft" to "Live" and the content is now visible to all registered users.'
     },
     {
-      label: 'Recently active learners and experts',
+      label: 'Recently active registered learners and experts',
       value: '',
-      description: 'Reflects the percentage of learners who logged in at least once during the past 7 days out of the total number.'
+      description: 'Reflects the percentage of learners and experts who logged in at least once during the past 7 days out of the total registered number.'
     },
     {
       label: 'Feedback loops completed',
@@ -41,8 +41,7 @@ export class OverviewComponent implements OnInit {
   ];
   sortList = [
     'created time',
-    'participant count',
-    'mentor count',
+    'enrolled user count',
     'recent active learners',
     'recent active experts',
     'feedback loops completed',
@@ -244,23 +243,23 @@ export class OverviewComponent implements OnInit {
 
       case 1:
         this.experiences.sort((a, b) => {
+          let countA = 0, countB = 0;
+          ['participant', 'mentor', 'coordinator', 'admin'].forEach(field => {
+            if (a.statistics.enrolledUserCount[field]) {
+              countA += a.statistics.enrolledUserCount[field];
+            }
+            if (b.statistics.enrolledUserCount[field]) {
+              countB += b.statistics.enrolledUserCount[field];
+            }
+          });
           if (this.sortDesc) {
-            return a.statistics.enrolledUserCount.participant > b.statistics.enrolledUserCount.participant ? -1 : 1;
+            return countA > countB ? -1 : 1;
           }
-          return a.statistics.enrolledUserCount.participant < b.statistics.enrolledUserCount.participant ? -1 : 1;
+          return countA < countB ? -1 : 1;
         });
         break;
 
       case 2:
-        this.experiences.sort((a, b) => {
-          if (this.sortDesc) {
-            return a.statistics.enrolledUserCount.mentor > b.statistics.enrolledUserCount.mentor ? -1 : 1;
-          }
-          return a.statistics.enrolledUserCount.mentor < b.statistics.enrolledUserCount.mentor ? -1 : 1;
-        });
-        break;
-
-      case 3:
         this.experiences.sort((a, b) => {
           if (this.sortDesc) {
             return a.statistics.activeUserCount.participant > b.statistics.activeUserCount.participant ? -1 : 1;
@@ -269,7 +268,7 @@ export class OverviewComponent implements OnInit {
         });
         break;
 
-      case 4:
+      case 3:
         this.experiences.sort((a, b) => {
           if (this.sortDesc) {
             return a.statistics.activeUserCount.mentor > b.statistics.activeUserCount.mentor ? -1 : 1;
@@ -278,7 +277,7 @@ export class OverviewComponent implements OnInit {
         });
         break;
 
-      case 5:
+      case 4:
         this.experiences.sort((a, b) => {
           if (this.sortDesc) {
             return a.statistics.feedbackLoopCompleted > b.statistics.feedbackLoopCompleted ? -1 : 1;
@@ -287,7 +286,7 @@ export class OverviewComponent implements OnInit {
         });
         break;
 
-      case 6:
+      case 5:
         this.experiences.sort((a, b) => {
           if (this.sortDesc) {
             return a.statistics.onTrackRatio > b.statistics.onTrackRatio ? -1 : 1;
@@ -296,7 +295,7 @@ export class OverviewComponent implements OnInit {
         });
         break;
 
-      case 7:
+      case 6:
         this.experiences.sort((a, b) => {
           if (this.sortDesc) {
             return a.statistics.reviewRatingAvg > b.statistics.reviewRatingAvg ? -1 : 1;
@@ -305,7 +304,7 @@ export class OverviewComponent implements OnInit {
         });
         break;
 
-      case 8:
+      case 7:
         this.experiences.sort((a, b) => {
           if (this.sortDesc) {
             return a.todoItemCount > b.todoItemCount ? -1 : 1;
