@@ -11,7 +11,7 @@ import {By} from '@angular/platform-browser';
 describe('TemplateDetailsComponent', () => {
   let component: TemplateDetailsComponent;
   let fixture: ComponentFixture<TemplateDetailsComponent>;
-  const templateLibraryServiceSpy = jasmine.createSpyObj('TemplateLibraryService', ['getTemplate', 'importExperience']);
+  const templateLibraryServiceSpy = jasmine.createSpyObj('TemplateLibraryService', ['getTemplate', 'importExperienceUrl']);
   const popupServiceSpy = jasmine.createSpyObj('PopupService', ['showToast']);
 
   const params = {
@@ -58,7 +58,7 @@ describe('TemplateDetailsComponent', () => {
     fixture = TestBed.createComponent(TemplateDetailsComponent);
     component = fixture.componentInstance;
     templateLibraryServiceSpy.getTemplate = jasmine.createSpy().and.returnValue(of(template));
-    templateLibraryServiceSpy.importExperience = jasmine.createSpy().and.returnValue(of({experienceUuid: 'abc123'}));
+    templateLibraryServiceSpy.importExperienceUrl = jasmine.createSpy().and.returnValue(of({experienceUuid: 'abc123'}));
     fixture.detectChanges();
   });
 
@@ -85,10 +85,10 @@ describe('TemplateDetailsComponent', () => {
   });
 
   it('should call import experience', () => {
-    templateLibraryServiceSpy.importExperience = jasmine.createSpy().and.returnValue(of({experienceUuid: null}));
+    templateLibraryServiceSpy.importExperienceUrl = jasmine.createSpy().and.returnValue(of({experienceUuid: null}));
     component.importTemplate('abc123');
-    expect(templateLibraryServiceSpy.importExperience).toHaveBeenCalledWith('abc123');
-    expect(popupServiceSpy.showToast).toHaveBeenCalledWith('Failed to import the experience!');
+    expect(templateLibraryServiceSpy.importExperienceUrl).toHaveBeenCalledWith('abc123');
+    expect(popupServiceSpy.showToast).toHaveBeenCalledWith('Failed to create the experience!');
   });
 
   afterEach(() => {
