@@ -503,7 +503,7 @@ export class DemoService {
     {
       uuid: '34c3d514-b459-b9d1-05c8-2bd1f582447c',
       name: 'XCELERY 2.0',
-      description: `<p>This experience is perfect if you want to run 2-week virtual programs where teams of students can work collaboratively to solve a real industry challenge e.g. for a Startup, SME or Non-profit.<br></p><p>In the Deal Book Nano Project, student teams support Startups, SME’s and NGO’s to find funding sources. Each student is expected to input 25 hours of effort across the two weeks and will work in a remote, virtual fashion with their team. </p><p><span>The Practera app is used to support participants through their experiential learning; participants will submit deliverables (Draft &amp; Final Report) for Client review, iteratively reflect on their skill development and experience, and to access supportive learning content.</span><br></p><p><br></p>`,
+      description: `<p>This experience is perfect if you want to run 2-week virtual programs where teams of students can work collaboratively to solve a real industry challenge e.g. for a Startup, SME or Non-profit.<br></p><p>In the Deal Book Nano Project, student teams support Startups, SME’s and NGO’s to find funding sources. Each student is expected to input 25 hours of effort across the two weeks and will work in a remote, virtual fashion with their team. </p><p><span>The Practera app is used to support learners through their experiential learning; learners will submit deliverables (Draft &amp; Final Report) for Client review, iteratively reflect on their skill development and experience, and to access supportive learning content.</span><br></p><p><br></p>`,
       leadImageUrl: '',
       leadVideoUrl: '',
       type: 'Internship',

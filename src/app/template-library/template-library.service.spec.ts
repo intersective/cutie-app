@@ -151,7 +151,7 @@ describe('TemplateLibraryService', () => {
   describe('for importExperience', () => {
     it('demo response', () => {
       environment.demo = true;
-      demoService.importExperienceResponse = jasmine.createSpy().and.returnValue(of({}));
+      demoService.importExperience = jasmine.createSpy().and.returnValue(of({}));
       // @ts-ignore
       service.importExperience('abc123').subscribe(res => expect(res).toEqual(null));
     });
