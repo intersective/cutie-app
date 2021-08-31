@@ -180,6 +180,38 @@ describe('TemplateLibraryService', () => {
     });
   });
 
+  describe('for importExperienceUrl', () => {
+    it('demo response', () => {
+      environment.demo = true;
+      demoService.importExperienceUrl = jasmine.createSpy().and.returnValue(of({
+        data: { importExperienceUrl: 'test-url' }
+      }));
+      // @ts-ignore
+      service.importExperienceUrl('abc123').subscribe(res => expect(res).toEqual('test-url'));
+    });
+    it('graphql response', () => {
+      environment.demo = false;
+      requestService.graphQLQuery = jasmine.createSpy().and.returnValue(of({
+        data: {
+          importExperienceUrl: 'test-url'
+        }
+      }));
+      service.importExperienceUrl('abc123').subscribe(res => expect(res).toEqual('test-url'));
+    });
+    it('handles undefined graphql response', () => {
+      environment.demo = false;
+      requestService.graphQLQuery = jasmine.createSpy().and.returnValue(of(undefined));
+      // @ts-ignore
+      service.importExperienceUrl('abc123').subscribe(res => expect(res).toEqual(null));
+    });
+    it('handles undefined data from graphql response', () => {
+      environment.demo = false;
+      requestService.graphQLQuery = jasmine.createSpy().and.returnValue(of({data: undefined}));
+      // @ts-ignore
+      service.importExperienceUrl('abc123').subscribe(res => expect(res).toEqual(null));
+    });
+  });
+
   describe('for getCategories', () => {
     it('gets the categories', () => {
       environment.demo = true;

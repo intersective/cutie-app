@@ -27,11 +27,11 @@ export class ImportExperienceComponent implements OnInit {
           clearInterval(interval);
           this.modalController.dismiss();
         }
-      }, 200);
+      }, 500);
       return;
     }
     if (this.url) {
-      this.service.importExperienceSSE(this.url).subscribe(
+      this.service.createExperienceSSE(this.url).subscribe(
         data => {
           if (data.progress) {
             this.progress = data.progress;
@@ -43,7 +43,7 @@ export class ImportExperienceComponent implements OnInit {
           }
         },
         err => {
-          this.showToast('Failed to use this experience, please try again later.');
+          this.showToast('Failed to create the experience, please try again later.');
           this.modalController.dismiss();
         }
       );

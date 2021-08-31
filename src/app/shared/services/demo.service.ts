@@ -1090,6 +1090,14 @@ export class DemoService {
     }).pipe(delay(1000));
   }
 
+  duplicateExperienceUrl(uuid: string) {
+    return of({
+      data: {
+        duplicateExperienceUrl: urlFormatter(environment.Practera, `api/v2/plan/experience/importsse?uuid=${uuid}&roles[]=admin`)
+      }
+    }).pipe(delay(1000));
+  }
+
   getTags() {
     return of({
       data: {

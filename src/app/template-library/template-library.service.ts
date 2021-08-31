@@ -167,7 +167,7 @@ export class TemplateLibraryService {
     return res.data.importExperienceUrl;
   }
 
-  importExperienceSSE(url: string): Observable<{ progress?: number; redirect?: string }> {
+  createExperienceSSE(url: string): Observable<{ progress?: number; redirect?: string }> {
     return Observable.create(observer => {
       const eventSource = new EventSource(url);
       eventSource.onopen = () => { console.log('connection open'); };

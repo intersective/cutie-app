@@ -89,6 +89,11 @@ export class OverviewComponent implements OnInit {
     this.utils.getEvent('exps-reload').subscribe(event => {
       this.loadExperiences();
     });
+
+    // when duplicateing experience, open the popup for SSE
+    this.utils.getEvent('create-exp').subscribe(event => {
+      this.popupService.showImportExp(event);
+    });
   }
 
   loadExperiences() {
