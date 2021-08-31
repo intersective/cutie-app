@@ -2,6 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Experience, Statistics, Tag, OverviewService } from './overview.service';
 import { UtilsService } from '@services/utils.service';
 import { PopupService } from '@shared/popup/popup.service';
+import { StorageService } from '@services/storage.service';
+import { environment } from '@environments/environment';
 import * as XLSX from 'xlsx';
 
 @Component({
@@ -66,6 +68,7 @@ export class OverviewComponent implements OnInit {
     private service: OverviewService,
     private utils: UtilsService,
     private popupService: PopupService,
+    private storage: StorageService,
   ) { }
 
   ngOnInit() {
@@ -92,7 +95,12 @@ export class OverviewComponent implements OnInit {
 
     // when duplicateing experience, open the popup for SSE
     this.utils.getEvent('create-exp').subscribe(event => {
-      this.popupService.showImportExp(event);
+      const apikey = this.storage.getUser().apikey;
+      if (!apikey) {
+        this.popupService.showToast('Failed to create the experience!');
+        return;
+      }
+      this.popupService.showImportExp(`${event}&appkey=${environment.appkey}&apikey=${apikey}`);
     });
   }
 
