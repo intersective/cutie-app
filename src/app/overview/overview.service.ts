@@ -3,6 +3,7 @@ import { RequestService } from '@shared/request/request.service';
 import { map } from 'rxjs/operators';
 import { environment } from '@environments/environment';
 import { DemoService } from '@services/demo.service';
+import { Observable } from 'rxjs/Observable';
 
 /**
  * list of api endpoint involved in this service
@@ -205,6 +206,25 @@ export class OverviewService {
       uuid: uuid,
       roles: roles,
     });
+  }
+
+  duplicateExperienceUrl(uuid: string, roles: string[]): Observable<string> {
+    if (environment.demo) {
+      return this.demo.duplicateExperienceUrl(uuid).pipe(map(this._handleDuplicateExperienceUrlResponse));
+    }
+    return this.request.graphQLQuery(
+      `query duplicateExperienceUrl($uuid: ID!, $roles: [String]) {
+        duplicateExperienceUrl(uuid: $uuid, roles: $roles)
+      }`,
+      { uuid, roles }
+    ).pipe(map(this._handleDuplicateExperienceUrlResponse));
+  }
+
+  private _handleDuplicateExperienceUrlResponse(res): string {
+    if (!res || !res.data) {
+      return null;
+    }
+    return res.data.duplicateExperienceUrl;
   }
 
   archiveExperience(experience) {

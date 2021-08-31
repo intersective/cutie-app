@@ -13,7 +13,7 @@ describe('DuplicateExperienceComponent', () => {
   let fixture: ComponentFixture<DuplicateExperienceComponent>;
   const modalSpy = jasmine.createSpyObj('ModalController', ['dismiss']);
   const utilsSpy = jasmine.createSpyObj('UtilsService', ['broadcastEvent']);
-  const overviewSpy = jasmine.createSpyObj('OverviewService', ['duplicateExperience']);
+  const overviewSpy = jasmine.createSpyObj('OverviewService', ['duplicateExperience', 'duplicateExperienceUrl']);
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -119,11 +119,10 @@ describe('DuplicateExperienceComponent', () => {
   });
 
   it('for confirmed()', () => {
-    overviewSpy.duplicateExperience = jasmine.createSpy().and.returnValue(of(true));
+    overviewSpy.duplicateExperienceUrl = jasmine.createSpy().and.returnValue(of('test-url'));
     component.confirmed();
-    expect(utilsSpy.broadcastEvent).toHaveBeenCalledTimes(3);
-    expect(overviewSpy.duplicateExperience).toHaveBeenCalled();
-    expect(modalSpy.dismiss).toHaveBeenCalled();
+    expect(utilsSpy.broadcastEvent).toHaveBeenCalledTimes(1);
+    expect(overviewSpy.duplicateExperienceUrl).toHaveBeenCalled();
   });
 
   it('for cancel()', () => {
