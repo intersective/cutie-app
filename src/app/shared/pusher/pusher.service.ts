@@ -318,7 +318,7 @@ export class PusherService {
     if (!channel) {
       return;
     }
-    const istrig = channel.subscription.trigger('client-chat-new-message', data);
+    channel.subscription.trigger('client-chat-new-message', data);
   }
 
 }
