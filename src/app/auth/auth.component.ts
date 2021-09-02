@@ -42,6 +42,7 @@ export class AuthComponent implements OnInit {
   }
 
   private _handleRedirection() {
+    console.log('jwt login respose');
     switch (this.redirect) {
       case 'progress-only':
         this.router.navigate(['progress-only']);

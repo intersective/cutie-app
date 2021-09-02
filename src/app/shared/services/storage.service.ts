@@ -32,10 +32,12 @@ export class StorageService {
 
   get(key: string) {
     const cached = this.storage.getItem(key);
+    console.log('StorageService', 'get 1', cached);
     if (cached) {
+      console.log('StorageService', 'get 2', JSON.parse(this.storage.getItem(key) || null));
       return JSON.parse(this.storage.getItem(key) || null);
     }
-
+    console.log('StorageService', 'get 3');
     return null;
   }
 

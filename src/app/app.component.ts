@@ -47,6 +47,7 @@ export class AppComponent implements OnInit {
     }
 
     if (searchParams.has('jwt')) {
+      console.log('jwt login navigate to component');
       const queries = this.utils.urlQueryToObject(queryString);
       return this.router.navigate(['auth/jwt', searchParams.get('jwt'), queries]);
     }
@@ -57,6 +58,7 @@ export class AppComponent implements OnInit {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
       // initialise Pusher
+      console.log('initializeApp', 'initialise Pusher');
       await this.pusherService.initialise();
     });
   }
