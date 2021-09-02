@@ -77,25 +77,27 @@ export class PusherService {
       console.log('initialise', '1');
       this.pusher = await this.initialisePusher();
     }
-
+    console.log('initialise', '2');
     if (!this.pusher) {
       return {};
     }
-
+    console.log('initialise', '3');
     if (options && options.unsubscribe) {
+      console.log('initialise', '4');
       this.unsubscribeChannels();
     }
-
+    console.log('initialise', '5');
     // handling condition at re-login without rebuilding pusher (where isInstantiated() is false)
     if (this.pusher.connection.state !== 'connected') {
-      console.log('initialise', '2');
+      console.log('initialise', '6');
       // reconnect pusher
       this.pusher.connect();
     }
 
     // subscribe to event only when pusher is available
-    console.log('initialise', '3', this.pusher);
+    console.log('initialise', '7', this.pusher);
     const channels = this.getChannels();
+    console.log('initialise', '8');
     return {
       pusher: this.pusher,
       channels
