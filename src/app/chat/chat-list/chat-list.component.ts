@@ -130,19 +130,17 @@ export class ChatListComponent {
   }
 
   private _updateUnread(event) {
-    if (!this.utils.isEmpty(this.chatChannels)) {
-      const chatIndex = this.chatChannels.findIndex(data => data.uuid === event.channelUuid);
-      if (chatIndex > -1) {
-        // set time out because when this calling from pusher events it need a time out.
-        setTimeout(() => {
-          this.chatChannels[chatIndex].unreadMessageCount -= event.readcount;
-          if (this.chatChannels[chatIndex].unreadMessageCount < 0) {
-            this.chatChannels[chatIndex].unreadMessageCount = 0;
-          }
-        });
-      }
-      this._groupingChatChannels();
+    const chatIndex = this.chatChannels.findIndex(data => data.uuid === event.channelUuid);
+    if (chatIndex > -1) {
+      // set time out because when this calling from pusher events it need a time out.
+      setTimeout(() => {
+        this.chatChannels[chatIndex].unreadMessageCount -= event.readcount;
+        if (this.chatChannels[chatIndex].unreadMessageCount < 0) {
+          this.chatChannels[chatIndex].unreadMessageCount = 0;
+        }
+      });
     }
+    this._groupingChatChannels();
   }
 
   goToChatRoom(chat: ChatChannel) {
@@ -276,8 +274,6 @@ export class ChatListComponent {
         if (!this._channelExist(data.data.newChannel, 'direct')) {
           this.chatChannels.push(data.data.newChannel);
           this._groupingChatChannels();
-          // Subscribe to the pusher channel of new create chat channel.
-          this._checkAndSubscribePusherChannels();
           this.goToChatRoom(data.data.newChannel);
         }
       }

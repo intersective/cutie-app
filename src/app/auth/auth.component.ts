@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from './auth.service';
 import { NotificationService } from '@services/notification.service';
-import { PusherService } from '@shared/pusher/pusher.service';
 
 @Component({
   selector: 'app-auth',
@@ -18,7 +17,6 @@ export class AuthComponent implements OnInit {
     private route: ActivatedRoute,
     private authService: AuthService,
     private notificationService: NotificationService,
-    private pusherService: PusherService,
   ) { }
 
   ngOnInit() {
@@ -43,13 +41,12 @@ export class AuthComponent implements OnInit {
     return this._error();
   }
 
-  private async _handleRedirection() {
+  private _handleRedirection() {
     switch (this.redirect) {
       case 'progress-only':
         this.router.navigate(['progress-only']);
         break;
       case 'chat-only':
-        await this.pusherService.initialise();
         this.router.navigate(['chat-only']);
         break;
       case 'overview-only':

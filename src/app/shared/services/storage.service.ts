@@ -35,6 +35,7 @@ export class StorageService {
     if (cached) {
       return JSON.parse(this.storage.getItem(key) || null);
     }
+
     return null;
   }
 

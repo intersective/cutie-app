@@ -200,14 +200,14 @@ jobs:
           CUSTOM_AWS_REGION_CHINA: ap-northeast-2  #TODO CHECK
           CUSTOM_S3_BUCKET_CHINA: practera-seoul-1 #TODO CHECK
           CUSTOM_CHATGEAPHQLENDPOINT: https://chat-api.${{ env.PUBLICZONENAME }}/
-          CUSTOM_PATH_IMAGE: /cutie/image/uploads/
+          CUSTOM_PATH_IMAGE: /appv2/${{ env.ENV }}/uploads/
           CUSTOM_AWS_REGION: ${{ env.REGION }}
-          CUSTOM_PATH_ANY: /cutie/any/uploads/
-          CUSTOM_S3_BUCKET: files.${{ env.PUBLICZONENAME }}
+          CUSTOM_PATH_ANY: /appv2/${{ env.ENV }}/uploads/
+          CUSTOM_S3_BUCKET: practera-aus
           CUSTOM_APIENDPOINT: https://cutie-api.${{ env.PUBLICZONENAME }}/
           CUSTOM_APIENDPOINTOLD: https://admin.${{ env.PUBLICZONENAME }}/
           CUSTOM_PRACTERCORE: https://admin.${{ env.PUBLICZONENAME }}/
-          CUSTOM_PATH_VIDEO: /cutie/video/uploads/
+          CUSTOM_PATH_VIDEO: /appv2/${{ env.ENV }}/video/upload/
           CUSTOM_GEAPHQLENDPOINT: https://core-graphql-api.${{ env.PUBLICZONENAME }}/
           
           
