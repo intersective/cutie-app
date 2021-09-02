@@ -276,6 +276,8 @@ export class ChatListComponent {
         if (!this._channelExist(data.data.newChannel, 'direct')) {
           this.chatChannels.push(data.data.newChannel);
           this._groupingChatChannels();
+          // Subscribe to the pusher channel of new create chat channel.
+          this._checkAndSubscribePusherChannels();
           this.goToChatRoom(data.data.newChannel);
         }
       }
