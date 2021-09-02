@@ -137,7 +137,7 @@ export class PusherService {
     const { apikey, timelineId } = this.storage.getUser();
     console.log('initialisePusher', '4', this.storage.getUser());
     if (!apikey || !timelineId) {
-      console.log('initialisePusher', '5', 'apikey-', apikey, 'timelineId- ', timelineId);
+      console.log('initialisePusher', '5', 'timelineId- ', timelineId);
       return this.pusher;
     }
     console.log('initialisePusher', '6');
