@@ -135,9 +135,9 @@ export class PusherService {
     console.log('initialisePusher', '3');
     // prevent pusher auth before user authenticated (skip silently)
     const { apikey, timelineId } = this.storage.getUser();
-    console.log('initialisePusher', '4');
+    console.log('initialisePusher', '4', this.storage.getUser());
     if (!apikey || !timelineId) {
-      console.log('initialisePusher', '5');
+      console.log('initialisePusher', '5', 'apikey-', apikey, 'timelineId- ', timelineId);
       return this.pusher;
     }
     console.log('initialisePusher', '6');
