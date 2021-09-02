@@ -71,7 +71,7 @@ describe('OverviewComponent', () => {
           admin: 4,
           coordinator: 3,
           mentor: 5,
-          participant: 53
+          participant: 52
         },
         registeredUserCount: {
           admin: 4,
@@ -256,83 +256,73 @@ describe('OverviewComponent', () => {
       component.sortDesc = false;
       expsResult = [exps[2], exps[1], exps[0]];
     });
-    it('by participant count desc', () => {
+    it('by user count desc', () => {
       component.sortBy = component.sortList[1];
       component.sortDesc = true;
       expsResult = [exps[2], exps[1], exps[0]];
     });
-    it('by participant count asc', () => {
+    it('by user count asc', () => {
       component.sortBy = component.sortList[1];
       component.sortDesc = false;
       expsResult = [exps[0], exps[1], exps[2]];
     });
-    it('by mentor count desc', () => {
+    it('by recent active learners desc', () => {
       component.sortBy = component.sortList[2];
       component.sortDesc = true;
       expsResult = [exps[2], exps[1], exps[0]];
     });
-    it('by mentor count asc', () => {
+    it('by recent active learners asc', () => {
       component.sortBy = component.sortList[2];
       component.sortDesc = false;
       expsResult = [exps[0], exps[1], exps[2]];
     });
-    it('by recent active participants desc', () => {
+    it('by recent active experts desc', () => {
       component.sortBy = component.sortList[3];
       component.sortDesc = true;
       expsResult = [exps[2], exps[1], exps[0]];
     });
-    it('by recent active participants asc', () => {
+    it('by recent active experts asc', () => {
       component.sortBy = component.sortList[3];
-      component.sortDesc = false;
-      expsResult = [exps[0], exps[1], exps[2]];
-    });
-    it('by recent active mentors desc', () => {
-      component.sortBy = component.sortList[4];
-      component.sortDesc = true;
-      expsResult = [exps[2], exps[1], exps[0]];
-    });
-    it('by recent active mentors asc', () => {
-      component.sortBy = component.sortList[4];
       component.sortDesc = false;
       expsResult = [exps[0], exps[1], exps[2]];
     });
     it('by feedback loops completed desc', () => {
-      component.sortBy = component.sortList[5];
+      component.sortBy = component.sortList[4];
       component.sortDesc = true;
       expsResult = [exps[0], exps[2], exps[1]];
     });
     it('by feedback loops completed asc', () => {
-      component.sortBy = component.sortList[5];
+      component.sortBy = component.sortList[4];
       component.sortDesc = false;
       expsResult = [exps[1], exps[2], exps[0]];
     });
     it('by on-track/off-track desc', () => {
-      component.sortBy = component.sortList[6];
+      component.sortBy = component.sortList[5];
       component.sortDesc = true;
       expsResult = [exps[0], exps[1], exps[2]];
     });
     it('by on-track/off-track asc', () => {
-      component.sortBy = component.sortList[6];
+      component.sortBy = component.sortList[5];
       component.sortDesc = false;
       expsResult = [exps[2], exps[1], exps[0]];
     });
     it('by feedback quality score desc', () => {
-      component.sortBy = component.sortList[7];
+      component.sortBy = component.sortList[6];
       component.sortDesc = true;
       expsResult = [exps[0], exps[2], exps[1]];
     });
     it('by feedback quality score asc', () => {
-      component.sortBy = component.sortList[7];
+      component.sortBy = component.sortList[6];
       component.sortDesc = false;
       expsResult = [exps[1], exps[2], exps[0]];
     });
     it('by todoItemCount desc', () => {
-      component.sortBy = component.sortList[8];
+      component.sortBy = component.sortList[7];
       component.sortDesc = true;
       expsResult = [exps[2], exps[1], exps[0]];
     });
     it('by todoItemCount asc', () => {
-      component.sortBy = component.sortList[8];
+      component.sortBy = component.sortList[7];
       component.sortDesc = false;
       expsResult = [exps[0], exps[1], exps[2]];
     });

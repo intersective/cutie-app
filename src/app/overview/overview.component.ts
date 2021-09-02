@@ -2,6 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Experience, Statistics, Tag, OverviewService } from './overview.service';
 import { UtilsService } from '@services/utils.service';
 import { PopupService } from '@shared/popup/popup.service';
+import { StorageService } from '@services/storage.service';
+import { environment } from '@environments/environment';
 import * as XLSX from 'xlsx';
 
 @Component({
@@ -17,9 +19,9 @@ export class OverviewComponent implements OnInit {
       description: 'Displays all experiences which are currently live. An experience is live when the status is moved from "Draft" to "Live" and the content is now visible to all registered users.'
     },
     {
-      label: 'Recently active participants and mentors',
+      label: 'Recently active registered learners and experts',
       value: '',
-      description: 'Reflects the percentage of participants who logged in at least once during the past 7 days out of the total number.'
+      description: 'Reflects the percentage of learners and experts who logged in at least once during the past 7 days out of the total registered number.'
     },
     {
       label: 'Feedback loops completed',
@@ -31,20 +33,19 @@ export class OverviewComponent implements OnInit {
           <li>Expert reviewed assessment and submitted feedback</li>
           <li>Team members read feedback</li>
         </ul>
-        <p>A feedback loop helps participants to process the way they learn in practice and is triggered after certain events (e.g. moderated assessment) which can happen multiple times over the duration of a program.</p>`
+        <p>A feedback loop helps learners to process the way they learn in practice and is triggered after certain events (e.g. moderated assessment) which can happen multiple times over the duration of a program.</p>`
     },
     {
       label: 'Feedback quality score',
       value: '',
-      description: `This is the average rating given by participants to mentors' feedback based on how helpful they find it (on a scale of 0-100%). It is done at the end of the feedback loop and can happen multiple times during the course of the program (e.g. moderated assessment). `
+      description: `This is the average rating given by learners to experts' feedback based on how helpful they find it (on a scale of 0-100%). It is done at the end of the feedback loop and can happen multiple times during the course of the program (e.g. moderated assessment). `
     }
   ];
   sortList = [
     'created time',
-    'participant count',
-    'mentor count',
-    'recent active participants',
-    'recent active mentors',
+    'enrolled user count',
+    'recent active learners',
+    'recent active experts',
     'feedback loops completed',
     'on-track/off-track',
     'feedback quality score',
@@ -67,6 +68,7 @@ export class OverviewComponent implements OnInit {
     private service: OverviewService,
     private utils: UtilsService,
     private popupService: PopupService,
+    private storage: StorageService,
   ) { }
 
   ngOnInit() {
@@ -89,6 +91,16 @@ export class OverviewComponent implements OnInit {
     // when experience get archived/deleted, reload the experiences data
     this.utils.getEvent('exps-reload').subscribe(event => {
       this.loadExperiences();
+    });
+
+    // when duplicateing experience, open the popup for SSE
+    this.utils.getEvent('create-exp').subscribe(event => {
+      const apikey = this.storage.getUser().apikey;
+      if (!apikey) {
+        this.popupService.showToast('Failed to create the experience!');
+        return;
+      }
+      this.popupService.showImportExp(`${event}&appkey=${environment.appkey}&apikey=${apikey}`);
     });
   }
 
@@ -244,23 +256,23 @@ export class OverviewComponent implements OnInit {
 
       case 1:
         this.experiences.sort((a, b) => {
+          let countA = 0, countB = 0;
+          ['participant', 'mentor', 'coordinator', 'admin'].forEach(field => {
+            if (a.statistics.enrolledUserCount[field]) {
+              countA += a.statistics.enrolledUserCount[field];
+            }
+            if (b.statistics.enrolledUserCount[field]) {
+              countB += b.statistics.enrolledUserCount[field];
+            }
+          });
           if (this.sortDesc) {
-            return a.statistics.registeredUserCount.participant > b.statistics.registeredUserCount.participant ? -1 : 1;
+            return countA > countB ? -1 : 1;
           }
-          return a.statistics.registeredUserCount.participant < b.statistics.registeredUserCount.participant ? -1 : 1;
+          return countA < countB ? -1 : 1;
         });
         break;
 
       case 2:
-        this.experiences.sort((a, b) => {
-          if (this.sortDesc) {
-            return a.statistics.registeredUserCount.mentor > b.statistics.registeredUserCount.mentor ? -1 : 1;
-          }
-          return a.statistics.registeredUserCount.mentor < b.statistics.registeredUserCount.mentor ? -1 : 1;
-        });
-        break;
-
-      case 3:
         this.experiences.sort((a, b) => {
           if (this.sortDesc) {
             return a.statistics.activeUserCount.participant > b.statistics.activeUserCount.participant ? -1 : 1;
@@ -269,7 +281,7 @@ export class OverviewComponent implements OnInit {
         });
         break;
 
-      case 4:
+      case 3:
         this.experiences.sort((a, b) => {
           if (this.sortDesc) {
             return a.statistics.activeUserCount.mentor > b.statistics.activeUserCount.mentor ? -1 : 1;
@@ -278,7 +290,7 @@ export class OverviewComponent implements OnInit {
         });
         break;
 
-      case 5:
+      case 4:
         this.experiences.sort((a, b) => {
           if (this.sortDesc) {
             return a.statistics.feedbackLoopCompleted > b.statistics.feedbackLoopCompleted ? -1 : 1;
@@ -287,7 +299,7 @@ export class OverviewComponent implements OnInit {
         });
         break;
 
-      case 6:
+      case 5:
         this.experiences.sort((a, b) => {
           if (this.sortDesc) {
             return a.statistics.onTrackRatio > b.statistics.onTrackRatio ? -1 : 1;
@@ -296,7 +308,7 @@ export class OverviewComponent implements OnInit {
         });
         break;
 
-      case 7:
+      case 6:
         this.experiences.sort((a, b) => {
           if (this.sortDesc) {
             return a.statistics.reviewRatingAvg > b.statistics.reviewRatingAvg ? -1 : 1;
@@ -305,7 +317,7 @@ export class OverviewComponent implements OnInit {
         });
         break;
 
-      case 8:
+      case 7:
         this.experiences.sort((a, b) => {
           if (this.sortDesc) {
             return a.todoItemCount > b.todoItemCount ? -1 : 1;

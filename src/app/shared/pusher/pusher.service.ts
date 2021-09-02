@@ -76,15 +76,12 @@ export class PusherService {
     if (!this.pusher) {
       this.pusher = await this.initialisePusher();
     }
-
     if (!this.pusher) {
       return {};
     }
-
     if (options && options.unsubscribe) {
       this.unsubscribeChannels();
     }
-
     // handling condition at re-login without rebuilding pusher (where isInstantiated() is false)
     if (this.pusher.connection.state !== 'connected') {
       // reconnect pusher
@@ -124,18 +121,15 @@ export class PusherService {
     if (typeof this.pusher !== 'undefined') {
       return this.pusher;
     }
-
     // prevent pusher auth before user authenticated (skip silently)
     const { apikey, timelineId } = this.storage.getUser();
     if (!apikey || !timelineId) {
       return this.pusher;
     }
-
     // never reinstantiate another instance of Pusher
     if (!this.utils.isEmpty(this.pusher)) {
       return this.pusher;
     }
-
     try {
       const config: Config = {
         cluster: 'mt1',
@@ -324,7 +318,7 @@ export class PusherService {
     if (!channel) {
       return;
     }
-    const istrig = channel.subscription.trigger('client-chat-new-message', data);
+    channel.subscription.trigger('client-chat-new-message', data);
   }
 
 }

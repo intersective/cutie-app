@@ -7,7 +7,7 @@ import { DemoService } from '@services/demo.service';
 
 describe('OverviewService', () => {
   let service: OverviewService;
-  const demoService = jasmine.createSpyObj('DemoService', ['getExperiences', 'getExpsStatistics', 'deleteExperience', 'archiveExperience']);
+  const demoService = jasmine.createSpyObj('DemoService', ['getExperiences', 'getExpsStatistics', 'deleteExperience', 'archiveExperience', 'duplicateExperienceUrl']);
   const requestService = jasmine.createSpyObj('RequestService', ['graphQLQuery', 'graphQLMutate', 'post']);
 
   beforeEach(() => {
@@ -156,6 +156,38 @@ describe('OverviewService', () => {
           success: true
         }
       };
+    });
+  });
+
+  describe('for duplicateExperienceUrl', () => {
+    it('demo response', () => {
+      environment.demo = true;
+      demoService.duplicateExperienceUrl = jasmine.createSpy().and.returnValue(of({
+        data: { duplicateExperienceUrl: 'test-url' }
+      }));
+      // @ts-ignore
+      service.duplicateExperienceUrl('abc123', ['admin']).subscribe(res => expect(res).toEqual('test-url'));
+    });
+    it('graphql response', () => {
+      environment.demo = false;
+      requestService.graphQLQuery = jasmine.createSpy().and.returnValue(of({
+        data: {
+          duplicateExperienceUrl: 'test-url'
+        }
+      }));
+      service.duplicateExperienceUrl('abc123', ['admin']).subscribe(res => expect(res).toEqual('test-url'));
+    });
+    it('handles undefined graphql response', () => {
+      environment.demo = false;
+      requestService.graphQLQuery = jasmine.createSpy().and.returnValue(of(undefined));
+      // @ts-ignore
+      service.duplicateExperienceUrl('abc123', ['admin']).subscribe(res => expect(res).toEqual(null));
+    });
+    it('handles undefined data from graphql response', () => {
+      environment.demo = false;
+      requestService.graphQLQuery = jasmine.createSpy().and.returnValue(of({data: undefined}));
+      // @ts-ignore
+      service.duplicateExperienceUrl('abc123', ['admin']).subscribe(res => expect(res).toEqual(null));
     });
   });
 

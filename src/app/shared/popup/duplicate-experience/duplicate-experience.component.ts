@@ -61,18 +61,19 @@ export class DuplicateExperienceComponent {
   }
 
   confirmed() {
-    this.utils.broadcastEvent('show-loading', { message: 'Duplicating the experience' });
     const roles = [];
     for (const role in this.roleSelected) {
       if (this.roleSelected[role]) {
         roles.push(role);
       }
     }
-    this.overviewService.duplicateExperience(this.experienceUuid, roles).subscribe(res => {
-      this.utils.broadcastEvent('exps-reload', {});
-      this.utils.broadcastEvent('dismiss-loading', {});
-    });
     this.modalController.dismiss();
+    this.overviewService.duplicateExperienceUrl(this.experienceUuid, roles).subscribe(res => {
+      if (!res) {
+        return;
+      }
+      this.utils.broadcastEvent('create-exp', res);
+    });
   }
 
   cancel() {
