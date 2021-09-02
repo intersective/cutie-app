@@ -74,31 +74,22 @@ export class PusherService {
   }) {
     // make sure pusher is connected
     if (!this.pusher) {
-      console.log('initialise', '1');
       this.pusher = await this.initialisePusher();
     }
-    console.log('initialise', '2');
     if (!this.pusher) {
-      console.log('initialise', '2.1');
       return {};
     }
-    console.log('initialise', '3');
     if (options && options.unsubscribe) {
-      console.log('initialise', '4');
       this.unsubscribeChannels();
     }
-    console.log('initialise', '5');
     // handling condition at re-login without rebuilding pusher (where isInstantiated() is false)
     if (this.pusher.connection.state !== 'connected') {
-      console.log('initialise', '6');
       // reconnect pusher
       this.pusher.connect();
     }
 
     // subscribe to event only when pusher is available
-    console.log('initialise', '7', this.pusher);
     const channels = this.getChannels();
-    console.log('initialise', '8');
     return {
       pusher: this.pusher,
       channels
@@ -126,28 +117,19 @@ export class PusherService {
   }
 
   private async initialisePusher(): Promise<Pusher> {
-    console.log('initialisePusher', '1');
     // during the app execution lifecycle
     if (typeof this.pusher !== 'undefined') {
-      console.log('initialisePusher', '2');
       return this.pusher;
     }
-    console.log('initialisePusher', '3');
     // prevent pusher auth before user authenticated (skip silently)
     const { apikey, timelineId } = this.storage.getUser();
-    console.log('initialisePusher', '4', this.storage.getUser());
     if (!apikey || !timelineId) {
-      console.log('initialisePusher', '5', 'timelineId- ', timelineId);
       return this.pusher;
     }
-    console.log('initialisePusher', '6');
     // never reinstantiate another instance of Pusher
     if (!this.utils.isEmpty(this.pusher)) {
-      console.log('initialisePusher', '7');
       return this.pusher;
     }
-    console.log('initialisePusher', '8');
-    // 'apikey': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hcGkucHJhY3RlcmEuY29tIiwiYXBpa2V5IjoiNjc2YjNmYTNjMzA1ODM0ZjIwZTIiLCJ1c2VyX2lkIjoxMzUxMywidXNlcl91dWlkIjoiMzEwY2RiN2EtMzY3My00NjBlLTkwMjItZjdhNTQwMDdlMjIwIiwidXNlcm5hbWUiOiJzYXNhbmdhK2F1dGhvcjAwMUBwcmFjdGVyYS5jb20iLCJyb2xlIjoiYWRtaW4iLCJwcm9ncmFtX2lkIjo2NTMsInRpbWVsaW5lX2lkIjo5ODIsInRpbWVsaW5lX3V1aWQiOiJhZjBjN2E3Ni01ODg0LTRkYzktYTgzMC0wZTg2ODFmODY0OTgiLCJlbnJvbG1lbnRfdXVpZCI6ImYyOWFkMDRiLWExYzMtNDdjMy1hMmFlLWRmZGUzZmZjMWYxOSIsImluc3RpdHV0aW9uX2lkIjo4NSwiaW5zdGl0dXRpb25fdXVpZCI6ImE5MWE2YzFjLTczOGItNDllMC1iZmJjLTI4OTkyMTgzZWNiZSIsImV4cGVyaWVuY2VfaWQiOjI5NiwicHJvamVjdF9pZCI6OTc5LCJpYXQiOjE2MzA0NzAxMzIsImV4cCI6MTYzODI0NjEzMn0.MxTViv23eMlB7JxSiI6oexp22kRkk2A7qHKmfhMjPAYkdIW-vwdC3V3Fi3u2_kRyz32pI-hV-xM1RNjPalevolzAYGnNAuFmzSbxWqmDbEh8enGqxLgZ7a_l6AbdXMWUNkfTCBCpm-JFcIeYKX4KxXScdie6QoZwLMPDnZRf6Bur_K-2FP7sgS57104_GBckeH2pfAYRjka-DTZ-K5z6tNeDud0x51KeSMZJv8mHSR60WCdBKYIoy-3IZt0MuWStERVsEm2Z97SKzmt2HcawroFq_a0Sgs8Sh3jGfU7F1Gpqrx9u4IpmdI7s-39Hm0I9SkqI7xfr8jBLcehIn421_6QDJ9kY1G62uAi88B4vSPfIi9tMdU4ICyBEkFN37j7nAYdtUYNDwqWiB_z2s8bl-RtXySYOliWXnKWsMOMEaLOOjCkRj2v3hOzDDHGlDIzmAIeKTu9fMvk69rQoMkPVGDUoDRVpxXDgb8T-YO8W-2ric_nX50THtk9Q40IJ2lEcdHCgOf39Fh10D4dL959IMXC_1dVUETRDzbB5-zi6xBcjd_DX1RL5UVGoQ9J9uid3kOpcFWS1Am9YCQBhmD0Lj7NugbSuhIPNy5RFWOxmgUTwe2FA-L9x8QWceLq1qstpee-AjgD5mc-T2x4e5FMRGxSBBYcv4ldLqz-udhbMp9Q',
     try {
       const config: Config = {
         cluster: 'mt1',
@@ -162,9 +144,7 @@ export class PusherService {
           },
         },
       };
-      console.log('initialisePusher', '9');
       const newPusherInstance = await new PusherLib(this.pusherKey, config);
-      console.log('initialisePusher', '10');
       return newPusherInstance;
     } catch (err) {
       throw new Error(err);
@@ -177,9 +157,6 @@ export class PusherService {
    * false: haven't subscribed
    */
   isSubscribed(channelName): boolean {
-    console.log('isSubscribed --1', this.pusher.allChannels().find((channel: Channel) => channel.name === channelName && channel.subscribed));
-    console.log('isSubscribed --2', this.pusher.allChannels());
-    console.log('isSubscribed --', this.pusher);
     return !!this.pusher.allChannels().find((channel: Channel) => channel.name === channelName && channel.subscribed);
   }
 
@@ -255,15 +232,12 @@ export class PusherService {
    * @param channelName The name of the Pusher channel
    */
   subscribeChannel(type: string, channelName: string) {
-    console.log('subscribeChannel -- 1', type, channelName);
     if (!channelName) {
       return false;
     }
-    console.log('subscribeChannel -- 2');
     if (this.isSubscribed(channelName)) {
       return;
     }
-    console.log('subscribeChannel -- 3');
     switch (type) {
       case 'notification':
         this.channels.notification = {
@@ -297,7 +271,6 @@ export class PusherService {
         };
         channel.subscription
         .bind('client-chat-new-message', data => {
-          console.log('bind chat:new-message', '1', data);
           this.utils.broadcastEvent('chat:new-message', data);
         })
         .bind('client-typing-event', data => {
@@ -341,15 +314,11 @@ export class PusherService {
    * @param data send message object
    */
   triggerSendMessage(channelName: string, data: SendMessageParam) {
-    console.log('triggerSendMessage', '1', data);
     const channel = this.channels.chat.find(c => c.name === channelName);
-    console.log('triggerSendMessage', '2', channel);
     if (!channel) {
       return;
     }
-    console.log('triggerSendMessage', '3');
     const istrig = channel.subscription.trigger('client-chat-new-message', data);
-    console.log('triggerSendMessage', '4', istrig);
   }
 
 }

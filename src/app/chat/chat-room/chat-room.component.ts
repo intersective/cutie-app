@@ -63,7 +63,6 @@ export class ChatRoomComponent {
     }
     // message by team
     this.utils.getEvent('chat:new-message').subscribe(event => {
-      console.log('getEvent chat:new-message', '1', event);
       const receivedMessage = this.getMessageFromEvent(event);
       if (receivedMessage.channelUuid !== this.channelUuid) {
         return;
