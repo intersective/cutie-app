@@ -131,6 +131,22 @@ export class ExperienceCardComponent {
     });
   }
 
+  canEdit() {
+    return this.experience.role === 'admin';
+  }
+
+  canDuplicate() {
+    return this.experience.role === 'admin';
+  }
+
+  canArchive() {
+    return this.experience.role === 'admin' && ['draft', 'completed'].includes(this.experience.status);
+  }
+
+  canDelete() {
+    return this.experience.role === 'admin' && this.experience.status === 'draft';
+  }
+
   duplicate() {
     this.popupService.showDuplicateExp(this.experience.uuid);
   }

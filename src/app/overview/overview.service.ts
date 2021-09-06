@@ -28,7 +28,10 @@ export interface Experience {
   tags: string[];
   todoItemCount: number;
   statistics: Statistics;
+  role: Role;
 }
+
+export type Role = 'sysadmin' | 'admin' | 'coordinator' | 'mentor' | 'participant';
 
 export interface Tag {
   name: string;
@@ -81,6 +84,7 @@ export class OverviewService {
           leadImage
           status
           setupStep
+          role
           tags{
             name
           }
