@@ -4,7 +4,7 @@
   </div>
   <div class="card-body">
     <p class="card-text">Which users would you like to copy over to the duplicated experience?</p>
-    <div *ngFor="let role of ['admin', 'coordinator', 'mentor', 'participant']" class="form-check form-check-inline">
+    <div *ngFor="let role of ['author', 'coordinator', 'experts', 'learners']" class="form-check form-check-inline">
       <input class="form-check-input" type="checkbox" [id]="'checkbox-' + role" (change)="select()" [(ngModel)]="roleSelected[role]">
       <label class="form-check-label" [attr.for]="'checkbox-' + role">{{ role }}</label>
     </div>
