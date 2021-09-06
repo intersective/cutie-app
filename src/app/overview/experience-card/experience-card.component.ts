@@ -98,7 +98,7 @@ export class ExperienceCardComponent {
       message: 'Entering the experience'
     });
     if (this.experience.timelineId) {
-      window.top.location.href = urlFormatter(environment.Practera, `/users/change/timeline/${ this.experience.timelineId }`);
+      window.top.location.href = urlFormatter(environment.Practera, `/admin/users/change/timeline/${ this.experience.timelineId }`);
     } else {
       setTimeout(() => this.popupService.dismissLoading(), 1000);
     }
