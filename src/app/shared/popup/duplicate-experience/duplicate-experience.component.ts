@@ -13,8 +13,8 @@ export class DuplicateExperienceComponent {
   roleSelected = {
     author: false,
     coordinator: false,
-    experts: false,
-    learners: false,
+    expert: false,
+    learner: false,
   };
   allSelected: boolean;
 
@@ -30,16 +30,16 @@ export class DuplicateExperienceComponent {
         this.roleSelected = {
           author: false,
           coordinator: false,
-          experts: false,
-          learners: false,
+          expert: false,
+          learner: false,
         };
         this.allSelected = false;
       } else {
         this.roleSelected = {
           author: true,
           coordinator: true,
-          experts: true,
-          learners: true,
+          expert: true,
+          learner: true,
         };
         this.allSelected = true;
       }
@@ -56,8 +56,8 @@ export class DuplicateExperienceComponent {
   private _allSelected() {
     return this.roleSelected.author &&
       this.roleSelected.coordinator &&
-      this.roleSelected.experts &&
-      this.roleSelected.learners;
+      this.roleSelected.expert &&
+      this.roleSelected.learner;
   }
 
   confirmed() {
@@ -79,10 +79,10 @@ export class DuplicateExperienceComponent {
           case 'author':
             roles.push('admin');
           break;
-          case 'experts':
+          case 'expert':
             roles.push('mentor');
           break;
-          case 'learners':
+          case 'learner':
             roles.push('participant');
           break;
           default:
