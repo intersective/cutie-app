@@ -32,6 +32,7 @@ describe('OverviewService', () => {
     name: 'exp',
     description: '',
     type: 'mentoring',
+    role: 'admin',
     status: 'live',
     leadImage: '',
     color: '',

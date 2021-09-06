@@ -90,7 +90,7 @@
             </button>
           </ng-container>
           <ul class="dropdown-menu" [attr.aria-labelledby]="'option-' + experience.uuid">
-            <li>
+            <li *ngIf="canEdit()">
               <a class="dropdown-item" (click)="edit()">
                 <ion-icon name="pencil"></ion-icon><span class="ms-2">Edit</span>
               </a>
@@ -100,29 +100,21 @@
                 <ion-icon name="pricetag"></ion-icon><span class="ms-2">Add or edit tags</span>
               </a>
             </li>
-            <li>
+            <li *ngIf="canDuplicate()">
               <a class="dropdown-item" (click)="duplicate()">
                 <ion-icon name="copy-outline"></ion-icon><span class="ms-2">Duplicate</span>
               </a>
             </li>
-            <ng-container *ngIf="experience.status === 'draft'">
+            <ng-container *ngIf="canDelete() || canArchive()">
               <li><hr class="dropdown-divider"></li>
-              <li>
+              <li *ngIf="canArchive()">
                 <a class="dropdown-item" (click)="archive()">
                   <ion-icon name="archive"></ion-icon><span class="ms-2">Archive</span>
                 </a>
               </li>
-              <li>
+              <li *ngIf="canDelete()">
                 <a class="dropdown-item text-danger" (click)="delete()">
                   <ion-icon name="trash"></ion-icon><span class="ms-2">Delete</span>
-                </a>
-              </li>
-            </ng-container>
-            <ng-container *ngIf="experience.status === 'completed'">
-              <li><hr class="dropdown-divider"></li>
-              <li>
-                <a class="dropdown-item" (click)="archive()">
-                  <ion-icon name="archive"></ion-icon><span class="ms-2">Archive</span>
                 </a>
               </li>
             </ng-container>
