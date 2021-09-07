@@ -275,7 +275,6 @@ export class ChatRoomComponent {
       .markMessagesAsSeen(messageIds)
       .subscribe (
         res => {
-          console.log('_markAsSeen');
           this.utils.broadcastEvent('chat-badge-update', {
             channelUuid: this.chatChannel.uuid,
             readcount: messageIds.length
