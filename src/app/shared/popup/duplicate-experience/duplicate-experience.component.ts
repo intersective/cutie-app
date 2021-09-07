@@ -11,10 +11,10 @@ import { UtilsService } from '@services/utils.service';
 export class DuplicateExperienceComponent {
   experienceUuid: string;
   roleSelected = {
-    admin: false,
+    author: false,
     coordinator: false,
-    mentor: false,
-    participant: false,
+    expert: false,
+    learner: false,
   };
   allSelected: boolean;
 
@@ -28,18 +28,18 @@ export class DuplicateExperienceComponent {
     if (role) {
       if (this._allSelected()) {
         this.roleSelected = {
-          admin: false,
+          author: false,
           coordinator: false,
-          mentor: false,
-          participant: false,
+          expert: false,
+          learner: false,
         };
         this.allSelected = false;
       } else {
         this.roleSelected = {
-          admin: true,
+          author: true,
           coordinator: true,
-          mentor: true,
-          participant: true,
+          expert: true,
+          learner: true,
         };
         this.allSelected = true;
       }
@@ -54,19 +54,14 @@ export class DuplicateExperienceComponent {
   }
 
   private _allSelected() {
-    return this.roleSelected.admin &&
+    return this.roleSelected.author &&
       this.roleSelected.coordinator &&
-      this.roleSelected.mentor &&
-      this.roleSelected.participant;
+      this.roleSelected.expert &&
+      this.roleSelected.learner;
   }
 
   confirmed() {
-    const roles = [];
-    for (const role in this.roleSelected) {
-      if (this.roleSelected[role]) {
-        roles.push(role);
-      }
-    }
+    const roles = this.getRolesForAPI();
     this.modalController.dismiss();
     this.overviewService.duplicateExperienceUrl(this.experienceUuid, roles).subscribe(res => {
       if (!res) {
@@ -74,6 +69,29 @@ export class DuplicateExperienceComponent {
       }
       this.utils.broadcastEvent('create-exp', res);
     });
+  }
+
+  getRolesForAPI () {
+    const roles = [];
+    for (const role in this.roleSelected) {
+      if (this.roleSelected[role]) {
+        switch (role) {
+          case 'author':
+            roles.push('admin');
+          break;
+          case 'expert':
+            roles.push('mentor');
+          break;
+          case 'learner':
+            roles.push('participant');
+          break;
+          default:
+            roles.push(role);
+          break;
+        }
+      }
+    }
+    return roles;
   }
 
   cancel() {
