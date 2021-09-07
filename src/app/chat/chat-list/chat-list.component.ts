@@ -130,6 +130,7 @@ export class ChatListComponent {
   }
 
   private _updateUnread(event) {
+    console.log('_updateUnread');
     // if (!this.utils.isEmpty(this.chatChannels)) {
     //   const chatIndex = this.chatChannels.findIndex(data => data.uuid === event.channelUuid);
     //   if (chatIndex > -1) {
