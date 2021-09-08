@@ -181,7 +181,7 @@ export class TemplateLibraryService {
         if (messageData.experienceUuid) {
           eventSource.close();
           this._zone.run(() => {
-            observer.next({ redirect: urlFormatter(environment.Practera, `/users/change/experience/${messageData.experienceUuid}?redirect=/design`) });
+            observer.next({ redirect: urlFormatter(environment.Practera, `/users/change/timeline/${messageData.timelineUuid}?redirect=/design`) });
           });
         }
       };
