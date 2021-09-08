@@ -9,10 +9,8 @@ name: Deploy to p2-stage environment
 ################################################
 on:
   workflow_dispatch:
-  # push:
-  #   branches: [ 'trunk' ]
   push:
-    branches: [ 'deploy/aus-euk' ]   
+    branches: [ 'trunk' ]
 
 ################################################
 #  GITHUB ACTION JOBS

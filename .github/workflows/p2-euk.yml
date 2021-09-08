@@ -22,8 +22,7 @@ on:
         description: 'Reason for deployment'     
         required: true
         default: ''
-  push:
-    branches: [ 'deploy/aus-euk' ]   
+ 
 
 ################################################
 #  GITHUB ACTION JOBS
