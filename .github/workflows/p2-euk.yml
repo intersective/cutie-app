@@ -1,24 +1,35 @@
 ################################################
 #  GITHUB ACTION WORKFLOW NAME
 ################################################
-name: Deploy to p2-sandbox environment
+name: Deploy to p2-euk live environment
 
 
 ################################################
 #  GITHUB ACTION EVENT TRIGGER
 ################################################
-on:
+on: 
   workflow_dispatch:
-  push:
-    branches: [ 'develop' ]
-    
+    inputs:
+      BRANCH_TAG_NAME:
+        description: 'New tag version based on create-release-tag workflow'     
+        required: true
+        default: ''
+      REQUESTOR:
+        description: 'Requestor Name'     
+        required: true
+        default: ''
+      REASON:
+        description: 'Reason for deployment'     
+        required: true
+        default: ''
+ 
 
 ################################################
 #  GITHUB ACTION JOBS
 ################################################
 jobs:
-  deploy-p2-sandbox:
-    name: deploy-p2-sandbox
+  deploy-p2-euk-live:
+    name: deploy-p2-euk-live
     runs-on: ubuntu-latest
 
 
@@ -26,20 +37,20 @@ jobs:
 #  GITHUB ACTIONS GLOBAL ENV VARIABLES  
 ################################################
     env:
-      REGION : ap-southeast-2
-      ENV : dev # Valid values are dev,test,live only
-      STACK_NAME: p2-sandbox # Valid values are au,us,uk,p2,lf,nu,p1-sandbox,p1-stage,p2-sandbox,shared only
+      REGION : eu-west-2
+      ENV : live # Valid values are dev,test,live only
+      STACK_NAME: p2-euk # Valid values are au,us,uk,p2,lf,nu,p1-sandbox,p1-stage,p2-sandbox,shared only
       ROOTSTACK: cutie-app
       CFNS3BucketName: devops-cfn-templates
       PRIVATES3BucketName: devops-shared-private
-      PUBLICZONENAME: p2-sandbox.practera.com
+      PUBLICZONENAME: euk.practera.com
       BUILD_CONFIG: custom
       STATUSREPORTS3Bucket: deployment-status.practera.com
       STATUS: DEPLOYED
       REQUESTOR: ${{ github.event.inputs.REQUESTOR }}
       REASON: ${{ github.event.inputs.REASON }}
-      ENDPOINT: cutie-app.p2-sandbox.practera.com
-      BRANCH_TAG_NAME: develop
+      ENDPOINT: cutie-app.euk.practera.com
+      BRANCH_TAG_NAME: ${{ github.event.inputs.BRANCH_TAG_NAME }}
 
 
 
@@ -50,7 +61,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-
+          ref: ${{ github.event.inputs.BRANCH_TAG_NAME }}
 
 
 ################################################
@@ -112,29 +123,32 @@ jobs:
           echo "::add-mask::$SLACK_WEBHOOK_URL"
           echo "::set-output name=SLACK_WEBHOOK_URL::$SLACK_WEBHOOK_URL"
     
-          echo "Enable P2 Sandbox ACCOUNT CLI Login"
-          P2_SANDBOX_AWS_ACCESS_KEY_ID=$(aws secretsmanager get-secret-value --secret-id $STACK_NAME-DEPLOY-$ENV| jq --raw-output '.SecretString' | jq -r .P2_SANDBOX_AWS_ACCESS_KEY_ID)
-          P2_SANDBOX_AWS_SECRET_ACCESS_KEY=$(aws secretsmanager get-secret-value --secret-id $STACK_NAME-DEPLOY-$ENV| jq --raw-output '.SecretString' | jq -r .P2_SANDBOX_AWS_SECRET_ACCESS_KEY)
-          echo "::add-mask::$P2_SANDBOX_AWS_ACCESS_KEY_ID"
-          echo "::add-mask::$P2_SANDBOX_AWS_SECRET_ACCESS_KEY"
-          echo "::set-output name=P2_SANDBOX_AWS_ACCESS_KEY_ID::$P2_SANDBOX_AWS_ACCESS_KEY_ID"
-          echo "::set-output name=P2_SANDBOX_AWS_SECRET_ACCESS_KEY::$P2_SANDBOX_AWS_SECRET_ACCESS_KEY"
+          echo "Enable P2 EUK ACCOUNT CLI Login"
+          P2_EUK_AWS_ACCESS_KEY_ID=$(aws secretsmanager get-secret-value --secret-id $STACK_NAME-DEPLOY-$ENV| jq --raw-output '.SecretString' | jq -r .P2_EUK_AWS_ACCESS_KEY_ID)
+          P2_EUK_AWS_SECRET_ACCESS_KEY=$(aws secretsmanager get-secret-value --secret-id $STACK_NAME-DEPLOY-$ENV| jq --raw-output '.SecretString' | jq -r .P2_EUK_AWS_SECRET_ACCESS_KEY)
+          echo "::add-mask::$P2_EUK_AWS_ACCESS_KEY_ID"
+          echo "::add-mask::$P2_EUK_AWS_SECRET_ACCESS_KEY"
+          echo "::set-output name=P2_EUK_AWS_ACCESS_KEY_ID::$P2_EUK_AWS_ACCESS_KEY_ID"
+          echo "::set-output name=P2_EUK_AWS_SECRET_ACCESS_KEY::$P2_EUK_AWS_SECRET_ACCESS_KEY"
+        
         env:  #TODO: Update once manually to new stack accordingly
           STACK_NAME: shared # Valid values are au,us,uk,p2,lf,nu,p1-sandbox,p1-stage,p2-sandbox,shared only
           ENV: live # Valid values are sandbox,stage,live only
 
+
 ##########################################################
-#  AWS P2SANDBOX ACCOUNT STEPS BELOW
+#  AWS P2 EUK ACCOUNT STEPS BELOW
 ##########################################################
       - name: Configure AWS credentials from $STACK_NAME account in $REGION region
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ steps.DeploySecret.outputs.P2_SANDBOX_AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ steps.DeploySecret.outputs.P2_SANDBOX_AWS_SECRET_ACCESS_KEY }}
+          aws-access-key-id: ${{ steps.DeploySecret.outputs.P2_EUK_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ steps.DeploySecret.outputs.P2_EUK_AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{env.REGION}}
         env:
-          AWS_ACCESS_KEY_ID: ${{ steps.DeploySecret.outputs.P2_SANDBOX_AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ steps.DeploySecret.outputs.P2_SANDBOX_AWS_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ steps.DeploySecret.outputs.P2_EUK_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ steps.DeploySecret.outputs.P2_EUK_AWS_SECRET_ACCESS_KEY }}
+
           
 
 
@@ -176,7 +190,6 @@ jobs:
           # DEFAULT_EXPIREINDAYS: 0 # Mandatory to disable
 
 
-
 ###############################################################
 #  ANGULAR ENVIRONMENT CREATION
 ##############################################################
@@ -204,8 +217,8 @@ jobs:
           CUSTOM_PATH_ANY: /cutie/any/uploads/
           CUSTOM_S3_BUCKET: files.${{ env.PUBLICZONENAME }}
           CUSTOM_APIENDPOINT: https://cutie-api.${{ env.PUBLICZONENAME }}/
-          CUSTOM_APIENDPOINTOLD: https://admin.${{ env.PUBLICZONENAME }}/
-          CUSTOM_PRACTERCORE: https://admin.${{ env.PUBLICZONENAME }}/
+          CUSTOM_APIENDPOINTOLD: https://${{ env.PUBLICZONENAME }}/
+          CUSTOM_PRACTERCORE: https://${{ env.PUBLICZONENAME }}/
           CUSTOM_PATH_VIDEO: /cutie/video/uploads/
           CUSTOM_GEAPHQLENDPOINT: https://core-graphql-api.${{ env.PUBLICZONENAME }}/
           
@@ -253,7 +266,7 @@ jobs:
           author_name: ${{ env.BRANCH_TAG_NAME }} -  ${{ env.ROOTSTACK }} deployed to ${{ env.ENV }} environemnt in ${{ env.STACK_NAME }} AWS account
           mention: 'here'
           if_mention: failure,cancelled
-          job_name: deploy-p2-sandbox # Match the name above.
+          job_name: deploy-p2-euk-live # Match the name above.
           fields: repo,commit,eventName,ref,workflow,message,author,job,took
           custom_payload: |
             {
