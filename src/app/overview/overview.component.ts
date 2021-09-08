@@ -493,4 +493,7 @@ export class OverviewComponent implements OnInit {
     XLSX.writeFile(wb, 'report.xlsx');
   }
 
+  goToLink(url: string){
+    window.open(url, "helpWindow");
+  }
 }
