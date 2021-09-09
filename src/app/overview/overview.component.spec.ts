@@ -131,6 +131,44 @@ describe('OverviewComponent', () => {
         onTrackRatio: -1,
         lastUpdated: 1612775394683
       }
+    },
+    {
+      uuid: '84f14db9-491a-09f7-ae61-9926f3ad8c8d',
+      name: 'GROW 2020',
+      description: `Practera is the leading platform to power high quality experiential learning programs.<br/><br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services<br/><br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services<br/><br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services<br/><br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services`,
+      type: 'team project',
+      status: 'completed',
+      role: 'mentor',
+      setupStep: 'visuals',
+      leadImage: '',
+      color: '',
+      todoItemCount: 0,
+      tags: ['apple', 'watermelon'],
+      statistics: {
+        enrolledUserCount: {
+          admin: 0,
+          coordinator: 0,
+          mentor: 1,
+          participant: 21
+        },
+        registeredUserCount: {
+          admin: 0,
+          coordinator: 0,
+          mentor: 1,
+          participant: 21
+        },
+        activeUserCount: {
+          admin: 0,
+          coordinator: 0,
+          mentor: 0,
+          participant: 0
+        },
+        feedbackLoopStarted: 120,
+        feedbackLoopCompleted: 56,
+        reviewRatingAvg: 0.76,
+        onTrackRatio: -1,
+        lastUpdated: 1612493090322
+      }
     }
   ];
 
@@ -180,6 +218,7 @@ describe('OverviewComponent', () => {
 
   it('should get experiences data', () => {
     fixture.detectChanges();
+    exps.splice(3, 1);
     expect(component.experiencesRaw).toEqual(exps);
     expect(component.experiences).toEqual(exps);
     expect(component.types).toEqual(['all', exps[1].type, exps[0].type]);

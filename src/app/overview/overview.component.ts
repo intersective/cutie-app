@@ -109,6 +109,8 @@ export class OverviewComponent implements OnInit {
     this.service.getExperiences().subscribe(res => {
       // reformat tags from string[] to Tag[]
       this.experiencesRaw = res;
+      // remove experiences didn't have admin or coordinator role
+      this._filterByRole();
       // get all tags
       this._getAllTags();
       // get all types
@@ -116,6 +118,15 @@ export class OverviewComponent implements OnInit {
       this.filterAndOrder();
       this._refreshLiveExpStats();
       this.loadingExps = false;
+    });
+  }
+
+
+  private _filterByRole() {
+    this.experiencesRaw.forEach((exp, index) => {
+      if (exp.role !== 'admin' && exp.role !== 'coordinator') {
+        this.experiencesRaw.splice(index, 1);
+      }
     });
   }
 
@@ -493,7 +504,7 @@ export class OverviewComponent implements OnInit {
     XLSX.writeFile(wb, 'report.xlsx');
   }
 
-  goToLink(url: string){
-    window.open(url, "helpWindow");
+  goToLink(url: string) {
+    window.open(url, 'helpWindow');
   }
 }
