@@ -1,7 +1,7 @@
 ################################################
 #  GITHUB ACTION WORKFLOW NAME
 ################################################
-name: Deploy to p2-sandbox environment
+name: Deploy to p2-stage environment
 
 
 ################################################
@@ -10,15 +10,14 @@ name: Deploy to p2-sandbox environment
 on:
   workflow_dispatch:
   push:
-    branches: [ 'develop' ]
-    
+    branches: [ 'trunk' ]
 
 ################################################
 #  GITHUB ACTION JOBS
 ################################################
 jobs:
-  deploy-p2-sandbox:
-    name: deploy-p2-sandbox
+  deploy-p2-stage:
+    name: deploy-p2-stage
     runs-on: ubuntu-latest
 
 
@@ -27,19 +26,19 @@ jobs:
 ################################################
     env:
       REGION : ap-southeast-2
-      ENV : dev # Valid values are dev,test,live only
-      STACK_NAME: p2-sandbox # Valid values are au,us,uk,p2,lf,nu,p1-sandbox,p1-stage,p2-sandbox,shared only
+      ENV : test # Valid values are dev,test,live only
+      STACK_NAME: p2-stage # Valid values are au,us,uk,p2,lf,nu,p1-sandbox,p2-stage,p2-sandbox,shared only
       ROOTSTACK: cutie-app
       CFNS3BucketName: devops-cfn-templates
       PRIVATES3BucketName: devops-shared-private
-      PUBLICZONENAME: p2-sandbox.practera.com
+      PUBLICZONENAME: p2-stage.practera.com
       BUILD_CONFIG: custom
       STATUSREPORTS3Bucket: deployment-status.practera.com
       STATUS: DEPLOYED
       REQUESTOR: ${{ github.event.inputs.REQUESTOR }}
       REASON: ${{ github.event.inputs.REASON }}
-      ENDPOINT: cutie-app.p2-sandbox.practera.com
-      BRANCH_TAG_NAME: develop
+      ENDPOINT: cutie-app.p2-stage.practera.com
+      BRANCH_TAG_NAME: trunk
 
 
 
@@ -90,6 +89,7 @@ jobs:
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run:  npm install
 
+
 ################################################
 #  AWS CLI CONFIGURATION - DEVOPS 
 ################################################ 
@@ -112,31 +112,30 @@ jobs:
           echo "::add-mask::$SLACK_WEBHOOK_URL"
           echo "::set-output name=SLACK_WEBHOOK_URL::$SLACK_WEBHOOK_URL"
     
-          echo "Enable P2 Sandbox ACCOUNT CLI Login"
-          P2_SANDBOX_AWS_ACCESS_KEY_ID=$(aws secretsmanager get-secret-value --secret-id $STACK_NAME-DEPLOY-$ENV| jq --raw-output '.SecretString' | jq -r .P2_SANDBOX_AWS_ACCESS_KEY_ID)
-          P2_SANDBOX_AWS_SECRET_ACCESS_KEY=$(aws secretsmanager get-secret-value --secret-id $STACK_NAME-DEPLOY-$ENV| jq --raw-output '.SecretString' | jq -r .P2_SANDBOX_AWS_SECRET_ACCESS_KEY)
-          echo "::add-mask::$P2_SANDBOX_AWS_ACCESS_KEY_ID"
-          echo "::add-mask::$P2_SANDBOX_AWS_SECRET_ACCESS_KEY"
-          echo "::set-output name=P2_SANDBOX_AWS_ACCESS_KEY_ID::$P2_SANDBOX_AWS_ACCESS_KEY_ID"
-          echo "::set-output name=P2_SANDBOX_AWS_SECRET_ACCESS_KEY::$P2_SANDBOX_AWS_SECRET_ACCESS_KEY"
+          echo "Enable P2 Stage ACCOUNT CLI Login"
+          P2_STAGE_AWS_ACCESS_KEY_ID=$(aws secretsmanager get-secret-value --secret-id $STACK_NAME-DEPLOY-$ENV| jq --raw-output '.SecretString' | jq -r .P2_STAGE_AWS_ACCESS_KEY_ID)
+          P2_STAGE_AWS_SECRET_ACCESS_KEY=$(aws secretsmanager get-secret-value --secret-id $STACK_NAME-DEPLOY-$ENV| jq --raw-output '.SecretString' | jq -r .P2_STAGE_AWS_SECRET_ACCESS_KEY)
+          echo "::add-mask::$P2_STAGE_AWS_ACCESS_KEY_ID"
+          echo "::add-mask::$P2_STAGE_AWS_SECRET_ACCESS_KEY"
+          echo "::set-output name=P2_STAGE_AWS_ACCESS_KEY_ID::$P2_STAGE_AWS_ACCESS_KEY_ID"
+          echo "::set-output name=P2_STAGE_AWS_SECRET_ACCESS_KEY::$P2_STAGE_AWS_SECRET_ACCESS_KEY"
+        
         env:  #TODO: Update once manually to new stack accordingly
-          STACK_NAME: shared # Valid values are au,us,uk,p2,lf,nu,p1-sandbox,p1-stage,p2-sandbox,shared only
+          STACK_NAME: shared # Valid values are au,us,uk,p2,lf,nu,p1-sandbox,p2-stage,p2-sandbox,shared only
           ENV: live # Valid values are sandbox,stage,live only
 
 ##########################################################
-#  AWS P2SANDBOX ACCOUNT STEPS BELOW
+#  AWS P2 STAGE ACCOUNT STEPS BELOW
 ##########################################################
       - name: Configure AWS credentials from $STACK_NAME account in $REGION region
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ steps.DeploySecret.outputs.P2_SANDBOX_AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ steps.DeploySecret.outputs.P2_SANDBOX_AWS_SECRET_ACCESS_KEY }}
+          aws-access-key-id: ${{ steps.DeploySecret.outputs.P2_STAGE_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ steps.DeploySecret.outputs.P2_STAGE_AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{env.REGION}}
         env:
-          AWS_ACCESS_KEY_ID: ${{ steps.DeploySecret.outputs.P2_SANDBOX_AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ steps.DeploySecret.outputs.P2_SANDBOX_AWS_SECRET_ACCESS_KEY }}
-          
-
+          AWS_ACCESS_KEY_ID: ${{ steps.DeploySecret.outputs.P2_STAGE_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ steps.DeploySecret.outputs.P2_STAGE_AWS_SECRET_ACCESS_KEY }}
 
 
 
@@ -253,7 +252,7 @@ jobs:
           author_name: ${{ env.BRANCH_TAG_NAME }} -  ${{ env.ROOTSTACK }} deployed to ${{ env.ENV }} environemnt in ${{ env.STACK_NAME }} AWS account
           mention: 'here'
           if_mention: failure,cancelled
-          job_name: deploy-p2-sandbox # Match the name above.
+          job_name: deploy-p2-stage # Match the name above.
           fields: repo,commit,eventName,ref,workflow,message,author,job,took
           custom_payload: |
             {
