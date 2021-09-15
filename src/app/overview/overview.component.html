@@ -45,10 +45,10 @@
           <h2>My experiences</h2>
         </div>
         <div class="title-bar-tools col-md-6">
-          <a class="btn btn-primary btn-lg" routerLink="/templates">
+          <button class="btn btn-primary btn-lg" [routerLink]="['/templates']" [disabled]="loadingExps">
             <ion-icon name="add"></ion-icon>
             <span>Add experience</span>
-          </a>
+          </button>
         </div>
       </div>
     </header>
