@@ -16,6 +16,7 @@ export class BrowseTemplatesComponent implements OnInit {
   loadingTemplates = true;
   leadImage: string;
   description: string;
+  isCustomTemplates = false;
 
   constructor(private route: ActivatedRoute, private service: TemplateLibraryService) {
 
@@ -23,6 +24,8 @@ export class BrowseTemplatesComponent implements OnInit {
       this.route.params.subscribe(params => {
       if (segment[0].path === 'search') {
         this.loadTemplatesByFilter(params.filter);
+      } else if (segment[0].path === 'custom') {
+        this.loadCustomTemplates();
       } else {
         this.loadTemplatesByCategory(params.categoryName);
       }
@@ -61,6 +64,19 @@ export class BrowseTemplatesComponent implements OnInit {
     }
 
     this.service.getTemplatesByCategory(categoryId).subscribe(res => {
+      if (res === null) {
+        return;
+      }
+      this.templates = res;
+      this.loadingTemplates = false;
+    });
+  }
+
+  loadCustomTemplates() {
+    this.loadingTemplates = true;
+    this.isCustomTemplates = true;
+    this.heading = 'Custom Templates';
+    this.service.getCustomTemplates().subscribe(res => {
       if (res === null) {
         return;
       }
