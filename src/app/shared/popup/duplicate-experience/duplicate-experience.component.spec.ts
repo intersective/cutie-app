@@ -51,68 +51,68 @@ describe('DuplicateExperienceComponent', () => {
   describe('for select()', () => {
     it('select all when all selected', () => {
       component.roleSelected = {
-        admin: true,
+        author: true,
         coordinator: true,
-        mentor: true,
-        participant: true,
+        expert: true,
+        learner: true,
       };
       component.select('all');
       expect(component.roleSelected).toEqual({
-        admin: false,
+        author: false,
         coordinator: false,
-        mentor: false,
-        participant: false,
+        expert: false,
+        learner: false,
       });
       expect(component.allSelected).toEqual(false);
     });
 
     it('select all when not all selected', () => {
       component.roleSelected = {
-        admin: true,
+        author: true,
         coordinator: false,
-        mentor: true,
-        participant: true,
+        expert: true,
+        learner: true,
       };
       component.select('all');
       expect(component.roleSelected).toEqual({
-        admin: true,
+        author: true,
         coordinator: true,
-        mentor: true,
-        participant: true,
+        expert: true,
+        learner: true,
       });
       expect(component.allSelected).toEqual(true);
     });
 
     it('select one role when not all selected', () => {
       component.roleSelected = {
-        admin: true,
+        author: true,
         coordinator: false,
-        mentor: true,
-        participant: true,
+        expert: true,
+        learner: true,
       };
       component.select();
       expect(component.roleSelected).toEqual({
-        admin: true,
+        author: true,
         coordinator: false,
-        mentor: true,
-        participant: true,
+        expert: true,
+        learner: true,
       });
       expect(component.allSelected).toEqual(false);
     });
 
     it('select one role when all selected', () => {
       component.roleSelected = {
-        admin: true,
+        author: true,
         coordinator: true,
-        mentor: true,
-        participant: true,
+        expert: true,
+        learner: true,
       };
       component.select();
       expect(component.roleSelected).toEqual({
-        admin: true,
+        author: true,
         coordinator: true,
-        mentor: true,
-        participant: true,
+        expert: true,
+        learner: true,
       });
       expect(component.allSelected).toEqual(true);
     });
