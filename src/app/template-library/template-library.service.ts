@@ -16,6 +16,7 @@ export interface Template {
   attributes?: string[];
   designMapUrl?: string;
   operationsManualUrl?: string;
+  isPublic?: boolean;
 }
 
 export interface Category {
@@ -59,6 +60,7 @@ export class TemplateLibraryService {
           description
           leadImageUrl
           type
+          isPublic
         }
       }`,
       {}
@@ -78,6 +80,7 @@ export class TemplateLibraryService {
           leadImageUrl
           leadVideoUrl
           type
+          isPublic
         }
       }`,
       {
@@ -99,9 +102,32 @@ export class TemplateLibraryService {
           leadImageUrl
           leadVideoUrl
           type
+          isPublic
         }
       }`,
       {filter}
+    ).pipe(map(this._handleTemplates));
+  }
+
+  getCustomTemplates(): Observable<Template[]> {
+    if (environment.demo) {
+      return this.demo.getCustomTemplates().pipe(map(this._handleTemplates));
+    }
+    return this.request.graphQLQuery(
+      `query templates($privateOnly: Boolean) {
+        templates(privateOnly: $privateOnly) {
+          uuid
+          name
+          description
+          leadImageUrl
+          leadVideoUrl
+          type
+          isPublic
+        }
+      }`,
+      {
+        privateOnly: true
+      }
     ).pipe(map(this._handleTemplates));
   }
 
@@ -121,6 +147,7 @@ export class TemplateLibraryService {
           attributes
           designMapUrl
           operationsManualUrl
+          isPublic
         }
       }`,
       {uuid}
