@@ -234,29 +234,36 @@ describe('OverviewService', () => {
       environment.demo = true;
       demoService.exportExperience = jasmine.createSpy().and.returnValue(of({
         data: {
-          success: false
+          exportExperience: {
+            success: false
+          }
         }
       }));
       result = {
-        data: {
-          success: false
-        }
+        success: false
       };
     });
     it('graphql resopnse', () => {
       environment.demo = false;
       requestService.graphQLMutate = jasmine.createSpy().and.returnValue(of({
         data: {
-          success: true,
-          uuid: 'new-uuid',
+          exportExperience: {
+            success: true,
+            uuid: 'new-uuid',
+          }
         }
       }));
       result = {
-        data: {
-          success: true,
-          uuid: 'new-uuid',
-        }
+        success: true,
+        uuid: 'new-uuid',
       };
+    });
+    it('graphql resopnse 2', () => {
+      environment.demo = false;
+      requestService.graphQLMutate = jasmine.createSpy().and.returnValue(of({
+        data: null
+      }));
+      result = null;
     });
   });
 
