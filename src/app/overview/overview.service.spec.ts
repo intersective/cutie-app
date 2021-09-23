@@ -225,4 +225,39 @@ describe('OverviewService', () => {
     });
   });
 
+  describe('for exportExperience', () => {
+    let result;
+    afterEach(() => {
+      service.exportExperience('the-uuid', 'the name').subscribe(res => expect(res).toEqual(result));
+    });
+    it('demo resopnse', () => {
+      environment.demo = true;
+      demoService.exportExperience = jasmine.createSpy().and.returnValue(of({
+        data: {
+          success: false
+        }
+      }));
+      result = {
+        data: {
+          success: false
+        }
+      };
+    });
+    it('graphql resopnse', () => {
+      environment.demo = false;
+      requestService.graphQLMutate = jasmine.createSpy().and.returnValue(of({
+        data: {
+          success: true,
+          uuid: 'new-uuid',
+        }
+      }));
+      result = {
+        data: {
+          success: true,
+          uuid: 'new-uuid',
+        }
+      };
+    });
+  });
+
 });
