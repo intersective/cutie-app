@@ -8,6 +8,7 @@ import { TagsViewComponent } from './tags-view/tags-view.component';
 import { CreateExperienceComponent } from './create-experience/create-experience.component';
 import { DuplicateExperienceComponent } from './duplicate-experience/duplicate-experience.component';
 import { ImportExperienceComponent } from './import-experience/import-experience.component';
+import { CreateTemplateComponent } from './create-template/create-template.component';
 
 export interface CustomTostOptions {
   message: string;
@@ -168,6 +169,20 @@ export class PopupService {
     const componentProps = {
       url,
     };
+    const options = {
+      backdropDismiss: false,
+      cssClass: 'practera-popup'
+    };
+    return this.showModal(component, componentProps, options);
+  }
+
+  /**
+   * show create template pop up message
+   * this is using create-template.component.ts as the view
+   */
+   showCreateTemplate(uuid: string, name: string) {
+    const component = CreateTemplateComponent;
+    const componentProps = { uuid, name };
     const options = {
       backdropDismiss: false,
       cssClass: 'practera-popup'

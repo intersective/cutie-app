@@ -1,0 +1,19 @@
+<div class="card">
+  <div class="card-header bg-white">
+    <h3 class="card-title">Create Experience Template</h3>
+  </div>
+  <div class="card-body">
+    <p class="card-text">Create a new experience template from "experience name". This action would set description, videos and images of this experience as a starting point to create new experiences. <a>Learn more</a></p>
+    <h4 class="card-title template-title">Experience Template Title</h4>
+    <div class="input-group my-2">
+      <div class="form-control">
+        <input type="text" class="border-0 w-100 my-1" [(ngModel)]="name" [disabled]="creating" popupClass="p-0" autofocus default="name"/>
+      </div>
+    </div>
+    <button type="button" class="btn btn-primary float-end" [disabled]="creating" (click)="confirm()">
+      <ng-container *ngIf="!creating">Create</ng-container>
+      <ng-container *ngIf="creating">Creating</ng-container> Template
+    </button>
+    <button type="button" class="btn btn-link float-end" [disabled]="creating" (click)="cancel()">Cancel</button>
+  </div>
+</div>
