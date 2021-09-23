@@ -6,6 +6,7 @@
           <ion-col size="12">
             <div class="card-media" [style.background-image]="template.leadImageUrl ? 'url(' + template.leadImageUrl + ')' : 'url(' + categoryLeadImage + ')'"></div>
           </ion-col>
+          <app-custom-template-chip *ngIf="!template.isPublic" class="custom-template-chip"></app-custom-template-chip>
         </ion-row>
         <ion-row class="template-details-title-row">
           <ion-col size="8">
