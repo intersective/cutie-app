@@ -139,6 +139,10 @@ export class ExperienceCardComponent {
     return this.experience.role === 'admin';
   }
 
+  canCreateTemplate() {
+    return this.experience.role === 'inst_admin';
+  }
+
   canArchive() {
     return this.experience.role === 'admin' && ['draft', 'completed'].includes(this.experience.status);
   }
@@ -149,6 +153,10 @@ export class ExperienceCardComponent {
 
   duplicate() {
     this.popupService.showDuplicateExp(this.experience.uuid);
+  }
+
+  createTemplate() {
+    this.popupService.showCreateTemplate(this.experience.uuid, this.experience.name);
   }
 
   delete() {

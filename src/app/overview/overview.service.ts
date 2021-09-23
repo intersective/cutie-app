@@ -31,7 +31,7 @@ export interface Experience {
   role: Role;
 }
 
-export type Role = 'sysadmin' | 'admin' | 'coordinator' | 'mentor' | 'participant';
+export type Role = 'sysadmin' | 'inst_admin' | 'admin' | 'coordinator' | 'mentor' | 'participant';
 
 export interface Tag {
   name: string;
@@ -247,6 +247,32 @@ export class OverviewService {
         status: 'archived',
       }
     );
+  }
+
+  exportExperience(uuid: string, name: string) {
+    if (environment.demo) {
+      return this.demo.exportExperience(uuid, name).pipe(map(this._handleExportExperienceResponse));
+    }
+    return this.request.graphQLMutate(
+      `mutation exportExperience($uuid: String!, $name: String) {
+        exportExperience(uuid: $uuid, name: $name) {
+          success
+          message
+          uuid
+        }
+      }`,
+      {
+        uuid,
+        name
+      }
+    ).pipe(map(this._handleExportExperienceResponse));
+  }
+
+  private _handleExportExperienceResponse(res): { uuid: string } {
+    if (!res || !res.data) {
+      return null;
+    }
+    return res.data.exportExperience;
   }
 
 }
