@@ -18,7 +18,7 @@ describe('TemplateDetailsComponent', () => {
     templateId: 'abc123'
   };
 
-  const template = {
+  const publicTemplate = {
     uuid: '000f562e-0ed0-4afe-af53-7a8d20558ce1',
     name: 'Consulting Project Experience',
     description: `Practera is the leading platform to power high quality experiential learning programs.<br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services`,
@@ -28,6 +28,7 @@ describe('TemplateDetailsComponent', () => {
     attributes: ['teambased projects', '12-weeks', 'feedback loops'],
     designMapUrl: '/assets/icon/favicon.png',
     operationsManualUrl: '/assets/icon/logo.svg',
+    isPublic: true
   };
 
   beforeEach(async(() => {
@@ -57,7 +58,7 @@ describe('TemplateDetailsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TemplateDetailsComponent);
     component = fixture.componentInstance;
-    templateLibraryServiceSpy.getTemplate = jasmine.createSpy().and.returnValue(of(template));
+    templateLibraryServiceSpy.getTemplate = jasmine.createSpy().and.returnValue(of(publicTemplate));
     templateLibraryServiceSpy.importExperienceUrl = jasmine.createSpy().and.returnValue(of({experienceUuid: 'abc123'}));
     fixture.detectChanges();
   });
@@ -81,7 +82,7 @@ describe('TemplateDetailsComponent', () => {
   it('should render template name', () => {
     component.loadingTemplate = false;
     fixture.detectChanges();
-    expect(fixture.debugElement.query(By.css('.template-title')).nativeElement.innerText).toEqual(template.name);
+    expect(fixture.debugElement.query(By.css('.template-title')).nativeElement.innerText).toEqual(publicTemplate.name);
   });
 
   it('should call import experience', () => {
@@ -89,6 +90,22 @@ describe('TemplateDetailsComponent', () => {
     component.importTemplate('abc123');
     expect(templateLibraryServiceSpy.importExperienceUrl).toHaveBeenCalledWith('abc123');
     expect(popupServiceSpy.showToast).toHaveBeenCalledWith('Failed to create the experience!');
+  });
+
+  it('should render custom template chip when the template is not public', () => {
+    component.loadingTemplate = false;
+    fixture.detectChanges();
+    component.template.isPublic = false;
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.css('app-custom-template-chip'))).toBeTruthy();
+  });
+
+  it('should not render custom template chip when the template is public', () => {
+    component.loadingTemplate = false;
+    fixture.detectChanges();
+    component.template.isPublic = true;
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.css('app-custom-template-chip'))).toBeNull();
   });
 
   afterEach(() => {
