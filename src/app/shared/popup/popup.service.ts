@@ -8,6 +8,8 @@ import { TagsViewComponent } from './tags-view/tags-view.component';
 import { CreateExperienceComponent } from './create-experience/create-experience.component';
 import { DuplicateExperienceComponent } from './duplicate-experience/duplicate-experience.component';
 import { ImportExperienceComponent } from './import-experience/import-experience.component';
+import {DeleteTemplateComponent} from './delete-template/delete-template.component';
+import {Template} from '../../template-library/template-library.service';
 import { CreateTemplateComponent } from './create-template/create-template.component';
 
 export interface CustomTostOptions {
@@ -168,6 +170,18 @@ export class PopupService {
     const component = ImportExperienceComponent;
     const componentProps = {
       url,
+    };
+    const options = {
+      backdropDismiss: false,
+      cssClass: 'practera-popup'
+    };
+    return this.showModal(component, componentProps, options);
+  }
+
+  showDeleteTemplate(template: Template) {
+    const component = DeleteTemplateComponent;
+    const componentProps = {
+      template
     };
     const options = {
       backdropDismiss: false,
