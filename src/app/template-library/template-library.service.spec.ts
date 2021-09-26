@@ -8,7 +8,7 @@ import {of} from 'rxjs';
 
 describe('TemplateLibraryService', () => {
   let service: TemplateLibraryService;
-  const demoService = jasmine.createSpyObj('DemoService', ['getTemplates', 'getTemplate', 'importExperience']);
+  const demoService = jasmine.createSpyObj('DemoService', ['getTemplates', 'getTemplate', 'importExperience', 'deleteTemplate']);
   const requestService = jasmine.createSpyObj('RequestService', ['graphQLQuery', 'graphQLMutate']);
 
   const dummyTemplate = {
@@ -177,6 +177,49 @@ describe('TemplateLibraryService', () => {
       requestService.graphQLMutate = jasmine.createSpy().and.returnValue(of({data: undefined}));
       // @ts-ignore
       service.importExperience('abc123').subscribe(res => expect(res).toEqual(null));
+    });
+  });
+
+  describe('for deleteTemplate', () => {
+    it('demo response', () => {
+      environment.demo = true;
+      demoService.deleteTemplate = jasmine.createSpy().and.returnValue(of({
+        data: {
+          deleteTemplate: {
+            success: true,
+            message: 'Successfully deleted'
+          }
+        }
+      }));
+      // @ts-ignore
+      service.deleteTemplate('abc123').subscribe(res => expect(res).toEqual({ success: true, message: 'Successfully deleted' }));
+    });
+    it('graphql response', () => {
+      environment.demo = false;
+      requestService.graphQLMutate = jasmine.createSpy().and.returnValue(of({
+        data: {
+          deleteTemplate: {
+            success: true,
+            message: 'Successfully deleted'
+          }
+        }
+      }));
+      service.deleteTemplate('abc123').subscribe(res => expect(res).toEqual({
+        success: true,
+        message: 'Successfully deleted'
+      }));
+    });
+    it('handles undefined graphql response', () => {
+      environment.demo = false;
+      requestService.graphQLMutate = jasmine.createSpy().and.returnValue(of(undefined));
+      // @ts-ignore
+      service.deleteTemplate('abc123').subscribe(res => expect(res).toEqual(null));
+    });
+    it('handles undefined data from graphql response', () => {
+      environment.demo = false;
+      requestService.graphQLMutate = jasmine.createSpy().and.returnValue(of({data: undefined}));
+      // @ts-ignore
+      service.deleteTemplate('abc123').subscribe(res => expect(res).toEqual(null));
     });
   });
 

@@ -6,6 +6,7 @@ import { DescriptionComponent } from './description/description.component';
 import { TagsComponent } from './tags/tags.component';
 import { TagsViewComponent } from './tags-view/tags-view.component';
 import { DuplicateExperienceComponent } from './duplicate-experience/duplicate-experience.component';
+import { DeleteTemplateComponent } from './delete-template/delete-template.component';
 
 @NgModule({
   imports: [
@@ -20,18 +21,21 @@ import { DuplicateExperienceComponent } from './duplicate-experience/duplicate-e
     TagsComponent,
     TagsViewComponent,
     DuplicateExperienceComponent,
+    DeleteTemplateComponent
   ],
   exports: [
     DescriptionComponent,
     TagsComponent,
     TagsViewComponent,
     DuplicateExperienceComponent,
+    DeleteTemplateComponent
   ],
   entryComponents: [
     DescriptionComponent,
     TagsComponent,
     TagsViewComponent,
     DuplicateExperienceComponent,
+    DeleteTemplateComponent
   ]
 })
 

@@ -1098,6 +1098,17 @@ export class DemoService {
     }).pipe(delay(1000));
   }
 
+  deleteTemplate() {
+    return of({
+      data: {
+        deleteTemplate: {
+          success: true,
+          message: 'Successfully deleted the template'
+        }
+      }
+    }).pipe(delay(1000));
+  }
+
   importExperienceUrl(uuid: string) {
     const temUrl = `http://127.0.0.1:3000/template/${uuid}`;
     return of({

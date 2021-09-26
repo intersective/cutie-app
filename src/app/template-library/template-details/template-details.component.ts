@@ -1,31 +1,42 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Template, TemplateLibraryService } from '../template-library.service';
 import { PopupService } from '../../shared/popup/popup.service';
 import { StorageService } from '@services/storage.service';
 import { environment } from '@environments/environment';
+import { AuthService } from '../../auth/auth.service';
+import { User } from '../../shared/services/storage.service';
 
 @Component({
   selector: 'app-template-details',
   templateUrl: './template-details.component.html',
   styleUrls: ['./template-details.component.scss'],
 })
-export class TemplateDetailsComponent {
+export class TemplateDetailsComponent implements OnInit {
 
   template: Template;
   loadingTemplate = true;
   importingTemplate = false;
   categoryLeadImage = '/assets/exp-placeholder.png';
+  deletingTemplate = false;
+  myInfo: User;
 
   constructor(
     private route: ActivatedRoute,
     private service: TemplateLibraryService,
     private popupService: PopupService,
     private storage: StorageService,
+    private authService: AuthService
   ) {
     this.route.params.subscribe(params => {
       this.fetchTemplate(params.templateId);
     });
+  }
+
+  ngOnInit() {
+    this.authService.getMyInfo().subscribe(info => {
+        this.myInfo = info.data.User;
+      });
   }
 
   fetchTemplate(templateId: string) {
@@ -62,5 +73,12 @@ export class TemplateDetailsComponent {
     });
   }
 
+  deleteTemplate() {
+    this.popupService.showDeleteTemplate(this.template);
+  }
+
+  canDelete() {
+    return !this.template.isPublic && this.myInfo.role === 'admin';
+  }
 
 }

@@ -37,6 +37,11 @@ export interface ImportExperienceResponse {
   experienceUuid: string;
 }
 
+export interface DeleteTemplateResponse {
+  success: boolean;
+  message: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -173,6 +178,28 @@ export class TemplateLibraryService {
       return null;
     }
     return res.data.importExperience;
+  }
+
+  deleteTemplate(templateUuid: string): Observable<DeleteTemplateResponse> {
+    if (environment.demo) {
+      return this.demo.deleteTemplate().pipe(map(this._handleDeletedTemplateResponse));
+    }
+    return this.request.graphQLMutate(
+`mutation deleteTemplate($uuid: ID!) {
+         deleteTemplate(uuid: $uuid) {
+           success
+           message
+         }
+       }`,
+      {uuid: templateUuid}
+    ).pipe(map(this._handleDeletedTemplateResponse));
+  }
+
+  private _handleDeletedTemplateResponse(res) {
+    if (!res || !res.data) {
+      return null;
+    }
+    return res.data.deleteTemplate;
   }
 
   importExperienceUrl(templateUuid: string): Observable<string> {
