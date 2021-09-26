@@ -331,7 +331,7 @@ export class DemoService {
       description: `Practera is the leading platform to power high quality experiential learning programs.<br/><br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services<br/><br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services<br/><br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services<br/><br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services`,
       type: 'work simulation',
       status: 'draft',
-      role: 'admin',
+      role: 'inst_admin',
       setupStep: 'configuration',
       leadImage: '',
       todoItemCount: 0,
@@ -1151,6 +1151,18 @@ export class DemoService {
   deleteExperience(experience) {
     console.log('delete experience:', experience.uuid);
     return of({}).pipe(delay(1000));
+  }
+
+  exportExperience(uuid, name) {
+    console.log('export experience:', uuid, name);
+    return of({
+      data: {
+        exportExperience: {
+          success: true,
+          uuid: '16c3d514-b459-b9d1-05c8-2bd1f582447d'
+        }
+      }
+    }).pipe(delay(1000));
   }
 
   archiveExperience(experience) {

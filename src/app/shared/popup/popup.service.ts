@@ -10,6 +10,7 @@ import { DuplicateExperienceComponent } from './duplicate-experience/duplicate-e
 import { ImportExperienceComponent } from './import-experience/import-experience.component';
 import {DeleteTemplateComponent} from './delete-template/delete-template.component';
 import {Template} from '../../template-library/template-library.service';
+import { CreateTemplateComponent } from './create-template/create-template.component';
 
 export interface CustomTostOptions {
   message: string;
@@ -183,10 +184,24 @@ export class PopupService {
       template
     };
     const options = {
+      backdropDismiss: false,
       cssClass: 'practera-popup'
     };
     return this.showModal(component, componentProps, options);
   }
 
+  /**
+   * show create template pop up message
+   * this is using create-template.component.ts as the view
+   */
+   showCreateTemplate(uuid: string, name: string) {
+    const component = CreateTemplateComponent;
+    const componentProps = { uuid, name };
+    const options = {
+      backdropDismiss: false,
+      cssClass: 'practera-popup'
+    };
+    return this.showModal(component, componentProps, options);
+  }
 
 }

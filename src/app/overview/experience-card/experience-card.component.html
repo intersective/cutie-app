@@ -105,6 +105,11 @@
                 <ion-icon name="copy-outline"></ion-icon><span class="ms-2">Duplicate</span>
               </a>
             </li>
+            <li *ngIf="canCreateTemplate()">
+              <a class="dropdown-item" (click)="createTemplate()">
+                <ion-icon name="copy-outline"></ion-icon><span class="ms-2">Create template</span>
+              </a>
+            </li>
             <ng-container *ngIf="canDelete() || canArchive()">
               <li><hr class="dropdown-divider"></li>
               <li *ngIf="canArchive()">
