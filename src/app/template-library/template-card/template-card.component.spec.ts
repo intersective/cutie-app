@@ -19,6 +19,7 @@ describe('TemplateCardComponent', () => {
     attributes: ['teambased projects', '12-weeks', 'feedback loops'],
     designMapUrl: '/assets/icon/favicon.png',
     operationsManualUrl: '/assets/icon/logo.svg',
+    isPublic: false
   };
 
   beforeEach(async(() => {
@@ -55,6 +56,18 @@ describe('TemplateCardComponent', () => {
 
   it('should render the template\'s title', () => {
     expect(fixture.debugElement.query(By.css('.template-card-title')).nativeElement.innerText).toEqual(template.name);
+  });
+
+  it('should render custom template chip when the template is not public', () => {
+    component.template.isPublic = false;
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.css('app-custom-template-chip'))).toBeTruthy();
+  });
+
+  it('should not render custom template chip when the template is public', () => {
+    component.template.isPublic = true;
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.css('app-custom-template-chip'))).toBeNull();
   });
 
   afterEach(() => {

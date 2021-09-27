@@ -10,6 +10,7 @@ import {TemplateDetailsComponent} from './template-details/template-details.comp
 import {ResourceDownloadCardComponent} from './resource-download-card/resource-download-card.component';
 import {BrowseTemplatesComponent} from './browse-templates/browse-templates.component';
 import {EmptyResultsComponent} from './empty-results/empty-results.component';
+import {CustomTemplateChipComponent} from './custom-template-chip/custom-template-chip.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import {EmptyResultsComponent} from './empty-results/empty-results.component';
     TemplateDetailsComponent,
     ResourceDownloadCardComponent,
     BrowseTemplatesComponent,
-    EmptyResultsComponent
+    EmptyResultsComponent,
+    CustomTemplateChipComponent
   ],
   imports: [
     SharedModule,

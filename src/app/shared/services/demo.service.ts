@@ -503,6 +503,7 @@ export class DemoService {
       attributes: ['teambased projects', '12-weeks', 'feedback loops'],
       designMapUrl: 'https://www.filepicker.io/api/file/NvgFmnp3RhmIypodBlVZ',
       operationsManualUrl: 'https://www.filepicker.io/api/file/vFYhEyoTRaCBXZrdtNge',
+      isPublic: false
     },
     {
       uuid: '34c3d514-b459-b9d1-05c8-2bd1f582447c',
@@ -511,6 +512,7 @@ export class DemoService {
       leadImageUrl: '',
       leadVideoUrl: '',
       type: 'Internship',
+      isPublic: false
     },
     {
       uuid: '16c3d514-b459-b9d1-05c8-2bd1f582447d',
@@ -518,7 +520,8 @@ export class DemoService {
       description: `Practera is the leading platform to power high quality experiential learning programs.<br/><br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services<br/><br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services<br/><br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services<br/><br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services`,
       leadImageUrl: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=2250&q=80',
       leadVideoUrl: '',
-      type: 'Team Project'
+      type: 'Team Project',
+      isPublic: true
     },
     {
       uuid: '84f14db9-491a-09f7-ae61-9926f3ad8c8d',
@@ -526,7 +529,8 @@ export class DemoService {
       description: `Practera is the leading platform to power high quality experiential learning programs.<br/><br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services<br/><br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services<br/><br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services<br/><br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services`,
       leadImageUrl: 'https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2250&q=80',
       leadVideoUrl: '',
-      type: 'Mentoring'
+      type: 'Mentoring',
+      isPublic: true
     }
   ];
 
@@ -571,18 +575,30 @@ export class DemoService {
 
   // auth.service
   getMyInfo() {
-    return {
+    return of({
       data: {
         User: {
           name: 'Demo Coordinator',
           contactNumber: '0123456789',
           email: 'coordinator@practera.com',
-          role: 'coordinator',
           image: './assets/demo/avatar.png',
           userHash: 'demo-hash'
         }
       }
-    };
+    }).pipe(delay(2000));
+  }
+
+  getMyInfoGraphQL() {
+    return of({
+      data: {
+        user: {
+          name: 'Demo Admin GraphQL',
+          email: 'admin@practera.com',
+          role: 'inst_admin',
+          image: './assets/demo/avatar.png',
+        }
+      }
+    }).pipe(delay(2000));
   }
 
   // progress-table.service
@@ -1067,6 +1083,15 @@ export class DemoService {
     }).pipe(delay(1000));
   }
 
+
+  getCustomTemplates() {
+    return of({
+      data: {
+        templates: [...this.templates.filter(template => !template.isPublic), ...this.templates.filter(template => !template.isPublic), ...this.templates.filter(template => !template.isPublic)]
+      }
+    }).pipe(delay(1000));
+  }
+
   getTemplate() {
     return of({
       data: {
@@ -1080,6 +1105,17 @@ export class DemoService {
       data: {
         importExperience: {
           experienceUuid: '000f562e-0ed0-4afe-af53-7a8d20558ce1'
+        }
+      }
+    }).pipe(delay(1000));
+  }
+
+  deleteTemplate() {
+    return of({
+      data: {
+        deleteTemplate: {
+          success: true,
+          message: 'Successfully deleted the template'
         }
       }
     }).pipe(delay(1000));

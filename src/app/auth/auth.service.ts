@@ -84,6 +84,7 @@ export class AuthService {
       this.storage.set('programs', programs);
     }
     this.getMyInfo().subscribe();
+    this.getMyInfoGraphQL().subscribe();
     if (data.timeline_id || data.timeline_uuid) {
       this.getUserEnrolmentUuid().subscribe();
     }
@@ -95,9 +96,7 @@ export class AuthService {
    */
   getMyInfo(): Observable<any> {
     if (environment.demo) {
-      const response = this.demo.getMyInfo();
-      this._handleMyInfo(response);
-      return of(response);
+      return this.demo.getMyInfo().pipe(map(this._handleMyInfo, this));
     }
     return this.request.get(api.me).pipe(map(this._handleMyInfo, this));
   }
@@ -109,15 +108,40 @@ export class AuthService {
       }
       const apiData = response.data.User;
       this.storage.setUser({
-        name: apiData.name,
         contactNumber: apiData.contact_number,
-        email: apiData.email,
-        image: apiData.image,
         userHash: apiData.userhash,
-        role: apiData.role
       });
     }
     return response;
+  }
+
+  getMyInfoGraphQL(): Observable<any> {
+    if (environment.demo) {
+      return this.demo.getMyInfoGraphQL().pipe(map(this._handleMyInfoGraphQL, this));
+    }
+    return this.request.graphQLQuery(
+      `query user {
+        user {
+          name
+          email
+          image
+          role
+        }
+      }`
+    ).pipe(map(this._handleMyInfoGraphQL));
+  }
+
+  private _handleMyInfoGraphQL(res) {
+    if (!res || !res.data) {
+      return null;
+    }
+    this.storage.setUser({
+      name: res.data.user.name,
+      email: res.data.user.email,
+      image: res.data.user.image,
+      role: res.data.user.role
+    });
+    return res.data.user;
   }
 
   getUserEnrolmentUuid(): Observable<any> {

@@ -16,6 +16,7 @@ export interface Template {
   attributes?: string[];
   designMapUrl?: string;
   operationsManualUrl?: string;
+  isPublic?: boolean;
 }
 
 export interface Category {
@@ -34,6 +35,11 @@ export interface CategorisedTemplates {
 
 export interface ImportExperienceResponse {
   experienceUuid: string;
+}
+
+export interface DeleteTemplateResponse {
+  success: boolean;
+  message: string;
 }
 
 @Injectable({
@@ -59,6 +65,7 @@ export class TemplateLibraryService {
           description
           leadImageUrl
           type
+          isPublic
         }
       }`,
       {}
@@ -78,6 +85,7 @@ export class TemplateLibraryService {
           leadImageUrl
           leadVideoUrl
           type
+          isPublic
         }
       }`,
       {
@@ -99,9 +107,32 @@ export class TemplateLibraryService {
           leadImageUrl
           leadVideoUrl
           type
+          isPublic
         }
       }`,
       {filter}
+    ).pipe(map(this._handleTemplates));
+  }
+
+  getCustomTemplates(): Observable<Template[]> {
+    if (environment.demo) {
+      return this.demo.getCustomTemplates().pipe(map(this._handleTemplates));
+    }
+    return this.request.graphQLQuery(
+      `query templates($privateOnly: Boolean) {
+        templates(privateOnly: $privateOnly) {
+          uuid
+          name
+          description
+          leadImageUrl
+          leadVideoUrl
+          type
+          isPublic
+        }
+      }`,
+      {
+        privateOnly: true
+      }
     ).pipe(map(this._handleTemplates));
   }
 
@@ -121,6 +152,7 @@ export class TemplateLibraryService {
           attributes
           designMapUrl
           operationsManualUrl
+          isPublic
         }
       }`,
       {uuid}
@@ -146,6 +178,28 @@ export class TemplateLibraryService {
       return null;
     }
     return res.data.importExperience;
+  }
+
+  deleteTemplate(templateUuid: string): Observable<DeleteTemplateResponse> {
+    if (environment.demo) {
+      return this.demo.deleteTemplate().pipe(map(this._handleDeletedTemplateResponse));
+    }
+    return this.request.graphQLMutate(
+`mutation deleteTemplate($uuid: ID!) {
+         deleteTemplate(uuid: $uuid) {
+           success
+           message
+         }
+       }`,
+      {uuid: templateUuid}
+    ).pipe(map(this._handleDeletedTemplateResponse));
+  }
+
+  private _handleDeletedTemplateResponse(res) {
+    if (!res || !res.data) {
+      return null;
+    }
+    return res.data.deleteTemplate;
   }
 
   importExperienceUrl(templateUuid: string): Observable<string> {

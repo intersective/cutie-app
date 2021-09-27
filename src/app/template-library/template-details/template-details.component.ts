@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 import { Template, TemplateLibraryService } from '../template-library.service';
 import { PopupService } from '../../shared/popup/popup.service';
 import { StorageService } from '@services/storage.service';
@@ -16,12 +16,14 @@ export class TemplateDetailsComponent {
   loadingTemplate = true;
   importingTemplate = false;
   categoryLeadImage = '/assets/exp-placeholder.png';
+  deletingTemplate = false;
 
   constructor(
     private route: ActivatedRoute,
     private service: TemplateLibraryService,
     private popupService: PopupService,
     private storage: StorageService,
+    private router: Router
   ) {
     this.route.params.subscribe(params => {
       this.fetchTemplate(params.templateId);
@@ -62,5 +64,43 @@ export class TemplateDetailsComponent {
     });
   }
 
+  deleteTemplate() {
+    this.popupService.showAlert({
+      message: 'Delete <strong>' + this.template.name + '</strong> experience template.<br/>This action cannot be undone.',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+        },
+        {
+          text: 'Confirm',
+          handler: this.deleteTemplateConfirm.bind(this)
+        },
+      ]
+    });
+  }
+
+  deleteTemplateConfirm() {
+    this.popupService.showLoading({
+      message: 'Deleting the template'
+    });
+    this.service.deleteTemplate(this.template.uuid).subscribe(res => {
+      setTimeout(() => this.popupService.dismissLoading(), 500);
+      if (res.success) {
+        this.popupService.showToast('Success: "' + this.template.name + '" template deleted.', {color: 'success'});
+        this.router.navigate(['/templates']);
+      } else {
+        this.popupService.showToast(res.message);
+      }
+    });
+  }
+
+  canDelete() {
+    const myInfo = this.storage.getUser();
+    if (myInfo && this.template) {
+      return !this.template.isPublic && myInfo.role === 'inst_admin';
+    }
+    return false;
+  }
 
 }
