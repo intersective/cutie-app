@@ -121,7 +121,7 @@ export class AuthService {
 
   getMyInfoGraphQL(): Observable<any> {
     if (environment.demo) {
-      return this.demo.getMyInfoGraphQL().pipe(map(this._handleMyInfoGraphQl, this));
+      return this.demo.getMyInfoGraphQL().pipe(map(this._handleMyInfoGraphQL, this));
     }
     return this.request.graphQLQuery(
       `query user {
@@ -132,10 +132,10 @@ export class AuthService {
           role
         }
       }`
-    ).pipe(map(this._handleMyInfoGraphQl));
+    ).pipe(map(this._handleMyInfoGraphQL));
   }
 
-  private _handleMyInfoGraphQl(res) {
+  private _handleMyInfoGraphQL(res) {
     if (!res || !res.data) {
       return null;
     }
