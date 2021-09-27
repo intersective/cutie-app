@@ -1,41 +1,35 @@
 import {Component, OnInit} from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { Template, TemplateLibraryService } from '../template-library.service';
 import { PopupService } from '../../shared/popup/popup.service';
 import { StorageService } from '@services/storage.service';
 import { environment } from '@environments/environment';
-import { AuthService } from '../../auth/auth.service';
-import { User } from '../../shared/services/storage.service';
+import {ToastController} from '@ionic/angular';
+import {ToastOptions} from '@ionic/core';
 
 @Component({
   selector: 'app-template-details',
   templateUrl: './template-details.component.html',
   styleUrls: ['./template-details.component.scss'],
 })
-export class TemplateDetailsComponent implements OnInit {
+export class TemplateDetailsComponent {
 
   template: Template;
   loadingTemplate = true;
   importingTemplate = false;
   categoryLeadImage = '/assets/exp-placeholder.png';
   deletingTemplate = false;
-  myInfo: User;
 
   constructor(
     private route: ActivatedRoute,
     private service: TemplateLibraryService,
     private popupService: PopupService,
     private storage: StorageService,
-    private authService: AuthService
+    private toastController: ToastController,
+    private router: Router
   ) {
     this.route.params.subscribe(params => {
       this.fetchTemplate(params.templateId);
-    });
-  }
-
-  ngOnInit() {
-    this.authService.getMyInfoGraphQL().subscribe(myInfo => {
-      this.myInfo = myInfo;
     });
   }
 
@@ -74,12 +68,51 @@ export class TemplateDetailsComponent implements OnInit {
   }
 
   deleteTemplate() {
-    this.popupService.showDeleteTemplate(this.template);
+    this.popupService.showAlert({
+      message: 'Delete <strong>' + this.template.name + '</strong> experience template.<br/>This action cannot be undone.',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+        },
+        {
+          text: 'Confirm',
+          handler: this.deleteTemplateConfirm.bind(this)
+        },
+      ]
+    });
+  }
+
+  deleteTemplateConfirm() {
+    this.popupService.showLoading({
+      message: 'Deleting the template'
+    });
+    this.service.deleteTemplate(this.template.uuid).subscribe(res => {
+      setTimeout(() => this.popupService.dismissLoading(), 500);
+      if (res.success) {
+        this.showToast('Success: "' + this.template.name + '" template deleted.', res.success);
+        this.router.navigate(['/templates']);
+      } else {
+        this.showToast(res.message, res.success);
+      }
+    });
+  }
+
+  async showToast(message: string, success: boolean) {
+    const toastOptions: ToastOptions = {
+      message: message,
+      duration: 2000,
+      position: 'top',
+      color: success ? 'success' : 'danger'
+    };
+    const toast = await this.toastController.create(toastOptions);
+    return toast.present();
   }
 
   canDelete() {
-    if (this.myInfo && this.template) {
-      return !this.template.isPublic && this.myInfo.role === 'inst_admin';
+    const myInfo = this.storage.getUser();
+    if (myInfo && this.template) {
+      return !this.template.isPublic && myInfo.role === 'inst_admin';
     }
     return false;
   }

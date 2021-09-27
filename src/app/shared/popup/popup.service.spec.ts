@@ -109,9 +109,4 @@ describe('PopupService', () => {
     expect(modalSpy.create).toHaveBeenCalled();
   });
 
-  it('call showDeleteTemplate()', async () => {
-    await service.showDeleteTemplate({uuid: 'abc123', name: 'name'});
-    expect(modalSpy.create).toHaveBeenCalled();
-  });
-
 });
