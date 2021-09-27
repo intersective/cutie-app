@@ -8,7 +8,6 @@ import { StorageService } from '@services/storage.service';
 import { UtilsService } from '@services/utils.service';
 import { environment } from '@environments/environment';
 import { DemoService } from '@services/demo.service';
-import {Template} from '../template-library/template-library.service';
 
 
 /**
@@ -85,6 +84,7 @@ export class AuthService {
       this.storage.set('programs', programs);
     }
     this.getMyInfo().subscribe();
+    this.getMyInfoGraphQL().subscribe();
     if (data.timeline_id || data.timeline_uuid) {
       this.getUserEnrolmentUuid().subscribe();
     }
@@ -119,7 +119,7 @@ export class AuthService {
     return response;
   }
 
-  getMyInfoGraphQL(): Observable<Template> {
+  getMyInfoGraphQL(): Observable<any> {
     if (environment.demo) {
       return this.demo.getMyInfoGraphQL().pipe(map(this._handleMyInfoGraphQl, this));
     }
@@ -139,6 +139,12 @@ export class AuthService {
     if (!res || !res.data) {
       return null;
     }
+    this.storage.setUser({
+      name: res.data.user.name,
+      email: res.data.user.email,
+      image: res.data.user.image,
+      role: res.data.user.role
+    });
     return res.data.user;
   }
 

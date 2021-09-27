@@ -2,19 +2,22 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TemplateDetailsComponent } from './template-details.component';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {of} from 'rxjs';
 import {TemplateLibraryService} from '../template-library.service';
 import {PopupService} from '../../shared/popup/popup.service';
 import {By} from '@angular/platform-browser';
-import {AuthService} from '../../auth/auth.service';
+import {StorageService} from '../../shared/services/storage.service';
+import {ToastController} from '@ionic/angular';
 
 describe('TemplateDetailsComponent', () => {
   let component: TemplateDetailsComponent;
   let fixture: ComponentFixture<TemplateDetailsComponent>;
   const templateLibraryServiceSpy = jasmine.createSpyObj('TemplateLibraryService', ['getTemplate', 'importExperienceUrl', 'getCategories']);
-  const popupServiceSpy = jasmine.createSpyObj('PopupService', ['showToast', 'showDeleteTemplate']);
-  const authServiceSpy = jasmine.createSpyObj('AuthService', ['getMyInfoGraphQL']);
+  const popupServiceSpy = jasmine.createSpyObj('PopupService', ['showToast', 'showAlert', 'showLoading']);
+  const storageServiceSpy = jasmine.createSpyObj('StorageService', ['getUser']);
+  const routerSpy = { navigate: jasmine.createSpy('navigate') };
+  const toastSpy = jasmine.createSpyObj('ToastController', ['create', 'present']);
 
   const params = {
     templateId: 'abc123'
@@ -32,139 +35,6 @@ describe('TemplateDetailsComponent', () => {
     operationsManualUrl: '/assets/icon/logo.svg',
     isPublic: true
   };
-
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ TemplateDetailsComponent ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      providers: [
-        {
-          provide: ActivatedRoute,
-          useValue: {
-            params: of(params),
-          },
-        },
-        {
-          provide: TemplateLibraryService,
-          useValue: templateLibraryServiceSpy
-        },
-        {
-          provide: PopupService,
-          useValue: popupServiceSpy
-        },
-        {
-          provide: AuthService,
-          useValue: authServiceSpy
-        }
-      ]
-    })
-    .compileComponents();
-  }));
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(TemplateDetailsComponent);
-    component = fixture.componentInstance;
-    templateLibraryServiceSpy.getTemplate = jasmine.createSpy().and.returnValue(of(publicTemplate));
-    templateLibraryServiceSpy.importExperienceUrl = jasmine.createSpy().and.returnValue(of({experienceUuid: 'abc123'}));
-    templateLibraryServiceSpy.getCategories = jasmine.createSpy().and.returnValue(categories);
-    authServiceSpy.getMyInfoGraphQL = jasmine.createSpy().and.returnValue(of({data: {user: {role: 'inst_admin'}}}));
-    popupServiceSpy.showToast = jasmine.createSpy().and.returnValue({});
-    popupServiceSpy.showDeleteTemplate = jasmine.createSpy().and.returnValue({});
-    popupServiceSpy.showImportExp = jasmine.createSpy().and.returnValue({});
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
-  it('should render skeleton when it is loading the template', () => {
-    component.loadingTemplate = true;
-    fixture.detectChanges();
-    expect(fixture.debugElement.query(By.css('ion-skeleton-text'))).toBeTruthy();
-  });
-
-  it('should not render skeleton when it is not loading the template', () => {
-    component.loadingTemplate = false;
-    fixture.detectChanges();
-    expect(fixture.debugElement.query(By.css('ion-skeleton-text'))).toBeNull();
-  });
-
-  it('should render template name', () => {
-    component.loadingTemplate = false;
-    fixture.detectChanges();
-    expect(fixture.debugElement.query(By.css('.template-title')).nativeElement.innerText).toEqual(publicTemplate.name);
-  });
-
-  it('should call import experience', () => {
-    templateLibraryServiceSpy.importExperienceUrl = jasmine.createSpy().and.returnValue(of({experienceUuid: null}));
-    component.importTemplate('abc123');
-    expect(templateLibraryServiceSpy.importExperienceUrl).toHaveBeenCalledWith('abc123');
-    expect(popupServiceSpy.showToast).toHaveBeenCalledWith('Failed to create the experience!');
-  });
-
-  it('should render custom template chip when the template is not public', () => {
-    component.loadingTemplate = false;
-    fixture.detectChanges();
-    component.template.isPublic = false;
-    fixture.detectChanges();
-    expect(fixture.debugElement.query(By.css('app-custom-template-chip'))).toBeTruthy();
-  });
-
-  it('should not render custom template chip when the template is public', () => {
-    component.loadingTemplate = false;
-    fixture.detectChanges();
-    component.template.isPublic = true;
-    fixture.detectChanges();
-    expect(fixture.debugElement.query(By.css('app-custom-template-chip'))).toBeNull();
-  });
-
-  it('should call showDeleteTemplate', () => {
-    component.deleteTemplate();
-    expect(popupServiceSpy.showDeleteTemplate).toHaveBeenCalledWith(publicTemplate);
-  });
-
-  it('canDelete() should allow admin to delete a private template', () => {
-    component.myInfo = {
-      role: 'inst_admin'
-    };
-    component.template = publicTemplate;
-    component.template.isPublic = false;
-    fixture.detectChanges();
-    expect(component.canDelete()).toEqual(true);
-  });
-
-  it('canDelete() should not allow admin to delete a public template', () => {
-    component.myInfo = {
-      role: 'inst_admin'
-    };
-    component.template = publicTemplate;
-    component.template.isPublic = true;
-    fixture.detectChanges();
-    expect(component.canDelete()).toEqual(false);
-  });
-
-  it('canDelete() should not allow a non-admin to delete a private template', () => {
-    component.myInfo = {
-      role: 'author'
-    };
-    component.template = publicTemplate;
-    component.template.isPublic = false;
-    fixture.detectChanges();
-    expect(component.canDelete()).toEqual(false);
-  });
-
-  it('canDelete() should return false when myInfo is undefined', () => {
-    component.myInfo = undefined;
-    component.template = publicTemplate;
-    component.template.isPublic = false;
-    fixture.detectChanges();
-    expect(component.canDelete()).toEqual(false);
-  });
-
-  afterEach(() => {
-    fixture.destroy();
-  });
 
   const categories = [
     {
@@ -225,5 +95,162 @@ describe('TemplateDetailsComponent', () => {
       'isLarge': false
     }
   ];
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ TemplateDetailsComponent ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      providers: [
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            params: of(params),
+          },
+        },
+        {
+          provide: TemplateLibraryService,
+          useValue: templateLibraryServiceSpy
+        },
+        {
+          provide: PopupService,
+          useValue: popupServiceSpy
+        },
+        {
+          provide: StorageService,
+          useValue: storageServiceSpy
+        },
+        {
+          provide: Router,
+          useValue: routerSpy,
+        },
+        {
+          provide: ToastController,
+          useValue: toastSpy,
+        }
+      ]
+    })
+    .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(TemplateDetailsComponent);
+    component = fixture.componentInstance;
+    templateLibraryServiceSpy.getTemplate = jasmine.createSpy().and.returnValue(of(publicTemplate));
+    templateLibraryServiceSpy.importExperienceUrl = jasmine.createSpy().and.returnValue(of({experienceUuid: 'abc123'}));
+    templateLibraryServiceSpy.getCategories = jasmine.createSpy().and.returnValue(categories);
+    storageServiceSpy.getUser = jasmine.createSpy().and.returnValue(of({role: 'inst_admin'}));
+    popupServiceSpy.showToast = jasmine.createSpy().and.returnValue({});
+    popupServiceSpy.showAlert = jasmine.createSpy().and.returnValue({});
+    popupServiceSpy.showImportExp = jasmine.createSpy().and.returnValue({});
+    toastSpy.create = jasmine.createSpy().and.returnValue(new Promise(() => {
+      return ({present: () => {}});
+    }));
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it('should render skeleton when it is loading the template', () => {
+    component.loadingTemplate = true;
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.css('ion-skeleton-text'))).toBeTruthy();
+  });
+
+  it('should not render skeleton when it is not loading the template', () => {
+    component.loadingTemplate = false;
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.css('ion-skeleton-text'))).toBeNull();
+  });
+
+  it('should render template name', () => {
+    component.loadingTemplate = false;
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.css('.template-title')).nativeElement.innerText).toEqual(publicTemplate.name);
+  });
+
+  it('should call import experience', () => {
+    templateLibraryServiceSpy.importExperienceUrl = jasmine.createSpy().and.returnValue(of({experienceUuid: null}));
+    component.importTemplate('abc123');
+    expect(templateLibraryServiceSpy.importExperienceUrl).toHaveBeenCalledWith('abc123');
+    expect(popupServiceSpy.showToast).toHaveBeenCalledWith('Failed to create the experience!');
+  });
+
+  it('should render custom template chip when the template is not public', () => {
+    component.loadingTemplate = false;
+    fixture.detectChanges();
+    component.template.isPublic = false;
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.css('app-custom-template-chip'))).toBeTruthy();
+  });
+
+  it('should not render custom template chip when the template is public', () => {
+    component.loadingTemplate = false;
+    fixture.detectChanges();
+    component.template.isPublic = true;
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.css('app-custom-template-chip'))).toBeNull();
+  });
+
+  it('should call the confirm popup', () => {
+    component.deleteTemplate();
+    expect(popupServiceSpy.showAlert).toHaveBeenCalled();
+  });
+
+  it('canDelete() should allow admin to delete a private template', () => {
+    storageServiceSpy.getUser = jasmine.createSpy().and.returnValue({role: 'inst_admin'});
+    component.template = publicTemplate;
+    component.template.isPublic = false;
+    fixture.detectChanges();
+    expect(component.canDelete()).toEqual(true);
+  });
+
+  it('canDelete() should not allow admin to delete a public template', () => {
+    storageServiceSpy.getUser = jasmine.createSpy().and.returnValue({role: 'inst_admin'});
+    component.template = publicTemplate;
+    component.template.isPublic = true;
+    fixture.detectChanges();
+    expect(component.canDelete()).toEqual(false);
+  });
+
+  it('canDelete() should not allow a non-admin to delete a private template', () => {
+    storageServiceSpy.getUser = jasmine.createSpy().and.returnValue({role: 'author'});
+    component.template = publicTemplate;
+    component.template.isPublic = false;
+    fixture.detectChanges();
+    expect(component.canDelete()).toEqual(false);
+  });
+
+  it('canDelete() should return false when myInfo is undefined', () => {
+    storageServiceSpy.getUser = jasmine.createSpy().and.returnValue(undefined);
+    component.template = publicTemplate;
+    component.template.isPublic = false;
+    fixture.detectChanges();
+    expect(component.canDelete()).toEqual(false);
+  });
+
+  it('Calling confirmed call delete template in the template service', () => {
+    templateLibraryServiceSpy.deleteTemplate = jasmine.createSpy().and.returnValue(of({success: true, message: 'message'}));
+    component.deleteTemplateConfirm();
+    expect(templateLibraryServiceSpy.deleteTemplate).toHaveBeenCalledWith(publicTemplate.uuid);
+  });
+
+  it('A successful delete should navigate back to the templates and create a toast', () => {
+    templateLibraryServiceSpy.deleteTemplate = jasmine.createSpy().and.returnValue(of({success: true, message: 'message'}));
+    component.deleteTemplateConfirm();
+    expect(routerSpy.navigate).toHaveBeenCalledWith(['/templates']);
+    expect(toastSpy.create).toHaveBeenCalled();
+  });
+
+  it('A unsuccessful delete create a toast', () => {
+    templateLibraryServiceSpy.deleteTemplate = jasmine.createSpy().and.returnValue(of({success: false, message: 'message'}));
+    component.deleteTemplateConfirm();
+    expect(toastSpy.create).toHaveBeenCalledWith({ message: 'message', duration: 2000, position: 'top', color: 'danger' });
+  });
+
+  afterEach(() => {
+    fixture.destroy();
+  });
 
 });

@@ -581,7 +581,6 @@ export class DemoService {
           name: 'Demo Coordinator',
           contactNumber: '0123456789',
           email: 'coordinator@practera.com',
-          role: 'coordinator',
           image: './assets/demo/avatar.png',
           userHash: 'demo-hash'
         }
@@ -593,8 +592,8 @@ export class DemoService {
     return of({
       data: {
         user: {
-          name: 'Demo Coordinator',
-          email: 'coordinator@practera.com',
+          name: 'Demo Admin GraphQL',
+          email: 'admin@practera.com',
           role: 'inst_admin',
           image: './assets/demo/avatar.png',
         }

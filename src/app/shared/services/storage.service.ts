@@ -63,6 +63,10 @@ export class StorageService {
   }
 
   setUser(user: User) {
+    console.log('this.getUser()');
+    console.log(this.getUser());
+    console.log('user');
+    console.log(user);
     this.set('me', Object.assign(this.getUser(), user));
     return true;
   }
