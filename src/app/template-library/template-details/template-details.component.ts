@@ -36,7 +36,7 @@ export class TemplateDetailsComponent implements OnInit {
   ngOnInit() {
     this.authService.getMyInfo().subscribe(info => {
         this.myInfo = info.data.User;
-      });
+    });
   }
 
   fetchTemplate(templateId: string) {
@@ -78,7 +78,7 @@ export class TemplateDetailsComponent implements OnInit {
   }
 
   canDelete() {
-    return !this.template.isPublic && this.myInfo.role === 'admin';
+    return this.myInfo && !this.template.isPublic && this.myInfo.role === 'admin';
   }
 
 }

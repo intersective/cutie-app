@@ -95,9 +95,7 @@ export class AuthService {
    */
   getMyInfo(): Observable<any> {
     if (environment.demo) {
-      const response = this.demo.getMyInfo();
-      this._handleMyInfo(response);
-      return of(response);
+      return this.demo.getMyInfo().pipe(map(this._handleMyInfo, this));
     }
     return this.request.get(api.me).pipe(map(this._handleMyInfo, this));
   }
