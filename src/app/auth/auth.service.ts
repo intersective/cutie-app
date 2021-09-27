@@ -135,6 +135,7 @@ export class AuthService {
     if (!res || !res.data) {
       return null;
     }
+    console.log(res);
     this.storage.setUser({
       name: res.data.user.name,
       email: res.data.user.email,
