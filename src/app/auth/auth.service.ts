@@ -136,6 +136,16 @@ export class AuthService {
       return null;
     }
     console.log(res);
+    console.log(res.data);
+    console.log(res.data.user);
+    console.log(res.data.user.name);
+    console.log(res.data.user.email);
+    console.log(res.data.user.image);
+    console.log(res.data.user.role);
+
+    console.log(this);
+    console.log(this.storage);
+    console.log(this.storage.setUser);
     this.storage.setUser({
       name: res.data.user.name,
       email: res.data.user.email,
