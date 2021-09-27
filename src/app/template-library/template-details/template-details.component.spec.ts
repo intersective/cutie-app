@@ -14,10 +14,10 @@ describe('TemplateDetailsComponent', () => {
   let component: TemplateDetailsComponent;
   let fixture: ComponentFixture<TemplateDetailsComponent>;
   const templateLibraryServiceSpy = jasmine.createSpyObj('TemplateLibraryService', ['getTemplate', 'importExperienceUrl', 'getCategories']);
-  const popupServiceSpy = jasmine.createSpyObj('PopupService', ['showToast', 'showAlert', 'showLoading']);
+  const popupServiceSpy = jasmine.createSpyObj('PopupService', ['showToast', 'showAlert', 'showLoading', 'dismissLoading']);
   const storageServiceSpy = jasmine.createSpyObj('StorageService', ['getUser']);
   const routerSpy = { navigate: jasmine.createSpy('navigate') };
-  const toastSpy = jasmine.createSpyObj('ToastController', ['create', 'present']);
+  const toastSpy = jasmine.createSpyObj('ToastController', ['showToast']);
 
   const params = {
     templateId: 'abc123'
@@ -140,11 +140,6 @@ describe('TemplateDetailsComponent', () => {
     templateLibraryServiceSpy.getCategories = jasmine.createSpy().and.returnValue(categories);
     storageServiceSpy.getUser = jasmine.createSpy().and.returnValue(of({role: 'inst_admin'}));
     popupServiceSpy.showToast = jasmine.createSpy().and.returnValue({});
-    popupServiceSpy.showAlert = jasmine.createSpy().and.returnValue({});
-    popupServiceSpy.showImportExp = jasmine.createSpy().and.returnValue({});
-    toastSpy.create = jasmine.createSpy().and.returnValue(new Promise(() => {
-      return ({present: () => {}});
-    }));
     fixture.detectChanges();
   });
 
@@ -238,15 +233,19 @@ describe('TemplateDetailsComponent', () => {
 
   it('A successful delete should navigate back to the templates and create a toast', () => {
     templateLibraryServiceSpy.deleteTemplate = jasmine.createSpy().and.returnValue(of({success: true, message: 'message'}));
+    component.template = publicTemplate;
+    fixture.detectChanges();
     component.deleteTemplateConfirm();
     expect(routerSpy.navigate).toHaveBeenCalledWith(['/templates']);
-    expect(toastSpy.create).toHaveBeenCalled();
+    expect(popupServiceSpy.showToast).toHaveBeenCalled();
   });
 
   it('A unsuccessful delete create a toast', () => {
     templateLibraryServiceSpy.deleteTemplate = jasmine.createSpy().and.returnValue(of({success: false, message: 'message'}));
+    component.template = publicTemplate;
+    fixture.detectChanges();
     component.deleteTemplateConfirm();
-    expect(toastSpy.create).toHaveBeenCalledWith({ message: 'message', duration: 2000, position: 'top', color: 'danger' });
+    expect(popupServiceSpy.showToast).toHaveBeenCalled();
   });
 
   afterEach(() => {
