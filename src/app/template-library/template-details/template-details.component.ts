@@ -4,8 +4,6 @@ import { Template, TemplateLibraryService } from '../template-library.service';
 import { PopupService } from '../../shared/popup/popup.service';
 import { StorageService } from '@services/storage.service';
 import { environment } from '@environments/environment';
-import {ToastController} from '@ionic/angular';
-import {ToastOptions} from '@ionic/core';
 
 @Component({
   selector: 'app-template-details',
@@ -25,7 +23,6 @@ export class TemplateDetailsComponent {
     private service: TemplateLibraryService,
     private popupService: PopupService,
     private storage: StorageService,
-    private toastController: ToastController,
     private router: Router
   ) {
     this.route.params.subscribe(params => {
@@ -90,23 +87,12 @@ export class TemplateDetailsComponent {
     this.service.deleteTemplate(this.template.uuid).subscribe(res => {
       setTimeout(() => this.popupService.dismissLoading(), 500);
       if (res.success) {
-        this.showToast('Success: "' + this.template.name + '" template deleted.', res.success);
+        this.popupService.showToast('Success: "' + this.template.name + '" template deleted.', {color: 'success'});
         this.router.navigate(['/templates']);
       } else {
-        this.showToast(res.message, res.success);
+        this.popupService.showToast(res.message);
       }
     });
-  }
-
-  async showToast(message: string, success: boolean) {
-    const toastOptions: ToastOptions = {
-      message: message,
-      duration: 2000,
-      position: 'top',
-      color: success ? 'success' : 'danger'
-    };
-    const toast = await this.toastController.create(toastOptions);
-    return toast.present();
   }
 
   canDelete() {
