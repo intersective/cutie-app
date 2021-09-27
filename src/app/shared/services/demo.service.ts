@@ -575,7 +575,7 @@ export class DemoService {
 
   // auth.service
   getMyInfo() {
-    return {
+    return of({
       data: {
         User: {
           name: 'Demo Coordinator',
@@ -586,7 +586,7 @@ export class DemoService {
           userHash: 'demo-hash'
         }
       }
-    };
+    }).pipe(delay(2000));
   }
 
   // progress-table.service
