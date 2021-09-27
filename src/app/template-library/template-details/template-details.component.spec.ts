@@ -14,7 +14,7 @@ describe('TemplateDetailsComponent', () => {
   let fixture: ComponentFixture<TemplateDetailsComponent>;
   const templateLibraryServiceSpy = jasmine.createSpyObj('TemplateLibraryService', ['getTemplate', 'importExperienceUrl', 'getCategories']);
   const popupServiceSpy = jasmine.createSpyObj('PopupService', ['showToast', 'showDeleteTemplate']);
-  const authServiceSpy = jasmine.createSpyObj('AuthService', ['getMyInfo']);
+  const authServiceSpy = jasmine.createSpyObj('AuthService', ['getMyInfoGraphQL']);
 
   const params = {
     templateId: 'abc123'
@@ -67,7 +67,7 @@ describe('TemplateDetailsComponent', () => {
     templateLibraryServiceSpy.getTemplate = jasmine.createSpy().and.returnValue(of(publicTemplate));
     templateLibraryServiceSpy.importExperienceUrl = jasmine.createSpy().and.returnValue(of({experienceUuid: 'abc123'}));
     templateLibraryServiceSpy.getCategories = jasmine.createSpy().and.returnValue(categories);
-    authServiceSpy.getMyInfo = jasmine.createSpy().and.returnValue(of({data: {User: {role: 'admin'}}}));
+    authServiceSpy.getMyInfoGraphQL = jasmine.createSpy().and.returnValue(of({data: {user: {role: 'inst_admin'}}}));
     popupServiceSpy.showToast = jasmine.createSpy().and.returnValue({});
     popupServiceSpy.showDeleteTemplate = jasmine.createSpy().and.returnValue({});
     popupServiceSpy.showImportExp = jasmine.createSpy().and.returnValue({});
@@ -124,9 +124,9 @@ describe('TemplateDetailsComponent', () => {
     expect(popupServiceSpy.showDeleteTemplate).toHaveBeenCalledWith(publicTemplate);
   });
 
-  it('should allow admin to delete a private template', () => {
+  it('canDelete() should allow admin to delete a private template', () => {
     component.myInfo = {
-      role: 'admin'
+      role: 'inst_admin'
     };
     component.template = publicTemplate;
     component.template.isPublic = false;
@@ -134,9 +134,9 @@ describe('TemplateDetailsComponent', () => {
     expect(component.canDelete()).toEqual(true);
   });
 
-  it('should not allow admin to delete a public template', () => {
+  it('canDelete() should not allow admin to delete a public template', () => {
     component.myInfo = {
-      role: 'admin'
+      role: 'inst_admin'
     };
     component.template = publicTemplate;
     component.template.isPublic = true;
@@ -144,10 +144,18 @@ describe('TemplateDetailsComponent', () => {
     expect(component.canDelete()).toEqual(false);
   });
 
-  it('should not allow a non-admin to delete a private template', () => {
+  it('canDelete() should not allow a non-admin to delete a private template', () => {
     component.myInfo = {
       role: 'author'
     };
+    component.template = publicTemplate;
+    component.template.isPublic = false;
+    fixture.detectChanges();
+    expect(component.canDelete()).toEqual(false);
+  });
+
+  it('canDelete() should return false when myInfo is undefined', () => {
+    component.myInfo = undefined;
     component.template = publicTemplate;
     component.template.isPublic = false;
     fixture.detectChanges();

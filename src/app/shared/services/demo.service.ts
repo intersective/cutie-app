@@ -589,6 +589,19 @@ export class DemoService {
     }).pipe(delay(2000));
   }
 
+  getMyInfoGraphQL() {
+    return of({
+      data: {
+        user: {
+          name: 'Demo Coordinator',
+          email: 'coordinator@practera.com',
+          role: 'inst_admin',
+          image: './assets/demo/avatar.png',
+        }
+      }
+    }).pipe(delay(2000));
+  }
+
   // progress-table.service
   getEnrolments() {
     return {

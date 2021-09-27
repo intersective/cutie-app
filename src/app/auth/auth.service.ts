@@ -8,6 +8,7 @@ import { StorageService } from '@services/storage.service';
 import { UtilsService } from '@services/utils.service';
 import { environment } from '@environments/environment';
 import { DemoService } from '@services/demo.service';
+import {Template} from '../template-library/template-library.service';
 
 
 /**
@@ -116,6 +117,29 @@ export class AuthService {
       });
     }
     return response;
+  }
+
+  getMyInfoGraphQL(): Observable<Template> {
+    if (environment.demo) {
+      return this.demo.getMyInfoGraphQL().pipe(map(this._handleMyInfoGraphQl, this));
+    }
+    return this.request.graphQLQuery(
+      `query user() {
+        user {
+          name
+          email
+          image
+          role
+        }
+      }`
+    ).pipe(map(this._handleMyInfoGraphQl));
+  }
+
+  private _handleMyInfoGraphQl(res) {
+    if (!res || !res.data) {
+      return null;
+    }
+    return res.data.user;
   }
 
   getUserEnrolmentUuid(): Observable<any> {
