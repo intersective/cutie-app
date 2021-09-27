@@ -108,12 +108,8 @@ export class AuthService {
       }
       const apiData = response.data.User;
       this.storage.setUser({
-        name: apiData.name,
         contactNumber: apiData.contact_number,
-        email: apiData.email,
-        image: apiData.image,
         userHash: apiData.userhash,
-        role: apiData.role
       });
     }
     return response;
