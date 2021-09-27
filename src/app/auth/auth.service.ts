@@ -124,7 +124,7 @@ export class AuthService {
       return this.demo.getMyInfoGraphQL().pipe(map(this._handleMyInfoGraphQl, this));
     }
     return this.request.graphQLQuery(
-      `query user() {
+      `query user {
         user {
           name
           email
