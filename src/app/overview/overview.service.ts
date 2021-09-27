@@ -254,7 +254,7 @@ export class OverviewService {
       return this.demo.exportExperience(uuid, name).pipe(map(this._handleExportExperienceResponse));
     }
     return this.request.graphQLMutate(
-      `mutation exportExperience($uuid: String!, $name: String) {
+      `mutation exportExperience($uuid: ID!, $name: String) {
         exportExperience(uuid: $uuid, name: $name) {
           success
           message
