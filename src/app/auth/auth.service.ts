@@ -128,7 +128,7 @@ export class AuthService {
           role
         }
       }`
-    ).pipe(map(this._handleMyInfoGraphQL));
+    ).pipe(map(this._handleMyInfoGraphQL, this));
   }
 
   private _handleMyInfoGraphQL(res) {
