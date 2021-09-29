@@ -124,7 +124,7 @@ export class OverviewComponent implements OnInit {
 
   private _filterByRole() {
     this.experiencesRaw.forEach((exp, index) => {
-      if (exp.role !== 'admin' && exp.role !== 'coordinator') {
+      if (!['inst_admin', 'admin', 'coordinator'].includes(exp.role)) {
         this.experiencesRaw.splice(index, 1);
       }
     });
