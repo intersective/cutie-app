@@ -132,11 +132,11 @@ export class ExperienceCardComponent {
   }
 
   canEdit() {
-    return this.experience.role === 'admin';
+    return ['inst_admin', 'admin'].includes(this.experience.role);
   }
 
   canDuplicate() {
-    return this.experience.role === 'admin';
+    return ['inst_admin', 'admin'].includes(this.experience.role);
   }
 
   canCreateTemplate() {
@@ -144,11 +144,11 @@ export class ExperienceCardComponent {
   }
 
   canArchive() {
-    return this.experience.role === 'admin' && ['draft', 'completed'].includes(this.experience.status);
+    return ['inst_admin', 'admin'].includes(this.experience.role) && ['draft', 'completed'].includes(this.experience.status);
   }
 
   canDelete() {
-    return this.experience.role === 'admin' && this.experience.status === 'draft';
+    return ['inst_admin', 'admin'].includes(this.experience.role) && this.experience.status === 'draft';
   }
 
   duplicate() {
