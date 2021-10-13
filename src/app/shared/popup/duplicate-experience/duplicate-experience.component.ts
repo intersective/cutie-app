@@ -67,7 +67,10 @@ export class DuplicateExperienceComponent {
       if (!res) {
         return;
       }
-      this.utils.broadcastEvent('create-exp', res);
+      this.utils.broadcastEvent('duplicate-exp', {
+        uuid: this.experienceUuid,
+        url: res
+      });
     });
   }
 

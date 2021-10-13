@@ -23,7 +23,7 @@ export class TemplateDetailsComponent {
     private service: TemplateLibraryService,
     private popupService: PopupService,
     private storage: StorageService,
-    private router: Router
+    private router: Router,
   ) {
     this.route.params.subscribe(params => {
       this.fetchTemplate(params.templateId);
@@ -60,7 +60,11 @@ export class TemplateDetailsComponent {
         this.popupService.showToast('Failed to create the experience!');
         return;
       }
-      this.popupService.showImportExp(`${res}&appkey=${environment.appkey}&apikey=${apikey}`);
+      this.popupService.showImportExp({
+        action: 'create',
+        uuid: this.template.uuid,
+        url: `${res}&appkey=${environment.appkey}&apikey=${apikey}`
+      });
     });
   }
 

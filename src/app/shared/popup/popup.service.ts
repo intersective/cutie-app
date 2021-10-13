@@ -164,11 +164,9 @@ export class PopupService {
    * show import experience pop up message
    * this is using import-experience.component.ts as the view
    */
-  showImportExp(url: string) {
+  showImportExp(props: { action: string, uuid: string, url: string }) {
     const component = ImportExperienceComponent;
-    const componentProps = {
-      url,
-    };
+    const componentProps = props;
     const options = {
       backdropDismiss: false,
       cssClass: 'practera-popup'

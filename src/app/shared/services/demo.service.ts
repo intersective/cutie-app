@@ -592,10 +592,15 @@ export class DemoService {
     return of({
       data: {
         user: {
+          uuid: '28b249ef-9c27-9534-93a5-80e51fd80636',
           name: 'Demo Admin GraphQL',
           email: 'admin@practera.com',
           role: 'inst_admin',
           image: './assets/demo/avatar.png',
+          institution: {
+            uuid: '2c73daa5-6ffa-529e-3f23-73f400d40226',
+            name: 'practera'
+          }
         }
       }
     }).pipe(delay(2000));
