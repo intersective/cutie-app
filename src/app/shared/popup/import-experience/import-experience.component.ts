@@ -29,6 +29,10 @@ export class ImportExperienceComponent implements OnInit {
         this.progress += 10;
         if (this.progress === 100) {
           clearInterval(interval);
+          // track this successful action in analytics
+          this.analytics.track(`${ this.action } experience`, {
+            uuid: this.uuid
+          });
           this.modalController.dismiss();
         }
       }, 500);
