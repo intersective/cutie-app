@@ -31,5 +31,6 @@ export const environment = {
     workflows: {
       virusDetection: '<CUSTOM_FILESTACK_VIRUS_DETECTION>',
     },
-  }
+  },
+  segmentKey: '<CUSTOM_SEGMENT_KEY>'
 };
