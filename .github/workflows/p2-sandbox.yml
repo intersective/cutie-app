@@ -10,7 +10,7 @@ name: Deploy to p2-sandbox environment
 on:
   workflow_dispatch:
   push:
-    branches: [ 'feature/core-4911/implement-segment' ]
+    branches: [ 'develop' ]
     
 
 ################################################
@@ -97,7 +97,6 @@ jobs:
       - name: Segment env variable substitution for index.html file
         run:  |
           npm run env-segment
-          cat src/index.html
         env:
           SEGMENT_KEY: AsLmvmyUc9LdCxFn0xqQhVz9CL2KCFc1
 
