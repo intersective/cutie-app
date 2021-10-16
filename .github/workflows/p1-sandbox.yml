@@ -89,6 +89,17 @@ jobs:
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run:  npm install
 
+
+################################################
+#  SEGMENT ENV VARIABLE SUBSTITUION - INDEX.HTML
+################################################
+      - name: Segment env variable substitution for index.html file
+        run:  |
+          npm run env-segment
+          cat src/index.html
+        env:
+          SEGMENT_KEY: AsLmvmyUc9LdCxFn0xqQhVz9CL2KCFc1
+
 ################################################
 #  AWS CLI CONFIGURATION - DEVOPS 
 ################################################ 
