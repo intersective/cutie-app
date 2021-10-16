@@ -5,7 +5,7 @@
   "homepage": "https://github.com/intersective/cutie",
   "scripts": {
     "ng": "ng",
-    "env-segment": "rm -rf ./src/index.html; mv ./src/index.deploy.html ./src/index.html; SEGMENT_KEY=${SEGMENT_KEY:-AsLmvmyUc9LdCxFn0xqQhVz9CL2KCFc1} ; sed -i 's/<SEGMENT_KEY>/$SEGMENT_KEY/g' ./src/index.html",
+    "env-segment": "rm -rf ./src/index.html; mv ./src/index.deploy.html ./src/index.html; SEGMENT_KEY=${SEGMENT_KEY:-AsLmvmyUc9LdCxFn0xqQhVz9CL2KCFc1} ; sed -i \"s/<SEGMENT_KEY>/$SEGMENT_KEY/g\" ./src/index.html",
     "start": "ng serve --port 4202",
     "dev": "npm run start",
     "build": "ng build --base-href './' && npx cap copy",
