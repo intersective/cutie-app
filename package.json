@@ -3,7 +3,7 @@
   "version": "1.9.0",
   "author": "Practera",
   "homepage": "https://github.com/intersective/cutie",
-  "localsegment":"asdsaf",
+  "localsegment":"<SEGMENT_KEY>",
   "scripts": {
     "ng": "ng",
     "start": "SEGMENT_KEY=$(jq -r .localsegment package.json); [[ ! -z \"$SEGMENT_KEY\" ]] && echo Local SEGMENT_KEY exist ||  SEGMENT_KEY='<SEGMENT_KEY>'; sed -i '' \"s/<SEGMENT_KEY>/$SEGMENT_KEY/g\" src/index.html; ng serve --port 4202",
