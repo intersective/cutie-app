@@ -97,8 +97,8 @@ jobs:
       - name: Segment env variable substitution for index.html file
         run:  |
           LOCALSEGMENT_KEY=$(jq -r .localsegment package.json)
-          sed -i '' \"s/$LOCALSEGMENT_KEY/$SEGMENT_KEY/g\" src/index.html
-          sed -i '' \"s/<SEGMENT_KEY>/$SEGMENT_KEY/g\" src/index.html
+          sed -i '' \"s/$LOCALSEGMENT_KEY/$SEGMENT_KEY/g\" "./src/index.html"
+          sed -i '' \"s/<SEGMENT_KEY>/$SEGMENT_KEY/g\" "./src/index.html"
 
           cat ./src/index.html
         env:
