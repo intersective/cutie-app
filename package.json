@@ -3,10 +3,10 @@
   "version": "1.9.0",
   "author": "Practera",
   "homepage": "https://github.com/intersective/cutie",
+  "localsegment":"AsLmvmyUc9LdCxFn0xqQhVz9CL2KCFc1",
   "scripts": {
     "ng": "ng",
-    "env-segment": "rm -rf ./src/index.html; mv ./src/index.deploy.html ./src/index.html; SEGMENT_KEY=${SEGMENT_KEY:-AsLmvmyUc9LdCxFn0xqQhVz9CL2KCFc1} ; sed -i \"s/<SEGMENT_KEY>/$SEGMENT_KEY/g\" ./src/index.html",
-    "start": "ng serve --port 4202",
+    "start": "SEGMENT_KEY=$(jq -r .localsegment package.json); [[ ! -z \"$SEGMENT_KEY\" ]] && echo Local SEGMENT_KEY exist ||  SEGMENT_KEY='<SEGMENT_KEY>'; sed -i '' \"s/<SEGMENT_KEY>/$SEGMENT_KEY/g\" src/index.html; ng serve --port 4202",
     "dev": "npm run start",
     "build": "ng build --base-href './' && npx cap copy",
     "test": "ng test --watch=false",
