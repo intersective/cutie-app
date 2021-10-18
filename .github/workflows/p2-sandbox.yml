@@ -98,9 +98,11 @@ jobs:
         run:  |
           LOCALSEGMENT_KEY=$(jq -r .localsegment package.json)
           ls -al
-          sed -i '' "s/<SEGMENT_KEY>/$SEGMENT_KEY/g" "./src/index.html" 
-          sed -i '' "s/$LOCALSEGMENT_KEY/$SEGMENT_KEY/g" "./src/index.html" 
 
+          mv ./src/index.html index.html 
+          sed -i '' "s/<SEGMENT_KEY>/$SEGMENT_KEY/g" index.html
+          sed -i '' "s/$LOCALSEGMENT_KEY/$SEGMENT_KEY/g" index.html
+          mv index.html ./src/index.html
           cat ./src/index.html
         env:
           SEGMENT_KEY: AsLmvmyUc9LdCxFn0xqQhVz9CL2KCFc1
