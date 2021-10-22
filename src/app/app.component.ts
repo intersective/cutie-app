@@ -2,10 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { UtilsService } from '@services/utils.service';
 import { StorageService } from '@services/storage.service';
 import { PusherService } from '@shared/pusher/pusher.service';
+import { analyzeAndValidateNgModules } from '@angular/compiler';
+import { AnalyticsService } from './shared/services/analytics.service';
 
 @Component({
   selector: 'app-root',
@@ -20,12 +22,25 @@ export class AppComponent implements OnInit {
     private statusBar: StatusBar,
     private storage: StorageService,
     private pusherService: PusherService,
+    private analytics: AnalyticsService,
   ) {
     this.initializeApp();
   }
 
   ngOnInit() {
     this.utils.getIpLocation();
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.analytics.page(event.url);
+        const user = this.storage.getUser();
+        if (user.uuid) {
+          this.analytics.identify(user.uuid, {
+            institutionUuid: user.institutionUuid ? user.institutionUuid : null,
+            institutionName: user.institutionName ? user.institutionName : null
+          });
+        }
+      }
+    });
     let searchParams = null;
     let queryString = '';
     if (window.location.search) {

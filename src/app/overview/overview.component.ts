@@ -94,13 +94,17 @@ export class OverviewComponent implements OnInit {
     });
 
     // when duplicateing experience, open the popup for SSE
-    this.utils.getEvent('create-exp').subscribe(event => {
+    this.utils.getEvent('duplicate-exp').subscribe(event => {
       const apikey = this.storage.getUser().apikey;
       if (!apikey) {
         this.popupService.showToast('Failed to create the experience!');
         return;
       }
-      this.popupService.showImportExp(`${event}&appkey=${environment.appkey}&apikey=${apikey}`);
+      this.popupService.showImportExp({
+        action: 'duplicate',
+        uuid: event.uuid,
+        url: `${event.url}&appkey=${environment.appkey}&apikey=${apikey}`,
+      });
     });
   }
 

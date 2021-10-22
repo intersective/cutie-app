@@ -6,6 +6,7 @@ export const BROWSER_STORAGE = new InjectionToken<Storage>('Browser Storage', {
 });
 
 export interface User {
+  uuid?: string;
   name?: string;
   apikey?: string;
   contactNumber?: string;
@@ -21,6 +22,8 @@ export interface User {
   teamId?: number;
   userHash?: string;
   enrolmentUuid?: string;
+  institutionUuid?: string;
+  institutionName?: string;
 }
 
 @Injectable({

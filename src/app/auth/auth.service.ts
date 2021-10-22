@@ -122,10 +122,15 @@ export class AuthService {
     return this.request.graphQLQuery(
       `query user {
         user {
+          uuid
           name
           email
           image
           role
+          institution {
+            uuid
+            name
+          }
         }
       }`
     ).pipe(map(this._handleMyInfoGraphQL, this));
@@ -136,10 +141,13 @@ export class AuthService {
       return null;
     }
     this.storage.setUser({
+      uuid: res.data.user.uuid,
       name: res.data.user.name,
       email: res.data.user.email,
       image: res.data.user.image,
-      role: res.data.user.role
+      role: res.data.user.role,
+      institutionUuid: res.data.user.institution.uuid,
+      institutionName: res.data.user.institution.name,
     });
     return res.data.user;
   }

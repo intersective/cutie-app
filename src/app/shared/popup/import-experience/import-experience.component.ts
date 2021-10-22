@@ -3,6 +3,7 @@ import { ModalController, ToastController } from '@ionic/angular';
 import { ToastOptions } from '@ionic/core';
 import { environment } from '@environments/environment';
 import { TemplateLibraryService } from '@app/template-library/template-library.service';
+import { AnalyticsService } from '@app/shared/services/analytics.service';
 
 @Component({
   selector: 'app-import-experience',
@@ -10,12 +11,15 @@ import { TemplateLibraryService } from '@app/template-library/template-library.s
   styleUrls: ['import-experience.component.scss']
 })
 export class ImportExperienceComponent implements OnInit {
+  action: string;
+  uuid: string;
   url: string;
   progress = 0;
   constructor(
     private modalController: ModalController,
     private toastController: ToastController,
-    private service: TemplateLibraryService
+    private service: TemplateLibraryService,
+    private analytics: AnalyticsService,
   ) { }
 
   ngOnInit() {
@@ -25,6 +29,10 @@ export class ImportExperienceComponent implements OnInit {
         this.progress += 10;
         if (this.progress === 100) {
           clearInterval(interval);
+          // track this successful action in analytics
+          this.analytics.track(`${ this.action } experience`, {
+            uuid: this.uuid
+          });
           this.modalController.dismiss();
         }
       }, 500);
@@ -39,6 +47,10 @@ export class ImportExperienceComponent implements OnInit {
             return;
           }
           if (data.redirect) {
+            // track this successful action in analytics
+            this.analytics.track(`${ this.action } experience`, {
+              uuid: this.uuid
+            });
             window.top.location.href = data.redirect;
           }
         },
