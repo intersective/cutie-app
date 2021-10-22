@@ -35,6 +35,7 @@ export class AppComponent implements OnInit {
         const user = this.storage.getUser();
         if (user.uuid) {
           this.analytics.identify(user.uuid, {
+            role: user.role ? user.role : null,
             institutionUuid: user.institutionUuid ? user.institutionUuid : null,
             institutionName: user.institutionName ? user.institutionName : null
           });
