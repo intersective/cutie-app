@@ -11,14 +11,23 @@ export class AnalyticsService {
   constructor() {}
 
   page(name: string, properties?: any) {
+    if (!window.analytics) {
+      return;
+    }
     window.analytics.page('CUTIE', name, properties);
   }
 
   identify(id: string, properties?: any) {
+    if (!window.analytics) {
+      return;
+    }
     window.analytics.identify(id, properties);
   }
 
   track(name: string, properties?: any) {
+    if (!window.analytics) {
+      return;
+    }
     window.analytics.track(name, properties);
   }
 }
