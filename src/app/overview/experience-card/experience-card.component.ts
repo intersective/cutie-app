@@ -147,6 +147,10 @@ export class ExperienceCardComponent {
     return ['inst_admin', 'admin'].includes(this.experience.role) && ['draft', 'completed'].includes(this.experience.status);
   }
 
+  canUnarchive() {
+    return ['inst_admin', 'admin'].includes(this.experience.role) && this.experience.status === 'archived';
+  }
+
   canDelete() {
     return ['inst_admin', 'admin'].includes(this.experience.role) && this.experience.status === 'draft';
   }
@@ -184,8 +188,26 @@ export class ExperienceCardComponent {
   }
 
   archive() {
+    this.update('archive');
+  }
+
+  unarchive() {
+    this.update('unarchive');
+  }
+
+  update(action: 'archive' | 'unarchive') {
+    const terms = {
+      archive: {
+        action: 'Archiving',
+        status: 'archived'
+      },
+      unarchive: {
+        action: 'Unarchiving',
+        status: 'unarchived'
+      }
+    };
     this.popupService.showAlert({
-      message: 'Are you sure you want to archive this experience?',
+      message: `Are you sure you want to ${ action } this experience?`,
       buttons: [
         {
           text: 'Cancel',
@@ -195,9 +217,9 @@ export class ExperienceCardComponent {
           text: 'OK',
           handler: () => {
             this.popupService.showLoading({
-              message: 'Archiving the experience'
+              message: `${ terms[action].action } the experience`
             });
-            this.service.archiveExperience(this.experience).subscribe(res => {
+            this.service.updateExperience(this.experience, terms[action].status).subscribe(res => {
               this.utils.broadcastEvent('exps-reload', {});
               setTimeout(() => this.popupService.dismissLoading(), 500);
             });

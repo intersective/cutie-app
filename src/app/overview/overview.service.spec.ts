@@ -7,7 +7,7 @@ import { DemoService } from '@services/demo.service';
 
 describe('OverviewService', () => {
   let service: OverviewService;
-  const demoService = jasmine.createSpyObj('DemoService', ['getExperiences', 'getExpsStatistics', 'deleteExperience', 'archiveExperience', 'duplicateExperienceUrl']);
+  const demoService = jasmine.createSpyObj('DemoService', ['getExperiences', 'getExpsStatistics', 'deleteExperience', 'updateExperience', 'duplicateExperienceUrl']);
   const requestService = jasmine.createSpyObj('RequestService', ['graphQLQuery', 'graphQLMutate', 'post']);
 
   beforeEach(() => {
@@ -192,14 +192,14 @@ describe('OverviewService', () => {
     });
   });
 
-  describe('for archiveExperience', () => {
+  describe('for updateExperience', () => {
     let result;
     afterEach(() => {
-      service.archiveExperience(exp).subscribe(res => expect(res).toEqual(result));
+      service.updateExperience(exp, 'archived').subscribe(res => expect(res).toEqual(result));
     });
     it('demo resopnse', () => {
       environment.demo = true;
-      demoService.archiveExperience = jasmine.createSpy().and.returnValue(of({
+      demoService.updateExperience = jasmine.createSpy().and.returnValue(of({
         data: {
           success: false
         }
