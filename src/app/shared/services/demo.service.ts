@@ -489,6 +489,49 @@ export class DemoService {
         onTrackRatio: -1,
         lastUpdated: 1612493090322
       }
+    },
+    {
+      uuid: '84f14db9-491a-09f7-ae61-9926f3ad8c8c',
+      name: 'GROW 2020 archived',
+      description: `Practera is the leading platform to power high quality experiential learning programs.<br/><br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services<br/><br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services<br/><br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services<br/><br/>Deliver experiential learning programs at larger scale and lower cost<br/>Customisable platform to author, launch & manage programs<br/>Connect students to industry projects, internships & experiences<br/>Expert course design, configuration and deployment services`,
+      type: 'team project',
+      status: 'archived',
+      role: 'admin',
+      setupStep: 'visuals',
+      leadImage: '',
+      color: '',
+      todoItemCount: 0,
+      tags: [{
+        name: 'apple'
+      },
+      {
+        name: 'watermelon'
+      }],
+      statistics: {
+        enrolledUserCount: {
+          admin: 0,
+          coordinator: 0,
+          mentor: 1,
+          participant: 21
+        },
+        registeredUserCount: {
+          admin: 0,
+          coordinator: 0,
+          mentor: 1,
+          participant: 21
+        },
+        activeUserCount: {
+          admin: 0,
+          coordinator: 0,
+          mentor: 0,
+          participant: 0
+        },
+        feedbackLoopStarted: 120,
+        feedbackLoopCompleted: 56,
+        reviewRatingAvg: 0.76,
+        onTrackRatio: -1,
+        lastUpdated: 1612493090322
+      }
     }
   ];
 
@@ -1182,8 +1225,8 @@ export class DemoService {
     }).pipe(delay(1000));
   }
 
-  archiveExperience(experience) {
-    console.log('archive experience:', experience.uuid);
+  updateExperience(experience, status) {
+    console.log('update experience:', experience.uuid, status);
     return of({}).pipe(delay(1000));
   }
 

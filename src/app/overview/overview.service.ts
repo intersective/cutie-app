@@ -231,9 +231,9 @@ export class OverviewService {
     return res.data.duplicateExperienceUrl;
   }
 
-  archiveExperience(experience) {
+  updateExperience(experience, status: string) {
     if (environment.demo) {
-      return this.demo.archiveExperience(experience);
+      return this.demo.updateExperience(experience, status);
     }
     return this.request.graphQLMutate(
       `mutation updateExperience($uuid: String!, $status: String) {
@@ -244,7 +244,7 @@ export class OverviewService {
       }`,
       {
         uuid: experience.uuid,
-        status: 'archived',
+        status,
       }
     );
   }
