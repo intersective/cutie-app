@@ -84,11 +84,9 @@
           <ng-container *ngIf="experience.status === 'draft'">
             <!-- <a class="btn btn-link">Resume building</a> -->
           </ng-container>
-          <ng-container *ngIf="experience.status !== 'archived'">
-            <button class="btn btn-link shadow-none" type="button" [id]="'option-' + experience.uuid" data-bs-toggle="dropdown"  aria-expanded="false">
-              <ion-icon name="ellipsis-horizontal"></ion-icon>
-            </button>
-          </ng-container>
+          <button class="btn btn-link shadow-none" type="button" [id]="'option-' + experience.uuid" data-bs-toggle="dropdown"  aria-expanded="false">
+            <ion-icon name="ellipsis-horizontal"></ion-icon>
+          </button>
           <ul class="dropdown-menu" [attr.aria-labelledby]="'option-' + experience.uuid">
             <li *ngIf="canEdit()">
               <a class="dropdown-item" (click)="edit()">
@@ -110,11 +108,16 @@
                 <ion-icon name="copy-outline"></ion-icon><span class="ms-2">Create template</span>
               </a>
             </li>
-            <ng-container *ngIf="canDelete() || canArchive()">
+            <ng-container *ngIf="canDelete() || canArchive() || canUnarchive()">
               <li><hr class="dropdown-divider"></li>
               <li *ngIf="canArchive()">
                 <a class="dropdown-item" (click)="archive()">
                   <ion-icon name="archive"></ion-icon><span class="ms-2">Archive</span>
+                </a>
+              </li>
+              <li *ngIf="canUnarchive()">
+                <a class="dropdown-item" (click)="unarchive()">
+                  <ion-icon name="file-tray"></ion-icon><span class="ms-2">Unarchive</span>
                 </a>
               </li>
               <li *ngIf="canDelete()">
