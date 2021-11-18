@@ -152,7 +152,7 @@ export class ExperienceCardComponent {
   }
 
   canDelete() {
-    return ['inst_admin', 'admin'].includes(this.experience.role) && this.experience.status === 'draft';
+    return ['inst_admin', 'admin'].includes(this.experience.role) && this.experience.status === 'draft' && !this.experience.isLast;
   }
 
   duplicate() {
