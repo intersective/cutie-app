@@ -29,6 +29,7 @@ export interface Experience {
   todoItemCount: number;
   statistics: Statistics;
   role: Role;
+  isLast: boolean;
 }
 
 export type Role = 'sysadmin' | 'inst_admin' | 'admin' | 'coordinator' | 'mentor' | 'participant';
@@ -85,6 +86,7 @@ export class OverviewService {
           status
           setupStep
           role
+          isLast
           tags{
             name
           }
