@@ -1,0 +1,21 @@
+<app-onboarding-header
+  title="What type of experience do you need?"
+  subtitle="Select the experience type that fits your needs."
+></app-onboarding-header>
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let item of items; let i = index" lines="none">
+      <ion-card (click)="navigate(i)">
+        <ion-card-content>
+          <h1>{{ item.title }}</h1>
+          <p>{{ item.description }}</p>
+        </ion-card-content>
+      </ion-card>
+    </ion-item>
+    <ion-item lines="none">
+      <ion-card>
+        <ion-card-content>Other</ion-card-content>
+      </ion-card>
+    </ion-item>
+  </ion-list>
+</ion-content>
