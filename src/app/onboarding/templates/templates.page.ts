@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { OnboardingService, Template } from '../onboarding.service';
 
 @Component({
   selector: 'app-templates',
@@ -6,9 +7,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./templates.page.scss'],
 })
 export class TemplatesPage implements OnInit {
+  templates: [Template];
+  constructor(private service: OnboardingService) { }
 
-  constructor() { }
+  ngOnInit() {
+    this.service.getTemplates().subscribe(res => {
+      this.templates = res;
+    });
+  }
 
-  ngOnInit() {}
-
+  customExperience() {
+    console.log('custom exp');
+  }
 }

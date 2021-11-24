@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -11,6 +11,8 @@ export class OnboardingHeaderComponent {
   @Input() subtitle: string;
   @Input() icon: string;
   @Input() back: [string];
+  @Input() button: string;
+  @Output() action = new EventEmitter();
 
   constructor(private router: Router) { }
 

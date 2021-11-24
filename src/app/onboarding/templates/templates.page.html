@@ -3,16 +3,23 @@
   title="Industry Project Experience templates"
   subtitle="Select one experience from the templates or create your own."
   [back]="['onboarding', 'details', 'industryProject']"
+  button="Create Custom Experience"
+  (action)="customExperience()"
 ></app-onboarding-header>
 <ion-content>
-  <!-- <ng-container *ngFor="let question of questions">
-    <ion-label>{{ question.title }}</ion-label>
-    <ion-segment (ionChange)="question.answer = $event.detail.value">
-      <ion-segment-button *ngFor="let option of question.options" [value]="option">
-        <ion-label>{{ option }}</ion-label>
-      </ion-segment-button>
-    </ion-segment>
-  </ng-container> -->
+  <ion-grid>
+    <ion-row>
+      <ion-col *ngFor="let template of templates" size="12" size-md="4" size-lg="3">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>{{ template.name }}</ion-card-title>
+            <p class="ion-text-medium">{{ template.abstract }}</p>
+          </ion-card-header>
+        </ion-card>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
 </ion-content>
 <app-onboarding-footer cancelOnly="true"></app-onboarding-footer>

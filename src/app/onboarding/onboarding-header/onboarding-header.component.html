@@ -2,4 +2,5 @@
   <ion-button *ngIf="back" fill="clear" (click)="goBack()"><ion-icon name="arrow-back-outline"></ion-icon></ion-button>
   <ion-title>{{ title }}</ion-title>
   <p>{{ subtitle }}</p>
+  <ion-button *ngIf="button" class="ion-float-right" (click)="action.emit()">{{ button }}</ion-button>
 </ion-item>

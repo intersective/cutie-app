@@ -582,6 +582,39 @@ export class DemoService {
     }
   ];
 
+  onboardingTemplates = [
+    {
+      uuid: '1-1',
+      name: 'Business Opportunities Scan',
+      abstract: 'Finance is widely seen as an obstacle to a better world. Principles of Sustainable Finance explains how the finacial sector can be mobilezed to counter this.',
+      leadImageUrl: ''
+    },
+    {
+      uuid: '1-2',
+      name: 'Growth & New Market Entry',
+      abstract: 'Process when the business started may not be effective or even relevant anymore.',
+      leadImageUrl: ''
+    },
+    {
+      uuid: '1-3',
+      name: 'Social Media Strategy',
+      abstract: 'Change happens all the time and in being able to identify factors involved in change and preparing to manage change you increase your chances for success.',
+      leadImageUrl: ''
+    },
+    {
+      uuid: '1-4',
+      name: 'Sustainable Impact',
+      abstract: 'Engage in hands-on case studies in real business contexts: examples include predicting and forecasting events, statistical customer segmentation...',
+      leadImageUrl: ''
+    },
+    {
+      uuid: '1-5',
+      name: 'Funding Sources',
+      abstract: 'Get the tools you need to analyze, evaluate and recommend specific actions organizations can take to grow their value and avoid common growth pitfalls.',
+      leadImageUrl: ''
+    }
+  ];
+
   constructor(
     private utils: UtilsService,
     private storage: StorageService
@@ -1247,6 +1280,14 @@ export class DemoService {
             }
           }
         }))
+      }
+    }).pipe(delay(1000));
+  }
+
+  getOnboardingTemplates() {
+    return of({
+      data: {
+        onboardingTemplates: this.onboardingTemplates
       }
     }).pipe(delay(1000));
   }
