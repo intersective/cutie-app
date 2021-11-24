@@ -1,3 +1,18 @@
-<p>
-  templates works!
-</p>
+<app-onboarding-steps step=2 total=4></app-onboarding-steps>
+<app-onboarding-header
+  title="Industry Project Experience templates"
+  subtitle="Select one experience from the templates or create your own."
+  [back]="['onboarding', 'details', 'industryProject']"
+></app-onboarding-header>
+<ion-content>
+  <!-- <ng-container *ngFor="let question of questions">
+    <ion-label>{{ question.title }}</ion-label>
+    <ion-segment (ionChange)="question.answer = $event.detail.value">
+      <ion-segment-button *ngFor="let option of question.options" [value]="option">
+        <ion-label>{{ option }}</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ng-container> -->
+
+</ion-content>
+<app-onboarding-footer cancelOnly="true"></app-onboarding-footer>

@@ -11,6 +11,7 @@ import { TemplatePage } from './template/template.page';
 import { TemplatesPage } from './templates/templates.page';
 import { OnboardingHeaderComponent } from './onboarding-header/onboarding-header.component';
 import { OnboardingStepsComponent } from './onboarding-steps/onboarding-steps.component';
+import { OnboardingFooterComponent } from './onboarding-footer/onboarding-footer.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { OnboardingStepsComponent } from './onboarding-steps/onboarding-steps.co
     TemplatePage,
     TemplatesPage,
     OnboardingHeaderComponent,
-    OnboardingStepsComponent
+    OnboardingStepsComponent,
+    OnboardingFooterComponent
   ],
   imports: [
     CommonModule,

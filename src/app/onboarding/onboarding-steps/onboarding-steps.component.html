@@ -1,3 +1,6 @@
-<p>
-  onboarding-steps works!
-</p>
+<ion-item>
+  <ng-container *ngFor="let s of steps; let i = index">
+    <ion-badge [color]="i + 1 <= step ? 'primary' : 'light'">{{ i + 1 }}</ion-badge>
+    <ion-label>{{ s }}</ion-label>
+  </ng-container>
+</ion-item>
