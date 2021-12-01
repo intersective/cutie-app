@@ -10,7 +10,7 @@
   <ion-grid>
     <ion-row>
       <ion-col *ngFor="let template of templates" size="12" size-md="4" size-lg="3">
-        <ion-card>
+        <ion-card (click)="templateDetail(template.uuid, template.name)">
           <ion-card-header>
             <ion-card-title>{{ template.name }}</ion-card-title>
             <p class="ion-text-medium">{{ template.abstract }}</p>
@@ -22,4 +22,4 @@
   </ion-grid>
 
 </ion-content>
-<app-onboarding-footer cancelOnly="true"></app-onboarding-footer>
+<app-action-footer cancelOnly="true"></app-action-footer>

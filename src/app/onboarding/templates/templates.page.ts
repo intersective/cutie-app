@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { OnboardingService, Template } from '../onboarding.service';
+import { PopupService } from '@shared/popup/popup.service';
 
 @Component({
   selector: 'app-templates',
@@ -8,7 +9,10 @@ import { OnboardingService, Template } from '../onboarding.service';
 })
 export class TemplatesPage implements OnInit {
   templates: [Template];
-  constructor(private service: OnboardingService) { }
+  constructor(
+    private service: OnboardingService,
+    private popupService: PopupService,
+  ) { }
 
   ngOnInit() {
     this.service.getTemplates().subscribe(res => {
@@ -18,5 +22,9 @@ export class TemplatesPage implements OnInit {
 
   customExperience() {
     console.log('custom exp');
+  }
+
+  templateDetail(uuid: string, title: string) {
+    this.popupService.showTemplateInfo(uuid, title);
   }
 }

@@ -2,16 +2,21 @@ import { Component, EventEmitter, Output, Input } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-onboarding-footer',
-  templateUrl: './onboarding-footer.component.html',
-  styleUrls: ['./onboarding-footer.component.scss'],
+  selector: 'app-action-footer',
+  templateUrl: './action-footer.component.html',
+  styleUrls: ['./action-footer.component.scss'],
 })
-export class OnboardingFooterComponent {
+export class ActionFooterComponent {
   @Input() cancelOnly: boolean;
+  @Input() hasCancelEvent: boolean;
   @Output() submit = new EventEmitter();
+  @Output() cancel = new EventEmitter();
   constructor(private router: Router) { }
 
   cancelEvent() {
+    if (this.hasCancelEvent) {
+      return this.cancel.emit();
+    }
     this.router.navigate(['onboarding']);
   }
 

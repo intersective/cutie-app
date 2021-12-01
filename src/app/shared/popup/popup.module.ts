@@ -7,6 +7,7 @@ import { TagsComponent } from './tags/tags.component';
 import { TagsViewComponent } from './tags-view/tags-view.component';
 import { DuplicateExperienceComponent } from './duplicate-experience/duplicate-experience.component';
 import { CreateTemplateComponent } from './create-template/create-template.component';
+import { TemplateInfoComponent } from './template-info/template-info.component';
 
 @NgModule({
   imports: [
@@ -22,6 +23,7 @@ import { CreateTemplateComponent } from './create-template/create-template.compo
     TagsViewComponent,
     DuplicateExperienceComponent,
     CreateTemplateComponent,
+    TemplateInfoComponent,
   ],
   exports: [
     DescriptionComponent,
@@ -29,6 +31,7 @@ import { CreateTemplateComponent } from './create-template/create-template.compo
     TagsViewComponent,
     DuplicateExperienceComponent,
     CreateTemplateComponent,
+    TemplateInfoComponent,
   ],
   entryComponents: [
     DescriptionComponent,
@@ -36,6 +39,7 @@ import { CreateTemplateComponent } from './create-template/create-template.compo
     TagsViewComponent,
     DuplicateExperienceComponent,
     CreateTemplateComponent,
+    TemplateInfoComponent,
   ]
 })
 

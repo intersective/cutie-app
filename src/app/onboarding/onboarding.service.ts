@@ -11,6 +11,20 @@ export interface Template {
   name: string;
   abstract: string;
   leadImageUrl: string;
+  description?: string;
+  level?: string;
+  time?: string;
+  projects?: [{
+    duration: string;
+    activities: [{
+      name: string;
+      tasks: [{
+        name: string;
+        type: string;
+      }]
+    }],
+    briefsCount?: number;
+  }];
 }
 
 @Injectable({
@@ -31,5 +45,18 @@ export class OnboardingService {
       return [];
     }
     return res.data.onboardingTemplates;
+  }
+
+  getTemplateDetail(uuid: string): Observable<Template> {
+    if (environment.demo) {
+      return this.demo.getOnboardingTemplateDetail().pipe(map(this._handleOnBoardingTemplate));
+    }
+  }
+
+  private _handleOnBoardingTemplate(res) {
+    if (!res || !res.data || !res.data.onboardingTemplate) {
+      return null;
+    }
+    return res.data.onboardingTemplate;
   }
 }

@@ -6,13 +6,14 @@
 ></app-onboarding-header>
 <ion-content>
   <ng-container *ngFor="let question of questions">
-    <ion-label>{{ question.title }}</ion-label>
-    <ion-segment (ionChange)="question.answer = $event.detail.value">
-      <ion-segment-button *ngFor="let option of question.options" [value]="option">
-        <ion-label>{{ option }}</ion-label>
-      </ion-segment-button>
-    </ion-segment>
+    <h2>{{ question.title }}</h2>
+    <ion-button
+      *ngFor="let option of question.options"
+      [color]="question.answer === option ? 'primary' : 'light'"
+      (click)="question.answer = option"
+    >{{ option }}
+    </ion-button>
   </ng-container>
 
 </ion-content>
-<app-onboarding-footer (submit)="submit()"></app-onboarding-footer>
+<app-action-footer (submit)="submit()"></app-action-footer>

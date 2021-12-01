@@ -5,6 +5,18 @@
   }
 }
 
+.popup-w-90 {
+  .modal-wrapper {
+    width: 90%;
+  }
+}
+
+.popup-h-90 {
+  .modal-wrapper {
+    height: 90%;
+  }
+}
+
 .popover-action {
   --width: auto;
   --height: fit-content;

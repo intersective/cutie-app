@@ -9,6 +9,7 @@ import { CreateExperienceComponent } from './create-experience/create-experience
 import { DuplicateExperienceComponent } from './duplicate-experience/duplicate-experience.component';
 import { ImportExperienceComponent } from './import-experience/import-experience.component';
 import { CreateTemplateComponent } from './create-template/create-template.component';
+import { TemplateInfoComponent } from './template-info/template-info.component';
 
 export interface CustomTostOptions {
   message: string;
@@ -184,6 +185,20 @@ export class PopupService {
     const options = {
       backdropDismiss: false,
       cssClass: 'practera-popup'
+    };
+    return this.showModal(component, componentProps, options);
+  }
+
+  /**
+   * show onboarding template info pop up message
+   * this is used in the onboarding process
+   */
+   showTemplateInfo(uuid: string, title: string) {
+    const component = TemplateInfoComponent;
+    const componentProps = { uuid, title };
+    const options = {
+      backdropDismiss: false,
+      cssClass: 'practera-popup popup-w-90 popup-h-90'
     };
     return this.showModal(component, componentProps, options);
   }

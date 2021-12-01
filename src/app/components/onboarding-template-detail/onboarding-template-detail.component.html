@@ -1,0 +1,30 @@
+<ion-toolbar *ngIf="briefsCount" color="light" class="ion-text-center">
+  This experience template contains
+  <ion-badge>{{ briefsCount }}</ion-badge>
+  project briefs available for your learners
+</ion-toolbar>
+
+<ion-grid>
+  <ion-row>
+    <ion-col size="7">
+      <h2>Details</h2>
+      <dt>Level:</dt>
+      <dd>
+        <ng-container *ngIf="template">{{ template.level }}</ng-container>
+        <ion-skeleton-text *ngIf="!template" animated style="width: 50px"></ion-skeleton-text>
+      </dd>
+      <dt>Time:</dt>
+      <dd>
+        <ng-container *ngIf="template">{{ template.time }}</ng-container>
+        <ion-skeleton-text *ngIf="!template" animated style="width: 50px"></ion-skeleton-text>
+      </dd>
+      <h2>Description</h2>
+      <div *ngIf="template" [innerHTML]=[template.description]></div>
+      <ng-container *ngIf="!template">
+        <ion-skeleton-text animated style="width: 100%; height: 100px"></ion-skeleton-text>
+      </ng-container>
+    </ion-col>
+    <ion-col size="5">
+    </ion-col>
+  </ion-row>
+</ion-grid>
