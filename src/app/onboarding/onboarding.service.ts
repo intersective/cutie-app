@@ -27,6 +27,16 @@ export interface Template {
   }];
 }
 
+export interface Brief {
+  uuid: string;
+  name: string;
+  industry: string;
+  abstract: string;
+  description: string;
+  logoUrl: string;
+  websiteUrl: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -58,5 +68,18 @@ export class OnboardingService {
       return null;
     }
     return res.data.onboardingTemplate;
+  }
+
+  getBriefs(templateUuid: string, duration: string): Observable<[Brief]> {
+    if (environment.demo) {
+      return this.demo.getOnboardingBriefs().pipe(map(this._handleBriefs));
+    }
+  }
+
+  private _handleBriefs(res) {
+    if (!res || !res.data || !res.data.onboardingBriefs) {
+      return [];
+    }
+    return res.data.onboardingBriefs;
   }
 }

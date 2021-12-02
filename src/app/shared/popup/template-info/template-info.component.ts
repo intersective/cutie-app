@@ -13,6 +13,7 @@ export class TemplateInfoComponent implements OnInit {
   uuid: string;
   title: string;
   template: Template;
+  durationIndex = 0;
 
   constructor(
     private modalController: ModalController,
@@ -28,7 +29,9 @@ export class TemplateInfoComponent implements OnInit {
   }
 
   confirm() {
-
+    console.log(this.durationIndex);
+    this.modalController.dismiss();
+    this.router.navigate(['onboarding', 'pre-brief']);
   }
 
   cancel() {

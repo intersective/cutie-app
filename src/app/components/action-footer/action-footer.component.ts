@@ -9,6 +9,8 @@ import { Router } from '@angular/router';
 export class ActionFooterComponent {
   @Input() cancelOnly: boolean;
   @Input() hasCancelEvent: boolean;
+  @Input() btnSubmitText = 'continue';
+  @Input() btnSubmitDisabled;
   @Output() submit = new EventEmitter();
   @Output() cancel = new EventEmitter();
   constructor(private router: Router) { }

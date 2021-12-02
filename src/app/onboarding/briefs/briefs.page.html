@@ -1,3 +1,43 @@
-<p>
-  briefs works!
-</p>
+<app-onboarding-steps step=3 total=4></app-onboarding-steps>
+<app-onboarding-header
+  title="Select project briefs for your experience"
+  subtitle="Choose one or more project briefs to assign to your learners."
+  [back]="['onboarding', 'pre-brief']"
+></app-onboarding-header>
+<ion-content>
+  <ion-grid>
+    <ion-row *ngIf="!briefs || !briefs.length">
+      <ion-col *ngFor="let b of [1,2,3,4]" size="12" size-md="3">
+        <ion-card>
+          <ion-card-header>
+            <ion-skeleton-text animated style="height: 150px;"></ion-skeleton-text>
+            <ion-card-subtitle>
+              <ion-skeleton-text animated style="width: 10%"></ion-skeleton-text>
+            </ion-card-subtitle>
+            <ion-card-title>
+              <ion-skeleton-text animated style="width: 20%"></ion-skeleton-text>
+            </ion-card-title>
+            <p class="ion-text-medium">
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </p>
+          </ion-card-header>
+        </ion-card>
+
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="briefs && briefs.length">
+      <ion-col *ngFor="let brief of briefs" size="12" size-md="3">
+        <ion-card (click)="briefDetail(brief.uuid, brief.name)">
+          <ion-card-header>
+            <ion-card-subtitle>{{ brief.industry }}</ion-card-subtitle>
+            <ion-card-title>{{ brief.name }}</ion-card-title>
+            <p class="ion-text-medium">{{ brief.abstract }}</p>
+          </ion-card-header>
+        </ion-card>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>
+<app-action-footer (submit)="continue()" [btnSubmitDisabled]="briefsSelected.length < 1"></app-action-footer>

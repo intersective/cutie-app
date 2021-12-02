@@ -1292,17 +1292,18 @@ export class DemoService {
     }
   ];
 
+  description = `
+    <p>Business Opportunity Scan experience in which teams of learners conduct market and industry research for a real world client. ......</p>
+    <h2>Outcomes</h2>
+    <p>
+    <ol>
+      <li><span style="font-weight: bold;">Virtual Teamwork</span>. Demons...</li>
+      <li><span style="font-weight: bold;">Apply knowledge</span> to create..</li>
+      <li><span style="font-weight: bold;">Reflection &amp; Feedback</span>. Develop ...</li>
+    </ol>
+    </p>`;
   onboardingTemplate = {
-    description: `
-      <p>Business Opportunity Scan experience in which teams of learners conduct market and industry research for a real world client. ......</p>
-      <h2>Outcomes</h2>
-      <p>
-      <ol>
-        <li><span style="font-weight: bold;">Virtual Teamwork</span>. Demons...</li>
-        <li><span style="font-weight: bold;">Apply knowledge</span> to create..</li>
-        <li><span style="font-weight: bold;">Reflection &amp; Feedback</span>. Develop ...</li>
-      </ol>
-      </p>`,
+    description: this.description,
     level: 'Undergraduate',
     time: '20/25 Hours Week',
     projects: [
@@ -1409,6 +1410,44 @@ export class DemoService {
           ...this.onboardingTemplates[0],
           ...this.onboardingTemplate
         }
+      }
+    }).pipe(delay(1000));
+  }
+
+  onboardingBriefs = [
+    {
+      uuid: 'brief-1',
+      industry: 'tech',
+      name: 'Trialog',
+      abstract: 'Business Opportunity Scan experience in which teams of learners conduct market and industry research for a real world client.',
+      description: this.description,
+      logoUrl: '',
+      websiteUrl: '',
+    },
+    {
+      uuid: 'brief-2',
+      industry: 'finance',
+      name: 'Coinbase',
+      abstract: 'Business Opportunity Scan experience in which teams of learners conduct market and industry research for a real world client.',
+      description: this.description,
+      logoUrl: '',
+      websiteUrl: '',
+    },
+    {
+      uuid: 'brief-3',
+      industry: 'travel',
+      name: 'Cirrus',
+      abstract: 'Business Opportunity Scan experience in which teams of learners conduct market and industry research for a real world client.',
+      description: this.description,
+      logoUrl: '',
+      websiteUrl: '',
+    }
+  ];
+
+  getOnboardingBriefs() {
+    return of({
+      data: {
+        onboardingBriefs: this.onboardingBriefs
       }
     }).pipe(delay(1000));
   }

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { Template } from '@app/onboarding/onboarding.service';
 
 @Component({
@@ -9,7 +9,9 @@ import { Template } from '@app/onboarding/onboarding.service';
 export class OnboardingTemplateDetailComponent implements OnInit {
 
   @Input() template: Template;
+  @Output() durationChange = new EventEmitter();
   projectIndex = 0;
+  durationIndex = 0;
 
   constructor() { }
 
@@ -22,6 +24,10 @@ export class OnboardingTemplateDetailComponent implements OnInit {
       return 0;
     }
     return this.template.projects[this.projectIndex].briefsCount || 0;
+  }
+
+  changeDuration() {
+    this.durationChange.emit(this.durationIndex);
   }
 
 }
