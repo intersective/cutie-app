@@ -8,6 +8,7 @@ import { TagsViewComponent } from './tags-view/tags-view.component';
 import { DuplicateExperienceComponent } from './duplicate-experience/duplicate-experience.component';
 import { CreateTemplateComponent } from './create-template/create-template.component';
 import { TemplateInfoComponent } from './template-info/template-info.component';
+import { BriefInfoComponent } from './brief-info/brief-info.component';
 
 @NgModule({
   imports: [
@@ -24,6 +25,7 @@ import { TemplateInfoComponent } from './template-info/template-info.component';
     DuplicateExperienceComponent,
     CreateTemplateComponent,
     TemplateInfoComponent,
+    BriefInfoComponent,
   ],
   exports: [
     DescriptionComponent,
@@ -32,6 +34,7 @@ import { TemplateInfoComponent } from './template-info/template-info.component';
     DuplicateExperienceComponent,
     CreateTemplateComponent,
     TemplateInfoComponent,
+    BriefInfoComponent,
   ],
   entryComponents: [
     DescriptionComponent,
@@ -40,6 +43,7 @@ import { TemplateInfoComponent } from './template-info/template-info.component';
     DuplicateExperienceComponent,
     CreateTemplateComponent,
     TemplateInfoComponent,
+    BriefInfoComponent
   ]
 })
 

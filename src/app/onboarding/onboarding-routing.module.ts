@@ -34,7 +34,7 @@ const routes: Routes = [
     component: BriefsPage
   },
   {
-    path: 'final',
+    path: 'final/:steps',
     component: FinalPage
   }
 ];

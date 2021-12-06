@@ -557,7 +557,7 @@ export class DemoService {
       uuid: '34c3d514-b459-b9d1-05c8-2bd1f582447c',
       name: 'XCELERY 2.0',
       description: `<p>This experience is perfect if you want to run 2-week virtual programs where teams of students can work collaboratively to solve a real industry challenge e.g. for a Startup, SME or Non-profit.<br></p><p>In the Deal Book Nano Project, student teams support Startups, SME’s and NGO’s to find funding sources. Each student is expected to input 25 hours of effort across the two weeks and will work in a remote, virtual fashion with their team. </p><p><span>The Practera app is used to support learners through their experiential learning; learners will submit deliverables (Draft &amp; Final Report) for Client review, iteratively reflect on their skill development and experience, and to access supportive learning content.</span><br></p><p><br></p>`,
-      leadImageUrl: '',
+      leadImageUrl: './assets/template-library/accelerators.png',
       leadVideoUrl: '',
       type: 'Internship',
       isPublic: false
@@ -1264,31 +1264,31 @@ export class DemoService {
       uuid: '1-1',
       name: 'Business Opportunities Scan',
       abstract: 'Finance is widely seen as an obstacle to a better world. Principles of Sustainable Finance explains how the finacial sector can be mobilezed to counter this.',
-      leadImageUrl: ''
+      leadImageUrl: './assets/template-library/accelerators.png'
     },
     {
       uuid: '1-2',
       name: 'Growth & New Market Entry',
       abstract: 'Process when the business started may not be effective or even relevant anymore.',
-      leadImageUrl: ''
+      leadImageUrl: './assets/template-library/accelerators.png'
     },
     {
       uuid: '1-3',
       name: 'Social Media Strategy',
       abstract: 'Change happens all the time and in being able to identify factors involved in change and preparing to manage change you increase your chances for success.',
-      leadImageUrl: ''
+      leadImageUrl: './assets/template-library/accelerators.png'
     },
     {
       uuid: '1-4',
       name: 'Sustainable Impact',
       abstract: 'Engage in hands-on case studies in real business contexts: examples include predicting and forecasting events, statistical customer segmentation...',
-      leadImageUrl: ''
+      leadImageUrl: './assets/template-library/accelerators.png'
     },
     {
       uuid: '1-5',
       name: 'Funding Sources',
       abstract: 'Get the tools you need to analyze, evaluate and recommend specific actions organizations can take to grow their value and avoid common growth pitfalls.',
-      leadImageUrl: ''
+      leadImageUrl: './assets/template-library/accelerators.png'
     }
   ];
 
@@ -1421,7 +1421,7 @@ export class DemoService {
       name: 'Trialog',
       abstract: 'Business Opportunity Scan experience in which teams of learners conduct market and industry research for a real world client.',
       description: this.description,
-      logoUrl: '',
+      logoUrl: './assets/logo.svg',
       websiteUrl: '',
     },
     {
@@ -1430,7 +1430,7 @@ export class DemoService {
       name: 'Coinbase',
       abstract: 'Business Opportunity Scan experience in which teams of learners conduct market and industry research for a real world client.',
       description: this.description,
-      logoUrl: '',
+      logoUrl: './assets/logo.svg',
       websiteUrl: '',
     },
     {
@@ -1439,7 +1439,7 @@ export class DemoService {
       name: 'Cirrus',
       abstract: 'Business Opportunity Scan experience in which teams of learners conduct market and industry research for a real world client.',
       description: this.description,
-      logoUrl: '',
+      logoUrl: './assets/logo.svg',
       websiteUrl: '',
     }
   ];

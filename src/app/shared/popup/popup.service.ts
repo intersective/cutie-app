@@ -10,6 +10,8 @@ import { DuplicateExperienceComponent } from './duplicate-experience/duplicate-e
 import { ImportExperienceComponent } from './import-experience/import-experience.component';
 import { CreateTemplateComponent } from './create-template/create-template.component';
 import { TemplateInfoComponent } from './template-info/template-info.component';
+import { BriefInfoComponent } from './brief-info/brief-info.component';
+import { Brief } from '@app/onboarding/onboarding.service';
 
 export interface CustomTostOptions {
   message: string;
@@ -196,6 +198,20 @@ export class PopupService {
    showTemplateInfo(uuid: string, title: string) {
     const component = TemplateInfoComponent;
     const componentProps = { uuid, title };
+    const options = {
+      backdropDismiss: false,
+      cssClass: 'practera-popup popup-w-90 popup-h-90'
+    };
+    return this.showModal(component, componentProps, options);
+  }
+
+  /**
+   * show onboarding brief info pop up message
+   * this is used in the onboarding process
+   */
+   showBriefInfo(brief: Brief) {
+    const component = BriefInfoComponent;
+    const componentProps = { brief };
     const options = {
       backdropDismiss: false,
       cssClass: 'practera-popup popup-w-90 popup-h-90'

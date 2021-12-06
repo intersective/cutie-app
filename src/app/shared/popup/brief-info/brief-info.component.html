@@ -1,0 +1,23 @@
+<ion-card>
+  <ion-card-header>
+    <ion-card-title>
+      <ion-badge color="medium">Project Brief</ion-badge>
+      <ion-label>{{ brief.name }}</ion-label>
+    </ion-card-title>
+  </ion-card-header>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-md="4" class="ion-text-center">
+        <img [src]="brief.logoUrl" class="w-100 p-2">
+        <hr>
+        <a [href]="brief.websiteUrl" target="_blank" class="btn btn-outline-secondary text-center">Visit Website</a>
+      </ion-col>
+      <ion-col size="12" size-md="8">
+        <div [innerHTML]=[brief.description]></div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <app-action-footer (cancel)="cancel()" hasCancelEvent="true" (submit)="confirm()" btnSubmitText="Use Project Brief"></app-action-footer>
+</ion-card>

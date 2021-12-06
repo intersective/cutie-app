@@ -1,3 +1,23 @@
-<p>
-  final works!
-</p>
+<app-onboarding-steps [step]="steps" [total]="steps"></app-onboarding-steps>
+<app-onboarding-header
+  title="We are almost there"
+  subtitle="Create your account to build your experience."
+  [back]="steps === 4 ? ['onboarding', 'briefs'] : ['onboarding', 'template', templateType]"
+></app-onboarding-header>
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-md="3">
+        <ion-card>
+
+        </ion-card>
+
+      </ion-col>
+
+      <ion-col size="12" size-md="9">
+        What is next?
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

@@ -26,12 +26,17 @@
       </ion-col>
     </ion-row>
     <ion-row *ngIf="briefs && briefs.length">
-      <ion-col *ngFor="let brief of briefs" size="12" size-md="3">
-        <ion-card (click)="briefDetail(brief.uuid, brief.name)">
+      <ion-col *ngFor="let brief of briefs; let i = index" size="12" size-md="3">
+        <ion-card>
           <ion-card-header>
+            <input class="form-check-input float-end" type="checkbox" [(ngModel)]="briefsSelected[i]">
+            <img [src]="brief.logoUrl" class="w-100 p-2">
             <ion-card-subtitle>{{ brief.industry }}</ion-card-subtitle>
             <ion-card-title>{{ brief.name }}</ion-card-title>
             <p class="ion-text-medium">{{ brief.abstract }}</p>
+            <div class="ion-text-center">
+              <ion-button color="light" (click)="checkBrief(i)">Check Brief</ion-button>
+            </div>
           </ion-card-header>
         </ion-card>
 
@@ -40,4 +45,4 @@
   </ion-grid>
 
 </ion-content>
-<app-action-footer (submit)="continue()" [btnSubmitDisabled]="briefsSelected.length < 1"></app-action-footer>
+<app-action-footer (submit)="continue()" [btnSubmitDisabled]="btnDisabled"></app-action-footer>

@@ -12,6 +12,7 @@
       <ion-col *ngFor="let template of templates" size="12" size-md="4" size-lg="3">
         <ion-card (click)="templateDetail(template.uuid, template.name)">
           <ion-card-header>
+            <img [src]="template.leadImageUrl" class="w-100">
             <ion-card-title>{{ template.name }}</ion-card-title>
             <p class="ion-text-medium">{{ template.abstract }}</p>
           </ion-card-header>
