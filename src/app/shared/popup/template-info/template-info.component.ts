@@ -23,7 +23,7 @@ export class TemplateInfoComponent implements OnInit {
 
   ngOnInit(): void {
     this.template = null;
-    this.service.getTemplateDetail(this.uuid).subscribe(res => {
+    this.service.getTemplateDetail({ uuid: this.uuid }).subscribe(res => {
       this.template = res;
     });
   }

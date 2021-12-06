@@ -1398,18 +1398,24 @@ export class DemoService {
             ]
           }
         ],
-        briefsCount: 3,
+        briefsCount: 2,
       }
     ]
   };
 
-  getOnboardingTemplateDetail() {
+  getOnboardingTemplateDetail(type: string) {
+    const template = {
+      ...this.onboardingTemplates[0],
+      ...this.onboardingTemplate
+    };
+    if (type) {
+      template.projects.forEach((p, i) => {
+        template.projects[i].briefsCount = 0;
+      });
+    }
     return of({
       data: {
-        onboardingTemplate: {
-          ...this.onboardingTemplates[0],
-          ...this.onboardingTemplate
-        }
+        onboardingTemplate: template
       }
     }).pipe(delay(1000));
   }

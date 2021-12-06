@@ -57,9 +57,9 @@ export class OnboardingService {
     return res.data.onboardingTemplates;
   }
 
-  getTemplateDetail(uuid: string): Observable<Template> {
+  getTemplateDetail(params: { uuid?: string, type?: string }): Observable<Template> {
     if (environment.demo) {
-      return this.demo.getOnboardingTemplateDetail().pipe(map(this._handleOnBoardingTemplate));
+      return this.demo.getOnboardingTemplateDetail(params.type).pipe(map(this._handleOnBoardingTemplate));
     }
   }
 
