@@ -31,5 +31,8 @@ export const environment = {
     workflows: {
       virusDetection: '<CUSTOM_FILESTACK_VIRUS_DETECTION>',
     },
+  },
+  onboarding: {
+    finalFormId: 'CUSTOM_ONBOARDING_FINAL_FORM_ID'
   }
 };

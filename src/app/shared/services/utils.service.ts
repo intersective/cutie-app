@@ -8,6 +8,8 @@ import { StorageService } from '@services/storage.service';
 
 // @TODO: enhance Window reference later, we shouldn't refer directly to browser's window object like this
 declare var window: any;
+declare var hbspt: any;
+declare var document: any;
 
 @Injectable({
   providedIn: 'root'
@@ -244,5 +246,31 @@ export class UtilsService {
     type = type.replace(/[!@#^_.$&*%\s\-]/g,''); // tslint:disable-line
     type = type.toLowerCase();
     return type;
+  }
+
+  /**
+   * This is used to create a HubSpot form on the page
+   */
+  createHubSpotForm(
+    formOptions: { formId: string, target?: string },
+    hiddenValues?: [{ name: string; value: any }]
+  ) {
+    hbspt.forms.create({
+      region: "na1",
+      portalId: "20987346",
+      formId: formOptions.formId,
+      target: formOptions.target || "#form",
+      onFormSubmit: function($form) {
+        hiddenValues.forEach(v => {
+          document.getElementById("hs-form-iframe-0").contentDocument.querySelector(`input[name="${ v.name }"]`).value = v.value;
+        });
+      }
+    });
+    window.jQuery = window.jQuery || function(nodeOrSelector) {
+      if (typeof(nodeOrSelector) == 'string') {
+          return document.querySelector(nodeOrSelector);
+      }
+      return nodeOrSelector;
+    };
   }
 }

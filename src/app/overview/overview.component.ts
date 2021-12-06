@@ -1,19 +1,17 @@
-import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Experience, Statistics, Tag, OverviewService } from './overview.service';
 import { UtilsService } from '@services/utils.service';
 import { PopupService } from '@shared/popup/popup.service';
 import { StorageService } from '@services/storage.service';
 import { environment } from '@environments/environment';
 import * as XLSX from 'xlsx';
-declare var hbspt: any;
-declare var window: any;
-declare var document: any;
+
 @Component({
   selector: 'app-overview',
   templateUrl: './overview.component.html',
   styleUrls: ['./overview.component.scss'],
 })
-export class OverviewComponent implements OnInit, AfterViewInit {
+export class OverviewComponent implements OnInit {
   stats = [
     {
       label: 'Live experiences',
@@ -108,24 +106,6 @@ export class OverviewComponent implements OnInit, AfterViewInit {
         url: `${event.url}&appkey=${environment.appkey}&apikey=${apikey}`,
       });
     });
-  }
-
-  ngAfterViewInit() {
-    hbspt.forms.create({
-      region: "na1",
-      portalId: "20987346",
-      formId: "67a53834-ffac-4ebc-81cd-39f9e77167d8",
-      target: "#form",
-      onFormSubmit: function($form) {
-        document.getElementById("hs-form-iframe-0").contentDocument.querySelector('input[name="TICKET.content"]').value = 'This is the value of hidden field';
-      }
-    });
-    window.jQuery = window.jQuery || function(nodeOrSelector) {
-      if (typeof(nodeOrSelector) == 'string') {
-          return document.querySelector(nodeOrSelector);
-      }
-      return nodeOrSelector;
-    };
   }
 
   loadExperiences() {
