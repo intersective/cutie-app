@@ -36,7 +36,7 @@ export class AppComponent implements OnInit {
         if (user.uuid) {
           const role = user.role ? user.role : null;
           const userInfo = {
-            role: (role === 'admin' || 'inst_admin') ? 'author' : role,
+            role: ['admin', 'inst_admin'].includes(role) ? 'author' : role,
             isInstitutionAdmin: role === 'inst_admin',
             institutionUuid: user.institutionUuid ? user.institutionUuid : null,
             institutionName: user.institutionName ? user.institutionName : null
