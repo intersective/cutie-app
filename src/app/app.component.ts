@@ -40,7 +40,7 @@ export class AppComponent implements OnInit {
             isInstitutionAdmin: role === 'inst_admin',
             institutionUuid: user.institutionUuid ? user.institutionUuid : null,
             institutionName: user.institutionName ? user.institutionName : null
-          }
+          };
           this.analytics.identify(user.uuid, userInfo);
         }
       }
