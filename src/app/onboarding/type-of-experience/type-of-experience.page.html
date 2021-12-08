@@ -7,7 +7,7 @@
     <ion-item *ngFor="let item of items; let i = index" lines="none">
       <ion-card (click)="navigate(i)">
         <ion-card-content>
-          <i class="fas fa-building"></i>
+          <i class="fas {{item.icon}}"></i>
           <h1>{{ item.title }}</h1>
           <p>{{ item.description }}</p>
         </ion-card-content>
