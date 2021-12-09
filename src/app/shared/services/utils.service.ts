@@ -31,6 +31,15 @@ export class UtilsService {
     }
   }
 
+  /**
+   * isMobile
+   * @description grouping device type into 2 group (mobile/desktop) and return true if mobile, otherwise return false
+   * @example https://github.com/ionic-team/ionic/blob/master/angular/src/providers/platform.ts#L71-L115
+   */
+  isMobile() {
+    return window.innerWidth <= 576;
+  }
+
   isEmpty(value: any): boolean {
     return this.lodash.isEmpty(value);
   }
@@ -256,18 +265,18 @@ export class UtilsService {
     hiddenValues?: [{ name: string; value: any }]
   ) {
     hbspt.forms.create({
-      region: "na1",
-      portalId: "20987346",
+      region: 'na1',
+      portalId: '20987346',
       formId: formOptions.formId,
-      target: formOptions.target || "#form",
+      target: formOptions.target || '#form',
       onFormSubmit: function($form) {
         hiddenValues.forEach(v => {
-          document.getElementById("hs-form-iframe-0").contentDocument.querySelector(`input[name="${ v.name }"]`).value = v.value;
+          document.getElementById('hs-form-iframe-0').contentDocument.querySelector(`input[name="${ v.name }"]`).value = v.value;
         });
       }
     });
     window.jQuery = window.jQuery || function(nodeOrSelector) {
-      if (typeof(nodeOrSelector) == 'string') {
+      if (typeof(nodeOrSelector) === 'string') {
           return document.querySelector(nodeOrSelector);
       }
       return nodeOrSelector;

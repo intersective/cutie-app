@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { UtilsService } from '@services/utils.service';
 
 @Component({
   selector: 'app-type-of-experience',
@@ -12,42 +13,43 @@ export class TypeOfExperiencePage {
     {
       title: 'Industry Project',
       description: 'Immerse learners in real-world projects across multiple industries. Increase skills through reflections and a critical thinking framework.',
-      icon: '',
-      tags: [],
+      icon: 'fa-building',
+      tags: ['Team Based'],
       navigate: ['onboarding', 'details', 'industryProject']
     },
     {
       title: 'Internship',
       description: `Work experience guided by experts. Develop and refine skills, explore career path, gain confidence and improve learner's resume.`,
-      icon: '',
-      tags: [],
+      icon: 'fa-user-astronaut',
+      tags: ['Individual'],
       navigate: ['onboarding', 'details', 'internship']
     },
     {
       title: 'Work Simulation',
       description: 'Execute real-world simulations to immerse candidates in real scenarios. Useful experience for hiring or promotions processes.',
-      icon: '',
-      tags: [],
+      icon: 'fa-briefcase',
+      tags: ['Individual', 'Team Based'],
       navigate: ['onboarding', 'details', 'workSimulation']
     },
     {
       title: 'Mentoring',
       description: 'Tap into the existing knowledge, skills, and experience of senior or high performing employees and transfer these skills to newer or less experienced employees.',
-      icon: '',
-      tags: [],
+      icon: 'fa-hands-helping',
+      tags: ['Individual', 'Team Based'],
       navigate: ['onboarding', 'details', 'mentoring']
     },
     {
       title: 'Accelerator',
       description: 'Help learners or funders to find their product-market fit and scale their ventures. Simulate pitchs, investors meetings and networking skills.',
-      icon: '',
-      tags: [],
+      icon: 'fa-rocket',
+      tags: ['Team Based'],
       navigate: ['onboarding', 'details', 'accelerator']
     }
   ];
 
   constructor(
-    public router: Router
+    public router: Router,
+    public utils: UtilsService,
   ) {}
 
   navigate(i: number) {

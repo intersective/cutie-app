@@ -1,0 +1,22 @@
+.title-container {
+  margin: auto;
+  text-align: left;
+  width: 100%;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-top: 18px;
+  margin-bottom: 18px;
+  
+  p {
+    margin-bottom: 0;
+  }
+
+  ion-text {
+    p {
+      font-family: Roboto;
+      text-align: left;
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+  }
+}

@@ -1,0 +1,70 @@
+.exp-card {
+  box-shadow: none;
+  border: 1px solid #DFDFE8;
+  max-width: 730px;
+  min-width: 86px;
+  cursor: pointer;
+  ion-card-content {
+    .title-container {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      .title {
+        font-family: Roboto;
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 18px;
+        letter-spacing: 0em;
+        text-align: left;
+      }
+      .tag-container {
+        display: flex;
+        flex-direction: row;
+        margin-left: 18px;
+        .tag {
+          margin-left: 7px;
+          background-color: var(--practera-dark-blue-25);
+          color: black;
+          border-radius: 34px;
+          padding: 3px 10px;
+          font-family: Roboto;
+          font-weight: 700;
+          &:nth-child(1) {
+            margin-left: 0px;
+          }
+        }
+      }
+    }
+  }
+  .icon-container {
+    width: 60px;
+    height: 60px;
+    border-radius: 6px;
+    background-color: var(--Practera-light-grey-50);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    .icon {
+      color: var(--Practera-violet-100);
+      font-size: 28px;
+    }
+  }
+  &.card-other {
+    ion-card-content {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  &:hover {
+    background-color: var(--Practera-light-grey-50);
+    .icon-container {
+      background-color: white;
+    }
+  }
+
+}
