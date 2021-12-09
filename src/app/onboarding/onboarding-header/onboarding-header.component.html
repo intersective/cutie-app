@@ -1,10 +1,17 @@
 <ion-item>
   <ion-button *ngIf="back" fill="clear" (click)="goBack()"><ion-icon name="arrow-back-outline"></ion-icon></ion-button>
-  <div class="title-container">
-    <ion-text>
-      <p class="heading-6 dark-blue-100">{{ title }}</p>
-    </ion-text>
-    <p class="subtitle-2 gray-1">{{ subtitle }}</p>
+  <div class="header-container">
+    <div *ngIf="icon" class="icon-container">
+      <span class="icon">
+        <i class="fas {{icon}}"></i>
+      </span>
+    </div>
+    <div class="title-container">
+      <ion-text>
+        <p class="heading-6 dark-blue-100">{{ title }}</p>
+      </ion-text>
+      <p class="subtitle-2 gray-1">{{ subtitle }}</p>
+    </div>
   </div>
   <ion-button *ngIf="button" class="ion-float-right" (click)="action.emit()">{{ button }}</ion-button>
 </ion-item>

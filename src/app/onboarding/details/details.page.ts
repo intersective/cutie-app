@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { UtilsService } from '@services/utils.service';
 
 const generalQuestions = [
   {
@@ -63,10 +64,12 @@ const TERMS = {
 export class DetailsPage implements OnInit {
   type: string;
   questions: any;
+  projectIcon: string;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    public utils: UtilsService
   ) { }
 
   ngOnInit() {
@@ -75,6 +78,7 @@ export class DetailsPage implements OnInit {
       this.router.navigate(['onboarding']);
     }
     this.questions = TERMS[this.type].questions.map(q => ({...q, ...{ answer: '' }}));
+    this.projectIcon = this.utils.getIconForHeader(this.type);
   }
 
   get pageTitle() {

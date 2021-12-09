@@ -3,8 +3,9 @@
   [title]="pageTitle"
   subtitle="Please answer the following questions to personalize the process."
   [back]="['onboarding']"
+  [icon]="projectIcon"
 ></app-onboarding-header>
-<ion-content>
+<ion-content class="ion-padding">
   <ng-container *ngFor="let question of questions">
     <h2>{{ question.title }}</h2>
     <ion-button
