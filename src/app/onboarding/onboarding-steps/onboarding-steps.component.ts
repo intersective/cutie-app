@@ -8,7 +8,7 @@ import { Component, Input, OnInit } from '@angular/core';
 export class OnboardingStepsComponent implements OnInit {
   @Input() step: number;
   @Input() total: number;
-  steps: string[]
+  steps: string[];
   constructor() { }
 
   ngOnInit(): void {

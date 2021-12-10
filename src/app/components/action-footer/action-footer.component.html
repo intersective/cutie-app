@@ -1,4 +1,4 @@
 <ion-footer>
-  <ion-button color="light" (click)="cancelEvent()">Cancel</ion-button>
-  <ion-button *ngIf="!cancelOnly" class="ion-float-right" (click)="submitEvent()" [disabled]="btnSubmitDisabled">{{ btnSubmitText }}</ion-button>
+  <ion-button class="clear" (click)="cancelEvent()">Cancel</ion-button>
+  <ion-button *ngIf="!cancelOnly" class="ion-float-right select" (click)="submitEvent()" [disabled]="btnSubmitDisabled">{{ btnSubmitText }}</ion-button>
 </ion-footer>

@@ -1,4 +1,4 @@
-<app-onboarding-steps step=1 [total]="type === 'industryProject' ? 4 : 3"></app-onboarding-steps>
+<app-onboarding-steps *ngIf="!utils.isMobile()" step=1 [total]="type === 'industryProject' ? 4 : 3"></app-onboarding-steps>
 <app-onboarding-header
   [title]="pageTitle"
   subtitle="Please answer the following questions to personalize the process."
@@ -6,15 +6,19 @@
   [icon]="projectIcon"
 ></app-onboarding-header>
 <ion-content class="ion-padding">
-  <ng-container *ngFor="let question of questions">
-    <h2>{{ question.title }}</h2>
-    <ion-button
-      *ngFor="let option of question.options"
-      [color]="question.answer === option ? 'primary' : 'light'"
-      (click)="question.answer = option"
-    >{{ option }}
-    </ion-button>
-  </ng-container>
-
+  <div [class]="!utils.isMobile() ? 'page-content' : ''">
+    <ng-container *ngFor="let question of questions">
+      <p class="question subtitle-1 grey-100">{{ question.title }}</p>
+      <div class="answers">
+        <ion-button
+        class="answer body-2"
+        *ngFor="let option of question.options"
+        [class]="question.answer === option ? 'select' : 'clear'"
+        (click)="question.answer = option"
+      >{{ option }}
+      </ion-button>
+      </div>
+    </ng-container>
+  </div>
 </ion-content>
 <app-action-footer (submit)="submit()"></app-action-footer>
