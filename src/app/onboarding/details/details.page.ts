@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UtilsService } from '@services/utils.service';
+import { StorageService } from '@services/storage.service';
 
 const generalQuestions = [
   {
@@ -69,7 +70,8 @@ export class DetailsPage implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    public utils: UtilsService
+    public utils: UtilsService,
+    public storage: StorageService
   ) { }
 
   ngOnInit() {
@@ -86,7 +88,7 @@ export class DetailsPage implements OnInit {
   }
 
   submit() {
-    console.log('question & answers', this.questions);
+    this.storage.set('onboarding-question', this.questions);
     switch (this.type) {
       case 'industryProject':
         this.router.navigate(['onboarding', 'templates']);
