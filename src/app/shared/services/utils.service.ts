@@ -282,4 +282,24 @@ export class UtilsService {
       return nodeOrSelector;
     };
   }
+
+  /**
+   * This method will return the icon related to onboarding project type
+   * @param projectType type of the project user selected in onboarding
+   * @returns icon (string) of the project
+   */
+  getIconForHeader(projectType: string) {
+    switch (projectType) {
+      case 'industryProject':
+        return 'fa-building';
+      case 'internship':
+        return 'fa-user-astronaut';
+      case 'workSimulation':
+        return 'fa-briefcase';
+      case 'mentoring':
+        return 'fa-hands-helping';
+      case 'accelerator':
+        return 'fa-rocket';
+    }
+  }
 }

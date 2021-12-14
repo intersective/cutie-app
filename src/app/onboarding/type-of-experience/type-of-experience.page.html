@@ -17,7 +17,7 @@
               <ion-col size="8" size-sm="10">
                 <div class="title-container">
                   <h1 class="title ocean-100">{{ item.title }}</h1>
-                  <div *ngIf="!utils.isMobile()" class="tag-container">
+                  <div class="tag-container ion-hide-sm-down">
                     <p class="tag caption" *ngFor="let tag of item.tags">
                       {{ tag }}
                     </p>

@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { UtilsService } from '@services/utils.service';
 
 @Component({
   selector: 'app-type-of-experience',
@@ -49,7 +48,6 @@ export class TypeOfExperiencePage {
 
   constructor(
     public router: Router,
-    public utils: UtilsService,
   ) {}
 
   navigate(i: number) {
