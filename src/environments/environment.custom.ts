@@ -33,6 +33,6 @@ export const environment = {
     },
   },
   onboarding: {
-    finalFormId: 'CUSTOM_ONBOARDING_FINAL_FORM_ID'
+    finalFormId: '<CUSTOM_ONBOARDING_FINAL_FORM_ID>'
   }
 };
