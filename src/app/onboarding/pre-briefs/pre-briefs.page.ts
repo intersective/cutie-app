@@ -30,7 +30,7 @@ export class PreBriefsPage {
       tags: [],
       navigate: null
     },
-  ]
+  ];
 
   constructor(
     public router: Router

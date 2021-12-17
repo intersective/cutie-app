@@ -42,12 +42,26 @@ export interface Brief {
 })
 export class OnboardingService {
 
-  constructor(private demo: DemoService) { }
+  constructor(
+    private request: RequestService,
+    private demo: DemoService
+  ) { }
 
   getTemplates(): Observable<[Template]> {
     if (environment.demo) {
       return this.demo.getOnboardingTemplates().pipe(map(this._handleOnBoardingTemplates));
     }
+    return this.request.graphQLQuery(
+      `query onboardingTemplates {
+        onboardingTemplates {
+          uuid
+          name
+          abstract
+          leadImageUrl
+        }
+      }`,
+      {}
+    ).pipe(map(this._handleOnBoardingTemplates));
   }
 
   private _handleOnBoardingTemplates(res) {
@@ -61,6 +75,29 @@ export class OnboardingService {
     if (environment.demo) {
       return this.demo.getOnboardingTemplateDetail(params.type).pipe(map(this._handleOnBoardingTemplate));
     }
+    return this.request.graphQLQuery(
+      `query onboardingTemplate($uuid: ID, $type: String) {
+        onboardingTemplate(uuid: $uuid, type: $type) {
+          uuid
+          name
+          description
+          level
+          time
+          projects {
+            duration
+            briefsCount
+            activities {
+              name
+              tasks {
+                name
+                type
+              }
+            }
+          }
+        }
+      }`,
+      params
+    ).pipe(map(this._handleOnBoardingTemplate));
   }
 
   private _handleOnBoardingTemplate(res) {
@@ -74,6 +111,23 @@ export class OnboardingService {
     if (environment.demo) {
       return this.demo.getOnboardingBriefs().pipe(map(this._handleBriefs));
     }
+    return this.request.graphQLQuery(
+      `query onboardingBriefs($templateUuid: ID!, $duration: String!) {
+        onboardingBriefs(templateUuid: $templateUuid, duration: $duration) {
+          uuid
+          industry
+          name
+          abstract
+          description
+          logoUrl
+          websiteUrl
+        }
+      }`,
+      {
+        templateUuid,
+        duration
+      }
+    ).pipe(map(this._handleBriefs));
   }
 
   private _handleBriefs(res) {

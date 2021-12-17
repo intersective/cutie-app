@@ -24,7 +24,7 @@ export class TemplatePage implements OnInit {
       this.service.getTemplateDetail({ type: params.type }).subscribe(res => {
         this.template = res;
       });
-    })
+    });
   }
 
   continue() {

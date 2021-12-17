@@ -20,7 +20,7 @@ export class FinalPage implements OnInit, AfterViewInit {
     this.route.params.subscribe(params => {
       this.steps = +params.steps;
       this.templateType = params.templateType;
-    })
+    });
   }
 
   ngAfterViewInit() {
