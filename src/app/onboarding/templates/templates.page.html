@@ -1,26 +1,54 @@
-<app-onboarding-steps step=2 total=4></app-onboarding-steps>
+<app-onboarding-steps class="ion-hide-sm-down" step=2 total=4></app-onboarding-steps>
 <app-onboarding-header
   title="Industry Project Experience templates"
   subtitle="Select one experience from the templates or create your own."
   [back]="['onboarding', 'details', 'industryProject']"
   button="Create Custom Experience"
   (action)="customExperience()"
+  [icon]="projectIcon"
 ></app-onboarding-header>
-<ion-content>
-  <ion-grid>
-    <ion-row>
-      <ion-col *ngFor="let template of templates" size="12" size-md="4" size-lg="3">
-        <ion-card (click)="templateDetail(template.uuid, template.name)">
-          <ion-card-header>
-            <img [src]="template.leadImageUrl" class="w-100">
-            <ion-card-title>{{ template.name }}</ion-card-title>
-            <p class="ion-text-medium">{{ template.abstract }}</p>
-          </ion-card-header>
-        </ion-card>
+<ion-content class="ion-padding">
+  <ng-container *ngIf="templates && templates.length > 0; else emptyStatus">
+    <div [class]="!utils.isMobile() ? 'page-padding' : ''">
+      <ion-grid class="ion-no-padding">
+        <ion-row class="ion-no-padding">
+          <ion-col class="ion-no-padding ion-align-items-center ion-justify-content-center" *ngFor="let template of templates" size="12" size-md="4" size-lg="3">
+            <ion-card class="template-card" [class]="utils.isMobile() ? 'mobile' : ''" (click)="templateDetail(template.uuid, template.name)">
+              <ion-card-content>
+                <img [src]="template.leadImageUrl" class="w-100">
+                <p class="title black subtitle-1">{{ template.name }}</p>
+                <p class="description ion-text-medium">{{ template.abstract }}</p>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+          <!-- <ion-col class="ion-no-padding ion-align-items-center ion-justify-content-center" *ngFor="let template of [1,2,3,4]" size="12" size-md="4" size-lg="3">
+            <ion-card class="template-card skeleton" [class]="utils.isMobile() ? 'mobile' : ''">
+              <ion-card-content>
+                <ion-skeleton-text class="img" animated></ion-skeleton-text>
+                <ion-skeleton-text class="title" animated></ion-skeleton-text>
+                <ion-skeleton-text class="description" animated></ion-skeleton-text>
+              </ion-card-content>
+            </ion-card>
+          </ion-col> -->
+        </ion-row>
+      </ion-grid>
+    </div>
+  </ng-container>
 
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <ng-template #emptyStatus>
+    <div class="empty-status">
+      <div>
+        <div class="icon-container">
+          <span class="icon">
+            <i class="fas fa-sad-tear"></i>
+          </span>
+        </div>
+        <p class="title black">Sorry, we don’t have experience templates for <span class="high-light">“History”</span> topic yet. We are working hard to add more topics and experiences templates.</p>
+        <p class="description subtitle-1">However, you can create a custom experience, our experience is looking forward to helping you.</p>
+        <ion-button color="primary" (click)="customExperience()">Create Custom Experience</ion-button>
+      </div>
+    </div>
+  </ng-template>
 
 </ion-content>
 <app-action-footer cancelOnly="true"></app-action-footer>

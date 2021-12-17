@@ -1,0 +1,114 @@
+.template-card {
+  min-height: 198px;
+  border-radius: 6px;
+  padding: 0;
+  border: 1px solid #efeff4;
+  box-sizing: border-box;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.08);
+
+  &.mobile {
+    margin: 0 0 18px 0;
+  }
+
+  // &.skeleton {
+  //   ion-card-content {
+  //     .img {
+  //       width: 100%;
+  //       height: 130px;
+  //       border-radius: 6px;
+  //     }
+  //     .title {
+  //       margin-top: 22px;
+  //       margin-bottom: 10px;
+  //       width: 100%;
+  //       height: 14px;
+  //     }
+  //     .description {
+  //       width: 100%;
+  //       height: 14px;
+  //     }
+  //   }
+  // }
+
+  ion-card-content {
+    padding: 20px;
+    img {
+      flex: none;
+      order: 0;
+      align-self: stretch;
+      flex-grow: 0;
+      border-radius: 6px;
+    }
+    .title {
+      margin-top: 22px;
+      margin-bottom: 10px;
+      font-family: Roboto;
+      font-weight: 700;
+    }
+    .description {
+      font-family: Roboto;
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 18px;
+      letter-spacing: 0em;
+      text-align: left;
+      margin: 0;
+      height: 72px;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      text-overflow: ellipsis;
+    }
+  }
+}
+
+.page-padding {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.empty-status {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  text-align: center;
+  .icon-container {
+    margin: auto;
+    width: 146px;
+    height: 146px;
+    border-radius: 50%;
+    .icon {
+      font-size: 65px;
+    }
+  }
+  .title {
+    margin: auto;
+    max-width: 550px;
+    font-family: Roboto;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 27px;
+    letter-spacing: 0em;
+    text-align: center;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    .high-light {
+      color: var(--ion-color-primary);
+    }
+  }
+  .description {
+    margin: auto;
+    max-width: 360px;
+    font-family: Roboto;
+    font-weight: 400;
+    text-align: center;
+    margin-bottom: 40px;
+  }
+}

@@ -1281,7 +1281,7 @@ export class DemoService {
     {
       uuid: '1-4',
       name: 'Sustainable Impact',
-      abstract: 'Engage in hands-on case studies in real business contexts: examples include predicting and forecasting events, statistical customer segmentation...',
+      abstract: 'Engage in hands-on case studies in real business contexts: examples include predicting and forecasting events, statistical customer segmentation.',
       leadImageUrl: './assets/template-library/accelerators.png'
     },
     {
