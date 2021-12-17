@@ -1,7 +1,23 @@
+h1, h2, h3 {
+  font-weight: bold;
+}
+
 .practera-popup {
   .modal-wrapper {
     --background: transparent;
     --box-shadow: none;
+  }
+}
+
+.popup-w-90 {
+  .modal-wrapper {
+    width: 90%;
+  }
+}
+
+.popup-h-90 {
+  .modal-wrapper {
+    height: 90%;
   }
 }
 
@@ -98,4 +114,20 @@ ion-item.sc-ion-select-popover {
 
 .btn-round {
   border-radius: 12px;
+}
+
+// Using for Onboarding pages
+.icon-container {
+  width: 60px;
+  height: 60px;
+  border-radius: 6px;
+  background-color: var(--Practera-light-grey-50);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  .icon {
+    color: var(--Practera-violet-100);
+    font-size: 28px;
+  }
 }

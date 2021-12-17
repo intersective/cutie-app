@@ -1,0 +1,25 @@
+.badge-container {
+  .badge {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    &.grey {
+      background-color: var(--Practera-Light-Grey-100);
+    }
+    &:nth-child(1) {
+      margin-left: 52px;
+    }
+  }
+  ion-label {
+    max-width: fit-content;
+  }
+  hr {
+    margin-left: 23px;
+    width: 20px;
+    margin-right: 20px;
+  }
+}

@@ -34,11 +34,14 @@ export class AppComponent implements OnInit {
         this.analytics.page(event.url);
         const user = this.storage.getUser();
         if (user.uuid) {
-          this.analytics.identify(user.uuid, {
-            role: user.role ? user.role : null,
+          const role = user.role ? user.role : null;
+          const userInfo = {
+            role: ['admin', 'inst_admin'].includes(role) ? 'author' : role,
+            isInstitutionAdmin: role === 'inst_admin',
             institutionUuid: user.institutionUuid ? user.institutionUuid : null,
             institutionName: user.institutionName ? user.institutionName : null
-          });
+          };
+          this.analytics.identify(user.uuid, userInfo);
         }
       }
     });

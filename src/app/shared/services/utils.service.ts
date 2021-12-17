@@ -8,6 +8,7 @@ import { StorageService } from '@services/storage.service';
 
 // @TODO: enhance Window reference later, we shouldn't refer directly to browser's window object like this
 declare var window: any;
+declare var hbspt: any;
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +28,15 @@ export class UtilsService {
     } else {
       throw new Error('Lodash not available');
     }
+  }
+
+  /**
+   * isMobile
+   * @description grouping device type into 2 group (mobile/desktop) and return true if mobile, otherwise return false
+   * @example https://github.com/ionic-team/ionic/blob/master/angular/src/providers/platform.ts#L71-L115
+   */
+  isMobile() {
+    return window.innerWidth <= 576;
   }
 
   isEmpty(value: any): boolean {
@@ -244,5 +254,51 @@ export class UtilsService {
     type = type.replace(/[!@#^_.$&*%\s\-]/g,''); // tslint:disable-line
     type = type.toLowerCase();
     return type;
+  }
+
+  /**
+   * This is used to create a HubSpot form on the page
+   */
+  createHubSpotForm(
+    formOptions: { formId: string, target?: string },
+    hiddenValues?: [{ name: string; value: any }]
+  ) {
+    hbspt.forms.create({
+      region: 'na1',
+      portalId: '20987346',
+      formId: formOptions.formId,
+      target: formOptions.target || '#form',
+      onFormSubmit: function($form) {
+        hiddenValues.forEach(v => {
+          this.document.getElementById('hs-form-iframe-0').contentDocument.querySelector(`input[name="${ v.name }"]`).value = v.value;
+        });
+      }
+    });
+    window.jQuery = window.jQuery || function(nodeOrSelector) {
+      if (typeof(nodeOrSelector) === 'string') {
+          return this.document.querySelector(nodeOrSelector);
+      }
+      return nodeOrSelector;
+    };
+  }
+
+  /**
+   * This method will return the icon related to onboarding project type
+   * @param projectType type of the project user selected in onboarding
+   * @returns icon (string) of the project
+   */
+  getIconForHeader(projectType: string) {
+    switch (projectType) {
+      case 'industryProject':
+        return 'fa-building';
+      case 'internship':
+        return 'fa-user-astronaut';
+      case 'workSimulation':
+        return 'fa-briefcase';
+      case 'mentoring':
+        return 'fa-hands-helping';
+      case 'accelerator':
+        return 'fa-rocket';
+    }
   }
 }

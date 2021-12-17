@@ -13,6 +13,20 @@ describe('UtilsService', () => {
     expect(service).toBeDefined();
   });
 
+  describe('isMobile()', () => {
+    it('should return false when screensize > 576', () => {
+      spyOnProperty(window, 'innerWidth').and.returnValue(577);
+      const result = service.isMobile();
+      expect(result).toBeFalsy();
+    });
+
+    it('should return false when screensize <= 576', () => {
+      spyOnProperty(window, 'innerWidth').and.returnValue(576);
+      const result = service.isMobile();
+      expect(result).toBeTruthy();
+    });
+  });
+
   describe('Removes all special characters and spaces', () => {
     it('simple strings', () => {
       expect(service.removeAllSpecialCharactersAndToLower('internship')).toEqual('internship');

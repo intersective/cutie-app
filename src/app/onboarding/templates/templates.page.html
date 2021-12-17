@@ -1,0 +1,26 @@
+<app-onboarding-steps step=2 total=4></app-onboarding-steps>
+<app-onboarding-header
+  title="Industry Project Experience templates"
+  subtitle="Select one experience from the templates or create your own."
+  [back]="['onboarding', 'details', 'industryProject']"
+  button="Create Custom Experience"
+  (action)="customExperience()"
+></app-onboarding-header>
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col *ngFor="let template of templates" size="12" size-md="4" size-lg="3">
+        <ion-card (click)="templateDetail(template.uuid, template.name)">
+          <ion-card-header>
+            <img [src]="template.leadImageUrl" class="w-100">
+            <ion-card-title>{{ template.name }}</ion-card-title>
+            <p class="ion-text-medium">{{ template.abstract }}</p>
+          </ion-card-header>
+        </ion-card>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>
+<app-action-footer cancelOnly="true"></app-action-footer>

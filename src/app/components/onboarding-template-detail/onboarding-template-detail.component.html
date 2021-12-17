@@ -1,0 +1,57 @@
+<ion-toolbar *ngIf="briefsCount" color="light" class="ion-text-center">
+  This experience template contains
+  <ion-badge>{{ briefsCount }}</ion-badge>
+  project briefs available for your learners
+</ion-toolbar>
+
+<ion-grid>
+  <ion-row>
+
+    <ion-col size="12" size-md="7">
+      <h2>Details</h2>
+      <dt>Level:</dt>
+      <dd>
+        <ng-container *ngIf="template">{{ template.level }}</ng-container>
+        <ion-skeleton-text *ngIf="!template" animated style="width: 50px"></ion-skeleton-text>
+      </dd>
+      <dt>Time:</dt>
+      <dd>
+        <ng-container *ngIf="template">{{ template.time }}</ng-container>
+        <ion-skeleton-text *ngIf="!template" animated style="width: 50px"></ion-skeleton-text>
+      </dd>
+      <h2>Description</h2>
+      <div *ngIf="template" [innerHTML]=[template.description]></div>
+      <ng-container *ngIf="!template">
+        <ion-skeleton-text animated style="width: 100%; height: 100px"></ion-skeleton-text>
+      </ng-container>
+    </ion-col>
+
+    <ion-col size="12" size-md="5">
+      <h2>Learning Design Template</h2>
+      <ion-label>Duration</ion-label>
+
+      <select *ngIf="template" class="form-select" [(ngModel)]="durationIndex" (change)="changeDuration()">
+        <option *ngFor="let project of template.projects; let i = index" [value]="i">{{ project.duration }}</option>
+      </select>
+      <ion-skeleton-text *ngIf="!template" animated style="width: 50px"></ion-skeleton-text>
+
+      <div class="alert alert-warning mt-2" role="alert">
+        <ion-icon name="help-circle-outline" color="warning"></ion-icon>
+        <ion-label>You can modify this learning flow once the experience is created.</ion-label>
+      </div>
+
+      <ng-container *ngIf="template">
+        <ng-container *ngFor="let activity of template.projects[durationIndex].activities">
+          <ion-item lines="none" color="primary">{{ activity.name }}</ion-item>
+          <ion-item *ngFor="let task of activity.tasks" lines="none"><b class="me-2">{{ task.type }}:</b>{{ task.name }}</ion-item>
+        </ng-container>
+      </ng-container>
+
+      <ng-container *ngIf="!template">
+        <ion-item lines="none" color="primary"><ion-skeleton-text animated></ion-skeleton-text></ion-item>
+        <ion-item *ngFor="let a of [1,2,3]" lines="none"><ion-skeleton-text animated></ion-skeleton-text></ion-item>
+      </ng-container>
+
+    </ion-col>
+  </ion-row>
+</ion-grid>

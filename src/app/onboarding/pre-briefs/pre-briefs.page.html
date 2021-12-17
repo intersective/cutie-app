@@ -1,0 +1,19 @@
+<app-onboarding-steps step=3 total=4></app-onboarding-steps>
+<app-onboarding-header
+  title="Where will your project briefs be coming from?"
+  subtitle="Choose the best option to add project briefs that your learners can work on."
+  [back]="['onboarding', 'templates']"
+></app-onboarding-header>
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let item of items; let i = index" lines="none">
+      <ion-card (click)="navigate(i)">
+        <ion-card-content>
+          <h1>{{ item.title }}</h1>
+          <p>{{ item.description }}</p>
+        </ion-card-content>
+      </ion-card>
+    </ion-item>
+  </ion-list>
+</ion-content>
+<app-action-footer cancelOnly="true"></app-action-footer>
