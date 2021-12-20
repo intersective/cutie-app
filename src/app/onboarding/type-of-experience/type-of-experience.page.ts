@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { StorageService } from '@app/shared/services/storage.service';
 
 @Component({
   selector: 'app-type-of-experience',
@@ -48,9 +49,18 @@ export class TypeOfExperiencePage {
 
   constructor(
     public router: Router,
+    private route: ActivatedRoute,
+    private storage: StorageService
   ) {}
 
+  ngOnInit() {
+    this.route.params.subscribe(params => {
+      this.storage.clearOnboardingData();
+    });
+  }
+
   navigate(i: number) {
+    this.storage.setOnboardingData({ expType: this.items[i].title });
     this.router.navigate(this.items[i].navigate);
   }
 }

@@ -87,8 +87,17 @@ export class DetailsPage implements OnInit {
     return `Let’s create your ${ TERMS[this.type].name } experience`;
   }
 
+  get continueDisabled() {
+    return this.questions.find(q => !q.answer);
+  }
+
   submit() {
-    this.storage.set('onboarding-question', this.questions);
+    this.storage.setOnboardingData({
+      qna: this.questions.map(q => ({
+        question: q.title,
+        answer: q.answer,
+      }))
+    });
     switch (this.type) {
       case 'industryProject':
         this.router.navigate(['onboarding', 'templates']);
