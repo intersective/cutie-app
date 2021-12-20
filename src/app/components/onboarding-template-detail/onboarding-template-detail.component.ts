@@ -1,6 +1,8 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { Template } from '@app/onboarding/onboarding.service';
 
+import { UtilsService } from '@services/utils.service';
+
 @Component({
   selector: 'app-onboarding-template-detail',
   templateUrl: './onboarding-template-detail.component.html',
@@ -13,7 +15,7 @@ export class OnboardingTemplateDetailComponent implements OnInit {
   projectIndex = 0;
   durationIndex = 0;
 
-  constructor() { }
+  constructor(public utils: UtilsService) { }
 
   ngOnInit() {}
 
