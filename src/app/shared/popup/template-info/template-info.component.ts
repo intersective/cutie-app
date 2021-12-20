@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { OnboardingService, Template } from '@app/onboarding/onboarding.service';
 import { Router } from '@angular/router';
+import { StorageService } from '@app/shared/services/storage.service';
 
 @Component({
   selector: 'app-template-info',
@@ -18,7 +19,8 @@ export class TemplateInfoComponent implements OnInit {
   constructor(
     private modalController: ModalController,
     private service: OnboardingService,
-    private router: Router
+    private router: Router,
+    private storage: StorageService
   ) { }
 
   ngOnInit(): void {
@@ -29,7 +31,13 @@ export class TemplateInfoComponent implements OnInit {
   }
 
   confirm() {
-    console.log(this.durationIndex);
+    this.storage.setOnboardingData({
+      template: {
+        uuid: this.uuid,
+        name: this.title,
+        duration: this.template.projects[this.durationIndex].duration,
+      }
+    });
     this.modalController.dismiss();
     this.router.navigate(['onboarding', 'pre-brief']);
   }
