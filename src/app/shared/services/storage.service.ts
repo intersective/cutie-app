@@ -40,7 +40,7 @@ export interface OnboardingData {
   briefs?: {
     uuid: string;
     name: string;
-  }[]
+  }[];
 }
 
 @Injectable({

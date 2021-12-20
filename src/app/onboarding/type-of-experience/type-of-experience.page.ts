@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StorageService } from '@app/shared/services/storage.service';
 
@@ -7,7 +7,7 @@ import { StorageService } from '@app/shared/services/storage.service';
   templateUrl: './type-of-experience.page.html',
   styleUrls: ['./type-of-experience.page.scss'],
 })
-export class TypeOfExperiencePage {
+export class TypeOfExperiencePage implements OnInit {
 
   items = [
     {
