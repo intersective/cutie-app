@@ -1,57 +1,79 @@
-<ion-toolbar *ngIf="briefsCount" color="light" class="ion-text-center">
-  This experience template contains
-  <ion-badge>{{ briefsCount }}</ion-badge>
-  project briefs available for your learners
+<ion-toolbar *ngIf="briefsCount" color="light" class="ion-text-center popup-toolbar"  [class]="utils.isMobile() ? 'mobile' : ''">
+  <div class="brief-info-container">
+    This experience template contains
+    <ion-badge>{{ briefsCount }}</ion-badge>
+    project briefs available for your learners
+  </div>
 </ion-toolbar>
 
-<ion-grid>
-  <ion-row>
-
-    <ion-col size="12" size-md="7">
-      <h2>Details</h2>
-      <dt>Level:</dt>
-      <dd>
-        <ng-container *ngIf="template">{{ template.level }}</ng-container>
-        <ion-skeleton-text *ngIf="!template" animated style="width: 50px"></ion-skeleton-text>
-      </dd>
-      <dt>Time:</dt>
-      <dd>
-        <ng-container *ngIf="template">{{ template.time }}</ng-container>
-        <ion-skeleton-text *ngIf="!template" animated style="width: 50px"></ion-skeleton-text>
-      </dd>
-      <h2>Description</h2>
-      <div *ngIf="template" [innerHTML]=[template.description]></div>
-      <ng-container *ngIf="!template">
-        <ion-skeleton-text animated style="width: 100%; height: 100px"></ion-skeleton-text>
-      </ng-container>
-    </ion-col>
-
-    <ion-col size="12" size-md="5">
-      <h2>Learning Design Template</h2>
-      <ion-label>Duration</ion-label>
-
-      <select *ngIf="template" class="form-select" [(ngModel)]="durationIndex" (change)="changeDuration()">
-        <option *ngFor="let project of template.projects; let i = index" [value]="i">{{ project.duration }}</option>
-      </select>
-      <ion-skeleton-text *ngIf="!template" animated style="width: 50px"></ion-skeleton-text>
-
-      <div class="alert alert-warning mt-2" role="alert">
-        <ion-icon name="help-circle-outline" color="warning"></ion-icon>
-        <ion-label>You can modify this learning flow once the experience is created.</ion-label>
-      </div>
-
-      <ng-container *ngIf="template">
-        <ng-container *ngFor="let activity of template.projects[durationIndex].activities">
-          <ion-item lines="none" color="primary">{{ activity.name }}</ion-item>
-          <ion-item *ngFor="let task of activity.tasks" lines="none"><b class="me-2">{{ task.type }}:</b>{{ task.name }}</ion-item>
+<div class="info-container grey-100">
+  <ion-grid>
+    <ion-row>
+      <ion-col class="detail-container ion-padding-start ion-padding-end" size="12" size-md="7">
+        <h2>Details</h2>
+        <div class="level-time-container">
+          <div class="level">
+            <p>Level:</p>
+            <ng-container *ngIf="template">{{ template.level }}</ng-container>
+            <ion-skeleton-text *ngIf="!template" animated style="width: 50px"></ion-skeleton-text>
+          </div>
+          <div class="time">
+            <p>Time:</p>
+            <ng-container *ngIf="template">{{ template.time }}</ng-container>
+            <ion-skeleton-text *ngIf="!template" animated style="width: 50px"></ion-skeleton-text>
+          </div>
+        </div>
+        <h2>Description</h2>
+        <div *ngIf="template" [innerHTML]=[template.description]></div>
+        <ng-container *ngIf="!template">
+          <ion-skeleton-text animated style="width: 100%; height: 100px"></ion-skeleton-text>
         </ng-container>
-      </ng-container>
-
-      <ng-container *ngIf="!template">
-        <ion-item lines="none" color="primary"><ion-skeleton-text animated></ion-skeleton-text></ion-item>
-        <ion-item *ngFor="let a of [1,2,3]" lines="none"><ion-skeleton-text animated></ion-skeleton-text></ion-item>
-      </ng-container>
-
-    </ion-col>
-  </ion-row>
-</ion-grid>
+      </ion-col>
+      <ion-col class="LDT-container ion-padding-start ion-padding-end" size="12" size-md="5">
+        <h2>Learning Design Template</h2>
+        <ion-label class="dark-blue-75 duration-label subtitle-2">Duration</ion-label>
+  
+        <select *ngIf="template" class="form-select duration-select" [(ngModel)]="durationIndex" (change)="changeDuration()">
+          <option *ngFor="let project of template.projects; let i = index" [value]="i">{{ project.duration }}</option>
+        </select>
+        <ion-skeleton-text *ngIf="!template" animated style="width: 50px"></ion-skeleton-text>
+  
+        <div class="alert alert-warning mt-2" role="alert">
+          <div class="icon-container">
+            <span class="icon">
+              <ion-icon name="help" color="warning"></ion-icon>
+            </span>
+          </div>
+          <ion-label>You can modify this learning flow once the experience is created.</ion-label>
+        </div>
+  
+        <ng-container *ngIf="template">
+          <ng-container *ngFor="let activity of template.projects[durationIndex].activities">
+            <div class="activity-container">
+              <div class="activity-name" lines="none">{{ activity.name }}</div>
+              <div class="activity-task-container" *ngFor="let task of activity.tasks" lines="none">
+                <div class="icon-container" *ngIf="task.type">
+                  <span class="icon">
+                    <i *ngIf="task.type === 'survey'" class="fas fa-poll"></i>
+                    <i *ngIf="task.type === 'team360'" class="fas fa-users"></i>
+                    <i *ngIf="task.type === 'profile'" class="fas fa-id-badge"></i>
+                    <i *ngIf="task.type === 'assessment'" class="fas fa-clipboard-check"></i>
+                    <i *ngIf="task.type === 'quiz'" class="fas fa-glasses"></i>
+                    <i *ngIf="task.type === 'reflection'" class="fas fa-brain"></i>
+                  </span>
+                </div>
+                <b class="me-2">{{ task.type }}:</b>{{ task.name }}
+              </div>
+            </div>
+          </ng-container>
+        </ng-container>
+  
+        <ng-container *ngIf="!template">
+          <ion-item lines="none" color="primary"><ion-skeleton-text animated></ion-skeleton-text></ion-item>
+          <ion-item *ngFor="let a of [1,2,3]" lines="none"><ion-skeleton-text animated></ion-skeleton-text></ion-item>
+        </ng-container>
+  
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</div>

@@ -81,6 +81,7 @@ export class DetailsPage implements OnInit {
     }
     this.questions = TERMS[this.type].questions.map(q => ({...q, ...{ answer: '' }}));
     this.projectIcon = this.utils.getIconForHeader(this.type);
+    this.storage.set('selectedProjectIcon', this.projectIcon);
   }
 
   get pageTitle() {
