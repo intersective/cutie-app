@@ -14,6 +14,7 @@ export class TemplatesPage implements OnInit {
   templates: [Template];
   projectIcon: string;
   loading: boolean;
+  selectedTopic: string;
   constructor(
     private service: OnboardingService,
     private popupService: PopupService,
@@ -29,6 +30,7 @@ export class TemplatesPage implements OnInit {
       this.router.navigate(['onboarding']);
     }
     const attribute = onboardingData.qna[1].answer.toLowerCase();
+    this.selectedTopic = attribute;
     this.loading = true;
     this.service.getTemplates(attribute).subscribe(res => {
       this.templates = res;
