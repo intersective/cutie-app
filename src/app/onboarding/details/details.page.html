@@ -6,7 +6,7 @@
   [icon]="projectIcon"
 ></app-onboarding-header>
 <ion-content class="ion-padding">
-  <div [class]="!utils.isMobile() ? 'page-content' : ''">
+  <div [class]="!utils.isMobile() ? 'page-padding' : ''">
     <ng-container *ngFor="let question of questions">
       <p class="question subtitle-1 grey-100">{{ question.title }}</p>
       <div class="answers">
