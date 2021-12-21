@@ -47,20 +47,20 @@ export class OnboardingService {
     private demo: DemoService
   ) { }
 
-  getTemplates(): Observable<[Template]> {
+  getTemplates(attribute: string): Observable<[Template]> {
     if (environment.demo) {
       return this.demo.getOnboardingTemplates().pipe(map(this._handleOnBoardingTemplates));
     }
     return this.request.graphQLQuery(
-      `query onboardingTemplates {
-        onboardingTemplates {
+      `query onboardingTemplates($attribute: String) {
+        onboardingTemplates(attribute: $attribute) {
           uuid
           name
           abstract
           leadImageUrl
         }
       }`,
-      {}
+      { attribute }
     ).pipe(map(this._handleOnBoardingTemplates));
   }
 

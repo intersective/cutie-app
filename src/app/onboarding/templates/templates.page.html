@@ -8,38 +8,61 @@
   [icon]="projectIcon"
 ></app-onboarding-header>
 <ion-content class="ion-padding">
-  <ng-container *ngIf="templates && templates.length > 0; else emptyStatus">
-    <div [class]="!utils.isMobile() ? 'page-padding' : ''">
-      <ion-grid class="ion-no-padding">
-        <ion-row class="ion-no-padding">
-          <ion-col class="ion-no-padding ion-align-items-center ion-justify-content-center" *ngFor="let template of templates" size="12" size-md="4" size-lg="3">
-            <ion-card class="template-card" [class]="utils.isMobile() ? 'mobile' : ''" (click)="templateDetail(template.uuid, template.name)">
-              <ion-card-content>
-                <img [src]="template.leadImageUrl" class="w-100">
-                <p class="title black subtitle-1">{{ template.name }}</p>
-                <p class="description ion-text-medium">{{ template.abstract }}</p>
-              </ion-card-content>
-            </ion-card>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </div>
-  </ng-container>
+  <ion-grid *ngIf="loading">
+    <ion-row>
+      <ion-col *ngFor="let b of [1,2,3,4]" size="12" size-md="4" size-lg="3">
+        <ion-card>
+          <ion-card-header>
+            <ion-skeleton-text animated style="height: 150px;"></ion-skeleton-text>
+            <ion-card-subtitle>
+              <ion-skeleton-text animated style="width: 10%"></ion-skeleton-text>
+            </ion-card-subtitle>
+            <ion-card-title>
+              <ion-skeleton-text animated style="width: 20%"></ion-skeleton-text>
+            </ion-card-title>
+            <p class="ion-text-medium">
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </p>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
-  <ng-template #emptyStatus>
-    <div class="empty-status">
-      <div>
-        <div class="icon-container">
-          <span class="icon">
-            <i class="fas fa-sad-tear"></i>
-          </span>
-        </div>
-        <p class="title black">Sorry, we don’t have experience templates for <span class="high-light">“History”</span> topic yet. We are working hard to add more topics and experiences templates.</p>
-        <p class="description subtitle-1">However, you can create a custom experience, our experience is looking forward to helping you.</p>
-        <ion-button color="primary" (click)="customExperience()">Create Custom Experience</ion-button>
+  <ion-container *ngIf="!loading">
+    <ng-container *ngIf="templates && templates.length > 0">
+      <div [class]="!utils.isMobile() ? 'page-padding' : ''">
+        <ion-grid class="ion-no-padding">
+          <ion-row class="ion-no-padding">
+            <ion-col class="ion-no-padding ion-align-items-center ion-justify-content-center" *ngFor="let template of templates" size="12" size-md="4" size-lg="3">
+              <ion-card class="template-card" [class]="utils.isMobile() ? 'mobile' : ''" (click)="templateDetail(template.uuid, template.name)">
+                <ion-card-content>
+                  <img [src]="template.leadImageUrl" class="w-100">
+                  <p class="title black subtitle-1">{{ template.name }}</p>
+                  <p class="description ion-text-medium">{{ template.abstract }}</p>
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
       </div>
-    </div>
-  </ng-template>
+    </ng-container>
+
+    <ng-container *ngIf="!templates || templates.length === 0">
+      <div class="empty-status">
+        <div>
+          <div class="icon-container">
+            <span class="icon">
+              <i class="fas fa-sad-tear"></i>
+            </span>
+          </div>
+          <p class="title black">Sorry, we don’t have experience templates for <span class="high-light">“History”</span> topic yet. We are working hard to add more topics and experiences templates.</p>
+          <p class="description subtitle-1">However, you can create a custom experience, our experience is looking forward to helping you.</p>
+          <ion-button color="primary" (click)="customExperience()">Create Custom Experience</ion-button>
+        </div>
+      </div>
+    </ng-container>
+  </ion-container>
 
 </ion-content>
 <app-action-footer cancelOnly="true"></app-action-footer>
