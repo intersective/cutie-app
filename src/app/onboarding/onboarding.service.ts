@@ -60,7 +60,10 @@ export class OnboardingService {
           leadImageUrl
         }
       }`,
-      { attribute }
+      { attribute },
+      {
+        noCache: true
+      }
     ).pipe(map(this._handleOnBoardingTemplates));
   }
 
