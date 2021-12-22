@@ -33,6 +33,9 @@ export class TemplatesPage implements OnInit {
     this.selectedTopic = attribute;
     this.loading = true;
     this.service.getTemplates(attribute).subscribe(res => {
+      if (res === null) {
+        return null;
+      }
       this.templates = res;
       this.loading = false;
     });
