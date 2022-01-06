@@ -1,0 +1,82 @@
+.mobile-page-padding {
+  padding: 20px;
+}
+.brief-card {
+  border-radius: 6px;
+  // padding: 0;
+  border: 1px solid #efeff4;
+  box-sizing: border-box;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.08);
+  background-color: white;
+
+  &:hover {
+    background-color: white;
+    box-shadow: none;
+    border: 1px solid var(--Practera-Light-Grey-100);
+
+    .brief-card-btn {
+      visibility: visible;
+    }
+  }
+
+  &.mobile {
+    .brief-card-btn {
+      visibility: visible;
+    }
+  }
+
+  .image-container {
+    height: 91px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    flex-direction: row;
+  }
+
+  .brief-card-btn {
+    visibility: hidden;
+    --box-shadow: none;
+    --background: white;
+    --color: black;
+    text-transform: capitalize;
+    // border: 1px solid var(--Practera-Light-Grey-100);
+    --border-radius: 6px;
+    --border-width: 1px;
+    --border-color: var(--Practera-Light-Grey-100);
+    --border-style: solid;
+
+    &:hover {
+      --background: #efeff4;
+    }
+  }
+
+  .brief-industry {
+    font-family: Roboto;
+    font-weight: 400;
+    text-transform: uppercase;
+    color: var(--Practera-grey-50);
+    margin-top: 16px;
+  }
+  .brief-name {
+    font-family: Roboto;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .brief-abstract {
+    margin: 0;
+    font-family: Roboto;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 18px;
+    color: var(--Practera-grey-75);
+    height: 72px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    margin-bottom: 16px;
+  }
+}

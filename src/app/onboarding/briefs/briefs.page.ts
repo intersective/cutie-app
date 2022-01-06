@@ -13,16 +13,18 @@ import { StorageService } from '@app/shared/services/storage.service';
 export class BriefsPage implements OnInit {
   briefs: Brief[];
   briefsSelected = [];
+  projectIcon: string;
   constructor(
     private service: OnboardingService,
     private router: Router,
     private route: ActivatedRoute,
     private popup: PopupService,
-    private utils: UtilsService,
+    public utils: UtilsService,
     private storage: StorageService
   ) { }
 
   ngOnInit() {
+    this.projectIcon = this.storage.get('selectedProjectIcon');
     this.route.params.subscribe(params => {
       this.briefs = [];
       const onboardingData = this.storage.getOnboardingData();
