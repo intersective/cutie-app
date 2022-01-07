@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AnalyticsService } from '@app/shared/services/analytics.service';
 import { StorageService } from '@app/shared/services/storage.service';
 
 @Component({
@@ -50,7 +51,8 @@ export class TypeOfExperiencePage implements OnInit {
   constructor(
     public router: Router,
     private route: ActivatedRoute,
-    private storage: StorageService
+    private storage: StorageService,
+    private analytics: AnalyticsService
   ) {}
 
   ngOnInit() {
@@ -60,7 +62,16 @@ export class TypeOfExperiencePage implements OnInit {
   }
 
   navigate(i: number) {
+    this.analytics.track('[Onboarding] Experience Type Selection clicked', {
+      name: this.items[i].title
+    });
     this.storage.setOnboardingData({ expType: this.items[i].title });
     this.router.navigate(this.items[i].navigate);
+  }
+
+  other() {
+    this.analytics.track('[Onboarding] Experience Type Selection clicked', {
+      name: 'Other'
+    });
   }
 }
