@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UtilsService } from '@services/utils.service';
 import { StorageService } from '@services/storage.service';
+import { AnalyticsService } from '@app/shared/services/analytics.service';
 
 const generalQuestions = [
   {
@@ -71,7 +72,8 @@ export class DetailsPage implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     public utils: UtilsService,
-    public storage: StorageService
+    public storage: StorageService,
+    private analytics: AnalyticsService
   ) { }
 
   ngOnInit() {
@@ -93,12 +95,12 @@ export class DetailsPage implements OnInit {
   }
 
   submit() {
-    this.storage.setOnboardingData({
-      qna: this.questions.map(q => ({
-        question: q.title,
-        answer: q.answer,
-      }))
-    });
+    const qna = this.questions.map(q => ({
+      question: q.title,
+      answer: q.answer,
+    }));
+    this.storage.setOnboardingData({ qna });
+    this.analytics.track(`[Onboarding] ${ this.type } Segmentation answered`, { qna });
     switch (this.type) {
       case 'industryProject':
         this.router.navigate(['onboarding', 'templates']);

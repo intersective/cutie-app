@@ -4,6 +4,7 @@ import { PopupService } from '@shared/popup/popup.service';
 import { UtilsService } from '@services/utils.service';
 import { StorageService } from '@services/storage.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AnalyticsService } from '@app/shared/services/analytics.service';
 
 @Component({
   selector: 'app-templates',
@@ -21,7 +22,8 @@ export class TemplatesPage implements OnInit {
     public utils: UtilsService,
     public storage: StorageService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private analytics: AnalyticsService
   ) { }
 
   ngOnInit() {
@@ -45,10 +47,15 @@ export class TemplatesPage implements OnInit {
   }
 
   customExperience() {
+    this.analytics.track('[Onboarding] Industry Project custom template clicked');
     console.log('custom exp');
   }
 
   templateDetail(uuid: string, title: string) {
+    this.analytics.track('[Onboarding] Industry Project template clicked', {
+      uuid,
+      name: title
+    });
     this.popupService.showTemplateInfo(uuid, title);
   }
 }

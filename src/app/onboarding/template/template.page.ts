@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { OnboardingService, Template } from '../onboarding.service';
 
 import { StorageService } from '@services/storage.service';
+import { AnalyticsService } from '@app/shared/services/analytics.service';
 
 @Component({
   selector: 'app-template',
@@ -19,7 +20,8 @@ export class TemplatePage implements OnInit {
     private service: OnboardingService,
     private router: Router,
     private route: ActivatedRoute,
-    public storage: StorageService
+    public storage: StorageService,
+    private analytics: AnalyticsService
   ) { }
 
   ngOnInit() {
@@ -34,6 +36,12 @@ export class TemplatePage implements OnInit {
   }
 
   continue() {
+    const selectedTemplate = {
+      uuid: this.template.uuid,
+      name: this.template.name,
+      duration: this.template.projects[this.durationIndex].duration,
+    };
+    this.analytics.track('[Onboarding] Template selected', selectedTemplate);
     // @TODO save user's choice in local storage
     this.router.navigate(['onboarding', 'final', 3, { templateType: this.type }]);
   }

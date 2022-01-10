@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { Template } from '@app/onboarding/onboarding.service';
+import { AnalyticsService } from '@app/shared/services/analytics.service';
 
 import { UtilsService } from '@services/utils.service';
 
@@ -15,7 +16,10 @@ export class OnboardingTemplateDetailComponent implements OnInit {
   projectIndex = 0;
   durationIndex = 0;
 
-  constructor(public utils: UtilsService) { }
+  constructor(
+    public utils: UtilsService,
+    private analytics: AnalyticsService
+  ) { }
 
   ngOnInit() {}
 
@@ -29,6 +33,11 @@ export class OnboardingTemplateDetailComponent implements OnInit {
   }
 
   changeDuration() {
+    this.analytics.track('[Onboarding] Template Duration changed', {
+      uuid: this.template.uuid,
+      name: this.template.name,
+      duration: this.template.projects[this.durationIndex].duration
+    });
     this.durationChange.emit(this.durationIndex);
   }
 
