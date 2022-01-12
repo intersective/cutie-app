@@ -214,7 +214,7 @@ export class PopupService {
     const componentProps = { brief };
     const options = {
       backdropDismiss: false,
-      cssClass: 'practera-popup popup-w-90 popup-h-90'
+      cssClass: this.utils.isMobile() ? 'practera-popup' : 'practera-popup popup-w-90 popup-h-90'
     };
     return this.showModal(component, componentProps, options);
   }

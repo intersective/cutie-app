@@ -48,7 +48,8 @@
     --border-style: solid;
 
     &:hover {
-      --background: #efeff4;
+      --background: #efeff4 !important;
+      --background-hover: none;
     }
   }
 

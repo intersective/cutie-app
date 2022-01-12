@@ -1,3 +1,89 @@
-ion-card {
-  overflow: scroll;
+.brief-info-card {
+  overflow: auto;
+  margin: 0;
+
+  app-action-footer {
+    border-top: 1px solid var(--Practera-light-grey-50);
+  }
+  ion-card-header {
+    padding-left: 20px;
+    padding-right: 20px;
+    border-bottom: 1px solid var(--Practera-light-grey-50);
+    ion-card-title {
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+      p {
+        margin: 0;
+      }
+      .title {
+        font-family: Roboto;
+        font-weight: 700;
+      }
+      .tag {
+        margin-right: 20px;
+        background: var(--practera-dark-blue-25);
+        border-radius: 34px;
+        padding: 3px 10px;
+        font-family: Roboto;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0em;
+        width: fit-content;
+      }
+    }
+  }
+
+  &.mobile {
+    border-radius: 0 !important;
+    height: 100vh;
+    ion-card-header {
+      ion-card-title {
+        display: block;
+      }
+    }
+  }
+
+  .image-container {
+    // height: 130px;
+    // width: 260px;
+    padding: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    flex-direction: row;
+  }
+
+  .brief-btn {
+    box-shadow: none;
+    background: white;
+    color: black;
+    text-transform: capitalize;
+    border: 1px solid var(--Practera-Light-Grey-100);
+    border-radius: 6px;
+    width: fit-content;
+    padding: 9px 20px 9px 20px;
+    font-family: Roboto;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 16px;
+    text-align: center;
+    margin: auto;
+    margin-top: 28px;
+    margin-bottom: 28px;
+
+    &:hover {
+      background: #efeff4;
+    }
+  }
+
+  .detail-col {
+    border-left:1px solid var(--Practera-light-grey-50);
+    padding: 20px;
+    color: black;
+    &.mobile {
+      border-left: none;
+    }
+  }
 }
