@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
+import { AnalyticsService } from '@app/shared/services/analytics.service';
 
 import { UtilsService } from '@services/utils.service';
 
@@ -18,10 +19,14 @@ export class OnboardingHeaderComponent {
 
   constructor(
     private router: Router,
-    public utils: UtilsService
-    ) { }
+    public utils: UtilsService,
+    private analytics: AnalyticsService
+  ) { }
 
   goBack() {
+    this.analytics.track('[Onboarding] Back button clicked', {
+      title: this.title
+    });
     this.router.navigate(this.back);
   }
 }

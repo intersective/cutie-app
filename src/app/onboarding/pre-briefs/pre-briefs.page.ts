@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 
 import { UtilsService } from '@services/utils.service';
 import { StorageService } from '@services/storage.service';
+import { AnalyticsService } from '@app/shared/services/analytics.service';
 
 @Component({
   selector: 'app-pre-briefs',
@@ -40,7 +41,8 @@ export class PreBriefsPage implements OnInit {
   constructor(
     public router: Router,
     public utils: UtilsService,
-    public storage: StorageService
+    public storage: StorageService,
+    private analytics: AnalyticsService
   ) {}
 
   ngOnInit() {
@@ -48,6 +50,9 @@ export class PreBriefsPage implements OnInit {
   }
 
   navigate(i: number) {
+    this.analytics.track('[Onboarding] Project Briefs Options clicked', {
+      option: this.items[i].title
+    });
     if (this.items[i].navigate) {
       this.router.navigate(this.items[i].navigate);
     }

@@ -5,6 +5,7 @@ import { DemoService } from '@services/demo.service';
 import { RequestService } from '../shared/request/request.service';
 import { Observable } from 'rxjs/Observable';
 import { urlFormatter } from 'helper';
+import { StorageService } from '@app/shared/services/storage.service';
 
 export interface Template {
   uuid: string;
@@ -44,10 +45,15 @@ export class OnboardingService {
 
   constructor(
     private request: RequestService,
-    private demo: DemoService
+    private demo: DemoService,
+    private storage: StorageService
   ) { }
 
   getTemplates(attribute: string): Observable<[Template]> {
+    // we don't need the apikey to query for templates
+    if (this.storage.getUser().apikey) {
+      this.storage.setUser({ apikey: null });
+    }
     if (environment.demo) {
       return this.demo.getOnboardingTemplates().pipe(map(this._handleOnBoardingTemplates));
     }

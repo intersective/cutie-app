@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { PopupService } from '@app/shared/popup/popup.service';
 import { UtilsService } from '@app/shared/services/utils.service';
 import { StorageService } from '@app/shared/services/storage.service';
+import { AnalyticsService } from '@app/shared/services/analytics.service';
 
 @Component({
   selector: 'app-briefs',
@@ -20,7 +21,8 @@ export class BriefsPage implements OnInit {
     private route: ActivatedRoute,
     private popup: PopupService,
     public utils: UtilsService,
-    private storage: StorageService
+    private storage: StorageService,
+    private analytics: AnalyticsService
   ) { }
 
   ngOnInit() {
@@ -47,6 +49,10 @@ export class BriefsPage implements OnInit {
   }
 
   checkBrief(index: number) {
+    this.analytics.track('[Onboarding] Project Brief clicked', {
+      uuid: this.briefs[index].uuid,
+      name: this.briefs[index].name
+    });
     this.popup.showBriefInfo(this.briefs[index]);
   }
 
@@ -56,6 +62,7 @@ export class BriefsPage implements OnInit {
       uuid: this.briefs[i].uuid,
       name: this.briefs[i].name
     }) : '');
+    this.analytics.track('[Onboarding] Project Briefs selected', { briefs });
     this.storage.setOnboardingData({ briefs: briefs});
     this.router.navigate(['onboarding', 'final', 4]);
   }

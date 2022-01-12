@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { StorageService } from '@app/shared/services/storage.service';
 
 import { UtilsService } from '@services/utils.service';
+import { AnalyticsService } from '@app/shared/services/analytics.service';
 
 @Component({
   selector: 'app-template-info',
@@ -23,7 +24,8 @@ export class TemplateInfoComponent implements OnInit {
     private service: OnboardingService,
     private router: Router,
     public utils: UtilsService,
-    private storage: StorageService
+    private storage: StorageService,
+    private analytics: AnalyticsService
   ) { }
 
   ngOnInit(): void {
@@ -34,12 +36,14 @@ export class TemplateInfoComponent implements OnInit {
   }
 
   confirm() {
+    const selectedTemplate = {
+      uuid: this.uuid,
+      name: this.title,
+      duration: this.template.projects[this.durationIndex].duration,
+    };
+    this.analytics.track('[Onboarding] Template selected', selectedTemplate);
     this.storage.setOnboardingData({
-      template: {
-        uuid: this.uuid,
-        name: this.title,
-        duration: this.template.projects[this.durationIndex].duration,
-      }
+      template: selectedTemplate
     });
     this.modalController.dismiss();
     this.router.navigate(['onboarding', 'pre-brief']);
