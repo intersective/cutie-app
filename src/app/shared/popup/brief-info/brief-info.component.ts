@@ -14,7 +14,7 @@ export class BriefInfoComponent {
 
   constructor(
     private modalController: ModalController,
-    private utils: UtilsService
+    public utils: UtilsService
   ) { }
 
 

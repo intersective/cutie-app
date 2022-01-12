@@ -1,19 +1,22 @@
-<ion-card>
+<ion-card class="brief-info-card" [class]="utils.isMobile() ? 'mobile' : ''">
   <ion-card-header>
     <ion-card-title>
-      <ion-badge color="medium">Project Brief</ion-badge>
-      <ion-label>{{ brief.name }}</ion-label>
+      <p class="tag">Project Brief</p>
+      <p class="title black subtitle-1">{{ brief.name }}</p>
     </ion-card-title>
   </ion-card-header>
 
   <ion-grid>
     <ion-row>
-      <ion-col size="12" size-md="4" class="ion-text-center">
-        <img [src]="brief.logoUrl" class="w-100 p-2">
+      <ion-col size="12" size-md="3" class="ion-text-center">
+        <div class="image-container">
+          <img [src]="brief.logoUrl" class="w-100">
+        </div>
         <hr>
-        <a [href]="brief.websiteUrl" target="_blank" class="btn btn-outline-secondary text-center">Visit Website</a>
+        <a [href]="brief.websiteUrl" target="_blank" class="btn text-center brief-btn">Visit Website</a>
+        <hr *ngIf="utils.isMobile()">
       </ion-col>
-      <ion-col size="12" size-md="8">
+      <ion-col size="12" size-md="9" class="detail-col" [class]="utils.isMobile() ? 'mobile' : ''">
         <div [innerHTML]=[brief.description]></div>
       </ion-col>
     </ion-row>
