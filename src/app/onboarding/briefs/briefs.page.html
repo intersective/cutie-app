@@ -1,11 +1,12 @@
-<app-onboarding-steps step=3 total=4></app-onboarding-steps>
+<app-onboarding-steps class="ion-hide-sm-down" step=3 total=4></app-onboarding-steps>
 <app-onboarding-header
   title="Select project briefs for your experience"
   subtitle="Choose one or more project briefs to assign to your learners."
   [back]="['onboarding', 'pre-brief']"
+  [icon]="projectIcon"
 ></app-onboarding-header>
 <ion-content>
-  <ion-grid>
+  <ion-grid [class]="!utils.isMobile() ? 'page-padding' : 'mobile-page-padding'" class="ion-no-padding">
     <ion-row *ngIf="!briefs || !briefs.length">
       <ion-col *ngFor="let b of [1,2,3,4]" size="12" size-md="3">
         <ion-card>
@@ -25,19 +26,21 @@
 
       </ion-col>
     </ion-row>
-    <ion-row *ngIf="briefs && briefs.length">
-      <ion-col *ngFor="let brief of briefs; let i = index" size="12" size-md="3">
-        <ion-card>
-          <ion-card-header>
+    <ion-row class="ion-no-padding ion-justify-content-between" *ngIf="briefs && briefs.length">
+      <ion-col class="ion-no-padding ion-margin-end ion-margin-top" *ngFor="let brief of briefs; let i = index" size="12" size-md="2">
+        <ion-card class="brief-card ion-no-margin" [class]="utils.isMobile() ? 'mobile' : ''">
+          <ion-card-content>
             <input class="form-check-input float-end" type="checkbox" [(ngModel)]="briefsSelected[i]">
-            <img [src]="brief.logoUrl" class="w-100 p-2">
-            <ion-card-subtitle>{{ brief.industry }}</ion-card-subtitle>
-            <ion-card-title>{{ brief.name }}</ion-card-title>
-            <p class="ion-text-medium">{{ brief.abstract }}</p>
-            <div class="ion-text-center">
-              <ion-button color="light" (click)="checkBrief(i)">Check Brief</ion-button>
+            <div class="image-container">
+              <img [src]="brief.logoUrl" class="w-100">
             </div>
-          </ion-card-header>
+            <ion-card-subtitle class="brief-industry caption">{{ brief.industry }}</ion-card-subtitle>
+            <ion-card-title class="brief-name subtitle-1 black">{{ brief.name }}</ion-card-title>
+            <p class="brief-abstract">{{ brief.abstract }}</p>
+            <div class="ion-text-center">
+              <ion-button class="brief-card-btn" (click)="checkBrief(i)">Check Brief</ion-button>
+            </div>
+          </ion-card-content>
         </ion-card>
 
       </ion-col>

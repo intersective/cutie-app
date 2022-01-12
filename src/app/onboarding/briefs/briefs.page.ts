@@ -14,17 +14,19 @@ import { AnalyticsService } from '@app/shared/services/analytics.service';
 export class BriefsPage implements OnInit {
   briefs: Brief[];
   briefsSelected = [];
+  projectIcon: string;
   constructor(
     private service: OnboardingService,
     private router: Router,
     private route: ActivatedRoute,
     private popup: PopupService,
-    private utils: UtilsService,
+    public utils: UtilsService,
     private storage: StorageService,
     private analytics: AnalyticsService
   ) { }
 
   ngOnInit() {
+    this.projectIcon = this.storage.get('selectedProjectIcon');
     this.route.params.subscribe(params => {
       this.briefs = [];
       const onboardingData = this.storage.getOnboardingData();
@@ -50,7 +52,7 @@ export class BriefsPage implements OnInit {
     this.analytics.track('[Onboarding] Project Brief clicked', {
       uuid: this.briefs[index].uuid,
       name: this.briefs[index].name
-    })
+    });
     this.popup.showBriefInfo(this.briefs[index]);
   }
 
@@ -60,7 +62,7 @@ export class BriefsPage implements OnInit {
       uuid: this.briefs[i].uuid,
       name: this.briefs[i].name
     }) : '');
-    this.analytics.track('[Onboarding] Project Briefs selected', { briefs })
+    this.analytics.track('[Onboarding] Project Briefs selected', { briefs });
     this.storage.setOnboardingData({ briefs: briefs});
     this.router.navigate(['onboarding', 'final', 4]);
   }
