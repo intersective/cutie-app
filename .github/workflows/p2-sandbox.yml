@@ -104,8 +104,7 @@ jobs:
 
           cat ./src/index.html
         env:
-          # SEGMENT_KEY: AsLmvmyUc9LdCxFn0xqQhVz9CL2KCFc1
-          SEGMENT_KEY: <SEGMENT_KEY>
+          SEGMENT_KEY: AsLmvmyUc9LdCxFn0xqQhVz9CL2KCFc1
           
 
 
