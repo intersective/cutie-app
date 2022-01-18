@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { PopupService } from '@app/shared/popup/popup.service';
 import { AnalyticsService } from '@app/shared/services/analytics.service';
 import { StorageService } from '@app/shared/services/storage.service';
 
@@ -52,7 +53,8 @@ export class TypeOfExperiencePage implements OnInit {
     public router: Router,
     private route: ActivatedRoute,
     private storage: StorageService,
-    private analytics: AnalyticsService
+    private analytics: AnalyticsService,
+    private popupService: PopupService
   ) {}
 
   ngOnInit() {
@@ -73,5 +75,6 @@ export class TypeOfExperiencePage implements OnInit {
     this.analytics.track('[Onboarding] Experience Type Selection clicked', {
       name: 'Other'
     });
+    this.popupService.showOnboardingPopup('other');
   }
 }
