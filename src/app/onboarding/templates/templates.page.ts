@@ -48,7 +48,7 @@ export class TemplatesPage implements OnInit {
 
   customExperience() {
     this.analytics.track('[Onboarding] Industry Project custom template clicked');
-    console.log('custom exp');
+    this.popupService.showOnboardingPopup('templates');
   }
 
   templateDetail(uuid: string, title: string) {
