@@ -13,7 +13,6 @@ export class FinalPage implements OnInit, AfterViewInit {
   steps: number;
   templateType: string;
   projectIcon: string;
-  onboardingData;
 
   constructor(
     private route: ActivatedRoute,
@@ -23,7 +22,6 @@ export class FinalPage implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.projectIcon = this.storage.get('selectedProjectIcon');
-    this.onboardingData = this.storage.getOnboardingData();
     this.route.params.subscribe(params => {
       this.steps = +params.steps;
       this.templateType = params.templateType;
@@ -35,7 +33,7 @@ export class FinalPage implements OnInit, AfterViewInit {
       formId: environment.onboarding.finalFormId
     }, [{
       name: 'content',
-      value: this.onboardingData
+      value: this.storage.getOnboardingData()
     }]);
   }
 
