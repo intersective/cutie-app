@@ -1,0 +1,125 @@
+.page-padding {
+  padding: 73px;
+}
+
+.form-card {
+  max-width: 500px;
+  // max-height: 475px;
+  // width: fit-content;
+  height: fit-content;
+  margin: auto;
+  margin-top: 4rem;
+  margin-bottom: 4rem;
+  border-radius: 6px;
+  border: 1px solid #efeff4;
+  box-sizing: border-box;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.08);
+  background-color: white;
+
+  ion-card-header {
+    text-align: center;
+    .form-title {
+      font-family: Roboto;
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 20px;
+      color: var(--practera-dark-blue-100);
+      text-transform: none;
+      margin: auto;
+      margin-bottom: 20px;
+      max-width: 276px;
+    }
+
+    .form-subtitle {
+      font-family: Roboto;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 22px;
+      letter-spacing: 0em;
+      text-align: center;
+      color: var(--Practera-grey-75);
+      text-transform: none;
+      margin: auto;
+      margin-bottom: 15px;
+      max-width: 276px;
+    }
+  }
+
+  &.mobile {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.next-container {
+  margin: 4rem;
+  .next-heading {
+    font-family: Roboto;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 16px;
+    color: var(--ion-color-primary);
+    text-transform: uppercase;
+    margin-left: 100px;
+  }
+  ion-item {
+    margin: 7px;
+    ion-icon {
+      font-size: 38px;
+      margin-right: 40px;
+      margin-bottom: 20px;
+    }
+    .title {
+      font-family: Roboto;
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 18px;
+      color: var(--Practera-grey-100);
+    }
+    .sub-title {
+      font-family: Roboto;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 14px;
+      color: var(--Practera-grey-50);
+    }
+    .circle {
+      width: 38px;
+      height: 38px;
+      border: 1px solid var(--Practera-violet-100);
+      box-sizing: border-box;
+      border-radius: 50%;
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: row;
+      align-content: center;
+      justify-content: center;
+      align-items: stretch;
+      margin-right: 40px;
+    }
+    .number {
+      margin: 0px;
+      color: var(--Practera-violet-100);
+      font-family: Roboto;
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 20px;
+    }
+  }
+  &.mobile {
+    margin: 0;
+    .next-heading {
+      margin-left: 10px;
+    }
+    ion-item {
+      --padding-start: 0px;
+      ion-icon {
+        margin-right: 20px;
+      }
+      .circle {
+        margin-right: 20px;
+      }
+    }
+  }
+}
