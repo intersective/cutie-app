@@ -1,15 +1,11 @@
-.page-padding {
-  padding: 73px;
-}
-
 .form-card {
   max-width: 500px;
   // max-height: 475px;
   // width: fit-content;
   height: fit-content;
   margin: auto;
-  margin-top: 4rem;
-  margin-bottom: 4rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
   border-radius: 6px;
   border: 1px solid #efeff4;
   box-sizing: border-box;
@@ -27,7 +23,7 @@
       text-transform: none;
       margin: auto;
       margin-bottom: 20px;
-      max-width: 276px;
+      min-width: 276px;
     }
 
     .form-subtitle {
@@ -42,7 +38,7 @@
       text-transform: none;
       margin: auto;
       margin-bottom: 15px;
-      max-width: 276px;
+      min-width: 276px;
     }
   }
 
@@ -53,7 +49,7 @@
 }
 
 .next-container {
-  margin: 4rem;
+  margin: 2rem;
   .next-heading {
     font-family: Roboto;
     font-size: 14px;
