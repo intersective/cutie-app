@@ -39,7 +39,7 @@ export class FinalPage implements OnInit, AfterViewInit {
       formId: environment.onboarding.finalFormId
     }, [{
       name: environment.onboarding.finalFormHiddenFieldName,
-      value: this.storage.getOnboardingData()
+      value: this.getFormatedOnboardingData()
     }]);
   }
 
