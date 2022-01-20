@@ -270,7 +270,7 @@ export class UtilsService {
       portalId: environment.onboarding.portalId,
       formId: formOptions.formId,
       target: formOptions.target || '#form',
-      onFormSubmit: function($form) {
+      onFormReady: function($form) {
         hiddenValues.forEach(v => {
           document.getElementById('hs-form-iframe-0').contentDocument.querySelector(`input[name="${ v.name }"]`).value = v.value;
         });
