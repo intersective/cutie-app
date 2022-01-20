@@ -42,6 +42,8 @@ export class AppComponent implements OnInit {
             institutionName: user.institutionName ? user.institutionName : null
           };
           this.analytics.identify(user.uuid, userInfo);
+        } else {
+          this.analytics.identify('');
         }
       }
     });
