@@ -32,7 +32,7 @@ export class FinalPage implements OnInit, AfterViewInit {
     this.utils.createHubSpotForm({
       formId: environment.onboarding.finalFormId
     }, [{
-      name: 'TICKET.content',
+      name: environment.onboarding.finalFormHiddenFieldName,
       value: this.storage.getOnboardingData()
     }]);
   }
