@@ -1,26 +1,90 @@
-<app-onboarding-steps [step]="steps" [total]="steps"></app-onboarding-steps>
+<app-onboarding-steps class="ion-hide-sm-down" [step]="steps" [total]="steps"></app-onboarding-steps>
 <app-onboarding-header
   title="We are almost there"
   subtitle="Create your account to build your experience."
   [back]="steps === 4 ? ['onboarding', 'briefs'] : ['onboarding', 'template', templateType]"
+  [icon]="projectIcon"
 ></app-onboarding-header>
 <ion-content>
-  <ion-grid>
+  <ion-grid [class]="!utils.isMobile() ? 'page-padding' : ''">
     <ion-row>
-      <ion-col size="12" size-md="4">
-        <ion-card>
+      <ion-col size="12" size-md="5">
+        <ion-card class="form-card" [class]="utils.isMobile() ? 'mobile' : ''">
           <ion-card-header>
-            <ion-card-title>Create your account to continue</ion-card-title>
+            <ion-card-title class="form-title">Create your account to continue</ion-card-title>
+            <ion-card-subtitle class="form-subtitle">Yor <strong>Business Opportunity experience </strong> is ready to go!</ion-card-subtitle>
           </ion-card-header>
           <ion-card-content>
             <div id="form"></div>
           </ion-card-content>
         </ion-card>
-
       </ion-col>
 
-      <ion-col size="12" size-md="8">
-        What is next?
+      <ion-col size="12" size-md="4" class="next-container" [class]="utils.isMobile() ? 'mobile' : ''">
+        <p class="next-heading">What is next?</p>
+        <ion-list lines="none">
+          <ion-item>
+            <ion-icon color="primary" name="checkmark-circle" slot="start"></ion-icon>
+            <ion-label class="ion-text-wrap">
+              <p class="title">Set experience type and project</p>
+              <p class="sub-title">Choose a type of experience, project and user learning flow teamplate.</p>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <div slot="start" class="circle">
+              <p class="number">2</p>
+            </div>
+            <ion-label class="ion-text-wrap">
+              <p class="title">Setup your account</p>
+              <p class="sub-title">Review the details and make changes if needed.</p>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <div slot="start" class="circle">
+              <p class="number">3</p>
+            </div>
+            <ion-label class="ion-text-wrap">
+              <p class="title">Review experience details and learning design</p>
+              <p class="sub-title">Review the details and make changes if needed.</p>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <div slot="start" class="circle">
+              <p class="number">4</p>
+            </div>
+            <ion-label class="ion-text-wrap">
+              <p class="title">Review and define workflow automation</p>
+              <p class="sub-title">Test the workflow automation and tailor it to your needs.</p>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <div slot="start" class="circle">
+              <p class="number">5</p>
+            </div>
+            <ion-label class="ion-text-wrap">
+              <p class="title">Set badges, certificates and add events</p>
+              <p class="sub-title">Add rewards, certificates and events for your learners</p>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <div slot="start" class="circle">
+              <p class="number">6</p>
+            </div>
+            <ion-label class="ion-text-wrap">
+              <p class="title">Enrol learners and mentors</p>
+              <p class="sub-title">Add and invite your experience participants via email or LTI SSO.</p>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <div slot="start" class="circle">
+              <p class="number">7</p>
+            </div>
+            <ion-label class="ion-text-wrap">
+              <p class="title">Go live</p>
+              <p class="sub-title">Launch your experience and see your learners build their skills.</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
       </ion-col>
     </ion-row>
   </ion-grid>

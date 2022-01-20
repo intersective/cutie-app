@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UtilsService } from '@app/shared/services/utils.service';
+import { StorageService } from '@app/shared/services/storage.service';
 import { environment } from '@environments/environment';
 
 @Component({
@@ -11,12 +12,16 @@ import { environment } from '@environments/environment';
 export class FinalPage implements OnInit, AfterViewInit {
   steps: number;
   templateType: string;
+  projectIcon: string;
+
   constructor(
     private route: ActivatedRoute,
-    private utils: UtilsService,
+    public utils: UtilsService,
+    private storage: StorageService,
   ) { }
 
   ngOnInit() {
+    this.projectIcon = this.storage.get('selectedProjectIcon');
     this.route.params.subscribe(params => {
       this.steps = +params.steps;
       this.templateType = params.templateType;
@@ -26,7 +31,10 @@ export class FinalPage implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     this.utils.createHubSpotForm({
       formId: environment.onboarding.finalFormId
-    });
+    }, [{
+      name: 'content',
+      value: this.storage.getOnboardingData()
+    }]);
   }
 
 }
