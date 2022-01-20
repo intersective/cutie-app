@@ -5,6 +5,7 @@ import { Observable, Subject } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { StorageService } from '@services/storage.service';
+import { environment } from '@environments/environment';
 
 // @TODO: enhance Window reference later, we shouldn't refer directly to browser's window object like this
 declare var window: any;
@@ -265,7 +266,7 @@ export class UtilsService {
   ) {
     hbspt.forms.create({
       region: 'na1',
-      portalId: '20987346',
+      portalId: environment.onboarding.portalId,
       formId: formOptions.formId,
       target: formOptions.target || '#form',
       onFormSubmit: function($form) {
