@@ -89,9 +89,20 @@ jobs:
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run:  npm install
 
+################################################
+#  SEGMENT ENV VARIABLE SUBSTITUION - INDEX.HTML
+################################################
+      - name: Segment env variable substitution for index.html file
+        run:  |
+          LOCALSEGMENT_KEY=$(jq -r .localsegment package.json)
+          [[ ! -z "$LOCALSEGMENT_KEY" ]] && echo Local SEGMENT_KEY exist ||  SEGMENT_KEY=$SEGMENT_KEY
 
+          sed -i -e "s/<SEGMENT_KEY>/$SEGMENT_KEY/g" ./src/index.html
+          sed -i -e "s/$LOCALSEGMENT_KEY/$SEGMENT_KEY/g" ./src/index.html
 
-
+          cat ./src/index.html
+        env:
+          SEGMENT_KEY: AsLmvmyUc9LdCxFn0xqQhVz9CL2KCFc1
 
 ################################################
 #  AWS CLI CONFIGURATION - DEVOPS
