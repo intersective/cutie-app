@@ -33,6 +33,10 @@
     justify-content: center;
     align-content: center;
     flex-direction: row;
+    img {
+      object-fit: scale-down;
+      height: inherit;
+    }
   }
 
   .brief-card-btn {
@@ -59,6 +63,11 @@
     text-transform: uppercase;
     color: var(--Practera-grey-50);
     margin-top: 16px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
   }
   .brief-name {
     font-family: Roboto;

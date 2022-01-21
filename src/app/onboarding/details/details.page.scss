@@ -21,6 +21,7 @@ p {
     --padding-bottom: 9px;
     --padding-start: 20px;
     --padding-end: 20px;
+    text-transform: capitalize;
     &.clear {
       border: 1px solid #DFDFE8;
       border-radius: 6px;
