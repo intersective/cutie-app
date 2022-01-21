@@ -21,7 +21,7 @@ export class UtilsService {
   protected _eventsSubject = new Subject<{key: string, value: any}>();
 
   constructor(
-    @Inject(DOCUMENT) private document: Document,
+    // @Inject(DOCUMENT) private document: Document,
     private storage: StorageService,
     private http: HttpClient,
   ) {
@@ -92,12 +92,12 @@ export class UtilsService {
   }
 
   changeThemeColor(color) {
-    this.document.documentElement.style.setProperty('--ion-color-primary', color);
-    this.document.documentElement.style.setProperty('--ion-color-primary-shade', color);
+    document.documentElement.style.setProperty('--ion-color-primary', color);
+    document.documentElement.style.setProperty('--ion-color-primary-shade', color);
   }
 
   changeCardBackgroundImage(image) {
-    this.document.documentElement.style.setProperty('--practera-card-background-image', 'url(\'' + image + '\')');
+    document.documentElement.style.setProperty('--practera-card-background-image', 'url(\'' + image + '\')');
   }
 
   // broadcast the event to whoever subscribed
