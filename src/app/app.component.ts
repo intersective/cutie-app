@@ -43,7 +43,7 @@ export class AppComponent implements OnInit {
           };
           this.analytics.identify(user.uuid, userInfo);
         } else {
-          this.analytics.identify('');
+          this.analytics.identify('anonymous');
         }
       }
     });
