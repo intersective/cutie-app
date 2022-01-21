@@ -26,6 +26,23 @@ export interface User {
   institutionName?: string;
 }
 
+export interface OnboardingData {
+  expType?: string;
+  qna?: {
+    question: string;
+    answer: string
+  }[];
+  template?: {
+    uuid: string;
+    name: string;
+    duration: string;
+  };
+  briefs?: {
+    uuid: string;
+    name: string;
+  }[];
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -77,4 +94,17 @@ export class StorageService {
   getCountry() {
     return this.get('country');
   }
+
+  getOnboardingData(): OnboardingData {
+    return this.get('onboarding') || {};
+  }
+
+  setOnboardingData(data: OnboardingData) {
+    return this.set('onboarding', {...this.getOnboardingData(), ...data});
+  }
+
+  clearOnboardingData() {
+    return this.storage.removeItem('onboarding');
+  }
+
 }

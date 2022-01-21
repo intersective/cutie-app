@@ -37,6 +37,11 @@ const CHARACTERS = {
   providedIn: 'root'
 })
 export class DemoService {
+
+  constructor(
+    private utils: UtilsService,
+    private storage: StorageService
+  ) { }
   students = ['Caramel Dundee', 'Gosinder Shah', 'Mein Black', 'Gos Baxter', 'Monday Blighton', 'Joreis Park', 'Dimitry Ricks', 'Desean Ning'];
   allStatus = ['not started', 'in progress', 'done', 'pending review', 'pending approval', 'published'];
   teams = ['team 1 - market research analysis project', 'team 2 - market research analysis project', 'team 3 - market research analysis project', 'team 4 - market research analysis project'];
@@ -557,7 +562,7 @@ export class DemoService {
       uuid: '34c3d514-b459-b9d1-05c8-2bd1f582447c',
       name: 'XCELERY 2.0',
       description: `<p>This experience is perfect if you want to run 2-week virtual programs where teams of students can work collaboratively to solve a real industry challenge e.g. for a Startup, SME or Non-profit.<br></p><p>In the Deal Book Nano Project, student teams support Startups, SME’s and NGO’s to find funding sources. Each student is expected to input 25 hours of effort across the two weeks and will work in a remote, virtual fashion with their team. </p><p><span>The Practera app is used to support learners through their experiential learning; learners will submit deliverables (Draft &amp; Final Report) for Client review, iteratively reflect on their skill development and experience, and to access supportive learning content.</span><br></p><p><br></p>`,
-      leadImageUrl: '',
+      leadImageUrl: './assets/template-library/accelerators.png',
       leadVideoUrl: '',
       type: 'Internship',
       isPublic: false
@@ -582,10 +587,206 @@ export class DemoService {
     }
   ];
 
-  constructor(
-    private utils: UtilsService,
-    private storage: StorageService
-  ) { }
+  onboardingTemplates = [
+    {
+      uuid: '1-1',
+      name: 'Business Opportunities Scan',
+      abstract: 'Finance is widely seen as an obstacle to a better world. Principles of Sustainable Finance explains how the finacial sector can be mobilezed to counter this.',
+      leadImageUrl: './assets/template-library/accelerators.png'
+    },
+    {
+      uuid: '1-2',
+      name: 'Growth & New Market Entry',
+      abstract: 'Process when the business started may not be effective or even relevant anymore.',
+      leadImageUrl: './assets/template-library/accelerators.png'
+    },
+    {
+      uuid: '1-3',
+      name: 'Social Media Strategy',
+      abstract: 'Change happens all the time and in being able to identify factors involved in change and preparing to manage change you increase your chances for success.',
+      leadImageUrl: './assets/template-library/accelerators.png'
+    },
+    {
+      uuid: '1-4',
+      name: 'Sustainable Impact',
+      abstract: 'Engage in hands-on case studies in real business contexts: examples include predicting and forecasting events, statistical customer segmentation...',
+      leadImageUrl: './assets/template-library/accelerators.png'
+    },
+    {
+      uuid: '1-5',
+      name: 'Funding Sources',
+      abstract: 'Get the tools you need to analyze, evaluate and recommend specific actions organizations can take to grow their value and avoid common growth pitfalls.',
+      leadImageUrl: './assets/template-library/accelerators.png'
+    }
+  ];
+
+  description = `
+    <p>Business Opportunity Scan experience in which teams of learners conduct market and industry research for a real world client. ......</p>
+    <h2>Outcomes</h2>
+    <p>
+    <ol>
+      <li><span style="font-weight: bold;">Virtual Teamwork</span>. Demons...</li>
+      <li><span style="font-weight: bold;">Apply knowledge</span> to create..</li>
+      <li><span style="font-weight: bold;">Reflection &amp; Feedback</span>. Develop ...</li>
+    </ol>
+    </p>`;
+  onboardingTemplate = {
+    description: this.description,
+    level: 'Undergraduate',
+    time: '20/25 Hours Week',
+    projects: [
+      {
+        duration: '2 weeks',
+        activities: [
+          {
+            name: 'Week 1: Intruduction',
+            tasks: [
+              {
+                name: 'Expectations',
+                type: 'quiz',
+              },
+              {
+                name: 'Callenges & Opportunities',
+                type: 'reflection',
+              },
+              {
+                name: 'Weekly Learnings',
+                type: 'survey',
+              },
+              {
+                name: 'Callenges & Opportunities',
+                type: 'team360',
+              }
+            ]
+          },
+          {
+            name: 'Week 2: Final Report',
+            tasks: [
+              {
+                name: 'Rank your experience',
+                type: 'quiz',
+              },
+              {
+                name: 'Report review',
+                type: 'assessment',
+              }
+            ]
+          }
+        ],
+        briefsCount: 3,
+      },
+      {
+        duration: '3 weeks',
+        activities: [
+          {
+            name: 'Week 1: Intruduction',
+            tasks: [
+              {
+                name: 'Expectations',
+                type: 'quiz',
+              },
+              {
+                name: 'Callenges & Opportunities',
+                type: 'reflection',
+              },
+              {
+                name: 'Weekly Learnings',
+                type: 'survey',
+              },
+              {
+                name: 'Callenges & Opportunities',
+                type: 'team360',
+              }
+            ]
+          },
+          {
+            name: 'Week 2: Draft Report',
+            tasks: [
+              {
+                name: 'Weekly learnings',
+                type: 'reflection',
+              },
+              {
+                name: 'Draft report',
+                type: 'assessment',
+              }
+            ]
+          },
+          {
+            name: 'Week 3: Final Report',
+            tasks: [
+              {
+                name: 'Rank your experience',
+                type: 'quiz',
+              },
+              {
+                name: 'Final report',
+                type: 'assessment',
+              }
+            ]
+          }
+        ],
+        briefsCount: 2,
+      }
+    ]
+  };
+
+  onboardingBriefs = [
+    {
+      uuid: 'brief-1',
+      industry: 'tech',
+      name: 'Trialog',
+      abstract: 'Business Opportunity Scan experience in which teams of learners conduct market and industry research for a real world client.',
+      description: this.description,
+      logoUrl: './assets/logo.svg',
+      websiteUrl: '',
+    },
+    {
+      uuid: 'brief-2',
+      industry: 'finance',
+      name: 'Coinbase',
+      abstract: 'Business Opportunity Scan experience in which teams of learners conduct market and industry research for a real world client.',
+      description: this.description,
+      logoUrl: 'https://gofossilfree.org/wp-content/uploads/2014/12/ff-logo.png',
+      websiteUrl: '',
+    },
+    {
+      uuid: 'brief-3',
+      industry: 'travel',
+      name: 'Cirrus',
+      abstract: 'Business Opportunity Scan experience in which teams of learners conduct market and industry research for a real world client.',
+      description: this.description,
+      logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Pinterest_logo.png/1024px-Pinterest_logo.png',
+      websiteUrl: '',
+    },
+    {
+      uuid: 'brief-4',
+      industry: 'transport',
+      name: 'Mooci',
+      abstract: 'Business Opportunity Scan experience in which teams of learners conduct market and industry research for a real world client.',
+      description: this.description,
+      logoUrl: 'https://www.edigitalagency.com.au/wp-content/uploads/square-payments-logo-png-transparent-background-horizontal.png',
+      websiteUrl: '',
+    },
+    {
+      uuid: 'brief-5',
+      industry: 'personal care',
+      name: 'Alcheme',
+      abstract: 'Business Opportunity Scan experience in which teams of learners conduct market and industry research for a real world client.',
+      description: this.description,
+      logoUrl: 'https://vast.org.uk/wp-content/uploads/2020/04/1200px-LinkedIn_Logo.svg.png',
+      websiteUrl: '',
+    },
+    {
+      uuid: 'brief-6',
+      industry: 'Energy',
+      name: 'Greenely',
+      abstract: 'Business Opportunity Scan experience in which teams of learners conduct market and industry research for a real world client.',
+      description: this.description,
+      logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/1280px-Amazon_logo.svg.png',
+      websiteUrl: '',
+    }
+  ];
 
   // auth.service
   directLogin() {
@@ -1247,6 +1448,39 @@ export class DemoService {
             }
           }
         }))
+      }
+    }).pipe(delay(1000));
+  }
+
+  getOnboardingTemplates() {
+    return of({
+      data: {
+        onboardingTemplates: this.onboardingTemplates
+      }
+    }).pipe(delay(1000));
+  }
+
+  getOnboardingTemplateDetail(type: string) {
+    const template = {
+      ...this.onboardingTemplates[0],
+      ...this.onboardingTemplate
+    };
+    if (type) {
+      template.projects.forEach((p, i) => {
+        template.projects[i].briefsCount = 0;
+      });
+    }
+    return of({
+      data: {
+        onboardingTemplate: template
+      }
+    }).pipe(delay(1000));
+  }
+
+  getOnboardingBriefs() {
+    return of({
+      data: {
+        onboardingBriefs: this.onboardingBriefs
       }
     }).pipe(delay(1000));
   }

@@ -8,12 +8,16 @@ import { StorageService } from '@services/storage.service';
 import { ActionPopoverComponent } from '@components/action-popover/action-popover.component';
 import { FilestackService } from './filestack/filestack.service';
 import { PreviewComponent } from './filestack/preview/preview.component';
+import { ActionFooterComponent } from '@app/components/action-footer/action-footer.component';
+import { OnboardingTemplateDetailComponent } from '@app/components/onboarding-template-detail/onboarding-template-detail.component';
 
 @NgModule({
   declarations: [
     NavbarComponent,
     ActionPopoverComponent,
-    PreviewComponent
+    PreviewComponent,
+    ActionFooterComponent,
+    OnboardingTemplateDetailComponent,
   ],
   imports: [
     CommonModule,
@@ -25,7 +29,9 @@ import { PreviewComponent } from './filestack/preview/preview.component';
     IonicModule,
     FormsModule,
     NavbarComponent,
-    ActionPopoverComponent
+    ActionPopoverComponent,
+    ActionFooterComponent,
+    OnboardingTemplateDetailComponent,
   ],
   providers: [
     StorageService,

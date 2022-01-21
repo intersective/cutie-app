@@ -9,6 +9,10 @@ import { CreateExperienceComponent } from './create-experience/create-experience
 import { DuplicateExperienceComponent } from './duplicate-experience/duplicate-experience.component';
 import { ImportExperienceComponent } from './import-experience/import-experience.component';
 import { CreateTemplateComponent } from './create-template/create-template.component';
+import { TemplateInfoComponent } from './template-info/template-info.component';
+import { BriefInfoComponent } from './brief-info/brief-info.component';
+import { Brief } from '@app/onboarding/onboarding.service';
+import { OnboardingFormComponent } from './onboarding-form/onboarding-form.component';
 
 export interface CustomTostOptions {
   message: string;
@@ -184,6 +188,60 @@ export class PopupService {
     const options = {
       backdropDismiss: false,
       cssClass: 'practera-popup'
+    };
+    return this.showModal(component, componentProps, options);
+  }
+
+  /**
+   * show onboarding template info pop up message
+   * this is used in the onboarding process
+   */
+   showTemplateInfo(uuid: string, title: string) {
+    const component = TemplateInfoComponent;
+    const componentProps = { uuid, title };
+    const options = {
+      backdropDismiss: false,
+      cssClass: this.utils.isMobile() ? 'practera-popup' : 'practera-popup popup-w-90 popup-h-90'
+    };
+    return this.showModal(component, componentProps, options);
+  }
+
+  /**
+   * show onboarding brief info pop up message
+   * this is used in the onboarding process
+   */
+   showBriefInfo(brief: Brief) {
+    const component = BriefInfoComponent;
+    const componentProps = { brief };
+    const options = {
+      backdropDismiss: false,
+      cssClass: this.utils.isMobile() ? 'practera-popup' : 'practera-popup popup-w-90 popup-h-90'
+    };
+    return this.showModal(component, componentProps, options);
+  }
+
+  /**
+   * show onboarding brief info pop up message
+   * this is used in the onboarding process
+   */
+  showOnboardingPopup(from: string) {
+    let title, description;
+    switch (from) {
+      case 'other':
+        title = 'Custom type of experience';
+        description = `Let's talk how we can help you to create your custom type of experience. Please fill in the form below. Our experts will contact you shortly to plan anc create your experience.`;
+        break;
+
+      case 'templates':
+        title = 'Create custom Industry Project experience';
+        description = `Let's talk how we can help you to create your custom Industry Project experience. Please fill in the form below. Our experts will contact you shortly to plan anc create your experience.`;
+        break;
+    }
+    const component = OnboardingFormComponent;
+    const componentProps = { title, description };
+    const options = {
+      backdropDismiss: false,
+      cssClass: this.utils.isMobile() ? 'practera-popup' : 'practera-popup popup-h-90'
     };
     return this.showModal(component, componentProps, options);
   }
