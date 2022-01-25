@@ -27,14 +27,14 @@ export class PreBriefsPage implements OnInit {
       description: 'Connect your learners with real industry project briefs. Our team of expert Industry Engagement Team will source projects from our network of 1,000+ employers relevant to your goals and needs.',
       icon: 'fa-gem',
       tags: ['Premium'],
-      navigate: ['onboarding', 'final']
+      navigate: ['onboarding', 'final', 4]
     },
     {
       title: 'Upload your project briefs',
       description: 'Add your own project briefs that you sourced from your network. Our team will be available to assist you  to ensure the success of your experience and meet your goals.',
       icon: 'fa-upload',
       tags: [],
-      navigate: null
+      navigate: ['onboarding', 'final', 4]
     },
   ];
 
