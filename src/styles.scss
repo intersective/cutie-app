@@ -135,3 +135,99 @@ ion-item.sc-ion-select-popover {
 .page-padding {
   padding: 49px;
 }
+
+.vertical-aligned-container {
+  width: -webkit-fill-available;
+  height: -webkit-fill-available;
+}
+
+/**
+  Hubspot Form
+**/
+.hs-form{
+  padding:18px;
+  input, textarea{
+    width:100%;
+    border-radius:4px;
+    font-size:16px !important;
+    padding:4px 10px;
+    box-sizing:border-box;
+    border:1px solid #DFDFE8;
+  }
+  textarea{
+    min-height:120px;
+  }
+  .hs-form-field > label{
+    padding:8px 0;
+    display:none;
+  }
+  .hs-form-field{
+    margin-bottom:12px;
+  }
+  .hs_LEGAL_CONSENT label{
+    display:block;
+  }
+   ul{
+    padding:0;
+    margin:0;
+  }
+   ul.hs-error-msgs li{
+    padding:2px 0;
+    list-style:none;
+    font-size:13px;
+    color:#e60000;
+  }
+  input.error{
+    border:1px solid #e60000;
+  }
+  .legal-consent-container, .legal-consent-container p {
+    font-size:13px;
+  }
+  .legal-consent-container label{
+    display:flex;
+    align-items:center;
+    margin: 20px 0 0 0;
+
+  }
+  .legal-consent-container label input{
+    width:20px;
+  }
+  .legal-consent-container label span{
+    padding:0;
+    margin:0 0 0 10px;
+  }
+  .legal-consent-container ul li{
+    list-style:none;
+    margin:0;
+    padding:0;
+  }
+  .hs-button{
+    background:#008296;
+    color:#fff;
+    border:1px solid #008296;
+    color:#fff !important;
+    max-width:200px;
+    margin:0 auto;
+    font-size:14px !important;
+    font-weight:700;
+  }
+  .hs-button:hover{
+    background:#45A1AF;
+    border:1px solid #45A1AF;
+  }
+  .actions{
+    text-align:center;
+    padding:20px 0 10px 0;
+  }
+}
+
+.submitted-message.hs-main-font-element{
+  padding:20px;
+  text-align:center;
+  strong{
+    font-size:20px;
+    margin-bottom:20px;
+    display:block;
+    color:#123B79;
+  }
+}

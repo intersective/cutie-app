@@ -6,19 +6,21 @@
   [icon]="projectIcon"
 ></app-onboarding-header>
 <ion-content class="ion-padding">
-  <div [class]="!utils.isMobile() ? 'page-padding' : ''">
-    <ng-container *ngFor="let question of questions">
-      <p class="question subtitle-1 grey-100">{{ question.title }}</p>
-      <div class="answers">
-        <ion-button
-        class="answer body-2"
-        *ngFor="let option of question.options"
-        [class]="question.answer === option ? 'select' : 'clear'"
-        (click)="question.answer = option"
-      >{{ option }}
-      </ion-button>
-      </div>
-    </ng-container>
-  </div>
+  <ion-row class="ion-align-items-center vertical-aligned-container">
+    <div [class]="!utils.isMobile() ? 'page-padding' : ''">
+      <ng-container *ngFor="let question of questions">
+        <p class="question subtitle-1 grey-100">{{ question.title }}</p>
+        <div class="answers">
+          <ion-button
+          class="answer body-2"
+          *ngFor="let option of question.options"
+          [class]="question.answer === option ? 'select' : 'clear'"
+          (click)="question.answer = option"
+        >{{ option }}
+        </ion-button>
+        </div>
+      </ng-container>
+    </div>
+  </ion-row>
 </ion-content>
 <app-action-footer (submit)="submit()" [btnSubmitDisabled]="continueDisabled"></app-action-footer>
