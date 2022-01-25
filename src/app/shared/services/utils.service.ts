@@ -272,7 +272,11 @@ export class UtilsService {
       target: formOptions.target || '#form',
       onFormReady: function($form) {
         hiddenValues.forEach(v => {
-          document.querySelector(`.hs-form input[name="${ v.name }"]`).value = v.value;
+          if (environment.onboarding.formInRawHtml) {
+            document.querySelector(`.hs-form input[name="${ v.name }"]`).value = v.value;
+          } else {
+            document.getElementById('hs-form-iframe-0').contentDocument.querySelector(`input[name="${ v.name }"]`).value = v.value;
+          }
         });
       }
     });
