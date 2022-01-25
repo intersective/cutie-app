@@ -13,7 +13,7 @@ p {
     box-shadow: none;
     height: 34px;
     font-family: Roboto;
-    font-weight: 700;
+    font-weight: unset;
     box-sizing: border-box;
     --border-radius: 6px;
     --box-shadow: none;
@@ -22,6 +22,7 @@ p {
     --padding-start: 20px;
     --padding-end: 20px;
     text-transform: capitalize;
+    letter-spacing: unset;
     &.clear {
       border: 1px solid #DFDFE8;
       border-radius: 6px;

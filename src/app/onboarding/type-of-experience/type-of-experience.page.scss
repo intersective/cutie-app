@@ -1,10 +1,14 @@
 .exp-card {
   box-shadow: none;
-  border: 1px solid #DFDFE8;
+  border: 1px solid #dfdfe8;
   max-width: 730px;
   min-width: 86px;
   cursor: pointer;
   ion-card-content {
+    padding: 20px 18px 20px 20px;
+    .icon-col {
+      margin-right: 20px;
+    }
     .title-container {
       display: flex;
       flex-direction: row;
@@ -43,6 +47,11 @@
       flex-wrap: wrap;
       align-items: center;
       justify-content: center;
+      padding: 9px 20px 9px 20px !important;
+      font-family: Roboto;
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 16px;
     }
   }
 
@@ -52,5 +61,4 @@
       background-color: white;
     }
   }
-
 }
