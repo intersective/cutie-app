@@ -6,8 +6,8 @@
   [icon]="projectIcon"
 ></app-onboarding-header>
 <ion-content>
-  <ion-grid [class]="!utils.isMobile() ? 'page-padding' : 'mobile-page-padding'" class="ion-no-padding">
-    <ion-row *ngIf="!briefs || !briefs.length">
+  <ion-grid [class]="!utils.isMobile() ? 'page-padding' : 'mobile-page-padding'" class="ion-no-padding vertical-aligned-container">
+    <ion-row class="ion-no-padding ion-align-items-center vertical-aligned-container" *ngIf="!briefs || !briefs.length">
       <ion-col *ngFor="let b of [1,2,3,4]" size="12" size-md="3">
         <ion-card>
           <ion-card-header>
@@ -26,7 +26,7 @@
 
       </ion-col>
     </ion-row>
-    <ion-row class="ion-no-padding" *ngIf="briefs && briefs.length">
+    <ion-row class="ion-no-padding ion-align-items-center vertical-aligned-container" *ngIf="briefs && briefs.length">
       <ion-col class="ion-no-padding ion-margin-end ion-margin-top" *ngFor="let brief of briefs; let i = index" size="12" size-md="2">
         <ion-card class="brief-card ion-no-margin" [class]="utils.isMobile() ? 'mobile' : ''">
           <ion-card-content>
