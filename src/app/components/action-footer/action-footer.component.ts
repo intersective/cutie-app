@@ -23,7 +23,10 @@ export class ActionFooterComponent {
     if (this.hasCancelEvent) {
       return this.cancel.emit();
     }
-    this.analytics.track('[Onboarding] Cancel button clicked');
+    this.analytics.track('Click', {
+      category: `OBG - Navigation`,
+      label: 'Cancel'
+    });
     this.router.navigate(['onboarding']);
   }
 

@@ -41,7 +41,10 @@ export class TemplateInfoComponent implements OnInit {
       name: this.title,
       duration: this.template.projects[this.durationIndex].duration,
     };
-    this.analytics.track('[Onboarding] Template selected', selectedTemplate);
+    this.analytics.track('Select', {
+      category: `OBG - Industry Project - Templates`,
+      label: `${ selectedTemplate.name } - ${ selectedTemplate.duration }`
+    });
     this.storage.setOnboardingData({
       template: selectedTemplate
     });

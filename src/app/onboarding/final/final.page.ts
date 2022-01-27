@@ -36,7 +36,8 @@ export class FinalPage implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.utils.createHubSpotForm({
-      formId: environment.onboarding.finalFormId
+      formId: environment.onboarding.finalFormId,
+      category: `OBG - ${ this.onboardingData.expType } - Create`
     }, [{
       name: environment.onboarding.finalFormHiddenFieldName,
       value: this.getFormatedOnboardingData()

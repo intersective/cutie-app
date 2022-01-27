@@ -50,8 +50,9 @@ export class PreBriefsPage implements OnInit {
   }
 
   navigate(i: number) {
-    this.analytics.track('[Onboarding] Project Briefs Options clicked', {
-      option: this.items[i].title
+    this.analytics.track('Click', {
+      category: `OBG - Industry Project - Project Briefs Options`,
+      label: this.items[i].title
     });
     if (this.items[i].navigate) {
       this.router.navigate(this.items[i].navigate);
