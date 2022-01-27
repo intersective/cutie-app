@@ -49,7 +49,7 @@ export class TemplatesPage implements OnInit {
   customExperience() {
     this.analytics.track('Click', {
       category: `OBG - Industry Project - Templates`,
-      label: "Custom Experience"
+      label: 'Custom Experience'
     });
     this.popupService.showOnboardingPopup('templates');
   }

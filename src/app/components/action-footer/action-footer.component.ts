@@ -25,7 +25,7 @@ export class ActionFooterComponent {
     }
     this.analytics.track('Click', {
       category: `OBG - Navigation`,
-      label: "Cancel"
+      label: 'Cancel'
     });
     this.router.navigate(['onboarding']);
   }
