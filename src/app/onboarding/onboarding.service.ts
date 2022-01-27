@@ -113,7 +113,13 @@ export class OnboardingService {
     if (!res || !res.data || !res.data.onboardingTemplate) {
       return null;
     }
-    return res.data.onboardingTemplate;
+    const templateData = res.data.onboardingTemplate;
+    templateData.projects.forEach((p, pi) => {
+      p.activities.forEach((a, ai) =>
+        a.tasks.forEach((t, ti) => templateData.projects[pi].activities[ai].tasks[ti].type = t.type.toLowerCase())
+      );
+    });
+    return templateData;
   }
 
   getBriefs(templateUuid: string, duration: string): Observable<[Brief]> {
