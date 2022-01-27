@@ -24,8 +24,9 @@ export class OnboardingHeaderComponent {
   ) { }
 
   goBack() {
-    this.analytics.track('[Onboarding] Back button clicked', {
-      title: this.title
+    this.analytics.track('Click', {
+      category: `OBG - Navigation`,
+      label: "Back"
     });
     this.router.navigate(this.back);
   }

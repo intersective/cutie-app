@@ -6,6 +6,7 @@ import { map, filter } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { StorageService } from '@services/storage.service';
 import { environment } from '@environments/environment';
+import { AnalyticsService } from './analytics.service';
 
 // @TODO: enhance Window reference later, we shouldn't refer directly to browser's window object like this
 declare var window: any;
@@ -24,6 +25,7 @@ export class UtilsService {
     // @Inject(DOCUMENT) private document: Document,
     private storage: StorageService,
     private http: HttpClient,
+    private analytics: AnalyticsService
   ) {
     if (_) {
       this.lodash = _;
@@ -262,7 +264,7 @@ export class UtilsService {
    * This is used to create a HubSpot form on the page
    */
   createHubSpotForm(
-    formOptions: { formId: string, target?: string },
+    formOptions: { formId: string, target?: string, category?: string },
     hiddenValues?: [{ name: string; value: any }]
   ) {
     hbspt.forms.create({
@@ -277,6 +279,11 @@ export class UtilsService {
           } else {
             document.getElementById('hs-form-iframe-0').contentDocument.querySelector(`input[name="${ v.name }"]`).value = v.value;
           }
+        });
+      },
+      onFormSubmit: function($form) {
+        this.analytics.track('Submit', {
+          category: formOptions.category
         });
       }
     });

@@ -1,4 +1,5 @@
 import { AfterViewInit, Component } from '@angular/core';
+import { StorageService } from '@app/shared/services/storage.service';
 import { UtilsService } from '@app/shared/services/utils.service';
 import { environment } from '@environments/environment';
 import { ModalController } from '@ionic/angular';
@@ -15,11 +16,13 @@ export class OnboardingFormComponent implements AfterViewInit {
   constructor(
     public modalController: ModalController,
     private utils: UtilsService,
+    private storage: StorageService
   ) {}
 
   ngAfterViewInit() {
     this.utils.createHubSpotForm({
-      formId: environment.onboarding.popupFormId
+      formId: environment.onboarding.popupFormId,
+      category: `OBG - ${ this.storage.getOnboardingData().expType } - Request`
     });
   }
 

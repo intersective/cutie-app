@@ -41,8 +41,13 @@ export class TemplatePage implements OnInit {
       name: this.template.name,
       duration: this.template.projects[this.durationIndex].duration,
     };
-    this.analytics.track('[Onboarding] Template selected', selectedTemplate);
-    // @TODO save user's choice in local storage
+    this.analytics.track('Select', {
+      category: `OBG - ${ this.type } - Learning Design`,
+      label: selectedTemplate.duration
+    });
+    this.storage.setOnboardingData({
+      template: selectedTemplate
+    });
     this.router.navigate(['onboarding', 'final', 3, { templateType: this.type }]);
   }
 
