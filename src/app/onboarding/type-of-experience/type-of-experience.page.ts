@@ -64,16 +64,18 @@ export class TypeOfExperiencePage implements OnInit {
   }
 
   navigate(i: number) {
-    this.analytics.track('[Onboarding] Experience Type Selection clicked', {
-      name: this.items[i].title
+    this.analytics.track('Click', {
+      category: 'OBG - Experience Type Selection',
+      label: this.items[i].title
     });
     this.storage.setOnboardingData({ expType: this.items[i].title });
     this.router.navigate(this.items[i].navigate);
   }
 
   other() {
-    this.analytics.track('[Onboarding] Experience Type Selection clicked', {
-      name: 'Other'
+    this.analytics.track('Click', {
+      category: 'OBG - Experience Type Selection',
+      label: 'Other'
     });
     this.popupService.showOnboardingPopup('other');
   }

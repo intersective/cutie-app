@@ -1,6 +1,7 @@
 .template-info-card {
   overflow: auto;
   margin: 0;
+  padding-bottom: 60px;
 
   ion-card-header {
     padding-left: 20px;
@@ -28,6 +29,10 @@
         width: fit-content;
       }
     }
+  }
+
+  div {
+    z-index: 1;
   }
 
   &.mobile {

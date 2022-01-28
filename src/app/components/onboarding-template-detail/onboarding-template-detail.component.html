@@ -32,12 +32,12 @@
       <ion-col class="LDT-container ion-padding-start ion-padding-end" size="12" size-md="5">
         <h2>Learning Design Template</h2>
         <ion-label class="dark-blue-75 duration-label subtitle-2">Duration</ion-label>
-  
+
         <select *ngIf="template" class="form-select duration-select" [(ngModel)]="durationIndex" (change)="changeDuration()">
           <option *ngFor="let project of template.projects; let i = index" [value]="i">{{ project.duration }}</option>
         </select>
         <ion-skeleton-text *ngIf="!template" animated style="width: 50px"></ion-skeleton-text>
-  
+
         <div class="alert alert-warning mt-2" role="alert">
           <div class="icon-container">
             <span class="icon">
@@ -46,7 +46,7 @@
           </div>
           <ion-label>You can modify this learning flow once the experience is created.</ion-label>
         </div>
-  
+
         <ng-container *ngIf="template">
           <ng-container *ngFor="let activity of template.projects[durationIndex].activities">
             <div class="activity-container">
@@ -63,17 +63,17 @@
                     <i *ngIf="task.type === 'reflection'" class="fas fa-brain"></i>
                   </span>
                 </div>
-                <b class="me-2">{{ task.type }}:</b>{{ task.name }}
+                <b class="me-2 task-type">{{ task.type }}:</b>{{ task.name }}
               </div>
             </div>
           </ng-container>
         </ng-container>
-  
+
         <ng-container *ngIf="!template">
           <ion-item lines="none" color="primary"><ion-skeleton-text animated></ion-skeleton-text></ion-item>
           <ion-item *ngFor="let a of [1,2,3]" lines="none"><ion-skeleton-text animated></ion-skeleton-text></ion-item>
         </ng-container>
-  
+
       </ion-col>
     </ion-row>
   </ion-grid>

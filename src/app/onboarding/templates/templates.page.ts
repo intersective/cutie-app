@@ -47,14 +47,17 @@ export class TemplatesPage implements OnInit {
   }
 
   customExperience() {
-    this.analytics.track('[Onboarding] Industry Project custom template clicked');
+    this.analytics.track('Click', {
+      category: `OBG - Industry Project - Templates`,
+      label: 'Custom Experience'
+    });
     this.popupService.showOnboardingPopup('templates');
   }
 
   templateDetail(uuid: string, title: string) {
-    this.analytics.track('[Onboarding] Industry Project template clicked', {
-      uuid,
-      name: title
+    this.analytics.track('Click', {
+      category: `OBG - Industry Project - Templates`,
+      label: title
     });
     this.popupService.showTemplateInfo(uuid, title);
   }

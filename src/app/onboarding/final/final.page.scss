@@ -72,6 +72,7 @@
       font-weight: 700;
       line-height: 18px;
       color: var(--Practera-grey-100);
+      margin-bottom: 12px;
     }
     .sub-title {
       font-family: Roboto;
@@ -79,10 +80,16 @@
       font-weight: 400;
       line-height: 14px;
       color: var(--Practera-grey-50);
+      margin-bottom: 12px;
+    }
+    .separater {
+      margin: 0;
+      width: 50px;
+      color: var(--Practera-grey-50);
     }
     .circle {
-      width: 38px;
-      height: 38px;
+      width: 36px;
+      height: 36px;
       border: 1px solid var(--Practera-violet-100);
       box-sizing: border-box;
       border-radius: 50%;

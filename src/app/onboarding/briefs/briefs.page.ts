@@ -49,20 +49,28 @@ export class BriefsPage implements OnInit {
   }
 
   checkBrief(index: number) {
-    this.analytics.track('[Onboarding] Project Brief clicked', {
-      uuid: this.briefs[index].uuid,
-      name: this.briefs[index].name
+    this.analytics.track('Click', {
+      category: `OBG - Industry Project - Project Briefs`,
+      label: this.briefs[index].name
     });
     this.popup.showBriefInfo(this.briefs[index]);
   }
 
   continue() {
     const briefs: { uuid: string; name: string }[] = [];
-    this.briefsSelected.forEach((b, i) => b ? briefs.push({
-      uuid: this.briefs[i].uuid,
-      name: this.briefs[i].name
-    }) : '');
-    this.analytics.track('[Onboarding] Project Briefs selected', { briefs });
+    this.briefsSelected.forEach((b, i) => {
+      if (b) {
+        briefs.push({
+          uuid: this.briefs[i].uuid,
+          name: this.briefs[i].name
+        });
+        this.analytics.track('Select', {
+          category: `OBG - Industry Project - Project Briefs`,
+          label: this.briefs[i].name
+        });
+      }
+    });
+
     this.storage.setOnboardingData({ briefs: briefs});
     this.router.navigate(['onboarding', 'final', 4]);
   }

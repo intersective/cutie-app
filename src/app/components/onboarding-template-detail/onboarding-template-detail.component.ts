@@ -33,10 +33,9 @@ export class OnboardingTemplateDetailComponent implements OnInit {
   }
 
   changeDuration() {
-    this.analytics.track('[Onboarding] Template Duration changed', {
-      uuid: this.template.uuid,
-      name: this.template.name,
-      duration: this.template.projects[this.durationIndex].duration
+    this.analytics.track('Change', {
+      category: `OBG - Learning Design Duration`,
+      label: this.template.projects[this.durationIndex].duration
     });
     this.durationChange.emit(this.durationIndex);
   }

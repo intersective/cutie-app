@@ -100,7 +100,13 @@ export class DetailsPage implements OnInit {
       answer: q.answer,
     }));
     this.storage.setOnboardingData({ qna });
-    this.analytics.track(`[Onboarding] ${ this.type } Segmentation answered`, { qna });
+    qna.forEach(q => {
+      this.analytics.track('Select', {
+        category: `OBG - ${ TERMS[this.type].name } - Experience Type Segmentation`,
+        label: `${ q.question } - ${ q.answer }`
+      });
+    });
+
     switch (this.type) {
       case 'industryProject':
         this.router.navigate(['onboarding', 'templates']);

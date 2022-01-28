@@ -36,6 +36,7 @@ export const environment = {
     portalId: '<CUSTOM_ONBOARDING_PORTAL_ID>',
     finalFormId: '<CUSTOM_ONBOARDING_FINAL_FORM_ID>',
     finalFormHiddenFieldName: '<CUSTOM_ONBOARDING_FINAL_FORM_HIDDEN_FIELD_NAME>',
+    formInRawHtml: '<CUSTOM_ONBOARDING_FORM_IN_RAW_HTML>',
     popupFormId: '<CUSTOM_ONBOARDING_POPUP_FORM_ID>'
   }
 };
