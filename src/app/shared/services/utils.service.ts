@@ -281,11 +281,11 @@ export class UtilsService {
           }
         });
       },
-      onFormSubmit: function($form) {
+      onFormSubmit: (function($form) {
         this.analytics.track('Submit', {
           category: formOptions.category
         });
-      }
+      }).bind(this)
     });
     window.jQuery = window.jQuery || function(nodeOrSelector) {
       if (typeof(nodeOrSelector) === 'string') {

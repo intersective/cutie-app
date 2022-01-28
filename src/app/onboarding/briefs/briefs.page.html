@@ -27,7 +27,7 @@
       </ion-col>
     </ion-row>
     <ion-row class="ion-no-padding ion-align-items-center vertical-aligned-container" *ngIf="briefs && briefs.length">
-      <ion-col class="ion-no-padding ion-margin-end ion-margin-top" *ngFor="let brief of briefs; let i = index" size="12" size-md="2">
+      <ion-col class="ion-no-padding ion-margin-end ion-margin-top" *ngFor="let brief of briefs; let i = index" size="12" size-md="3">
         <ion-card class="brief-card ion-no-margin" [class]="utils.isMobile() ? 'mobile' : ''">
           <ion-card-content>
             <input class="form-check-input float-end" type="checkbox" [(ngModel)]="briefsSelected[i]">
