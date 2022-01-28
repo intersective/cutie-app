@@ -81,6 +81,10 @@ export class OnboardingService {
   }
 
   getTemplateDetail(params: { uuid?: string, type?: string }): Observable<Template> {
+    // we don't need the apikey to query for template
+    if (this.storage.getUser().apikey) {
+      this.storage.setUser({ apikey: null });
+    }
     if (environment.demo) {
       return this.demo.getOnboardingTemplateDetail(params.type).pipe(map(this._handleOnBoardingTemplate));
     }
@@ -123,6 +127,10 @@ export class OnboardingService {
   }
 
   getBriefs(templateUuid: string, duration: string): Observable<[Brief]> {
+    // we don't need the apikey to query for templates
+    if (this.storage.getUser().apikey) {
+      this.storage.setUser({ apikey: null });
+    }
     if (environment.demo) {
       return this.demo.getOnboardingBriefs().pipe(map(this._handleBriefs));
     }
