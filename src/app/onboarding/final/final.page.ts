@@ -47,7 +47,7 @@ export class FinalPage implements OnInit, AfterViewInit {
   get experienceName() {
     let name = 'Experience';
     if (this.onboardingData && this.onboardingData.template.name) {
-      name = this.onboardingData.template.name;
+      name = `${ this.onboardingData.template.name } Experience`;
     }
     return name;
   }
