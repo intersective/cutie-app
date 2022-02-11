@@ -598,7 +598,7 @@ export class DemoService {
       uuid: '1-2',
       name: 'Growth & New Market Entry',
       abstract: 'Process when the business started may not be effective or even relevant anymore.',
-      leadImageUrl: './assets/template-library/accelerators.png'
+      leadImageUrl: 'https://cdn.pixabay.com/photo/2018/08/14/13/23/ocean-3605547__340.jpg'
     },
     {
       uuid: '1-3',
