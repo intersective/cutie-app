@@ -37,7 +37,9 @@
             <ion-col class="ion-no-padding ion-align-items-center ion-justify-content-center" *ngFor="let template of templates" size="12" size-md="4" size-lg="3">
               <ion-card class="template-card" [class]="utils.isMobile() ? 'mobile' : ''" (click)="templateDetail(template.uuid, template.name)">
                 <ion-card-content>
-                  <img [src]="template.leadImageUrl" class="w-100">
+                  <div class="image-container">
+                    <img [src]="template.leadImageUrl" class="w-100">
+                  </div>
                   <p class="title black subtitle-1">{{ template.name }}</p>
                   <p class="description ion-text-medium">{{ template.abstract }}</p>
                 </ion-card-content>
