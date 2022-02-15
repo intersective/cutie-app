@@ -49,7 +49,7 @@ jobs:
       STATUS: DEPLOYED
       REQUESTOR: ${{ github.event.inputs.REQUESTOR }}
       REASON: ${{ github.event.inputs.REASON }}
-      ENDPOINT: https://cutie.api.practera.com
+      ENDPOINT: new-admin.practera.com
       BRANCH_TAG_NAME: ${{ github.event.inputs.BRANCH_TAG_NAME }}
       CUTIEAPPS3: new-admin-live
       CUTIEAPPCDN: E3OEURB5XY00QG
