@@ -48,7 +48,7 @@
     "apollo-link": "^1.2.14",
     "bootstrap": "^5.0.0-beta1",
     "core-js": "^2.5.4",
-    "filestack-js": "^3.16.0",
+    "filestack-js": "^3.25.0",
     "graphql": "^15.3.0",
     "graphql-tag": "^2.11.0",
     "lodash": "^4.17.21",
