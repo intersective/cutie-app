@@ -7,7 +7,9 @@ name: Github Action for Dependabot - Automerge
 ################################################
 #  GITHUB ACTION EVENT TRIGGER
 ################################################    
-on: pull_request_target
+# on: pull_request_target
+on:
+  workflow_dispatch:
 
 # Caution: This workflow enables write permission to Dependabot PR  
 permissions:
