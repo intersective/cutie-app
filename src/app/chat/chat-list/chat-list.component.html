@@ -14,7 +14,7 @@
     <!-- announcement chats -->
     <ion-item [lines]="'full'" color="light-grey-75" class="create-channel-container">
       <ion-icon class="section-icon" color="ocean" name="megaphone" slot="start"></ion-icon>
-      <ion-button class="arrow-button" slot="start" fill="clear" size="small" (click)="expandAndShrinkMessageSections('announcement')">
+      <ion-button class="arrow-button" slot="start" fill="clear" size="small" (click)="isAnnouncementChatExpand = !isAnnouncementChatExpand">
         <ion-icon *ngIf="isAnnouncementChatExpand" color="grey-75" slot="icon-only" name="caret-up-sharp"></ion-icon>
         <ion-icon *ngIf="!isAnnouncementChatExpand" color="grey-75" slot="icon-only" name="caret-down-sharp"></ion-icon>
       </ion-button>
@@ -68,7 +68,7 @@
     <!-- group chats -->
     <ion-item [lines]="'full'" color="light-grey-75" class="create-channel-container">
       <ion-icon class="section-icon" color="ocean" name="people-circle" slot="start"></ion-icon>
-      <ion-button class="arrow-button" slot="start" fill="clear" size="small" (click)="expandAndShrinkMessageSections('group')">
+      <ion-button class="arrow-button" slot="start" fill="clear" size="small" (click)="isGroupChatExpand = !isGroupChatExpand">
         <ion-icon *ngIf="isGroupChatExpand" color="grey-75" slot="icon-only" name="caret-up-sharp"></ion-icon>
         <ion-icon *ngIf="!isGroupChatExpand" color="grey-75" slot="icon-only" name="caret-down-sharp"></ion-icon>
       </ion-button>
@@ -117,7 +117,7 @@
     <!-- direct messages -->
     <ion-item [lines]="'full'" color="light-grey-75" class="create-channel-container">
       <ion-icon class="section-icon" color="ocean" name="mail" slot="start"></ion-icon>
-      <ion-button class="arrow-button" slot="start" fill="clear" size="small" (click)="expandAndShrinkMessageSections('direct')">
+      <ion-button class="arrow-button" slot="start" fill="clear" size="small" (click)="isDirectChatExpand = !isDirectChatExpand">
         <ion-icon *ngIf="isDirectChatExpand" color="grey-75" slot="icon-only" name="caret-up-sharp"></ion-icon>
         <ion-icon *ngIf="!isDirectChatExpand" color="grey-75" slot="icon-only" name="caret-down-sharp"></ion-icon>
       </ion-button>

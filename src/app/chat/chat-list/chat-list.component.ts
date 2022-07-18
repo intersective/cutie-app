@@ -255,24 +255,6 @@ export class ChatListComponent {
   }
 
   /**
-   * This will expand or shrink different chat groups sections.
-   * @param type message section type
-   */
-  expandAndShrinkMessageSections(type) {
-    switch (type) {
-      case 'direct':
-        this.isDirectChatExpand = !this.isDirectChatExpand;
-        break;
-      case 'group':
-        this.isGroupChatExpand = !this.isGroupChatExpand;
-        break;
-      case 'announcement':
-        this.isAnnouncementChatExpand = !this.isAnnouncementChatExpand;
-        break;
-    }
-  }
-
-  /**
    * This will open create direct chat channel popup to create direct channel.
    */
   async openCreateDirectChatPopup() {
