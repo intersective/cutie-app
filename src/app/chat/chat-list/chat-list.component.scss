@@ -75,13 +75,34 @@ clickable-item {
     margin-left: 4px !important;
 
     ion-badge {
-      margin-top: 2px;
       max-width: 43px !important;
       max-height: 20px;
       min-width: 20px;
       min-height: 20px;
       border-radius: 8px !important;
       width: fit-content;
+    }
+
+    .indicator-container {
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-content: center;
+      ion-button {
+        cursor: default !important;
+        font-size: 11px;
+        margin: 0;
+        margin-right: 9px;
+        --padding-start: 0;
+        --padding-end: 0;
+        &.info {
+          font-size: 14px;
+        }
+        &::part(native) {
+          cursor: default !important;
+        }
+      }
     }
 
   }
@@ -111,4 +132,9 @@ clickable-item {
 .arrow-button {
   --ripple-color: transparent;
   --color: rgba(0, 0, 0, 0.6);
+  margin-right: 12px;
+}
+
+.section-icon {
+  margin-right: 0;
 }

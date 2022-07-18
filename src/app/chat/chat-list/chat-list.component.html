@@ -11,24 +11,73 @@
     </div>
   </ng-container>
   <ion-list class="desktop-view ion-no-padding">
-    <!-- cohort chat -->
-    <ion-item [lines]="'none'" class="create-channel-container">
+    <!-- announcement chats -->
+    <ion-item [lines]="'none'" color="light-grey-75" class="create-channel-container">
+      <ion-icon class="section-icon" color="ocean" name="megaphone" slot="start"></ion-icon>
+      <ion-button class="arrow-button" slot="start" fill="clear" size="small" (click)="expandAndShrinkMessageSections('announcement')">
+        <ion-icon *ngIf="isAnnouncementChatExpand" color="grey-75" slot="icon-only" name="caret-up-sharp"></ion-icon>
+        <ion-icon *ngIf="!isAnnouncementChatExpand" color="grey-75" slot="icon-only" name="caret-down-sharp"></ion-icon>
+      </ion-button>
       <ion-label>
-        <p class="chat-name subtitle-1 black">Create cohort chat</p>
+        <p class="chat-name subtitle-2 black">Announcement Channels</p>
       </ion-label>
       <ion-button slot="end" fill="clear" size="small" (click)="createCohortChatChannel()">
-        <ion-icon color="primary" slot="icon-only" name="add-outline"></ion-icon>
+        <ion-icon color="ocean" slot="icon-only" name="add-outline"></ion-icon>
       </ion-button>
     </ion-item>
+    <ng-container *ngIf="isAnnouncementChatExpand">
+      <clickable-item *ngFor="let chat of announcementChatChannels; let i = index" (click)="goToChatRoom(chat)"
+        [active]="currentChat && currentChat.uuid == chat.uuid" [ngClass]="{'unread': chat.unreadMessageCount > 0}"
+        [lines]="'none'">
+        <ion-avatar slot="start" text-center>
+          <img [src]="chat.avatar" alt="{{chat.name}}">
+        </ion-avatar>
+        <ion-label>
+          <div class="chat-name-container caption">
+            <p class="chat-name subtitle-1" [ngClass]="{'bold': chat.unreadMessageCount > 0}">{{chat.name}}</p>
+          </div>
+          <ng-container *ngIf="chat.lastMessage; else messgeElseBlock">
+            <p class="body-2">{{chat.lastMessage}}</p>
+          </ng-container>
+          <ng-template #messgeElseBlock>
+            <p class="body-2 gray-2">No messages.</p>
+          </ng-template>
+        </ion-label>
+        <div slot="end" class="time-container">
+          <div class="caption gray-2">
+            <span>{{getChatDate(chat.lastMessageCreated)}}</span>
+          </div>
+          <div class="indicator-container">
+            <ng-container *ngIf="chat.scheduledMessageCount > 0">
+              <ion-button fill="clear" size="small" title="{{'This chat have '+ chat.scheduledMessageCount +' scheduled messages'}}">
+                <ion-icon color="grey-50" name="calendar" slot="icon-only"></ion-icon>
+              </ion-button>
+            </ng-container>
+            <ng-container *ngIf="chat.isAnnouncement">
+              <ion-button class="info" fill="clear" size="small" title="This channel is for institution announcements. Only admins and coordinator can send messages on it.">
+                <ion-icon color="grey-50" name="information-circle" slot="icon-only"></ion-icon>
+              </ion-button>
+            </ng-container>
+            <ng-container *ngIf="chat.unreadMessageCount > 0">
+              <ion-badge class="caption">{{chat.unreadMessageCount}}</ion-badge>
+            </ng-container>
+          </div>
+        </div>
+      </clickable-item>
+    </ng-container>
     <!-- group chats -->
-    <ion-item [lines]="'none'" class="create-channel-container">
+    <ion-item [lines]="'none'" color="light-grey-75" class="create-channel-container">
+      <ion-icon class="section-icon" color="ocean" name="people-circle" slot="start"></ion-icon>
       <ion-button class="arrow-button" slot="start" fill="clear" size="small" (click)="expandAndShrinkMessageSections('group')">
-        <ion-icon *ngIf="isGroupChatExpand" slot="icon-only" name="caret-up-sharp"></ion-icon>
-        <ion-icon *ngIf="!isGroupChatExpand" slot="icon-only" name="caret-down-sharp"></ion-icon>
+        <ion-icon *ngIf="isGroupChatExpand" color="grey-75" slot="icon-only" name="caret-up-sharp"></ion-icon>
+        <ion-icon *ngIf="!isGroupChatExpand" color="grey-75" slot="icon-only" name="caret-down-sharp"></ion-icon>
       </ion-button>
       <ion-label>
-        <p class="chat-name subtitle-2 gray-2">Group Chats</p>
+        <p class="chat-name subtitle-2 black">Group Chats</p>
       </ion-label>
+      <ion-button slot="end" fill="clear" size="small" (click)="createCohortChatChannel()">
+        <ion-icon color="ocean" slot="icon-only" name="add-outline"></ion-icon>
+      </ion-button>
     </ion-item>
     <ng-container *ngIf="isGroupChatExpand">
       <clickable-item *ngFor="let chat of groupChatChannels; let i = index" (click)="goToChatRoom(chat)"
@@ -52,23 +101,31 @@
           <div class="caption gray-2">
             <span>{{getChatDate(chat.lastMessageCreated)}}</span>
           </div>
-          <ng-container *ngIf="chat.unreadMessageCount > 0">
-            <ion-badge class="caption">{{chat.unreadMessageCount}}</ion-badge>
-          </ng-container>
+          <div class="indicator-container">
+            <ng-container *ngIf="chat.scheduledMessageCount > 0">
+              <ion-button fill="clear" size="small" title="{{'This chat have '+ chat.scheduledMessageCount +' scheduled messages'}}">
+                <ion-icon color="grey-50" name="calendar" slot="icon-only"></ion-icon>
+              </ion-button>
+            </ng-container>
+            <ng-container *ngIf="chat.unreadMessageCount > 0">
+              <ion-badge class="caption">{{chat.unreadMessageCount}}</ion-badge>
+            </ng-container>
+          </div>
         </div>
       </clickable-item>
     </ng-container>
     <!-- direct messages -->
-    <ion-item [lines]="'none'" class="create-channel-container">
+    <ion-item [lines]="'none'" color="light-grey-75" class="create-channel-container">
+      <ion-icon class="section-icon" color="ocean" name="mail" slot="start"></ion-icon>
       <ion-button class="arrow-button" slot="start" fill="clear" size="small" (click)="expandAndShrinkMessageSections('direct')">
-        <ion-icon *ngIf="isDirectChatExpand" slot="icon-only" name="caret-up-sharp"></ion-icon>
-        <ion-icon *ngIf="!isDirectChatExpand" slot="icon-only" name="caret-down-sharp"></ion-icon>
+        <ion-icon *ngIf="isDirectChatExpand" color="grey-75" slot="icon-only" name="caret-up-sharp"></ion-icon>
+        <ion-icon *ngIf="!isDirectChatExpand" color="grey-75" slot="icon-only" name="caret-down-sharp"></ion-icon>
       </ion-button>
       <ion-label>
-        <p class="chat-name subtitle-2 gray-2">Direct Messages</p>
+        <p class="chat-name subtitle-2 black">Direct Messages</p>
       </ion-label>
       <ion-button slot="end" fill="clear" size="small" (click)="openCreateDirectChatPopup()">
-        <ion-icon color="primary" slot="icon-only" name="add-outline"></ion-icon>
+        <ion-icon color="ocean" slot="icon-only" name="add-outline"></ion-icon>
       </ion-button>
     </ion-item>
     <ng-container *ngIf="isDirectChatExpand">
@@ -101,9 +158,16 @@
           <div class="caption gray-2">
             <span>{{getChatDate(chat.lastMessageCreated)}}</span>
           </div>
-          <ng-container *ngIf="chat.unreadMessageCount > 0">
-            <ion-badge class="caption">{{chat.unreadMessageCount}}</ion-badge>
-          </ng-container>
+          <div class="indicator-container">
+            <ng-container *ngIf="chat.scheduledMessageCount > 0">
+              <ion-button fill="clear" size="small" title="{{'This chat have '+ chat.scheduledMessageCount +' scheduled messages'}}">
+                <ion-icon color="grey-50" name="calendar" slot="icon-only"></ion-icon>
+              </ion-button>
+            </ng-container>
+            <ng-container *ngIf="chat.unreadMessageCount > 0">
+              <ion-badge class="caption">{{chat.unreadMessageCount}}</ion-badge>
+            </ng-container>
+          </div>
         </div>
       </clickable-item>
     </ng-container>

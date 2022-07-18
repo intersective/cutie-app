@@ -1,9 +1,57 @@
-.surface-light {
-  color: var(--practera-surface-light) !important;
-}
-.surface {
-  color: var(--practera-surface) !important;
-}
+/**
+This scss file generate css classes for the font colors and background colors.
+And setting practera branding colors as ionic theme colors.
+font color css class exmple
+  - surface
+  - grey-75
+  - ocean-100
+  - ocean-75
+  - ocean-50
+  - violet-100
+  - violet-75
+  - violet-50
+background color css class exmple
+  - bg-grey-75
+  - bg-ocean-100
+  - bg-ocean-75
+  - bg-ocean-50
+  - bg-violet-100
+  - bg-violet-75
+  - bg-violet-50
+**/
+$colors: (
+  surface: var(--practera-surface),
+  surface-light: var(--practera-surface-light),
+  black: black,
+  arctic-100: var(--practera-arctic-100),
+  arctic-75: var(--practera-arctic-75),
+  arctic-50: var(--practera-arctic-50),
+  arctic-25: var(--practera-arctic-25),
+  lime-100: var(--practera-lime-100),
+  lime-75: var(--practera-lime-75),
+  lime-50: var(--practera-lime-50),
+  lime-25: var(--practera-lime-25),
+  violet-100: var(--practera-violet-100),
+  violet-75: var(--practera-violet-75),
+  violet-50: var(--practera-violet-50),
+  violet-25: var(--practera-violet-25),
+  ocean-100: var(--practera-ocean-100),
+  ocean-75: var(--practera-ocean-75),
+  ocean-50: var(--practera-ocean-50),
+  ocean-25: var(--practera-ocean-25),
+  dark-blue-100: var(--practera-dark-blue-100),
+  dark-blue-75: var(--practera-dark-blue-75),
+  dark-blue-50: var(--practera-dark-blue-50),
+  dark-blue-25: var(--practera-dark-blue-25),
+  grey-100: var(--practera-grey-100),
+  grey-75: var(--practera-grey-75),
+  grey-50: var(--practera-grey-50),
+  grey-25: var(--practera-grey-25),
+  light-grey-100: var(--practera-light-grey-100),
+  light-grey-75: var(--practera-light-grey-75),
+  light-grey-50: var(--practera-light-grey-50),
+  light-grey-25: var(--practera-light-grey-25),
+);
 .gray-0 {
   color: var(--practera-30-Percent-gray) !important;
 }
@@ -19,23 +67,182 @@
 .grey-100 {
   color: var(--Practera-grey-100) !important;
 }
-.dark-blue-100 {
-  color: var(--practera-dark-blue-100) !important;
-}
-.dark-blue-75 {
-  color: var(--Practera-dark-blue-75) !important;
-}
-.ocean-100 {
-  color: var(--practera-ocean-100) !important;
-}
-.black {
-  color: black !important;
-}
-
 
 .textarea {
   border-color: #ccc;
     border-width: 1px;
     border-style: dashed;
     border-radius: 5px;
+}
+
+@mixin get-font-color-style($class-name) {
+  $value: map-get($colors, $class-name);
+
+  color: $value !important;
+}
+
+@mixin get-bg-color-style($class-name) {
+  $value: map-get($colors, $class-name);
+
+  background-color: $value !important;
+  --background: $value !important;
+}
+
+@each $class-name, $value in $colors {
+  .#{""+$class-name} {
+    @include get-font-color-style($class-name);
+  }
+  .bg-#{""+$class-name} {
+    @include get-bg-color-style($class-name);
+  }
+}
+
+/** setting branding colors as Ionic theme **/
+
+.ion-color-arctic {
+	color: var(--practera-arctic-100);
+	--ion-color-base: var(--practera-arctic-100);
+	--ion-color-base-rgb: var(--practera-arctic-100-rgb);
+	--ion-color-contrast: var(--practera-arctic-100-contrast);
+	--ion-color-contrast-rgb: var(--practera-arctic-100-contrast-rgb);
+	--ion-color-shade: var(--practera-arctic-100-shade);
+	--ion-color-tint: var(--practera-arctic-100-tint);
+}
+
+.ion-color-lime {
+	color: var(--practera-lime-100);
+	--ion-color-base: var(--practera-lime-100);
+	--ion-color-base-rgb: var(--practera-lime-100-rgb);
+	--ion-color-contrast: var(--practera-lime-100-contrast);
+	--ion-color-contrast-rgb: var(--practera-lime-100-contrast-rgb);
+	--ion-color-shade: var(--practera-lime-100-shade);
+	--ion-color-tint: var(--practera-lime-100-tint);
+}
+
+.ion-color-violet {
+	color: var(--practera-violet-100);
+	--ion-color-base: var(--practera-violet-100);
+	--ion-color-base-rgb: var(--practera-violet-100-rgb);
+	--ion-color-contrast: var(--practera-violet-100-contrast);
+	--ion-color-contrast-rgb: var(--practera-violet-100-contrast-rgb);
+	--ion-color-shade: var(--practera-violet-100-shade);
+	--ion-color-tint: var(--practera-violet-100-tint);
+}
+
+.ion-color-ocean {
+	color: var(--practera-ocean-100);
+	--ion-color-base: var(--practera-ocean-100);
+	--ion-color-base-rgb: var(--practera-ocean-100-rgb);
+	--ion-color-contrast: var(--practera-ocean-100-contrast);
+	--ion-color-contrast-rgb: var(--practera-ocean-100-contrast-rgb);
+	--ion-color-shade: var(--practera-ocean-100-shade);
+	--ion-color-tint: var(--practera-ocean-100-tint);
+}
+
+.ion-color-dark-blue {
+	color: var(--practera-dark-blue-100);
+	--ion-color-base: var(--practera-dark-blue-100);
+	--ion-color-base-rgb: var(--practera-dark-blue-100-rgb);
+	--ion-color-contrast: var(--practera-dark-blue-100-contrast);
+	--ion-color-contrast-rgb: var(--practera-dark-blue-100-contrast-rgb);
+	--ion-color-shade: var(--practera-dark-blue-100-shade);
+	--ion-color-tint: var(--practera-dark-blue-100-tint);
+}
+
+.ion-color-yellow {
+	--ion-color-base: var(--practera-yellow-100);
+	--ion-color-base-rgb: var(--practera-yellow-100-rgb);
+	--ion-color-contrast: var(--practera-yellow-100-contrast);
+	--ion-color-contrast-rgb: var(--practera-yellow-100-contrast-rgb);
+	--ion-color-shade: var(--practera-yellow-100-shade);
+	--ion-color-tint: var(--practera-yellow-100-tint);
+}
+
+.ion-color-orange {
+	--ion-color-base: var(--practera-orange-100);
+	--ion-color-base-rgb: var(--practera-orange-100-rgb);
+	--ion-color-contrast: var(--practera-orange-100-contrast);
+	--ion-color-contrast-rgb: var(--practera-orange-100-contrast-rgb);
+	--ion-color-shade: var(--practera-orange-100-shade);
+	--ion-color-tint: var(--practera-orange-100-tint);
+}
+
+.ion-color-grey-100 {
+	color: var(--practera-grey-100);
+	--ion-color-base: var(--practera-grey-100);
+	--ion-color-base-rgb: var(--practera-grey-100-rgb);
+	--ion-color-contrast: var(--practera-grey-100-contrast);
+	--ion-color-contrast-rgb: var(--practera-grey-100-contrast-rgb);
+	--ion-color-shade: var(--practera-grey-100-shade);
+	--ion-color-tint: var(--practera-grey-100-tint);
+}
+
+.ion-color-grey-75 {
+	color: var(--practera-grey-75);
+	--ion-color-base: var(--practera-grey-75);
+	--ion-color-base-rgb: var(--practera-grey-75-rgb);
+	--ion-color-contrast: var(--practera-grey-75-contrast);
+	--ion-color-contrast-rgb: var(--practera-grey-75-contrast-rgb);
+	--ion-color-shade: var(--practera-grey-75-shade);
+	--ion-color-tint: var(--practera-grey-75-tint);
+}
+
+.ion-color-grey-50 {
+	color: var(--practera-grey-50);
+	--ion-color-base: var(--practera-grey-50);
+	--ion-color-base-rgb: var(--practera-grey-50-rgb);
+	--ion-color-contrast: var(--practera-grey-50-contrast);
+	--ion-color-contrast-rgb: var(--practera-grey-50-contrast-rgb);
+	--ion-color-shade: var(--practera-grey-50-shade);
+	--ion-color-tint: var(--practera-grey-50-tint);
+}
+
+.ion-color-grey-25 {
+	color: var(--practera-grey-25);
+	--ion-color-base: var(--practera-grey-25);
+	--ion-color-base-rgb: var(--practera-grey-25-rgb);
+	--ion-color-contrast: var(--practera-grey-25-contrast);
+	--ion-color-contrast-rgb: var(--practera-grey-25-contrast-rgb);
+	--ion-color-shade: var(--practera-grey-25-shade);
+	--ion-color-tint: var(--practera-grey-25-tint);
+}
+
+.ion-color-light-grey-100 {
+	color: var(--practera-light-grey-100);
+	--ion-color-base: var(--practera-light-grey-100);
+	--ion-color-base-rgb: var(--practera-light-grey-100-rgb);
+	--ion-color-contrast: var(--practera-light-grey-100-contrast);
+	--ion-color-contrast-rgb: var(--practera-light-grey-100-contrast-rgb);
+	--ion-color-shade: var(--practera-light-grey-100-shade);
+	--ion-color-tint: var(--practera-light-grey-100-tint);
+}
+
+.ion-color-light-grey-75 {
+	color: var(--practera-light-grey-75);
+	--ion-color-base: var(--practera-light-grey-75);
+	--ion-color-base-rgb: var(--practera-light-grey-75-rgb);
+	--ion-color-contrast: var(--practera-light-grey-75-contrast);
+	--ion-color-contrast-rgb: var(--practera-light-grey-75-contrast-rgb);
+	--ion-color-shade: var(--practera-light-grey-75-shade);
+	--ion-color-tint: var(--practera-light-grey-75-tint);
+}
+
+.ion-color-light-grey-50 {
+	color: var(--practera-light-grey-50);
+	--ion-color-base: var(--practera-light-grey-50);
+	--ion-color-base-rgb: var(--practera-light-grey-50-rgb);
+	--ion-color-contrast: var(--practera-light-grey-50-contrast);
+	--ion-color-contrast-rgb: var(--practera-light-grey-50-contrast-rgb);
+	--ion-color-shade: var(--practera-light-grey-50-shade);
+	--ion-color-tint: var(--practera-light-grey-50-tint);
+}
+
+.ion-color-light-grey-25 {
+	color: var(--practera-light-grey-25);
+	--ion-color-base: var(--practera-light-grey-25);
+	--ion-color-base-rgb: var(--practera-light-grey-25-rgb);
+	--ion-color-contrast: var(--practera-light-grey-25-contrast);
+	--ion-color-contrast-rgb: var(--practera-light-grey-25-contrast-rgb);
+	--ion-color-shade: var(--practera-light-grey-25-shade);
+	--ion-color-tint: var(--practera-light-grey-25-tint);
 }

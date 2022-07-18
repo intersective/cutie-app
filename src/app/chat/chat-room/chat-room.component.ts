@@ -31,7 +31,8 @@ export class ChatRoomComponent {
     unreadMessageCount: 0,
     lastMessage: '',
     lastMessageCreated: '',
-    canEdit: false
+    canEdit: false,
+    scheduledMessageCount: 0
   };
 
   channelUuid: string;
