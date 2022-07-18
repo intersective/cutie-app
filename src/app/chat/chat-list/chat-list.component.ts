@@ -19,9 +19,11 @@ export class ChatListComponent {
   @Input() currentChat: ChatChannel;
   @Input() skeletonOnly: boolean;
   chatChannels: ChatChannel[];
+  announcementChatChannels: ChatChannel[];
   groupChatChannels: ChatChannel[];
   directChatChannels: ChatChannel[];
   loadingChatList = true;
+  isAnnouncementChatExpand = true;
   isGroupChatExpand = true;
   isDirectChatExpand = true;
   filter: string;
@@ -55,8 +57,10 @@ export class ChatListComponent {
     this.loadingChatList = true;
     this.isGroupChatExpand = true;
     this.isDirectChatExpand = true;
+    this.isAnnouncementChatExpand = true;
     this.groupChatChannels = [];
     this.directChatChannels = [];
+    this.announcementChatChannels = [];
   }
 
   private _loadChatData(): void {
@@ -65,7 +69,7 @@ export class ChatListComponent {
       this.chatChannels = JSON.parse(JSON.stringify(chats));
       this._groupingChatChannels();
       this.loadingChatList = false;
-      this.chatListReady.emit(this.groupChatChannels.concat(this.directChatChannels));
+      this.chatListReady.emit(this.announcementChatChannels.concat(this.groupChatChannels, this.directChatChannels));
     });
   }
 
@@ -79,14 +83,18 @@ export class ChatListComponent {
     }
     this.groupChatChannels = [];
     this.directChatChannels = [];
+    this.announcementChatChannels = [];
     chatList.forEach(chat => {
       if (chat.isDirectMessage) {
         this.directChatChannels.push(chat);
+      } else if (chat.isAnnouncement) {
+        this.announcementChatChannels.push(chat);
       } else {
         this.groupChatChannels.push(chat);
       }
     });
     // sort both chat channels after grouping them.
+    this.announcementChatChannels = this._sortChatList(this.announcementChatChannels);
     this.directChatChannels = this._sortChatList(this.directChatChannels);
     this.groupChatChannels = this._sortChatList(this.groupChatChannels);
   }
@@ -244,21 +252,6 @@ export class ChatListComponent {
       return true;
     }
     return false;
-  }
-
-  /**
-   * This will expand or shrink different chat groups sections.
-   * @param type message section type
-   */
-  expandAndShrinkMessageSections(type) {
-    switch (type) {
-      case 'direct':
-        this.isDirectChatExpand = !this.isDirectChatExpand;
-        break;
-      case 'group':
-        this.isGroupChatExpand = !this.isGroupChatExpand;
-        break;
-    }
   }
 
   /**

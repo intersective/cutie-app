@@ -23,6 +23,7 @@ export interface ChatChannel {
   lastMessage: string;
   lastMessageCreated: string;
   canEdit: boolean;
+  scheduledMessageCount: number;
 }
 
 export interface TargetUser {
@@ -511,7 +512,8 @@ export class ChatService {
       unreadMessageCount: 0,
       lastMessage: null,
       lastMessageCreated: null,
-      canEdit: result.canEdit
+      canEdit: result.canEdit,
+      scheduledMessageCount: result.scheduledMessageCount
     };
   }
 
@@ -597,7 +599,8 @@ export class ChatService {
       unreadMessageCount: result.unreadMessageCount,
       lastMessage: result.lastMessage,
       lastMessageCreated: result.lastMessageCreated,
-      canEdit: result.canEdit
+      canEdit: result.canEdit,
+      scheduledMessageCount: result.scheduledMessageCount
     };
   }
 
