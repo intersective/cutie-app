@@ -1290,7 +1290,24 @@ export class DemoService {
     };
   }
 
-  getNewChannel() {
+  getNewChannel(data: any) {
+    if (data.isAnnouncement) {
+      return {
+        data: {
+          createChannel: {
+            uuid: '789',
+            name: 'Announcment channel name',
+            avatar: 'https://facts.net/wp-content/uploads/2020/03/Marvel-and-Fox.jpg',
+            pusherChannel: 'private-develop-team-1447-322-20',
+            isAnnouncement: true,
+            isDirectMessage: false,
+            readonly: false,
+            roles: ['participant', 'mentor'],
+            canEdit: true
+          }
+        }
+      };
+    }
     return {
       data: {
         createChannel: {

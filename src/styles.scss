@@ -103,6 +103,16 @@ ion-item.sc-ion-select-popover {
   }
 }
 
+// group chat popup
+.chat-group-message-popup{
+  --max-height: 320px;
+  --max-width: 500px;
+  --min-height: 300px;
+  .modal-wrapper {
+    border-radius: 6px;
+  }
+}
+
 .cursor-pointer {
   cursor: pointer;
 }

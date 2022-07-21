@@ -1,0 +1,27 @@
+<div class="announcement-create-container">
+  <p class="black subtitle-2 title">Create an Announcement Channel</p>
+  <p class="caption grey-75">Choose channels below to communicate with your participants.</p>
+
+  <ion-list class="ion-no-padding">
+    <ion-item lines="full">
+      <ion-checkbox color="ocean" slot="start" tabindex="0" [(ngModel)]="isLearnersAnnouncementsChecked"></ion-checkbox>
+      <ion-label class="ion-text-wrap">
+        <p class="black subtitle-2 channel-title">Learners Announcements</p>
+        <p class="caption grey-50">Send messages to all learners. <strong> Only admins and coordinator's can send and
+            schedule message to this channel.</strong></p>
+      </ion-label>
+    </ion-item>
+    <ion-item lines="none">
+      <ion-checkbox color="ocean" slot="start" tabindex="1" [(ngModel)]="isExpertsAnnouncementsChecked"></ion-checkbox>
+      <ion-label class="ion-text-wrap">
+        <p class="black subtitle-2 channel-title">Experts Announcements</p>
+        <p class="caption grey-50">Send messages to all experts. <strong> Only admins and coordinator's can send and
+            schedule message to this channel.</strong></p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</div>
+<div class="announcement-create-footer">
+  <ion-button tabindex="2" color="light" class="btn-cancle" (click)="close()" [disabled]="creating">Cancle</ion-button>
+  <ion-button tabindex="3" color="ocean" (click)="createChatChannels()" [disabled]="creating || (!isLearnersAnnouncementsChecked && !isExpertsAnnouncementsChecked)">{{ creating ? 'creating..' : 'create'}}</ion-button>
+</div>

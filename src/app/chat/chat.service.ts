@@ -454,7 +454,7 @@ export class ChatService {
  */
   createChannel(data: NewChannelParam): Observable<ChatChannel> {
     if (environment.demo) {
-      const response = this.demo.getNewChannel();
+      const response = this.demo.getNewChannel(data);
       return of(this._normaliseCreateChannelResponse(response.data)).pipe(delay(1000));
     }
     return this.request.chatGraphQLMutate(

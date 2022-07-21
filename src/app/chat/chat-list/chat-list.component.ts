@@ -7,6 +7,7 @@ import { NotificationService } from '@services/notification.service';
 import { PusherService } from '@shared/pusher/pusher.service';
 import { DirectChatComponent } from '../direct-chat/direct-chat.component';
 import { IonContent, ModalController } from '@ionic/angular';
+import { AnnouncementChatPopupComponent } from '../announcement-chat-popup/announcement-chat-popup.component';
 
 @Component({
   selector: 'app-chat-list',
@@ -276,5 +277,30 @@ export class ChatListComponent {
       }
     });
   }
+
+    /**
+   * This will open create popup to create group channel.
+   */
+    async openAnnouncementChatCreatePopup() {
+      const modal = await this.modalController.create({
+        component: AnnouncementChatPopupComponent,
+        cssClass: 'chat-group-message-popup',
+        keyboardClose: false,
+        backdropDismiss: false
+      });
+      await modal.present();
+      modal.onWillDismiss().then((data) => {
+        if (data.data && data.data.newChannels) {
+          console.log(data);
+          // if (!this._channelExist(data.data.newChannel, 'direct')) {
+          //   this.chatChannels.push(data.data.newChannel);
+          //   this._groupingChatChannels();
+          //   // Subscribe to the pusher channel of new create chat channel.
+          //   this._checkAndSubscribePusherChannels();
+          //   this.goToChatRoom(data.data.newChannel);
+          // }
+        }
+      });
+    }
 
 }
