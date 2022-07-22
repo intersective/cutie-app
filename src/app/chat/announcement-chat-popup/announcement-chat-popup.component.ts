@@ -3,6 +3,7 @@ import { ModalController } from '@ionic/angular';
 import { StorageService } from '@app/shared/services/storage.service';
 import { ChatService, ChatChannel, ChannelMembers, SearchUsersParam, User } from '@app/chat/chat.service';
 import { AuthService } from '@app/auth/auth.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-announcement-chat-popup',
@@ -15,7 +16,7 @@ export class AnnouncementChatPopupComponent implements OnInit {
 
   isLearnersAnnouncementsChecked: boolean;
   isExpertsAnnouncementsChecked: boolean;
-  createdChatChannels: any = [];
+  createdChatChannels: any;
   creating: boolean;
 
   constructor(
@@ -51,17 +52,15 @@ export class AnnouncementChatPopupComponent implements OnInit {
    */
   async createChatChannels() {
     this.creating = true;
-    this.createdChatChannels = [];
+    this.createdChatChannels = {};
     if (this.isLearnersAnnouncementsChecked) {
-      await this.createLearnerAnnoucementChannel();
+      await this.createLearnerAnnoucementChannel().toPromise();
     }
     if (this.isExpertsAnnouncementsChecked) {
-      await this.createExpertAnnoucementChannel();
+      await this.createExpertAnnoucementChannel().toPromise();
     }
     this.creating = false;
-    this.modalController.dismiss({
-      newChannels: this.createdChatChannels
-    });
+    this.modalController.dismiss(this.createdChatChannels);
   }
 
   createLearnerAnnoucementChannel() {
@@ -73,10 +72,11 @@ export class AnnouncementChatPopupComponent implements OnInit {
         type: 'Timeline',
         uuid: this.timelineUuid
       }]
-    }).subscribe(chat => {
-      this.createdChatChannels.push(chat);
-      return chat;
-    }, err => { });
+    }).pipe(
+      map(chat => {
+        this.createdChatChannels.learnerChannel = chat;
+        return chat;
+      }));
   }
 
   createExpertAnnoucementChannel() {
@@ -88,10 +88,11 @@ export class AnnouncementChatPopupComponent implements OnInit {
         type: 'Timeline',
         uuid: this.timelineUuid
       }]
-    }).subscribe(chat => {
-      this.createdChatChannels.push(chat);
-      return chat;
-    }, err => { });
+    }).pipe(
+      map(chat => {
+        this.createdChatChannels.expertChannel = chat;
+        return chat;
+      }));
   }
 
 }

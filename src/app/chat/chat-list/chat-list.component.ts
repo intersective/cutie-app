@@ -234,6 +234,12 @@ export class ChatListComponent {
       case 'direct':
       alertMessage = 'Oops! You already started conversation with this user.';
       break;
+      case 'learnerChannel':
+      alertMessage = 'Oops! You already created successfully your learner announcment chat.';
+      break;
+      case 'expertChannel':
+      alertMessage = 'Oops! You already created successfully your expert announcment chat.';
+      break;
     }
     const existingChannel = this.chatChannels.find((channel) => data.uuid === channel.uuid);
     if (existingChannel) {
@@ -290,15 +296,16 @@ export class ChatListComponent {
       });
       await modal.present();
       modal.onWillDismiss().then((data) => {
-        if (data.data && data.data.newChannels) {
-          console.log(data);
-          // if (!this._channelExist(data.data.newChannel, 'direct')) {
-          //   this.chatChannels.push(data.data.newChannel);
-          //   this._groupingChatChannels();
-          //   // Subscribe to the pusher channel of new create chat channel.
-          //   this._checkAndSubscribePusherChannels();
-          //   this.goToChatRoom(data.data.newChannel);
-          // }
+        if (data.data && (data.data.learnerChannel || data.data.expertChannel)) {
+          if (data.data.learnerChannel && !this._channelExist(data.data.learnerChannel, 'learnerChannel')) {
+            this.chatChannels.push(data.data.learnerChannel);
+          }
+          if (data.data.expertChannel && !this._channelExist(data.data.expertChannel, 'expertChannel')) {
+            this.chatChannels.push(data.data.expertChannel);
+          }
+          this._groupingChatChannels();
+          // Subscribe to the pusher channel of new create chat channel.
+          this._checkAndSubscribePusherChannels();
         }
       });
     }
