@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { StorageService } from '@app/shared/services/storage.service';
-import { ChatService, ChatChannel, ChannelMembers, SearchUsersParam, User } from '@app/chat/chat.service';
-import { AuthService } from '@app/auth/auth.service';
+import { ChatService, ChatChannel } from '@app/chat/chat.service';
 import { map } from 'rxjs/operators';
 
 @Component({
@@ -22,8 +21,7 @@ export class AnnouncementChatPopupComponent implements OnInit {
   constructor(
     public modalController: ModalController,
     private chatService: ChatService,
-    public storage: StorageService,
-    private authService: AuthService
+    public storage: StorageService
   ) { }
 
   ngOnInit() {

@@ -1,0 +1,19 @@
+<div class="channel-create-container">
+  <p class="black subtitle-2 title">Create a Group Chat</p>
+  <p class="caption grey-75">Choose groups below to communicate with your participants.</p>
+
+  <ion-list class="ion-no-padding">
+    <ion-item lines="full">
+      <ion-checkbox color="ocean" slot="start" tabindex="0" [(ngModel)]="isCohortChecked"></ion-checkbox>
+      <ion-label class="ion-text-wrap">
+        <p class="black subtitle-2 channel-title">Cohort Open Discussion</p>
+        <p class="caption grey-50">Add experience participants in one channel to boost your 
+          comunity. <strong>All participants can send messages to this channel.</strong></p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</div>
+<div class="channel-create-footer">
+  <ion-button tabindex="2" color="light" class="btn-cancle" (click)="close()" [disabled]="creating">Cancle</ion-button>
+  <ion-button tabindex="3" color="ocean" (click)="createChatChannels()" [disabled]="creating || !isCohortChecked">{{ creating ? 'creating..' : 'create'}}</ion-button>
+</div>

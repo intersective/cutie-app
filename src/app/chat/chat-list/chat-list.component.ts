@@ -8,6 +8,7 @@ import { PusherService } from '@shared/pusher/pusher.service';
 import { DirectChatComponent } from '../direct-chat/direct-chat.component';
 import { IonContent, ModalController } from '@ionic/angular';
 import { AnnouncementChatPopupComponent } from '../announcement-chat-popup/announcement-chat-popup.component';
+import { GroupChatPopupComponent } from '../group-chat-popup/group-chat-popup.component';
 
 @Component({
   selector: 'app-chat-list',
@@ -173,50 +174,25 @@ export class ChatListComponent {
    * Will show a popup confomation.
    * if user conform, then it call _createCohortChannelHandler method to create cohort channel.
    */
-  createCohortChatChannel() {
-    this.notification.alert({
-      cssClass: 'chat-conformation',
-      backdropDismiss: false,
-      subHeader: 'Create cohort channel?',
-      message: 'Are you sure you want to create cohort channel?',
-      buttons: [
-        {
-          text: 'Create',
-          handler: () => {
-            this._createCohortChannelHandler();
-          }
-        },
-        {
-          text: 'Cancel',
-          role: 'cancel'
+  async createCohortChatChannel() {
+    const modal = await this.modalController.create({
+      component: GroupChatPopupComponent,
+      cssClass: 'chat-group-message-popup',
+      keyboardClose: false,
+      backdropDismiss: false
+    });
+    await modal.present();
+    modal.onWillDismiss().then((data) => {
+      if (data.data && data.data.newChannel) {
+        if (!this._channelExist(data.data.newChannel, 'cohort')) {
+          this.chatChannels.push(data.data.newChannel);
+          this._groupingChatChannels();
+          // Subscribe to the pusher channel of new create chat channel.
+          this._checkAndSubscribePusherChannels();
+          this.goToChatRoom(data.data.newChannel);
         }
-      ]
-    });
-  }
-
-  /**
-   * Call chat service to create cohort channel
-   */
-  private _createCohortChannelHandler() {
-    const timeLineId = this.storage.getUser().timelineId;
-    const timelineUuid = this.storage.getUser().timelineUuid;
-    const currentProgram = this.storage.get('programs').find(program => {
-      return program.timeline.id === timeLineId;
-    });
-    this.chatService.createChannel({
-      name: currentProgram.timeline.title,
-      isAnnouncement: false,
-      roles: ['participant', 'mentor', 'admin', 'coordinator'],
-      members: [{
-        type: 'Timeline',
-        uuid: timelineUuid
-      }]
-    }).subscribe(chat => {
-      if (!this._channelExist(chat, 'cohort')) {
-        this.chatChannels.push(chat);
-        this._groupingChatChannels();
       }
-    }, err => { });
+    });
   }
 
   /**
