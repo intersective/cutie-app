@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { StorageService } from '@app/shared/services/storage.service';
-import { ChatService, ChatChannel } from '@app/chat/chat.service';
+import { ChatService, ChatChannel, ChannelCreatePopupParam } from '@app/chat/chat.service';
 import { map } from 'rxjs/operators';
 
 @Component({
@@ -11,7 +11,10 @@ import { map } from 'rxjs/operators';
 })
 export class GroupChatPopupComponent implements OnInit {
 
+  createdChannels: ChannelCreatePopupParam;
+
   isCohortChecked: boolean;
+  cohortChatDisabled: boolean;
   creating: boolean;
 
   constructor(
@@ -22,6 +25,7 @@ export class GroupChatPopupComponent implements OnInit {
 
   ngOnInit() {
     this._initialise();
+    this._handelCreatedChannels();
   }
 
   /**
@@ -36,16 +40,25 @@ export class GroupChatPopupComponent implements OnInit {
   private _initialise() {
     this.creating = false;
     this.isCohortChecked = false;
+    this.cohortChatDisabled = false;
+  }
+
+  private _handelCreatedChannels() {
+    if (!this.createdChannels) {
+      return;
+    }
+    if (this.createdChannels.cohortChannel) {
+      this.isCohortChecked = true;
+      this.cohortChatDisabled = true;
+    }
   }
 
   /**
  * This call chat service to create group channel
  */
   async createChatChannels() {
-    const timeLineId = this.storage.getUser().timelineId;
-    const timelineUuid = this.storage.getUser().timelineUuid;
     const currentProgram = this.storage.get('programs').find(program => {
-      return program.timeline.id === timeLineId;
+      return program.timeline.id === this.storage.timelineId;
     });
     this.creating = true;
     if (this.isCohortChecked) {
@@ -55,7 +68,7 @@ export class GroupChatPopupComponent implements OnInit {
         roles: ['participant', 'mentor', 'admin', 'coordinator'],
         members: [{
           type: 'Timeline',
-          uuid: timelineUuid
+          uuid: this.storage.timelineUuid
         }]
       }).subscribe(chat => {
         this.creating = false;

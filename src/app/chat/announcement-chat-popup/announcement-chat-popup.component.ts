@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { StorageService } from '@app/shared/services/storage.service';
-import { ChatService, ChatChannel } from '@app/chat/chat.service';
+import { ChatService, ChatChannel, ChannelCreatePopupParam } from '@app/chat/chat.service';
 import { map } from 'rxjs/operators';
 
 @Component({
@@ -11,10 +11,12 @@ import { map } from 'rxjs/operators';
 })
 export class AnnouncementChatPopupComponent implements OnInit {
 
-  timelineUuid: string;
+  createdChannels: ChannelCreatePopupParam;
 
   isLearnersAnnouncementsChecked: boolean;
+  learnersAnnouncementDisabled: boolean;
   isExpertsAnnouncementsChecked: boolean;
+  expertsAnnouncementDisabled: boolean;
   createdChatChannels: any;
   creating: boolean;
 
@@ -26,6 +28,7 @@ export class AnnouncementChatPopupComponent implements OnInit {
 
   ngOnInit() {
     this._initialise();
+    this._handelCreatedChannels();
   }
 
   /**
@@ -40,9 +43,24 @@ export class AnnouncementChatPopupComponent implements OnInit {
   private _initialise() {
     this.creating = false;
     this.createdChatChannels = {};
+    this.expertsAnnouncementDisabled = false;
     this.isExpertsAnnouncementsChecked = false;
+    this.learnersAnnouncementDisabled = false;
     this.isLearnersAnnouncementsChecked = false;
-    this.timelineUuid = this.storage.getUser().timelineUuid;
+  }
+
+  private _handelCreatedChannels() {
+    if (!this.createdChannels) {
+      return;
+    }
+    if (this.createdChannels.learnerAnnouncement) {
+      this.isLearnersAnnouncementsChecked = true;
+      this.learnersAnnouncementDisabled = true;
+    }
+    if (this.createdChannels.expertAnnouncement) {
+      this.isExpertsAnnouncementsChecked = true;
+      this.expertsAnnouncementDisabled = true;
+    }
   }
 
   /**
@@ -51,10 +69,10 @@ export class AnnouncementChatPopupComponent implements OnInit {
   async createChatChannels() {
     this.creating = true;
     this.createdChatChannels = {};
-    if (this.isLearnersAnnouncementsChecked) {
+    if (this.isLearnersAnnouncementsChecked && !this.learnersAnnouncementDisabled) {
       await this.createLearnerAnnoucementChannel().toPromise();
     }
-    if (this.isExpertsAnnouncementsChecked) {
+    if (this.isExpertsAnnouncementsChecked && !this.expertsAnnouncementDisabled) {
       await this.createExpertAnnoucementChannel().toPromise();
     }
     this.creating = false;
@@ -68,7 +86,7 @@ export class AnnouncementChatPopupComponent implements OnInit {
       roles: ['participant', 'admin', 'coordinator'],
       members: [{
         type: 'Timeline',
-        uuid: this.timelineUuid
+        uuid: this.storage.timelineUuid
       }]
     }).pipe(
       map(chat => {
@@ -84,7 +102,7 @@ export class AnnouncementChatPopupComponent implements OnInit {
       roles: ['mentor', 'admin', 'coordinator'],
       members: [{
         type: 'Timeline',
-        uuid: this.timelineUuid
+        uuid: this.storage.timelineUuid
       }]
     }).pipe(
       map(chat => {

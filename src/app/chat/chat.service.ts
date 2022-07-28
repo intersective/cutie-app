@@ -91,6 +91,12 @@ export interface SearchUsersParam {
   teamUserOnly: boolean;
 }
 
+export interface ChannelCreatePopupParam {
+  learnerAnnouncement?: boolean;
+  expertAnnouncement?: boolean;
+  cohortChannel?: boolean;
+}
+
 interface NewMessageParam {
   channelUuid: string;
   message: string;

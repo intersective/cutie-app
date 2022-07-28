@@ -16,6 +16,10 @@ const CHARACTERS = {
     name: 'Experts Announcements',
     avatar: 'https://b.thumbs.redditmedia.com/q5wEnBMrwNwf4g9s6Ju35QfuE3cpw4Gjr883zJHGBUY.png'
   },
+  cohortChannel: {
+    name: 'cohort channel',
+    avatar: 'https://flaticons.net/icon.php?slug_category=people&slug_icon=user-group',
+  },
   avengers: {
     name: 'Avengers',
     avatar: 'https://c3.klipartz.com/pngpicture/208/878/sticker-png-avengers-endgame-2019-avengers-logo-avengers-logo-thumbnail.png'
@@ -1297,8 +1301,8 @@ export class DemoService {
       data: {
         createChannel: {
           uuid: '1234',
-          name: 'cohort channel name',
-          avatar: 'https://flaticons.net/icon.php?slug_category=people&slug_icon=user-group',
+          name: CHARACTERS.cohortChannel.name,
+          avatar: CHARACTERS.cohortChannel.avatar,
           pusherChannel: 'private-develop-team-1447-322-20',
           isAnnouncement: false,
           isDirectMessage: false,

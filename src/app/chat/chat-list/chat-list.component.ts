@@ -2,13 +2,14 @@ import { Component, Output, EventEmitter, NgZone, Input } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
 import { StorageService } from '@services/storage.service';
 import { UtilsService } from '@services/utils.service';
-import { ChatService, ChatChannel } from '../chat.service';
+import { ChatService, ChatChannel, ChannelCreatePopupParam } from '../chat.service';
 import { NotificationService } from '@services/notification.service';
 import { PusherService } from '@shared/pusher/pusher.service';
 import { DirectChatComponent } from '../direct-chat/direct-chat.component';
 import { IonContent, ModalController } from '@ionic/angular';
 import { AnnouncementChatPopupComponent } from '../announcement-chat-popup/announcement-chat-popup.component';
 import { GroupChatPopupComponent } from '../group-chat-popup/group-chat-popup.component';
+import { environment } from '@environments/environment';
 
 @Component({
   selector: 'app-chat-list',
@@ -179,7 +180,10 @@ export class ChatListComponent {
       component: GroupChatPopupComponent,
       cssClass: 'chat-group-message-popup',
       keyboardClose: false,
-      backdropDismiss: false
+      backdropDismiss: false,
+      componentProps: {
+        createdChannels: this.checkChannelsCreated('cohort'),
+      }
     });
     await modal.present();
     modal.onWillDismiss().then((data) => {
@@ -263,27 +267,62 @@ export class ChatListComponent {
     /**
    * This will open create popup to create group channel.
    */
-    async openAnnouncementChatCreatePopup() {
-      const modal = await this.modalController.create({
-        component: AnnouncementChatPopupComponent,
-        cssClass: 'chat-group-message-popup',
-        keyboardClose: false,
-        backdropDismiss: false
-      });
-      await modal.present();
-      modal.onWillDismiss().then((data) => {
-        if (data.data && (data.data.learnerChannel || data.data.expertChannel)) {
-          if (data.data.learnerChannel && !this._channelExist(data.data.learnerChannel, 'learnerChannel')) {
-            this.chatChannels.push(data.data.learnerChannel);
-          }
-          if (data.data.expertChannel && !this._channelExist(data.data.expertChannel, 'expertChannel')) {
-            this.chatChannels.push(data.data.expertChannel);
-          }
-          this._groupingChatChannels();
-          // Subscribe to the pusher channel of new create chat channel.
-          this._checkAndSubscribePusherChannels();
+  async openAnnouncementChatCreatePopup() {
+    const modal = await this.modalController.create({
+      component: AnnouncementChatPopupComponent,
+      cssClass: 'chat-group-message-popup',
+      keyboardClose: false,
+      backdropDismiss: false,
+      componentProps: {
+        createdChannels: this.checkChannelsCreated('announcement'),
+      }
+    });
+    await modal.present();
+    modal.onWillDismiss().then((data) => {
+      if (data.data && (data.data.learnerChannel || data.data.expertChannel)) {
+        if (data.data.learnerChannel && !this._channelExist(data.data.learnerChannel, 'learnerChannel')) {
+          this.chatChannels.push(data.data.learnerChannel);
+        }
+        if (data.data.expertChannel && !this._channelExist(data.data.expertChannel, 'expertChannel')) {
+          this.chatChannels.push(data.data.expertChannel);
+        }
+        this._groupingChatChannels();
+        // Subscribe to the pusher channel of new create chat channel.
+        this._checkAndSubscribePusherChannels();
+      }
+    });
+  }
+
+  checkChannelsCreated(channelType: string) {
+    const createdChannels: ChannelCreatePopupParam = {};
+    if ( channelType === 'announcement' ) {
+      this.chatChannels.forEach(channel => {
+        if (channel.isAnnouncement && channel.name.includes('Learners Announcements')) {
+          createdChannels.learnerAnnouncement = true;
+        }
+        if (channel.isAnnouncement && channel.name.includes('Experts Announcements')) {
+          createdChannels.expertAnnouncement = true;
         }
       });
     }
+
+    if (channelType === 'cohort') {
+      const currentProgram = this.storage.get('programs').find(program => {
+        return program.timeline.id === this.storage.timelineId;
+      });
+      this.chatChannels.forEach(channel => {
+        if (environment.demo) {
+          if (!channel.isAnnouncement && channel.name.includes('cohort channel')) {
+            createdChannels.cohortChannel = true;
+          }
+        } else {
+          if (!channel.isAnnouncement && channel.name.includes(currentProgram.timeline.title)) {
+            createdChannels.cohortChannel = true;
+          }
+        }
+      });
+    }
+    return createdChannels;
+  }
 
 }

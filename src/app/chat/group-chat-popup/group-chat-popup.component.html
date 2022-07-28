@@ -4,7 +4,7 @@
 
   <ion-list class="ion-no-padding">
     <ion-item lines="full">
-      <ion-checkbox color="ocean" slot="start" tabindex="0" [(ngModel)]="isCohortChecked"></ion-checkbox>
+      <ion-checkbox color="ocean" slot="start" tabindex="0" [(ngModel)]="isCohortChecked" [disabled]="cohortChatDisabled"></ion-checkbox>
       <ion-label class="ion-text-wrap">
         <p class="black subtitle-2 channel-title">Cohort Open Discussion</p>
         <p class="caption grey-50">Add experience participants in one channel to boost your 
@@ -14,6 +14,10 @@
   </ion-list>
 </div>
 <div class="channel-create-footer">
-  <ion-button tabindex="2" color="light" class="btn-cancle" (click)="close()" [disabled]="creating">Cancle</ion-button>
-  <ion-button tabindex="3" color="ocean" (click)="createChatChannels()" [disabled]="creating || !isCohortChecked">{{ creating ? 'creating..' : 'create'}}</ion-button>
+  <ion-button tabindex="2" color="light" class="btn-cancle" (click)="close()" [disabled]="creating">
+    {{ cohortChatDisabled ? 'Close' : 'Cancel' }}
+  </ion-button>
+  <ion-button *ngIf="!cohortChatDisabled" tabindex="3" color="ocean" (click)="createChatChannels()" [disabled]="creating || !isCohortChecked">
+    {{ creating ? 'creating..' : 'create'}}
+  </ion-button>
 </div>
