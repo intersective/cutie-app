@@ -50,12 +50,20 @@
                 <p class="seen-text subtitle-1 black">{{message.senderName}}</p>
                 <p class="seen-text caption gray-2">{{message.senderRole}}</p>
               </ng-container>
-              <div id="inner-box" (click)="preview(message.fileObject)">
-                <p><ion-icon name="play-circle"></ion-icon></p>
-              </div>
-              <div class="label">
-                <p><ion-label color="primary">{{ message.fileObject.filename }}</ion-label></p>
-              </div>
+
+              <ng-container *ngIf="message?.fileObject?.mimetype === 'video/mp4'; else nonMp4Format">
+                <div id="inner-box" (click)="preview(message.fileObject)">
+                  <p><ion-icon name="play-circle"></ion-icon></p>
+                </div>
+                <div class="label">
+                  <p><ion-label color="primary">{{ message.fileObject.filename }}</ion-label></p>
+                </div>
+              </ng-container>
+
+              <ng-template #nonMp4Format>
+                <app-video-conversion [video]="message" (preview)="preview($event)"></app-video-conversion>
+              </ng-template>
+
             </div>
           </ng-container>
 

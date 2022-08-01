@@ -105,6 +105,11 @@ $message-body-size: 60%;
           padding-left: 10px;
           padding-right: 10px;
 
+          app-video-conversion {
+            display: flex;
+            align-items: center;
+          }
+
           #inner-box {
             border-radius: inherit;
             min-width: inherit;
