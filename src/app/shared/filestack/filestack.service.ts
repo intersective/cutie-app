@@ -243,4 +243,8 @@ export class FilestackService {
 
     return [];
   }
+
+  videoConversion(handle) {
+    return this.httpClient.get(`https://cdn.filestackcontent.com/video_convert/${handle}`);
+  }
 }
