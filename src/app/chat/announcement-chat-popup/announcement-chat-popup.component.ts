@@ -28,7 +28,7 @@ export class AnnouncementChatPopupComponent implements OnInit {
 
   ngOnInit() {
     this._initialise();
-    this._handelCreatedChannels();
+    this._handleCreatedChannels();
   }
 
   /**
@@ -49,7 +49,7 @@ export class AnnouncementChatPopupComponent implements OnInit {
     this.isLearnersAnnouncementsChecked = false;
   }
 
-  private _handelCreatedChannels() {
+  private _handleCreatedChannels() {
     if (!this.createdChannels) {
       return;
     }
