@@ -279,7 +279,7 @@ export class ChatListComponent {
     });
     await modal.present();
     modal.onWillDismiss().then((data) => {
-      if (data.data && (data.data.learnerChannel || data.data.expertChannel)) {
+      if (data.data) {
         if (data.data.learnerChannel && !this._channelExist(data.data.learnerChannel, 'learnerChannel')) {
           this.chatChannels.push(data.data.learnerChannel);
         }
