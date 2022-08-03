@@ -8,13 +8,17 @@ import { environment } from '@environments/environment';
 import { urlFormatter } from 'helper';
 
 const CHARACTERS = {
-  actorsAnnouncements: {
-    name: 'Actors Announcements',
+  learnersAnnouncements: {
+    name: 'Learners Announcements',
     avatar: 'https://facts.net/wp-content/uploads/2020/03/Marvel-and-Fox.jpg'
   },
-  producerAnnouncements: {
-    name: 'Producer Announcements',
+  expertsAnnouncements: {
+    name: 'Experts Announcements',
     avatar: 'https://b.thumbs.redditmedia.com/q5wEnBMrwNwf4g9s6Ju35QfuE3cpw4Gjr883zJHGBUY.png'
+  },
+  cohortChannel: {
+    name: 'cohort channel',
+    avatar: 'https://flaticons.net/icon.php?slug_category=people&slug_icon=user-group',
   },
   avengers: {
     name: 'Avengers',
@@ -116,22 +120,6 @@ export class DemoService {
     },
     {
       uuid: '3',
-      name: CHARACTERS.actorsAnnouncements.name,
-      avatar: CHARACTERS.actorsAnnouncements.avatar,
-      targetUser: null,
-      pusherChannel: 'private-develop-team-1447-322-20',
-      roles: ['participant', 'mentor'],
-      isAnnouncement: true,
-      isDirectMessage: false,
-      readonly: false,
-      unreadMessageCount: 5,
-      lastMessageCreated: '2022-05-14 06:20:37',
-      lastMessage: 'yes captain',
-      canEdit: false,
-      scheduledMessageCount: 2
-    },
-    {
-      uuid: '4',
       name: CHARACTERS.steven.name,
       avatar: CHARACTERS.steven.avatar,
       targetUser: {
@@ -151,7 +139,7 @@ export class DemoService {
       scheduledMessageCount: 0
     },
     {
-      uuid: '5',
+      uuid: '4',
       name: CHARACTERS.tony.name,
       avatar: CHARACTERS.tony.avatar,
       targetUser: {
@@ -171,7 +159,7 @@ export class DemoService {
       scheduledMessageCount: 0
     },
     {
-      uuid: '6',
+      uuid: '5',
       name: CHARACTERS.thanos.name,
       avatar: CHARACTERS.thanos.avatar,
       targetUser: {
@@ -191,7 +179,7 @@ export class DemoService {
       scheduledMessageCount: 0
     },
     {
-      uuid: '7',
+      uuid: '6',
       name: null,
       avatar: CHARACTERS.thanos.avatar,
       targetUser: {
@@ -209,22 +197,6 @@ export class DemoService {
       lastMessage: `I'm inevitable`,
       canEdit: false,
       scheduledMessageCount: 0
-    },
-    {
-      uuid: '8',
-      name: CHARACTERS.producerAnnouncements.name,
-      avatar: CHARACTERS.producerAnnouncements.avatar,
-      targetUser: null,
-      pusherChannel: 'private-develop-team-1447-322-20',
-      roles: ['participant', 'mentor'],
-      isAnnouncement: true,
-      isDirectMessage: false,
-      readonly: false,
-      unreadMessageCount: 0,
-      lastMessageCreated: '2022-07-15 06:20:37',
-      lastMessage: 'Get Ready for next movie idea',
-      canEdit: false,
-      scheduledMessageCount: 5
     }
   ];
   chatMessages = [
@@ -1290,13 +1262,47 @@ export class DemoService {
     };
   }
 
-  getNewChannel() {
+  getNewChannel(data: any) {
+    if (data.isAnnouncement && data.name === CHARACTERS.expertsAnnouncements.name) {
+      return {
+        data: {
+          createChannel: {
+            uuid: '789',
+            name: CHARACTERS.expertsAnnouncements.name,
+            avatar: CHARACTERS.expertsAnnouncements.avatar,
+            pusherChannel: 'private-develop-team-1447-322-20',
+            isAnnouncement: true,
+            isDirectMessage: false,
+            readonly: false,
+            roles: ['participant', 'mentor'],
+            canEdit: true
+          }
+        }
+      };
+    }
+    if (data.isAnnouncement && data.name === CHARACTERS.learnersAnnouncements.name) {
+      return {
+        data: {
+          createChannel: {
+            uuid: '8546',
+            name: CHARACTERS.learnersAnnouncements.name,
+            avatar: CHARACTERS.learnersAnnouncements.avatar,
+            pusherChannel: 'private-develop-team-1447-322-20',
+            isAnnouncement: true,
+            isDirectMessage: false,
+            readonly: false,
+            roles: ['participant', 'mentor'],
+            canEdit: true
+          }
+        }
+      };
+    }
     return {
       data: {
         createChannel: {
           uuid: '1234',
-          name: 'cohort channel name',
-          avatar: 'https://flaticons.net/icon.php?slug_category=people&slug_icon=user-group',
+          name: CHARACTERS.cohortChannel.name,
+          avatar: CHARACTERS.cohortChannel.avatar,
           pusherChannel: 'private-develop-team-1447-322-20',
           isAnnouncement: false,
           isDirectMessage: false,

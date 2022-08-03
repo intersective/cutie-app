@@ -9,6 +9,8 @@ import { ChatInfoComponent } from './chat-info/chat-info.component';
 import { ClickableItemComponent } from '../components/clickable-item/clickable-item.component';
 import { ChatService } from './chat.service';
 import { DirectChatComponent } from './direct-chat/direct-chat.component';
+import { AnnouncementChatPopupComponent } from './announcement-chat-popup/announcement-chat-popup.component';
+import { GroupChatPopupComponent } from './group-chat-popup/group-chat-popup.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,9 @@ import { DirectChatComponent } from './direct-chat/direct-chat.component';
     ChatPreviewComponent,
     ChatInfoComponent,
     ClickableItemComponent,
-    DirectChatComponent
+    DirectChatComponent,
+    AnnouncementChatPopupComponent,
+    GroupChatPopupComponent
   ],
   imports: [
     SharedModule,
@@ -34,7 +38,7 @@ import { DirectChatComponent } from './direct-chat/direct-chat.component';
     ChatListComponent,
     ChatRoomComponent,
   ],
-  entryComponents: [ChatPreviewComponent, ChatInfoComponent, DirectChatComponent],
+  entryComponents: [ChatPreviewComponent, ChatInfoComponent, DirectChatComponent, AnnouncementChatPopupComponent, GroupChatPopupComponent],
   providers: [ChatService],
 })
 export class ChatModule { }

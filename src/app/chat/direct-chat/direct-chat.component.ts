@@ -84,7 +84,7 @@ export class DirectChatComponent implements OnInit {
     }
     const searchParam: SearchUsersParam = {
       scope: searchScope,
-      scopeUuid: this.storage.getUser().timelineUuid,
+      scopeUuid: this.storage.timelineUuid,
       filter: this.searchText,
       teamUserOnly: true
     };
