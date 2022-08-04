@@ -1,0 +1,11 @@
+.popup-title {
+    font-family: 'Roboto';
+    font-weight: 700;
+}
+
+.popup-subtitle {
+    @extend .popup-title;
+    color: var(--practera-dark-blue-75);
+    margin-top: 10px;
+    margin-bottom: 9px;
+}

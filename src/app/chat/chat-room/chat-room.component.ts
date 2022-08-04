@@ -9,6 +9,7 @@ import { FilestackService } from '@shared/filestack/filestack.service';
 import { ChatService, ChatChannel, Message, MessageListResult } from '../chat.service';
 import { ChatPreviewComponent } from '../chat-preview/chat-preview.component';
 import { ChatInfoComponent } from '../chat-info/chat-info.component';
+import { ScheduleMessagePopupComponent } from '../schedule-message-popup/schedule-message-popup.component';
 
 @Component({
   selector: 'app-chat-room',
@@ -665,6 +666,25 @@ export class ChatRoomComponent {
       cssClass: 'chat-info-page',
       componentProps: {
         selectedChat: this.chatChannel,
+      }
+    });
+    await modal.present();
+    modal.onWillDismiss().then((data) => {
+      if (data.data && (data.data.type === 'channelDeleted' || data.data.channelName !== this.chatChannel.name)) {
+        this.utils.broadcastEvent('chat:info-update', true);
+      }
+    });
+  }
+
+  async openSchedulePopup() {
+    const message = this.message;
+    this._beforeSenMessages();
+    const modal = await this.modalController.create({
+      component: ScheduleMessagePopupComponent,
+      cssClass: 'chat-schedule-message-popup',
+      componentProps: {
+        channelUuid: this.channelUuid,
+        message: message
       }
     });
     await modal.present();
