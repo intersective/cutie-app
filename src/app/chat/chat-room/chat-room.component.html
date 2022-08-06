@@ -5,8 +5,12 @@
       <ion-icon color="primary" slot="icon-only" name="information-circle"></ion-icon>
     </ion-button>
   </ion-toolbar>
+  <ion-toolbar *ngIf="chatChannel.scheduledMessageCount > 0" class="schedule-message-banner"> 
+    <p class="schedule-message-banner-title subtitle-2">You have <strong>{{chatChannel.scheduledMessageCount}}</strong> message scheduled for this channel</p>
+  </ion-toolbar>
 </ion-header>
-<ion-content class="ion-content-absolute-with-footer" color="light" [scrollEvents]="true" (ionScroll)="loadMoreMessages($event)">
+
+<ion-content [ngClass]="{'schedule': chatChannel.scheduledMessageCount > 0}" class="ion-content-absolute-with-footer schedule" color="light" [scrollEvents]="true" (ionScroll)="loadMoreMessages($event)">
 
   <div *ngIf="loadingChatMessages" class="ion-text-center">
     <ion-spinner></ion-spinner>
