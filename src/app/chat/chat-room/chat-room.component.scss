@@ -314,5 +314,19 @@ $message-body-size: 60%;
     border-radius: 6px;
     background-color: var(--practera-yellow-25);
     padding: 6px 0 6px 10px;
+    cursor: pointer;
+  }
+
+  .back-to-message {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    align-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    p {
+      margin: 0;
+    }
   }
 }

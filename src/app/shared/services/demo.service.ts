@@ -42,6 +42,11 @@ const CHARACTERS = {
     name: 'Thanos',
     avatar: 'https://c3.klipartz.com/pngpicture/468/242/sticker-png-thanos-background-thumbnail.png',
     email: 'thanos@practera.com'
+  },
+  scott: {
+    name: 'Scott Lang',
+    avatar: 'https://images.hindustantimes.com/rf/image_size_960x540/HT/p2/2019/02/19/Pictures/null_191c153a-3452-11e9-85ab-b5c6484f4b61.jpg',
+    email: 'scott@practera.com'
   }
 };
 
@@ -215,6 +220,78 @@ export class DemoService {
     },
     {
       uuid: '1',
+      message: 'Thanos is coming',
+      file: null,
+      created: '2019-11-28 02:21:21',
+      isSender: true,
+      sender: {
+        uuid: '1',
+        name: 'student+01',
+        role: 'participant',
+        avatar: 'https://www.gravatar.com/avatar/21b7427270a606e8a3c4413a13bb47c6?d=https://sandbox.practera.com/img/user-512.png&s=50'
+      }
+    },
+    {
+      uuid: '2',
+      message: '',
+      file: JSON.stringify({
+        container: 'practera-aus',
+        filename: 'Thanos_is_coming.pdf',
+        handle: 'VcVHlY1SzSC8VKNuXFBt',
+        key: 'appv2/stage/uploads/37ad733fdf20adf0de20effcbbf6f120/THPhHZoRCiUscy4hrXvQ_file-sample_150kB.pdf',
+        mimetype: 'application/pdf',
+        originalFile: {
+          name: 'file-sample_150kB.pdf',
+          size: 142786,
+          type: 'application/pdf'
+        },
+        originalPath: 'file-sample_150kB.pdf',
+        size: 142786,
+        source: 'local_file_system',
+        status: 'Stored',
+        uploadId: '2ZaurtAztrY45d4S',
+        url: 'https://cdn.filestackcontent.com/VcVHlY1SzSC8VKNuXFBt'
+      }),
+      created: '2019-11-27 02:25:21',
+      isSender: false,
+      sender: {
+        uuid: '3',
+        name: CHARACTERS.steven.name,
+        role: 'participant',
+        avatar: CHARACTERS.steven.avatar
+      }
+    },
+    {
+      uuid: '3',
+      message: 'Hi guys, check this out!',
+      file: null,
+      created: '2019-11-27 02:21:21',
+      isSender: false,
+      sender: {
+        uuid: '3',
+        name: CHARACTERS.steven.name,
+        role: 'participant',
+        avatar: CHARACTERS.steven.avatar
+      }
+    }
+  ];
+  scheduleChatMessages = [
+    {
+      uuid: '221',
+      message: `Hey, open the gate`,
+      file: null,
+      created: '2022-07-28 02:21:21',
+      isSender: false,
+      scheduled: '2022-08-28 02:21:21',
+      sender: {
+        uuid: '1',
+        name: CHARACTERS.scott.name,
+        role: 'participant',
+        avatar: CHARACTERS.scott.avatar
+      }
+    },
+    {
+      uuid: '222',
       message: 'Thanos is coming',
       file: null,
       created: '2019-11-28 02:21:21',
@@ -1220,6 +1297,18 @@ export class DemoService {
   }
 
   getMessages(data) {
+    if (data.scheduledOnly) {
+      return {
+        data: {
+          channel: {
+            chatLogsConnection: {
+              cursor: '789',
+              chatLogs: this.scheduleChatMessages
+            }
+          }
+        }
+      };
+    }
     if (data.channelUuid === '2' || data.channelUuid === '1234') {
       return {
         data: {

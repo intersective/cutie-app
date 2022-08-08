@@ -5,167 +5,184 @@
       <ion-icon color="primary" slot="icon-only" name="information-circle"></ion-icon>
     </ion-button>
   </ion-toolbar>
-  <ion-toolbar *ngIf="chatChannel.scheduledMessageCount > 0" class="schedule-message-banner"> 
-    <p class="schedule-message-banner-title subtitle-2">You have <strong>{{chatChannel.scheduledMessageCount}}</strong> message scheduled for this channel</p>
+  <ion-toolbar *ngIf="chatChannel.scheduledMessageCount > 0" class="schedule-message-banner">
+    <p *ngIf="!isScheduleListOpen" class="schedule-message-banner-title subtitle-2"
+      (click)="isScheduleListOpen = !isScheduleListOpen">You have <strong>{{chatChannel.scheduledMessageCount}}</strong>
+      message scheduled for this channel</p>
+    <div *ngIf="isScheduleListOpen" class="back-to-message">
+      <ion-button slot="start" fill="clear" size="small" color="dark" (click)="isScheduleListOpen = !isScheduleListOpen">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+      <p>Back to messages</p>
+    </div>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [ngClass]="{'schedule': chatChannel.scheduledMessageCount > 0}" class="ion-content-absolute-with-footer schedule" color="light" [scrollEvents]="true" (ionScroll)="loadMoreMessages($event)">
+<ng-container *ngIf="!isScheduleListOpen; else scheduleList">
+  <ion-item>
+    asasasa
+  </ion-item>
+  <ion-content [ngClass]="{'schedule': chatChannel.scheduledMessageCount > 0}"
+    class="ion-content-absolute-with-footer" color="light" [scrollEvents]="true"
+    (ionScroll)="loadMoreMessages($event)">
 
-  <div *ngIf="loadingChatMessages" class="ion-text-center">
-    <ion-spinner></ion-spinner>
-  </div>
+    <div *ngIf="loadingChatMessages" class="ion-text-center">
+      <ion-spinner></ion-spinner>
+    </div>
 
-  <div *ngIf="!messageList.length && !loadingChatMessages" class="ion-text-center not-started-empty-status">
-    <img class="image desktop" src="/assets/icon-epmty-chat.svg">
-    <p class="head-text headline-5 gray-3">Type your first message!</p>
-    <p class="sub-text subtitle-1 gray-1">It's time to start a chat</p>
-  </div>
+    <div *ngIf="!messageList.length && !loadingChatMessages" class="ion-text-center not-started-empty-status">
+      <img class="image desktop" src="/assets/icon-epmty-chat.svg">
+      <p class="head-text headline-5 gray-3">Type your first message!</p>
+      <p class="sub-text subtitle-1 gray-1">It's time to start a chat</p>
+    </div>
 
-  <ion-list lines="none" color="light" class="chat-list desktop-view ion-no-padding">
-    <ion-item *ngFor="let message of messageList" color="light">
-      <ng-container *ngIf="isLastMessage(message)">
-        <ion-avatar [ngClass]="getAvatarClass(message)" slot="start">
-          <img [src]="message.senderAvatar">
-        </ion-avatar>
-      </ng-container>
-
-      <ion-label [ngClass]="getClassForMessageBubble(message)">
-
-        <div *ngIf="checkToShowMessageTime(message)" class="time caption gray-2">
-          <p>{{getMessageDate(message.created)}}</p>
-        </div>
-
-        <ng-container *ngIf="!message.fileObject; else attachment">
-          <div class="message-body">
-            <ng-container *ngIf="!message.isSender">
-              <p class="seen-text subtitle-1 black">{{message.senderName}}</p>
-              <p class="seen-text caption gray-2">{{message.senderRole}}</p>
-            </ng-container>
-            <p class="message-text subtitle-1 black" [innerHTML]="message.message"></p>
-          </div>
+    <ion-list lines="none" color="light" class="chat-list desktop-view ion-no-padding">
+      <ion-item *ngFor="let message of messageList" color="light">
+        <ng-container *ngIf="isLastMessage(message)">
+          <ion-avatar [ngClass]="getAvatarClass(message)" slot="start">
+            <img [src]="message.senderAvatar">
+          </ion-avatar>
         </ng-container>
 
-        <ng-template #attachment>
+        <ion-label [ngClass]="getClassForMessageBubble(message)">
 
-          <ng-container *ngIf="message.fileObject && message.fileObject.mimetype && message.fileObject.mimetype.includes('video')">
-            <div  class="message-body video-attachment-container">
-              <ng-container *ngIf="!message.isSender">
-                <p class="seen-text subtitle-1 black">{{message.senderName}}</p>
-                <p class="seen-text caption gray-2">{{message.senderRole}}</p>
-              </ng-container>
+          <div *ngIf="checkToShowMessageTime(message)" class="time caption gray-2">
+            <p>{{getMessageDate(message.created)}}</p>
+          </div>
 
-              <ng-container *ngIf="message?.fileObject?.mimetype === 'video/mp4'; else nonMp4Format">
-                <div id="inner-box" (click)="preview(message.fileObject)">
-                  <p><ion-icon name="play-circle"></ion-icon></p>
-                </div>
-                <div class="label">
-                  <p><ion-label color="primary">{{ message.fileObject.filename }}</ion-label></p>
-                </div>
-              </ng-container>
-
-              <ng-template #nonMp4Format>
-                <app-video-conversion [video]="message" (preview)="preview($event)"></app-video-conversion>
-              </ng-template>
-
-            </div>
-          </ng-container>
-
-          <ng-container *ngIf="message.fileObject && message.fileObject.mimetype && message.fileObject.mimetype.includes('image')">
-            <div class="message-body image" (click)="preview(message.fileObject)">
-              <ng-container *ngIf="!message.isSender">
-                <p class="seen-text subtitle-1 black">{{message.senderName}}</p>
-                <p class="seen-text caption gray-2">{{message.senderRole}}</p>
-              </ng-container>
-              <div [innerHTML]="message.preview"></div>
-            </div>
-          </ng-container>
-
-          <ng-container *ngIf="(message.fileObject && !message.fileObject.mimetype) || (message.fileObject && (
-                !message.fileObject.mimetype.includes('image') && !message.fileObject.mimetype.includes('video')))">
+          <ng-container *ngIf="!message.fileObject; else attachment">
             <div class="message-body">
               <ng-container *ngIf="!message.isSender">
                 <p class="seen-text subtitle-1 black">{{message.senderName}}</p>
                 <p class="seen-text caption gray-2">{{message.senderRole}}</p>
               </ng-container>
-              <ion-item class="general-attachment" (click)="previewFile(message.fileObject)">
-                <ion-ripple-effect></ion-ripple-effect>
-                <ion-icon name="document" slot="start"></ion-icon>
-                <ion-label color="primary">
-                  {{ message.fileObject.filename }}
-                </ion-label>
-                <ion-note *ngIf="getTypeByMime(message.fileObject.mimetype)">
-                  {{ getTypeByMime(message.fileObject.mimetype) }}
-                </ion-note>
-              </ion-item>
+              <p class="message-text subtitle-1 black" [innerHTML]="message.message"></p>
             </div>
           </ng-container>
-        </ng-template>
-      </ion-label>
-    </ion-item>
 
-    <ng-container *ngIf="whoIsTyping">
-      <ion-item color="light">
-        <ion-label class="received-messages no-avatar" color="medium">
-          <p class="message-typing">
-              <i>{{ whoIsTyping }}</i>
-            <ion-spinner name="dots" class="vertical-middle"></ion-spinner>
-          </p>
+          <ng-template #attachment>
+
+            <ng-container
+              *ngIf="message.fileObject && message.fileObject.mimetype && message.fileObject.mimetype.includes('video')">
+              <div class="message-body video-attachment-container">
+                <ng-container *ngIf="!message.isSender">
+                  <p class="seen-text subtitle-1 black">{{message.senderName}}</p>
+                  <p class="seen-text caption gray-2">{{message.senderRole}}</p>
+                </ng-container>
+
+                <ng-container *ngIf="message?.fileObject?.mimetype === 'video/mp4'; else nonMp4Format">
+                  <div id="inner-box" (click)="preview(message.fileObject)">
+                    <p>
+                      <ion-icon name="play-circle"></ion-icon>
+                    </p>
+                  </div>
+                  <div class="label">
+                    <p>
+                      <ion-label color="primary">{{ message.fileObject.filename }}</ion-label>
+                    </p>
+                  </div>
+                </ng-container>
+
+                <ng-template #nonMp4Format>
+                  <app-video-conversion [video]="message" (preview)="preview($event)"></app-video-conversion>
+                </ng-template>
+
+              </div>
+            </ng-container>
+
+            <ng-container
+              *ngIf="message.fileObject && message.fileObject.mimetype && message.fileObject.mimetype.includes('image')">
+              <div class="message-body image" (click)="preview(message.fileObject)">
+                <ng-container *ngIf="!message.isSender">
+                  <p class="seen-text subtitle-1 black">{{message.senderName}}</p>
+                  <p class="seen-text caption gray-2">{{message.senderRole}}</p>
+                </ng-container>
+                <div [innerHTML]="message.preview"></div>
+              </div>
+            </ng-container>
+
+            <ng-container *ngIf="(message.fileObject && !message.fileObject.mimetype) || (message.fileObject && (
+                  !message.fileObject.mimetype.includes('image') && !message.fileObject.mimetype.includes('video')))">
+              <div class="message-body">
+                <ng-container *ngIf="!message.isSender">
+                  <p class="seen-text subtitle-1 black">{{message.senderName}}</p>
+                  <p class="seen-text caption gray-2">{{message.senderRole}}</p>
+                </ng-container>
+                <ion-item class="general-attachment" (click)="previewFile(message.fileObject)">
+                  <ion-ripple-effect></ion-ripple-effect>
+                  <ion-icon name="document" slot="start"></ion-icon>
+                  <ion-label color="primary">
+                    {{ message.fileObject.filename }}
+                  </ion-label>
+                  <ion-note *ngIf="getTypeByMime(message.fileObject.mimetype)">
+                    {{ getTypeByMime(message.fileObject.mimetype) }}
+                  </ion-note>
+                </ion-item>
+              </div>
+            </ng-container>
+          </ng-template>
         </ion-label>
       </ion-item>
-    </ng-container>
 
-    <ng-container *ngIf="sendingMessage">
-      <ion-item color="light">
-        <div class="message-sending-loading">
-          <ion-spinner name="bubbles"></ion-spinner>
-        </div>
-      </ion-item>
-    </ng-container>
-  </ion-list>
-</ion-content>
+      <ng-container *ngIf="whoIsTyping">
+        <ion-item color="light">
+          <ion-label class="received-messages no-avatar" color="medium">
+            <p class="message-typing">
+              <i>{{ whoIsTyping }}</i>
+              <ion-spinner name="dots" class="vertical-middle"></ion-spinner>
+            </p>
+          </ion-label>
+        </ion-item>
+      </ng-container>
 
-<ion-footer class="footer ion-footer-absolute focus">
-  <ion-grid class="white-bg">
-    <ion-row nowrap class="ion-no-padding">
-      <ion-col size="12" class="ion-align-self-center">
-        <ion-textarea
-          placeholder="Enter your message"
-          required="true"
-          name="message"
-          [(ngModel)]="message"
-          (ngModelChange)="typing()"
-          appAutoresize="100"
-          autoGrow="true"
-          wrap="hard"
-        ></ion-textarea>
-      </ion-col>
-    </ion-row>
-    <ion-row nowrap class="ion-no-padding ion-align-items-end">
-      <ng-container *ngTemplateOutlet="attachmentButtons"></ng-container>
-      <ion-col class="ion-no-padding ion-text-center">
-        <ion-button (click)="sendMessage()" type="submit" fill="clear" class="ion-no-padding">
-          <ion-icon name="send" slot="icon-only"></ion-icon>
-        </ion-button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-</ion-footer>
+      <ng-container *ngIf="sendingMessage">
+        <ion-item color="light">
+          <div class="message-sending-loading">
+            <ion-spinner name="bubbles"></ion-spinner>
+          </div>
+        </ion-item>
+      </ng-container>
+    </ion-list>
+  </ion-content>
 
-<ng-template #attachmentButtons>
-  <ion-col offset="8" class="ion-no-padding ion-text-center">
-    <ion-button (click)="attach('video')" fill="clear" class="ion-no-padding">
-      <ion-icon name="film" slot="icon-only"></ion-icon>
-    </ion-button>
-  </ion-col>
-  <ion-col class="ion-no-padding ion-text-center">
-    <ion-button (click)="attach('image')" fill="clear" class="ion-no-padding">
-      <ion-icon name="images" slot="icon-only"></ion-icon>
-    </ion-button>
-  </ion-col>
-  <ion-col class="ion-no-padding ion-text-center">
-    <ion-button (click)="attach('any')" fill="clear" class="ion-no-padding">
-      <ion-icon name="attach" slot="icon-only"></ion-icon>
-    </ion-button>
-  </ion-col>
+  <ion-footer class="footer ion-footer-absolute focus">
+    <ion-grid class="white-bg">
+      <ion-row nowrap class="ion-no-padding">
+        <ion-col size="12" class="ion-align-self-center">
+          <ion-textarea placeholder="Enter your message" required="true" name="message" [(ngModel)]="message"
+            (ngModelChange)="typing()" appAutoresize="100" autoGrow="true" wrap="hard"></ion-textarea>
+        </ion-col>
+      </ion-row>
+      <ion-row nowrap class="ion-no-padding ion-align-items-end">
+        <ng-container *ngTemplateOutlet="attachmentButtons"></ng-container>
+        <ion-col class="ion-no-padding ion-text-center">
+          <ion-button (click)="sendMessage()" type="submit" fill="clear" class="ion-no-padding">
+            <ion-icon name="send" slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-footer>
+
+  <ng-template #attachmentButtons>
+    <ion-col offset="8" class="ion-no-padding ion-text-center">
+      <ion-button (click)="attach('video')" fill="clear" class="ion-no-padding">
+        <ion-icon name="film" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-col>
+    <ion-col class="ion-no-padding ion-text-center">
+      <ion-button (click)="attach('image')" fill="clear" class="ion-no-padding">
+        <ion-icon name="images" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-col>
+    <ion-col class="ion-no-padding ion-text-center">
+      <ion-button (click)="attach('any')" fill="clear" class="ion-no-padding">
+        <ion-icon name="attach" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-col>
+  </ng-template>
+</ng-container>
+
+<ng-template #scheduleList>
+  <app-schedule-message-list [channelUuid]="chatChannel.uuid" [channelName]="chatChannel.name"></app-schedule-message-list>
 </ng-template>
