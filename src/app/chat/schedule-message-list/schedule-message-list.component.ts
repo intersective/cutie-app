@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { IonContent, ModalController } from '@ionic/angular';
 
 import { StorageService } from '@services/storage.service';
@@ -15,14 +15,15 @@ import { ChatService, ChatChannel, Message, MessageListResult } from '../chat.se
 })
 export class ScheduleMessageListComponent implements OnInit {
 
+  @ViewChild('content') private content: ElementRef;
   @Input() channelUuid: string;
   @Input() channelName: string;
 
-    // message history list
-    messageList: Message[] = [];
-    messagePageCursor = '';
-    messagePageSize = 20;
-    loadingScheduleMessages = false;
+  // message history list
+  messageList: Message[] = [];
+  messagePageCursor = '';
+  messagePageSize = 20;
+  loadingScheduleMessages = false;
 
   constructor(
     private chatService: ChatService,
@@ -35,7 +36,7 @@ export class ScheduleMessageListComponent implements OnInit {
 
   ngOnInit() {
     this._initialise();
-    this._loadMessages();
+    this.loadMessages();
   }
 
   private _initialise() {
@@ -45,7 +46,7 @@ export class ScheduleMessageListComponent implements OnInit {
     this.messagePageSize = 20;
   }
 
-  private _loadMessages() {
+  loadMessages(event?) {
     // if one chat request send to the api. not calling other one.
     // because in some cases second api call respose return before first one.
     // then messages getting mixed.
@@ -62,7 +63,6 @@ export class ScheduleMessageListComponent implements OnInit {
       })
       .subscribe(
         (messageListResult: MessageListResult) => {
-          console.log('messageListResult', messageListResult);
           if (!messageListResult) {
             this.loadingScheduleMessages = false;
             return;
@@ -74,6 +74,9 @@ export class ScheduleMessageListComponent implements OnInit {
           }
           this.messagePageCursor = messageListResult.cursor;
           this.loadingScheduleMessages = false;
+          if (event) {
+            event.target.complete();
+          }
           if (this.messageList.length > 0) {
             this.messageList = messages.concat(this.messageList);
           } else {

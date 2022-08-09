@@ -90,3 +90,12 @@
     }
   }
 }
+
+.ion-content-absolute-with-footer {
+  height: calc(100% - 175px);
+
+  &.schedule {
+    height: calc(100% - 106px);
+    top: 106px;
+  }
+}
