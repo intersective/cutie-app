@@ -1,4 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { IonContent, ModalController } from '@ionic/angular';
+
+import { StorageService } from '@services/storage.service';
+import { UtilsService } from '@services/utils.service';
+import { PusherService } from '@shared/pusher/pusher.service';
+import { FilestackService } from '@shared/filestack/filestack.service';
 
 import { ChatService, ChatChannel, Message, MessageListResult } from '../chat.service';
 
@@ -19,7 +25,12 @@ export class ScheduleMessageListComponent implements OnInit {
     loadingScheduleMessages = false;
 
   constructor(
-    private chatService: ChatService
+    private chatService: ChatService,
+    public storage: StorageService,
+    public utils: UtilsService,
+    public pusherService: PusherService,
+    private filestackService: FilestackService,
+    private modalController: ModalController,
   ) { }
 
   ngOnInit() {
@@ -73,6 +84,16 @@ export class ScheduleMessageListComponent implements OnInit {
           this.loadingScheduleMessages = false;
         }
       );
+  }
+
+  getScheduleDate(date) {
+    const utcToLocalTime = this.utils.utcToLocal(date, 'time');
+    const utcToLocalDate = this.utils.utcToLocal(date, 'date');
+    return `${utcToLocalTime} / ${utcToLocalDate}`;
+  }
+
+  previewFile(file) {
+    return this.filestackService.previewFile(file);
   }
 
 }

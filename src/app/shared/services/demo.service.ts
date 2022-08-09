@@ -47,6 +47,11 @@ const CHARACTERS = {
     name: 'Scott Lang',
     avatar: 'https://images.hindustantimes.com/rf/image_size_960x540/HT/p2/2019/02/19/Pictures/null_191c153a-3452-11e9-85ab-b5c6484f4b61.jpg',
     email: 'scott@practera.com'
+  },
+  peter: {
+    name: 'Peter Quill',
+    avatar: 'https://upload.wikimedia.org/wikipedia/en/b/b2/Chris_Pratt_as_Peter_Quill.jpeg',
+    email: 'peter@practera.com'
   }
 };
 
@@ -286,26 +291,27 @@ export class DemoService {
       sender: {
         uuid: '1',
         name: CHARACTERS.scott.name,
-        role: 'participant',
+        role: 'coordinator',
         avatar: CHARACTERS.scott.avatar
       }
     },
     {
       uuid: '222',
-      message: 'Thanos is coming',
+      message: 'Gamora is back',
       file: null,
       created: '2019-11-28 02:21:21',
       isSender: true,
+      scheduled: '2022-08-29 02:21:21',
       sender: {
-        uuid: '1',
-        name: 'student+01',
-        role: 'participant',
-        avatar: 'https://www.gravatar.com/avatar/21b7427270a606e8a3c4413a13bb47c6?d=https://sandbox.practera.com/img/user-512.png&s=50'
+        uuid: '2',
+        name: CHARACTERS.peter.name,
+        role: 'coordinator',
+        avatar: CHARACTERS.peter.avatar
       }
     },
     {
-      uuid: '2',
-      message: '',
+      uuid: '223',
+      message: 'Look at this',
       file: JSON.stringify({
         container: 'practera-aus',
         filename: 'Thanos_is_coming.pdf',
@@ -326,6 +332,7 @@ export class DemoService {
       }),
       created: '2019-11-27 02:25:21',
       isSender: false,
+      scheduled: '2022-09-02 05:21:21',
       sender: {
         uuid: '3',
         name: CHARACTERS.steven.name,
@@ -334,11 +341,12 @@ export class DemoService {
       }
     },
     {
-      uuid: '3',
+      uuid: '224',
       message: 'Hi guys, check this out!',
       file: null,
       created: '2019-11-27 02:21:21',
       isSender: false,
+      scheduled: '2022-09-05 05:21:21',
       sender: {
         uuid: '3',
         name: CHARACTERS.steven.name,
