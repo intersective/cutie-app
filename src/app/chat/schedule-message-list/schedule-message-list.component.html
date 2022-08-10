@@ -1,0 +1,46 @@
+<ion-content color="light" class="ion-content-absolute-with-footer schedule">
+  <div class="schedule-message-container">
+    <div *ngIf="loadingScheduleMessages" class="ion-text-center">
+      <ion-spinner></ion-spinner>
+    </div>
+    <ion-grid>
+      <ng-container *ngFor="let message of messageList">
+        <ion-row>
+          <ion-col>
+            <ion-card class="schedule-message-card">
+              <ion-card-content>
+                <div class="sender-info-container">
+                  <p class="black caption"><strong>{{ message.senderName }}</strong> at <strong>{{
+                      getScheduleDate(message.scheduled) }}</strong></p>
+                  <div class="action-container">
+                    <ion-button class="delete-btn" fill="clear" size="small" title="Delete Message">
+                      <ion-icon name="trash" slot="icon-only"></ion-icon>
+                    </ion-button>
+                    <ion-button fill="clear" size="small" title="Change Schedule">
+                      <ion-icon name="calendar" slot="icon-only"></ion-icon>
+                    </ion-button>
+                    <ion-button fill="clear" size="small" title="Edit Message">
+                      <ion-icon name="create" slot="icon-only"></ion-icon>
+                    </ion-button>
+                  </div>
+                </div>
+                <hr>
+                <div class="message-container">
+                  <p class="caption black">{{ message.message }}</p>
+                </div>
+                <div class="attachment-container" *ngIf="message.fileObject">
+                  <p class="black">Attachment:</p>
+                  <a class="ocean" (click)="previewFile(message.fileObject)">{{ message.fileObject.filename }}</a>
+                </div>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ng-container>
+    </ion-grid>
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMessages($event)">
+      <ion-infinite-scroll-content loadingSpinner="bubbles">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </div>
+</ion-content>

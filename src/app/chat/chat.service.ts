@@ -54,6 +54,7 @@ export interface Message {
   preview?: string;
   noAvatar?: boolean;
   channelUuid?: string;
+  scheduled?: string;
 }
 
 export interface MessageListResult {
@@ -107,6 +108,7 @@ interface MessageListParams {
   channelUuid: string;
   cursor: string;
   size: number;
+  scheduledOnly?: boolean;
 }
 
 interface UnreadMessageParams {
@@ -201,10 +203,19 @@ export class ChatService {
       const response = this.demo.getMessages(data);
       return of(this._normaliseMessageListResponse(response.data)).pipe(delay(1000));
     }
+    const params = {
+      uuid: data.channelUuid,
+      cursor: data.cursor,
+      size: data.size,
+      scheduledOnly: data.scheduledOnly
+    };
+    if (!data.scheduledOnly) {
+      delete params.scheduledOnly;
+    }
     return this.request.chatGraphQLQuery(
-      `query getChannellogs($uuid:String!, $cursor:String!, $size:Int!) {
+      `query getChannellogs($uuid:String!, $cursor:String!, $size:Int!, $scheduledOnly:Boolean) {
         channel(uuid:$uuid){
-          chatLogsConnection(cursor:$cursor, size:$size){
+          chatLogsConnection(cursor:$cursor, size:$size, scheduledOnly:$scheduledOnly){
             cursor
             chatLogs{
               uuid
@@ -212,6 +223,7 @@ export class ChatService {
               message
               file
               created
+              scheduled
               sender {
                 uuid
                 name
@@ -221,12 +233,7 @@ export class ChatService {
             }
           }
         }
-      }`,
-      {
-        uuid: data.channelUuid,
-        cursor: data.cursor,
-        size: data.size
-      },
+      }`, params,
       {
         noCache: true
       }
@@ -271,7 +278,8 @@ export class ChatService {
         senderUuid: message.sender.uuid,
         senderName: message.sender.name,
         senderRole: message.sender.role,
-        senderAvatar: message.sender.avatar
+        senderAvatar: message.sender.avatar,
+        scheduled: message.scheduled
       });
     });
     return {
@@ -662,6 +670,22 @@ export class ChatService {
       }
     });
     return userList;
+  }
+
+  deleteChatMesage(uuid: string): Observable<any> {
+    if (environment.demo) {
+      return of({}).pipe(delay(1000));
+    }
+    return this.request.chatGraphQLMutate(
+      `mutation deletechatMessage($uuid: String!) {
+        deleteChatLog(uuid: $uuid) {
+          success
+        }
+      }`,
+      {
+        uuid: uuid
+      }
+    );
   }
 
 }

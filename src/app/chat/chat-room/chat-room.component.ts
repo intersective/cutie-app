@@ -46,6 +46,7 @@ export class ChatRoomComponent {
   sendingMessage = false;
   // display "someone is typing" when received a typing event
   whoIsTyping: string;
+  isScheduleListOpen: boolean;
 
   constructor(
     private chatService: ChatService,
@@ -104,6 +105,7 @@ export class ChatRoomComponent {
     this.messagePageSize = 20;
     this.sendingMessage = false;
     this.whoIsTyping = '';
+    this.isScheduleListOpen = false;
   }
 
   private _subscribeToPusherChannel() {
