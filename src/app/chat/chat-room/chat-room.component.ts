@@ -686,14 +686,14 @@ export class ChatRoomComponent {
       cssClass: 'chat-schedule-message-popup',
       componentProps: {
         channelUuid: this.channelUuid,
-        message: message
+        scheduledMessage: message,
+        channelName: this.chatChannel.name
       }
     });
     await modal.present();
     modal.onWillDismiss().then((data) => {
-      if (data.data && (data.data.type === 'channelDeleted' || data.data.channelName !== this.chatChannel.name)) {
-        this.utils.broadcastEvent('chat:info-update', true);
-      }
+      this.sendingMessage = false;
+      this.utils.broadcastEvent('chat:info-update', true);
     });
   }
 

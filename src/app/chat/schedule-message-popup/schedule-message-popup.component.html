@@ -1,16 +1,56 @@
-<div class="ion-padding">
-  <p class="subtitle-2 popup-title">Schedule Message</p>
-  <p class="subtitle-2 popup-subtitle">Date</p>
-  <ion-button id="open-modal" (click)="openDateSelectPopup()">Open Datetime Modal</ion-button>
-  <!-- <ion-datetime presentation="date"></ion-datetime> -->
-  <p class="subtitle-2 popup-subtitle">Time</p>
+<div class="ion-padding" [ngClass]="{'main-container': createdMessage}">
+  <ng-container *ngIf="!createdMessage; else messageCreated">
+    <p class="subtitle-2 popup-title">Schedule Message</p>
 
-  <p class="subtitle-2 popup-subtitle">Add attachment</p>
-  <ion-datetime value="2012-12-15T13:47:20.789"></ion-datetime>
-
-  <!-- <ion-item>
-    <ion-label position="floating">MM/DD/YYYY</ion-label>
+    <div class="form-container">
+      <p class="subtitle-2 popup-subtitle">Date</p>
+      <ion-input class="date-time-pickers" type="date" [(ngModel)]="selectedDate"></ion-input>
+  
     
-  </ion-item> -->
-
+      <p class="subtitle-2 popup-subtitle">Time</p>
+      <ion-input class="date-time-pickers" type="time" [(ngModel)]="selectedTime"></ion-input>
+    
+      <p class="subtitle-2 popup-subtitle">Add attachment</p>
+      <ng-container *ngIf="!uploadedFile; else uploadPreview">
+        <ion-button tabindex="2" color="light" class="btn-upload-file" (click)="uploadAttachment()">
+          Upload a file
+        </ion-button>
+      </ng-container>
+      <ng-template #uploadPreview>
+        <div class="file-preview-container">
+          <a class="ocean" href="{{ uploadedFile.url }}" target="_blank" rel="{{ uploadedFile.filename }}">{{ uploadedFile.filename }}</a>
+          <ion-button (click)="uploadedFile = null" fill="clear" color="danger" class="ion-no-padding">
+            <ion-icon name="close" slot="icon-only"></ion-icon>
+          </ion-button>
+        </div>
+      </ng-template>
+    </div>
+  </ng-container>
+  <ng-template #messageCreated>
+    <div class="success-container">
+      <div class="title-container">
+        <ion-icon name="checkmark-circle"></ion-icon>
+        <p class="subtitle-2 popup-title">Message Scheduled</p>
+      </div>
+      <div class="message-container">
+        <p class="subtitle-2 black">{{ createdMessage.message }}</p>
+        <div class="attachment-container" *ngIf="createdMessage.fileObject">
+          <p class="black">Attachment:</p>
+          <a class="ocean" (click)="previewFile(createdMessage.fileObject)">{{ createdMessage.fileObject.filename }}</a>
+        </div>
+      </div>
+      <div class="schedule-info-container">
+        <p class="subtitle-2 black">will be publised the <strong>{{ utils.utcToLocal(createdMessage.scheduled, 'date') }}</strong> at <strong>{{ utils.utcToLocal(createdMessage.scheduled, 'time') }}</strong> on <strong>{{ channelName }}</strong></p>
+      </div>
+    </div>
+  </ng-template>
+</div>
+<div class="message-popup-footer">
+  <ion-button tabindex="2" color="light" class="btn-cancle" (click)="close()" [disabled]="sending">
+    Cancel
+  </ion-button>
+  <ion-button *ngIf="!createdMessage" tabindex="3" color="ocean" (click)="scheduleMessage()"
+    [disabled]="sending || !selectedDate || !selectedTime || !scheduledMessage || !channelUuid">
+    {{ sending ? 'sending..' : 'Schedule Message'}}
+  </ion-button>
 </div>
