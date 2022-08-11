@@ -13,7 +13,7 @@
       <p class="subtitle-2 popup-subtitle">Time</p>
       <ion-input class="date-time-pickers" type="time" [(ngModel)]="selectedTime"></ion-input>
 
-      <p class="subtitle-2 popup-error" *ngIf="invalidDateTime">Selected date and time not valid</p>
+      <p class="subtitle-2 popup-error" *ngIf="invalidDateTime">Selected date and time is not valid</p>
     
       <p class="subtitle-2 popup-subtitle">Add attachment</p>
       <ng-container *ngIf="!uploadedFile; else uploadPreview">
