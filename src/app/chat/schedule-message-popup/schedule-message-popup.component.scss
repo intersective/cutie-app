@@ -13,6 +13,19 @@
   margin-bottom: 9px;
 }
 
+.popup-error {
+  @extend .popup-title;
+  color: var(--ion-color-danger);
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.hint-message {
+  color: var(--practera-grey-75);
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
 .form-container {
   width: 80%;
   .btn-upload-file {

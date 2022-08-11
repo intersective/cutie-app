@@ -25,8 +25,7 @@ export class ScheduleMessagePopupComponent implements OnInit {
   selectedDate: string;
   selectedTime: string;
   sending: boolean;
-  invalidDate: boolean;
-  invalidTime: boolean;
+  invalidDateTime: boolean;
   createdMessage: Message;
 
   constructor(
@@ -48,8 +47,7 @@ export class ScheduleMessagePopupComponent implements OnInit {
     this.selectedDate = '';
     this.selectedTime = '';
     this.uploadedFile = null;
-    this.invalidDate = false;
-    this.invalidTime = false;
+    this.invalidDateTime = false;
     this.createdMessage = null;
   }
 
@@ -61,26 +59,30 @@ export class ScheduleMessagePopupComponent implements OnInit {
   }
 
   scheduleMessage() {
-    const dateObj = new Date(`${this.selectedDate} ${this.selectedTime}`);
-    if (!this.selectedDate || !this.selectedTime || !this.scheduledMessage || !this.channelUuid) {
+    if (!this.selectedDate || !this.selectedTime || !this.channelUuid) {
       return;
     }
     this.sending = true;
-    this.chatService.postNewMessage({
-      channelUuid: this.channelUuid,
-      message: this.scheduledMessage,
-      file: this.uploadedFile,
-      scheduled: dateObj.toISOString()
-    }).subscribe(
-      response => {
-        this.createdMessage = response;
-        this.sending = false;
-      },
-      error => {
-        console.log(error);
-        this.sending = false;
-      }
-    );
+    const dateObj = new Date(`${this.selectedDate} ${this.selectedTime}`);
+    if (this.isValidDateTime(`${this.selectedDate} ${this.selectedTime}`)) {
+      this.chatService.postNewMessage({
+        channelUuid: this.channelUuid,
+        message: this.scheduledMessage,
+        file: this.uploadedFile,
+        scheduled: dateObj.toISOString()
+      }).subscribe(
+        response => {
+          this.createdMessage = response;
+          this.sending = false;
+        },
+        error => {
+          console.log(error);
+          this.sending = false;
+        }
+      );
+    } else {
+      this.sending = false;
+    }
   }
 
   async uploadAttachment() {
@@ -107,21 +109,25 @@ export class ScheduleMessagePopupComponent implements OnInit {
     return this.filestackService.previewFile(file);
   }
 
-  validateSelectedDateTime() {
-    if (!this.selectedDate) {
+  /**
+   * this method will check is selected date and time valid.
+   * - we are not allow to select previous date and time.
+   * - selected time at least should be 30 minutes in future to be valid.
+   * @param selectedDateTime date time user select to schedule the message
+   * @returns boolean
+   */
+  isValidDateTime(selectedDateTime) {
+    if (!selectedDateTime) {
       return;
     }
-    const currentDateTime = new Date();
-    const selectedDateObj = this.selectedTime ? new Date(`${this.selectedDate} ${this.selectedTime}`) : new Date(`${this.selectedDate}`);
-
-    const m = moment(this.selectedTime, 'HH:mm').format('YYYY-MM-DD hh:mm:ss');
-    // console.log('isSame', moment(currentDateTime).isSame(selectedDateObj));
-    // console.log('JS', currentDateTime.toISOString(), selectedDateObj.toISOString());
-
-    const diffTime = Math.abs(selectedDateObj.getTime() - currentDateTime.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    console.log('diffDays', diffDays);
-    console.log('diffTime', diffTime);
+    const dateTimeDiff = this.utils.getDateDifferenceInMinutes(selectedDateTime);
+    if (dateTimeDiff >= 30) {
+      this.invalidDateTime = false;
+      return true;
+    } else {
+      this.invalidDateTime = true;
+      return false;
+    }
   }
 
 }
