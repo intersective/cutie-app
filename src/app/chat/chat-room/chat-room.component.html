@@ -19,9 +19,6 @@
 </ion-header>
 
 <ng-container *ngIf="!isScheduleListOpen; else scheduleList">
-  <ion-item>
-    asasasa
-  </ion-item>
   <ion-content [ngClass]="{'schedule': chatChannel.scheduledMessageCount > 0}"
     class="ion-content-absolute-with-footer" color="light" [scrollEvents]="true"
     (ionScroll)="loadMoreMessages($event)">
@@ -124,10 +121,10 @@
         </ion-label>
       </ion-item>
 
-      <ng-container *ngIf="whoIsTyping">
-        <ion-item color="light">
-          <ion-label class="received-messages no-avatar" color="medium">
-            <p class="message-typing">
+    <ng-container *ngIf="whoIsTyping">
+      <ion-item color="light">
+        <ion-label class="received-messages no-avatar" color="medium">
+          <p class="message-typing">
               <i>{{ whoIsTyping }}</i>
               <ion-spinner name="dots" class="vertical-middle"></ion-spinner>
             </p>
@@ -153,10 +150,10 @@
             (ngModelChange)="typing()" appAutoresize="100" autoGrow="true" wrap="hard"></ion-textarea>
         </ion-col>
       </ion-row>
-      <ion-row nowrap class="ion-no-padding ion-align-items-end">
+      <ion-row nowrap class="ion-no-padding ion-align-items-center ion-justify-content-end">
         <ng-container *ngTemplateOutlet="attachmentButtons"></ng-container>
-        <ion-col class="ion-no-padding ion-text-center">
-          <ion-button (click)="sendMessage()" type="submit" fill="clear" class="ion-no-padding">
+        <ion-col size="2" size-lg="1" class="ion-no-padding ion-text-center">
+          <ion-button (click)="sendMessage()" type="submit" fill="clear" color="ocean" class="ion-no-padding">
             <ion-icon name="send" slot="icon-only"></ion-icon>
           </ion-button>
         </ion-col>
@@ -165,21 +162,28 @@
   </ion-footer>
 
   <ng-template #attachmentButtons>
-    <ion-col offset="8" class="ion-no-padding ion-text-center">
-      <ion-button (click)="attach('video')" fill="clear" class="ion-no-padding">
-        <ion-icon name="film" slot="icon-only"></ion-icon>
-      </ion-button>
-    </ion-col>
-    <ion-col class="ion-no-padding ion-text-center">
-      <ion-button (click)="attach('image')" fill="clear" class="ion-no-padding">
-        <ion-icon name="images" slot="icon-only"></ion-icon>
-      </ion-button>
-    </ion-col>
-    <ion-col class="ion-no-padding ion-text-center">
-      <ion-button (click)="attach('any')" fill="clear" class="ion-no-padding">
+    <ion-col size="2" size-lg="1" class="ion-no-padding ion-text-center">
+      <ion-button (click)="attach('any')" fill="clear" color="ocean" class="ion-no-padding">
         <ion-icon name="attach" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-col>
+    <ion-col size="2" size-lg="1" class="ion-no-padding ion-text-center">
+    <ion-button (click)="attach('video')" fill="clear" color="ocean" class="ion-no-padding">
+      <ion-icon name="videocam" slot="icon-only"></ion-icon>
+    </ion-button>
+  </ion-col>
+  <ion-col size="2" size-lg="1" class="ion-no-padding ion-text-center">
+      <ion-button (click)="attach('image')" fill="clear" color="ocean" class="ion-no-padding">
+        <ion-icon name="images" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-col>
+
+    <ion-col size="2" size-lg="1" class="ion-no-padding ion-text-center">
+      <ion-button (click)="openSchedulePopup()" fill="clear" color="ocean" class="ion-no-padding">
+        <ion-icon name="calendar" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-col>
+  
   </ng-template>
 </ng-container>
 

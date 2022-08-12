@@ -102,6 +102,7 @@ interface NewMessageParam {
   channelUuid: string;
   message: string;
   file?: string;
+  scheduled?: string;
 }
 
 interface MessageListParams {
@@ -163,6 +164,7 @@ export class ChatService {
           lastMessageCreated
           pusherChannel
           canEdit
+          scheduledMessageCount
         }
       }`,
       {},
@@ -396,13 +398,14 @@ export class ChatService {
       return of(this._normalisePostMessageResponse(response.data)).pipe(delay(1000));
     }
     return this.request.chatGraphQLMutate(
-      `mutation createChatLogs($channelUuid: String!, $message: String, $file: String) {
-        createChatLog(channelUuid: $channelUuid, message: $message, file: $file) {
+      `mutation createChatLogs($channelUuid: String!, $message: String, $file: String, $scheduled: String) {
+        createChatLog(channelUuid: $channelUuid, message: $message, file: $file, scheduled: $scheduled) {
             uuid
             isSender
             message
             file
             created
+            scheduled
             sender {
               uuid
               name
@@ -414,7 +417,8 @@ export class ChatService {
       {
         channelUuid: data.channelUuid,
         message: data.message,
-        file: data.file
+        file: data.file,
+        scheduled: data.scheduled
       }
     ).pipe(
       map(response => {
@@ -452,7 +456,8 @@ export class ChatService {
       senderUuid: result.sender.uuid,
       senderName: result.sender.name,
       senderRole: result.sender.role,
-      senderAvatar: result.sender.avatar
+      senderAvatar: result.sender.avatar,
+      scheduled: result.scheduled
     };
   }
 
