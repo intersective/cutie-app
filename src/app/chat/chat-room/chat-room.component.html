@@ -5,7 +5,7 @@
       <ion-icon color="primary" slot="icon-only" name="information-circle"></ion-icon>
     </ion-button>
   </ion-toolbar>
-  <ion-toolbar *ngIf="chatChannel.scheduledMessageCount > 0" class="schedule-message-banner">
+  <ion-toolbar *ngIf="isScheduleListOpen || chatChannel.scheduledMessageCount > 0" class="schedule-message-banner">
     <p *ngIf="!isScheduleListOpen" class="schedule-message-banner-title subtitle-2"
       (click)="isScheduleListOpen = !isScheduleListOpen">You have <strong>{{chatChannel.scheduledMessageCount}}</strong>
       message scheduled for this channel</p>

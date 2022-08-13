@@ -85,6 +85,17 @@ export class ChatRoomComponent {
         this._scrollToBottom();
       }
     });
+
+    // Update schedule message count when messages get delete
+    this.utils.getEvent('chat:schedule-delete').subscribe(event => {
+      const receivedChannel = event.channel;
+      if (receivedChannel !== this.channelUuid) {
+        return;
+      }
+      if (event.deleted) {
+        this.chatChannel.scheduledMessageCount -= 1;
+      }
+    });
   }
 
   onEnter() {
@@ -693,7 +704,10 @@ export class ChatRoomComponent {
     await modal.present();
     modal.onWillDismiss().then((data) => {
       this.sendingMessage = false;
-      this.utils.broadcastEvent('chat:info-update', true);
+      if (data.data.messageScheduled) {
+        this.chatChannel.scheduledMessageCount += 1;
+        this.utils.broadcastEvent('chat:info-update', true);
+      }
     });
   }
 

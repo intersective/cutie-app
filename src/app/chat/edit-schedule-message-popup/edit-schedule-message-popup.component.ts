@@ -10,23 +10,22 @@ import { FilestackService } from '@shared/filestack/filestack.service';
 import { ChatService, ChatChannel, Message, MessageListResult } from '../chat.service';
 
 @Component({
-  selector: 'app-schedule-message-popup',
-  templateUrl: './schedule-message-popup.component.html',
-  styleUrls: ['./schedule-message-popup.component.scss'],
+  selector: 'app-edit-schedule-message-popup',
+  templateUrl: './edit-schedule-message-popup.component.html',
+  styleUrls: ['./edit-schedule-message-popup.component.scss'],
 })
-export class ScheduleMessagePopupComponent implements OnInit {
+export class EditScheduleMessagePopupComponent implements OnInit {
 
-
-  @Input() scheduledMessage: string;
+  @Input() reScheduled = false;
+  @Input() scheduledMessage?: string;
   @Input() channelUuid: string;
   @Input() channelName: string;
-  uploadedFile: any;
-  uploading: boolean;
   selectedDate: string;
   selectedTime: string;
+  message: string;
   sending: boolean;
   invalidDateTime: boolean;
-  createdMessage: Message;
+  updateSuccess: boolean;
 
   constructor(
     private chatService: ChatService,
@@ -42,39 +41,55 @@ export class ScheduleMessagePopupComponent implements OnInit {
   }
 
   private _initialise() {
-    this.uploading = false;
     this.sending = false;
     this.selectedDate = '';
     this.selectedTime = '';
-    this.uploadedFile = null;
     this.invalidDateTime = false;
-    this.createdMessage = null;
+    this.updateSuccess = false;
+    this.message = this.scheduledMessage ? this.scheduledMessage : null;
   }
 
   /**
    * This will cloase the group chat popup
    */
   close() {
-    this.modalController.dismiss({
-      messageScheduled: this.createdMessage ? true : false
-    });
+    let returnData: {} = {
+      updateSuccess: false,
+      reScheduledData: null,
+      newMessageData: null
+    };
+    if (this.reScheduled && (this.selectedDate && !this.selectedTime)) {
+      returnData = {
+        updateSuccess: this.updateSuccess,
+        reScheduledData: new Date(`${this.selectedDate} ${this.selectedTime}`).toISOString()
+      };
+    } else {
+      returnData = {
+        updateSuccess: this.updateSuccess,
+        newMessageData: this.message
+      };
+    }
+    this.modalController.dismiss(returnData);
   }
 
-  scheduleMessage() {
+  EditMessage() {
     if (!this.selectedDate || !this.selectedTime || !this.channelUuid) {
       return;
     }
     this.sending = true;
     const dateObj = new Date(`${this.selectedDate} ${this.selectedTime}`);
     if (this.isValidDateTime(`${this.selectedDate} ${this.selectedTime}`)) {
-      this.chatService.postNewMessage({
-        channelUuid: this.channelUuid,
+      const editMessageParam = {
+        uuid: this.channelUuid,
         message: this.scheduledMessage,
-        file: JSON.stringify(this.uploadedFile),
         scheduled: dateObj.toISOString()
-      }).subscribe(
+      };
+      if (this.reScheduled) {
+        delete editMessageParam.message;
+      }
+      this.chatService.editChatMesage(editMessageParam).subscribe(
         response => {
-          this.createdMessage = response;
+          this.updateSuccess = true;
           this.sending = false;
         },
         error => {
@@ -87,49 +102,25 @@ export class ScheduleMessagePopupComponent implements OnInit {
     }
   }
 
-  async uploadAttachment() {
-    const type = 'any';
-    const options: any = {};
-
-    if (this.filestackService.getFileTypes(type)) {
-      options.accept = this.filestackService.getFileTypes(type);
-      options.storeTo = this.filestackService.getS3Config(type);
-    }
-    await this.filestackService.open(
-      options,
-      res => {
-        this.uploadedFile = res;
-        return;
-      },
-      err => {
-        console.log(err);
-      }
-    );
-  }
-
-  previewFile(file) {
-    return this.filestackService.previewFile(file);
-  }
-
-  /**
+    /**
    * this method will check is selected date and time valid.
    * - we are not allow to select previous date and time.
    * - selected time at least should be 30 minutes in future to be valid.
    * @param selectedDateTime date time user select to schedule the message
    * @returns boolean
    */
-  isValidDateTime(selectedDateTime) {
-    if (!selectedDateTime) {
-      return;
+     isValidDateTime(selectedDateTime) {
+      if (!selectedDateTime) {
+        return;
+      }
+      const dateTimeDiff = this.utils.getDateDifferenceInMinutes(selectedDateTime);
+      if (dateTimeDiff >= 30) {
+        this.invalidDateTime = false;
+        return true;
+      } else {
+        this.invalidDateTime = true;
+        return false;
+      }
     }
-    const dateTimeDiff = this.utils.getDateDifferenceInMinutes(selectedDateTime);
-    if (dateTimeDiff >= 30) {
-      this.invalidDateTime = false;
-      return true;
-    } else {
-      this.invalidDateTime = true;
-      return false;
-    }
-  }
 
 }

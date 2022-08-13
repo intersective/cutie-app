@@ -72,6 +72,13 @@ export interface NewChannelParam {
   }[];
 }
 
+export interface EditMessageParam {
+  uuid: string;
+  message?: string;
+  file?: string;
+  scheduled?: string;
+}
+
 export interface User {
   uuid: string;
   name: string;
@@ -689,6 +696,25 @@ export class ChatService {
       }`,
       {
         uuid: uuid
+      }
+    );
+  }
+
+  editChatMesage(data: EditMessageParam): Observable<any> {
+    if (environment.demo) {
+      return of({}).pipe(delay(1000));
+    }
+    return this.request.chatGraphQLMutate(
+      `mutation edichatMessage($uuid: String!, $message: String, $file: String, $scheduled: String) {
+        editChatLog(uuid: $uuid, message: $message, file: $file, scheduled: $scheduled) {
+          success
+        }
+      }`,
+      {
+        uuid: data.uuid,
+        message: data.message,
+        file: data.file,
+        scheduled: data.scheduled
       }
     );
   }

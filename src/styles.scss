@@ -123,6 +123,17 @@ ion-item.sc-ion-select-popover {
   }
 }
 
+// message-delete-alert
+.message-delete-alert {
+  --max-width: 500px;
+  .alert-wrapper {
+    border-radius: 6px;
+  }
+  .danger {
+    color: var(--ion-color-danger);
+  }
+}
+
 // Chat Channel Create popup - announcment and group
 .channel-create-container {
   padding: 20px 20px 0 20px;
