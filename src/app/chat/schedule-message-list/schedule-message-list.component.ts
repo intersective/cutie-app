@@ -146,26 +146,30 @@ export class ScheduleMessageListComponent implements OnInit {
     this.messageList.splice(deletedMessageIndex, 1);
   }
 
-  async openEditMessagePopup(messageObj, reSchedule) {
-    const message = messageObj.message;
+  async openEditMessagePopup(index, reSchedule) {
     const modal = await this.modalController.create({
       component: EditScheduleMessagePopupComponent,
       cssClass: 'chat-schedule-message-popup',
       componentProps: {
-        channelUuid: this.channelUuid,
-        scheduledMessage: message,
+        chatMessage: this.messageList[index],
         channelName: this.channelName,
         reScheduled: reSchedule
       }
     });
     await modal.present();
     modal.onWillDismiss().then((data) => {
-      console.log('as');
-      // this.sendingMessage = false;
-      // if (data.data.messageScheduled) {
-      //   this.chatChannel.scheduledMessageCount += 1;
-      //   this.utils.broadcastEvent('chat:info-update', true);
-      // }
+    /*
+      we can't call loadMessages() again here.
+      becouse it will call with cursor to get next set of messages.
+      and we can't make cursor null and call loadMessages().
+      becaouse the everytime user edit some messages messages get loan again.
+    */
+      if (data.data.updateSuccess && data.data.reScheduledData) {
+        this.messageList[index].scheduled = data.data.reScheduledData;
+      }
+      if (data.data.updateSuccess && data.data.newMessageData) {
+        this.messageList[index].message = data.data.newMessageData;
+      }
     });
   }
 

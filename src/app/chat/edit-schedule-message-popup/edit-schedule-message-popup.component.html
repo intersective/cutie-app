@@ -16,7 +16,7 @@
         <p class="subtitle-2 popup-error" *ngIf="invalidDateTime">Selected date and time is not valid</p>
       </ng-container>
       <ng-template #editMessage>
-        <ion-textarea required="true" name="message" [(ngModel)]="message"></ion-textarea>
+        <ion-textarea rows="12" required="true" name="message" [(ngModel)]="message"></ion-textarea>
       </ng-template>
     </div>
   </ng-container>
@@ -30,7 +30,7 @@
         <p class="subtitle-2 black">{{ message }}</p>
       </div>
       <div class="schedule-info-container">
-        <p class="subtitle-2 black">will be publised the <strong>{{ utils.utcToLocal(selectedDate, 'date') }}</strong> at <strong>{{ utils.utcToLocal(selectedTime, 'time') }}</strong> on <strong>{{ channelName }}</strong></p>
+        <p class="subtitle-2 black">will be publised the <strong>{{ utils.utcToLocal(scheduledDateTime, 'date') }}</strong> at <strong>{{ utils.utcToLocal(scheduledDateTime, 'time') }}</strong> on <strong>{{ channelName }}</strong></p>
       </div>
     </div>
   </ng-template>
@@ -40,7 +40,7 @@
     Cancel
   </ion-button>
   <ion-button *ngIf="!updateSuccess" color="ocean" (click)="EditMessage()"
-    [disabled]="sending || !channelUuid">
+    [disabled]="sending || !messageUuid">
     {{ sending ? 'sending..' : reScheduled ? 'Schedule Message' : 'Update Message'}}
   </ion-button>
 </div>

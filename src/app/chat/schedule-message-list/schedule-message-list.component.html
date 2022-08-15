@@ -4,7 +4,7 @@
       <ion-spinner></ion-spinner>
     </div>
     <ion-grid>
-      <ng-container *ngFor="let message of messageList">
+      <ng-container *ngFor="let message of messageList; let index=index">
         <ion-row>
           <ion-col>
             <ion-card class="schedule-message-card">
@@ -16,10 +16,10 @@
                     <ion-button class="delete-btn" fill="clear" size="small" title="Delete Message" (click)="deleteMessage(message.uuid)">
                       <ion-icon name="trash" slot="icon-only"></ion-icon>
                     </ion-button>
-                    <ion-button fill="clear" size="small" title="Change Schedule" (click)="openEditMessagePopup(message, true)">
+                    <ion-button fill="clear" size="small" title="Change Schedule" (click)="openEditMessagePopup(index, true)">
                       <ion-icon name="calendar" slot="icon-only"></ion-icon>
                     </ion-button>
-                    <ion-button fill="clear" size="small" title="Edit Message" (click)="openEditMessagePopup(message, false)">
+                    <ion-button fill="clear" size="small" title="Edit Message" (click)="openEditMessagePopup(index, false)">
                       <ion-icon name="create" slot="icon-only"></ion-icon>
                     </ion-button>
                   </div>

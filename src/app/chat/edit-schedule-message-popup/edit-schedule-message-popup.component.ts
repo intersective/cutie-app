@@ -17,15 +17,16 @@ import { ChatService, ChatChannel, Message, MessageListResult } from '../chat.se
 export class EditScheduleMessagePopupComponent implements OnInit {
 
   @Input() reScheduled = false;
-  @Input() scheduledMessage?: string;
-  @Input() channelUuid: string;
+  @Input() chatMessage: Message;
   @Input() channelName: string;
+  messageUuid: string;
   selectedDate: string;
   selectedTime: string;
   message: string;
   sending: boolean;
   invalidDateTime: boolean;
   updateSuccess: boolean;
+  scheduledDateTime: string;
 
   constructor(
     private chatService: ChatService,
@@ -46,7 +47,9 @@ export class EditScheduleMessagePopupComponent implements OnInit {
     this.selectedTime = '';
     this.invalidDateTime = false;
     this.updateSuccess = false;
-    this.message = this.scheduledMessage ? this.scheduledMessage : null;
+    this.message = this.chatMessage ? this.chatMessage.message : null;
+    this.messageUuid = this.chatMessage ? this.chatMessage.uuid : null;
+    this.scheduledDateTime = this.chatMessage ? this.chatMessage.scheduled : null;
   }
 
   /**
@@ -58,69 +61,83 @@ export class EditScheduleMessagePopupComponent implements OnInit {
       reScheduledData: null,
       newMessageData: null
     };
-    if (this.reScheduled && (this.selectedDate && !this.selectedTime)) {
-      returnData = {
-        updateSuccess: this.updateSuccess,
-        reScheduledData: new Date(`${this.selectedDate} ${this.selectedTime}`).toISOString()
-      };
-    } else {
-      returnData = {
-        updateSuccess: this.updateSuccess,
-        newMessageData: this.message
-      };
+    if (this.updateSuccess) {
+      if (this.reScheduled) {
+        returnData = {
+          updateSuccess: this.updateSuccess,
+          reScheduledData: this.scheduledDateTime
+        };
+      } else {
+        returnData = {
+          updateSuccess: this.updateSuccess,
+          newMessageData: this.message
+        };
+      }
     }
     this.modalController.dismiss(returnData);
   }
 
   EditMessage() {
-    if (!this.selectedDate || !this.selectedTime || !this.channelUuid) {
+    if (!this.messageUuid) {
       return;
     }
+
+    if (this.reScheduled && (!this.selectedDate || !this.selectedTime) ) {
+      return;
+    }
+
+    if (this.reScheduled && !this.isValidDateTime(`${this.selectedDate} ${this.selectedTime}`)) {
+      return;
+    }
+
     this.sending = true;
     const dateObj = new Date(`${this.selectedDate} ${this.selectedTime}`);
-    if (this.isValidDateTime(`${this.selectedDate} ${this.selectedTime}`)) {
-      const editMessageParam = {
-        uuid: this.channelUuid,
-        message: this.scheduledMessage,
-        scheduled: dateObj.toISOString()
-      };
-      if (this.reScheduled) {
-        delete editMessageParam.message;
-      }
-      this.chatService.editChatMesage(editMessageParam).subscribe(
-        response => {
-          this.updateSuccess = true;
-          this.sending = false;
-        },
-        error => {
-          console.log(error);
-          this.sending = false;
-        }
-      );
-    } else {
-      this.sending = false;
+
+    const editMessageParam: {
+      uuid: string;
+      message?: string;
+      scheduled?: string;
+    } = {
+      uuid: this.messageUuid,
+      message: this.message
+    };
+    if (this.reScheduled) {
+      delete editMessageParam.message;
+      editMessageParam.scheduled = dateObj.toISOString();
+      this.scheduledDateTime = dateObj.toISOString();
     }
+
+    this.chatService.editChatMesage(editMessageParam).subscribe(
+      response => {
+        this.updateSuccess = true;
+        this.sending = false;
+      },
+      error => {
+        console.log(error);
+        this.sending = false;
+      }
+    );
   }
 
-    /**
-   * this method will check is selected date and time valid.
-   * - we are not allow to select previous date and time.
-   * - selected time at least should be 30 minutes in future to be valid.
-   * @param selectedDateTime date time user select to schedule the message
-   * @returns boolean
-   */
-     isValidDateTime(selectedDateTime) {
-      if (!selectedDateTime) {
-        return;
-      }
-      const dateTimeDiff = this.utils.getDateDifferenceInMinutes(selectedDateTime);
-      if (dateTimeDiff >= 30) {
-        this.invalidDateTime = false;
-        return true;
-      } else {
-        this.invalidDateTime = true;
-        return false;
-      }
+  /**
+ * this method will check is selected date and time valid.
+ * - we are not allow to select previous date and time.
+ * - selected time at least should be 30 minutes in future to be valid.
+ * @param selectedDateTime date time user select to schedule the message
+ * @returns boolean
+ */
+  isValidDateTime(selectedDateTime) {
+    if (!selectedDateTime) {
+      return;
     }
+    const dateTimeDiff = this.utils.getDateDifferenceInMinutes(selectedDateTime);
+    if (dateTimeDiff >= 30) {
+      this.invalidDateTime = false;
+      return true;
+    } else {
+      this.invalidDateTime = true;
+      return false;
+    }
+  }
 
 }
