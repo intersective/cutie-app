@@ -170,6 +170,8 @@ export class ScheduleMessageListComponent implements OnInit {
       if (data.data.updateSuccess && data.data.newMessageData) {
         this.messageList[index].message = data.data.newMessageData;
       }
+      // this will update chat list
+      this.utils.broadcastEvent('chat:info-update', true);
     });
   }
 
