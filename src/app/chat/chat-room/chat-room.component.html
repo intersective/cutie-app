@@ -64,11 +64,11 @@
                 <p class="seen-text caption gray-2">{{message.senderRole}}</p>
               </ng-container>
   
-              <ng-container *ngIf="!message.fileObject; else attachment">
+              <ng-container *ngIf="message.message || !message.fileObject;">
                 <p class="message-text subtitle-1 black" [innerHTML]="message.message"></p>
               </ng-container>
   
-              <ng-template #attachment>
+              <ng-container *ngIf="message.fileObject">
                 <ng-container *ngIf="message.fileObject && message.fileObject.mimetype && message.fileObject.mimetype.includes('video')">
                   <ng-container *ngIf="message?.fileObject?.mimetype === 'video/mp4'; else nonMp4Format">
                     <div id="inner-box" (click)="preview(message.fileObject)">
@@ -104,7 +104,7 @@
                     </ion-note>
                   </ion-item>
                 </ng-container>
-              </ng-template>
+              </ng-container>
   
             </div>
           </div>
