@@ -5,6 +5,7 @@ enableLocalInstallationFallback: true
 
 
 provider:
+  logRetentionInDays: 365 # Set the default RetentionInDays for a CloudWatch LogGroup
   name: aws
   runtime: nodejs14.x
   region: ${env:REGION}
@@ -31,6 +32,7 @@ provider:
 resources:
 
   Conditions:
+    LiveServerOnly: !Equals [ '${env:ENV}', 'live']
     HasCutieBucketName: !Not [!Equals [ '${env:CUTIES3BUCKET}', '']]
     HasVersioning: !Equals [ '${env:S3VERSIONING}', true]
     HadVersioning: !Equals [ '${env:S3VERSIONING}', 'false-but-was-true']
@@ -174,7 +176,7 @@ resources:
               - 
                 Header: "Server"
                 Override: true
-                Value: "Practera"
+                Value: "Server"
               -  
                 Header: "Permissions-Policy"
                 Override: true
@@ -196,6 +198,7 @@ resources:
 
 
     HTTPCode4XXTooHighAlarm:
+      Condition: LiveServerOnly
       Type: 'AWS::CloudWatch::Alarm'
       Properties:
         AlarmDescription: '${env:CUTIES3BUCKET} - receives 4XX HTTP status codes from CDN'
@@ -217,6 +220,7 @@ resources:
         Unit: Percent
     
     HTTPCode5XXTooHighAlarm:
+      Condition: LiveServerOnly
       Type: 'AWS::CloudWatch::Alarm'
       Properties:
         AlarmDescription: '${env:CUTIES3BUCKET} - receives 5XX HTTP status codes from CDN'
@@ -238,6 +242,7 @@ resources:
         Unit: Percent
 
     HTTPCodeTotalErrorRateTooHighAlarm:
+      Condition: LiveServerOnly
       Type: 'AWS::CloudWatch::Alarm'
       Properties:
         AlarmDescription: '${env:CUTIES3BUCKET} - receives Total Error Rate HTTP status codes from CDN'

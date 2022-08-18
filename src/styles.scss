@@ -103,6 +103,75 @@ ion-item.sc-ion-select-popover {
   }
 }
 
+// group chat popup
+.chat-group-message-popup{
+  --max-height: 320px;
+  --max-width: 500px;
+  --min-height: 300px;
+  .modal-wrapper {
+    border-radius: 6px;
+  }
+}
+
+// Schedule chat message popup
+.chat-schedule-message-popup{
+  --max-height: 460px;
+  --max-width: 500px;
+  --min-height: 400px;
+  .modal-wrapper {
+    border-radius: 6px;
+  }
+}
+
+// message-delete-alert
+.message-delete-alert {
+  --max-width: 500px;
+  .alert-wrapper {
+    border-radius: 6px;
+  }
+  .danger {
+    color: var(--ion-color-danger);
+  }
+}
+
+// Chat Channel Create popup - announcment and group
+.channel-create-container {
+  padding: 20px 20px 0 20px;
+
+  .title,
+  .channel-title {
+    font-weight: 700 !important;
+  }
+
+  .title {
+    margin-bottom: 10px;
+  }
+
+  .channel-title {
+    margin-bottom: 6px;
+  }
+}
+
+.message-popup-footer {
+  border-top: 1px solid;
+  border-top-color: var(--practera-light-grey-100);
+  padding: 8px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  .btn-cancle {
+    &::part(native) {
+      border: 1px solid;
+      border-color: var(--practera-grey-25);
+      background: transparent !important;
+      box-shadow: none !important;
+    }
+  }
+}
+
 .cursor-pointer {
   cursor: pointer;
 }
@@ -127,7 +196,7 @@ ion-item.sc-ion-select-popover {
   align-items: center;
   justify-content: center;
   .icon {
-    color: var(--Practera-violet-100);
+    color: var(--practera-violet-100);
     font-size: 28px;
   }
 }
@@ -231,3 +300,5 @@ ion-item.sc-ion-select-popover {
     color:#123B79;
   }
 }
+
+/** Button Class **/

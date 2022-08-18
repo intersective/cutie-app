@@ -7,8 +7,14 @@
     align-items: center;
     justify-content: center;
     margin-right: 10px;
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 500;
     &.grey {
       background-color: var(--Practera-Light-Grey-100);
+    }
+    &.ocean {
+      background-color: var(--practera-ocean-100);
     }
     &:nth-child(1) {
       margin-left: 52px;
@@ -16,6 +22,11 @@
   }
   ion-label {
     max-width: fit-content;
+    font-family: Roboto;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 12px;
+
   }
   hr {
     margin-left: 23px;

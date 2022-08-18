@@ -23,12 +23,12 @@ export class FinalPage implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit() {
-    this.projectIcon = this.storage.get('selectedProjectIcon');
-    this.onboardingData = this.storage.getOnboardingData();
+    this.route.params.subscribe(params => {
+      this.projectIcon = this.storage.get('selectedProjectIcon');
+      this.onboardingData = this.storage.getOnboardingData();
       if (!this.onboardingData.template || !this.onboardingData.template.uuid || !this.onboardingData.template.duration) {
         return this.router.navigate(['onboarding']);
       }
-    this.route.params.subscribe(params => {
       this.steps = +params.steps;
       this.templateType = params.templateType;
     });
@@ -42,6 +42,14 @@ export class FinalPage implements OnInit, AfterViewInit {
       name: environment.onboarding.finalFormHiddenFieldName,
       value: this.getFormatedOnboardingData()
     }]);
+  }
+
+  get experienceName() {
+    let name = 'Experience';
+    if (this.onboardingData && this.onboardingData.template.name) {
+      name = `${ this.onboardingData.template.name } Experience`;
+    }
+    return name;
   }
 
   getFormatedOnboardingData() {

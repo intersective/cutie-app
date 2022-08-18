@@ -52,94 +52,139 @@ $message-body-size: 60%;
         margin-bottom: 8px;
       }
 
-      .message-body {
-        padding: 16px;
-        min-width: 48px;
-        max-width: $message-body-size;
-        border-radius: 25px;
-        width: fit-content;
-
-        &.image {
-          // background: none !important;
-          line-height: 0;
-          // padding: 0;
-          cursor: pointer;
-
-          img {
-            border-radius: 25px;
-          }
-        }
-        // consistent colour to make attachment standout
-        .general-attachment {
-          background: white;
-          --background: white;
-        }
-
-        p {
-          &.seen-text {
-            &:nth-child(1) {
-              padding: 0 !important;
-              font-weight: 500;
+      .message-container {
+        .action-container {
+          display: none;
+          ion-button {
+            color: var(--practera-grey-25);
+            ion-icon {
+              color: var(--practera-grey-25);
+              font-size: 21px;
             }
-          }
-        }
-
-        p, .message-text {
-          color: black;
-          margin: 0;
-          text-align: left;
-          user-select: all !important;
-          white-space: pre-wrap !important;
-        }
-
-        &.video-attachment-container {
-          min-height: 125px;
-          background: #eaeaea !important;
-          line-height: 0;
-          padding: 0;
-          display:block;
-          position:relative;
-          cursor: pointer;
-          border: 1px #bbbbbb solid;
-          padding-left: 10px;
-          padding-right: 10px;
-
-          #inner-box {
-            border-radius: inherit;
-            min-width: inherit;
-            min-height: inherit;
-            position: absolute;
-            padding: 0;
-            width: 100%;
-
-            p {
-              color: var(--ion-color-primary);
-              margin-top: 1.5em;
-              text-align: center;
+            &:hover {
+              &.delete-btn {
+                color: var(--ion-color-danger);
+                ion-icon {
+                  color: var(--ion-color-danger);
+                }
+              }
+              background: transparent;
+              --background: transparent;
+              color: var(--practera-ocean-100);
               ion-icon {
-                font-size: 5em !important;
+                color: var(--practera-ocean-100);
               }
             }
           }
+        }
 
-          .video {
-            padding: inherit;
-            min-width: 100%;
-            max-width: inherit;
-            min-height: 100%;
-            max-height: inherit;
-            border-radius: inherit;
+        .message-body {
+          padding: 16px;
+          min-width: 48px;
+          max-width: $message-body-size;
+          border-radius: 25px;
+          width: fit-content;
+  
+          &.image {
+            // background: none !important;
+            line-height: 0;
+            // padding: 0;
+            cursor: pointer;
+
+            .message-text {
+              margin-bottom: 10px;
+            }
+  
+            img {
+              border-radius: 25px;
+            }
           }
+          // consistent colour to make attachment standout
+          .general-attachment {
+            background: white;
+            --background: white;
+            cursor: pointer;
 
-          .label {
-            margin-left: 0.8em;
-            text-shadow: 1px 1px white;
+            .message-text {
+              margin-bottom: 10px;
+            }
           }
+  
+          p {
+            &.seen-text {
+              &:nth-child(1) {
+                padding: 0 !important;
+                font-weight: 500;
+              }
+            }
+          }
+  
+          p, .message-text {
+            color: black;
+            margin: 0;
+            text-align: left;
+            user-select: all !important;
+            white-space: pre-wrap !important;
+          }
+  
+          &.video-attachment-container {
+            min-height: 125px;
+            background: #eaeaea !important;
+            line-height: 0;
+            padding: 0;
+            display:block;
+            position:relative;
+            cursor: pointer;
+            border: 1px #bbbbbb solid;
+            padding-left: 10px;
+            padding-right: 10px;
 
-          &:hover {
-            background: #bbbbbb !important;
-            opacity: 0.9;
-            transition: 0.5s opacity, 0.5s background;
+            .message-text {
+              margin-bottom: 10px;
+            }
+  
+            app-video-conversion {
+              display: flex;
+              align-items: center;
+            }
+  
+            #inner-box {
+              border-radius: inherit;
+              min-width: inherit;
+              min-height: inherit;
+              position: absolute;
+              padding: 0;
+              width: 100%;
+  
+              p {
+                color: var(--ion-color-primary);
+                margin-top: 1.5em;
+                text-align: center;
+                ion-icon {
+                  font-size: 5em !important;
+                }
+              }
+            }
+  
+            .video {
+              padding: inherit;
+              min-width: 100%;
+              max-width: inherit;
+              min-height: 100%;
+              max-height: inherit;
+              border-radius: inherit;
+            }
+  
+            .label {
+              margin-left: 0.8em;
+              text-shadow: 1px 1px white;
+            }
+  
+            &:hover {
+              background: #bbbbbb !important;
+              opacity: 0.9;
+              transition: 0.5s opacity, 0.5s background;
+            }
           }
         }
       }
@@ -151,8 +196,10 @@ $message-body-size: 60%;
       &.received-messages {
         text-align: left;
 
-        .message-body {
-          background-color: white;
+        .message-container {
+          .message-body {
+            background-color: white;
+          }
         }
 
         .time {
@@ -169,22 +216,37 @@ $message-body-size: 60%;
         text-align: right;
         margin-right: 0;
 
-        .message-body {
-          background-color: var(--ion-color-primary);
-
-          .general-attachment {
-            background: transparent;
-            --background: transparent;
-            ion-icon, ion-note, ion-label {
+        .message-container {
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+          flex-direction: row;
+          flex-wrap: wrap;
+          .message-body {
+            background-color: var(--ion-color-primary);
+  
+            .general-attachment {
+              background: transparent;
+              --background: transparent;
+              cursor: pointer;
+              ion-icon, ion-note, ion-label {
+                color: white !important;
+              }
+            }
+            // margin-left: calc(100% - 150px) !important;
+            float: right;
+  
+            .message-text {
               color: white !important;
             }
           }
-          // margin-left: calc(100% - 150px) !important;
-          float: right;
 
-          .message-text {
-            color: white !important;
+          &:hover {
+            .action-container {
+              display: block;
+            }
           }
+
         }
       }
     }
@@ -233,6 +295,11 @@ $message-body-size: 60%;
 }
 .ion-content-absolute-with-footer {
   height: calc(100% - 175px);
+
+  &.schedule {
+    height: calc(100% - 221px);
+    top: 106px;
+  }
 }
 
 .footer {
@@ -276,6 +343,45 @@ $message-body-size: 60%;
           margin-top: 8px;
         }
       }
+    }
+  }
+}
+
+.schedule-message-banner {
+  padding: 0 16px;
+  background-color: white;
+  border-top: 1px solid;
+  border-top-color: var(--practera-grey-25);
+  border-bottom: 1px solid;
+  border-bottom-color: var(--practera-grey-25);
+  // for shadow
+  --padding-top: 0;
+  --padding-bottom: 0;
+  --padding-start: 0;
+  --padding-end: 0;
+
+  .schedule-message-banner-title {
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 13px;
+    margin: 0;
+    height: 24px;
+    border-radius: 6px;
+    background-color: var(--practera-yellow-25);
+    padding: 6px 0 6px 10px;
+    cursor: pointer;
+  }
+
+  .back-to-message {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    align-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    p {
+      margin: 0;
     }
   }
 }

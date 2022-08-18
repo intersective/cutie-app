@@ -23,6 +23,7 @@ export interface ChatChannel {
   lastMessage: string;
   lastMessageCreated: string;
   canEdit: boolean;
+  scheduledMessageCount: number;
 }
 
 export interface TargetUser {
@@ -53,6 +54,7 @@ export interface Message {
   preview?: string;
   noAvatar?: boolean;
   channelUuid?: string;
+  scheduled?: string;
 }
 
 export interface MessageListResult {
@@ -68,6 +70,13 @@ export interface NewChannelParam {
     type: string;
     uuid: number | string;
   }[];
+}
+
+export interface EditMessageParam {
+  uuid: string;
+  message?: string;
+  file?: string;
+  scheduled?: string;
 }
 
 export interface User {
@@ -90,16 +99,24 @@ export interface SearchUsersParam {
   teamUserOnly: boolean;
 }
 
+export interface ChannelCreatePopupParam {
+  learnerAnnouncement?: boolean;
+  expertAnnouncement?: boolean;
+  cohortChannel?: boolean;
+}
+
 interface NewMessageParam {
   channelUuid: string;
   message: string;
   file?: string;
+  scheduled?: string;
 }
 
 interface MessageListParams {
   channelUuid: string;
   cursor: string;
   size: number;
+  scheduledOnly?: boolean;
 }
 
 interface UnreadMessageParams {
@@ -154,6 +171,7 @@ export class ChatService {
           lastMessageCreated
           pusherChannel
           canEdit
+          scheduledMessageCount
         }
       }`,
       {},
@@ -194,10 +212,19 @@ export class ChatService {
       const response = this.demo.getMessages(data);
       return of(this._normaliseMessageListResponse(response.data)).pipe(delay(1000));
     }
+    const params = {
+      uuid: data.channelUuid,
+      cursor: data.cursor,
+      size: data.size,
+      scheduledOnly: data.scheduledOnly
+    };
+    if (!data.scheduledOnly) {
+      delete params.scheduledOnly;
+    }
     return this.request.chatGraphQLQuery(
-      `query getChannellogs($uuid:String!, $cursor:String!, $size:Int!) {
+      `query getChannellogs($uuid:String!, $cursor:String!, $size:Int!, $scheduledOnly:Boolean) {
         channel(uuid:$uuid){
-          chatLogsConnection(cursor:$cursor, size:$size){
+          chatLogsConnection(cursor:$cursor, size:$size, scheduledOnly:$scheduledOnly){
             cursor
             chatLogs{
               uuid
@@ -205,6 +232,7 @@ export class ChatService {
               message
               file
               created
+              scheduled
               sender {
                 uuid
                 name
@@ -214,12 +242,7 @@ export class ChatService {
             }
           }
         }
-      }`,
-      {
-        uuid: data.channelUuid,
-        cursor: data.cursor,
-        size: data.size
-      },
+      }`, params,
       {
         noCache: true
       }
@@ -248,6 +271,9 @@ export class ChatService {
       let fileObject = null;
       if ((typeof message.file) === 'string') {
         fileObject = JSON.parse(message.file);
+        if (this.utils.isEmpty(fileObject)) {
+          fileObject = null;
+        }
       } else {
         fileObject = message.file;
       }
@@ -261,7 +287,8 @@ export class ChatService {
         senderUuid: message.sender.uuid,
         senderName: message.sender.name,
         senderRole: message.sender.role,
-        senderAvatar: message.sender.avatar
+        senderAvatar: message.sender.avatar,
+        scheduled: message.scheduled
       });
     });
     return {
@@ -378,13 +405,14 @@ export class ChatService {
       return of(this._normalisePostMessageResponse(response.data)).pipe(delay(1000));
     }
     return this.request.chatGraphQLMutate(
-      `mutation createChatLogs($channelUuid: String!, $message: String, $file: String) {
-        createChatLog(channelUuid: $channelUuid, message: $message, file: $file) {
+      `mutation createChatLogs($channelUuid: String!, $message: String, $file: String, $scheduled: String) {
+        createChatLog(channelUuid: $channelUuid, message: $message, file: $file, scheduled: $scheduled) {
             uuid
             isSender
             message
             file
             created
+            scheduled
             sender {
               uuid
               name
@@ -396,7 +424,8 @@ export class ChatService {
       {
         channelUuid: data.channelUuid,
         message: data.message,
-        file: data.file
+        file: data.file,
+        scheduled: data.scheduled
       }
     ).pipe(
       map(response => {
@@ -434,7 +463,8 @@ export class ChatService {
       senderUuid: result.sender.uuid,
       senderName: result.sender.name,
       senderRole: result.sender.role,
-      senderAvatar: result.sender.avatar
+      senderAvatar: result.sender.avatar,
+      scheduled: result.scheduled
     };
   }
 
@@ -450,7 +480,7 @@ export class ChatService {
  */
   createChannel(data: NewChannelParam): Observable<ChatChannel> {
     if (environment.demo) {
-      const response = this.demo.getNewChannel();
+      const response = this.demo.getNewChannel(data);
       return of(this._normaliseCreateChannelResponse(response.data)).pipe(delay(1000));
     }
     return this.request.chatGraphQLMutate(
@@ -508,7 +538,8 @@ export class ChatService {
       unreadMessageCount: 0,
       lastMessage: null,
       lastMessageCreated: null,
-      canEdit: result.canEdit
+      canEdit: result.canEdit,
+      scheduledMessageCount: result.scheduledMessageCount
     };
   }
 
@@ -594,7 +625,8 @@ export class ChatService {
       unreadMessageCount: result.unreadMessageCount,
       lastMessage: result.lastMessage,
       lastMessageCreated: result.lastMessageCreated,
-      canEdit: result.canEdit
+      canEdit: result.canEdit,
+      scheduledMessageCount: result.scheduledMessageCount
     };
   }
 
@@ -650,6 +682,41 @@ export class ChatService {
       }
     });
     return userList;
+  }
+
+  deleteChatMesage(uuid: string): Observable<any> {
+    if (environment.demo) {
+      return of({}).pipe(delay(1000));
+    }
+    return this.request.chatGraphQLMutate(
+      `mutation deletechatMessage($uuid: String!) {
+        deleteChatLog(uuid: $uuid) {
+          success
+        }
+      }`,
+      {
+        uuid: uuid
+      }
+    );
+  }
+
+  editChatMesage(data: EditMessageParam): Observable<any> {
+    if (environment.demo) {
+      return of({}).pipe(delay(1000));
+    }
+    return this.request.chatGraphQLMutate(
+      `mutation edichatMessage($uuid: String!, $message: String, $file: String, $scheduled: String) {
+        editChatLog(uuid: $uuid, message: $message, file: $file, scheduled: $scheduled) {
+          success
+        }
+      }`,
+      {
+        uuid: data.uuid,
+        message: data.message,
+        file: data.file,
+        scheduled: data.scheduled
+      }
+    );
   }
 
 }
