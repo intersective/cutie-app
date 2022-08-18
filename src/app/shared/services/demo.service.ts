@@ -211,6 +211,36 @@ export class DemoService {
   ];
   chatMessages = [
     {
+      uuid: '4545',
+      message: 'text message with attachment',
+      file: JSON.stringify({
+        container: 'practera-aus',
+        filename: 'Thanos_is_coming.pdf',
+        handle: 'VcVHlY1SzSC8VKNuXFBt',
+        key: 'appv2/stage/uploads/37ad733fdf20adf0de20effcbbf6f120/THPhHZoRCiUscy4hrXvQ_file-sample_150kB.pdf',
+        mimetype: 'application/pdf',
+        originalFile: {
+          name: 'file-sample_150kB.pdf',
+          size: 142786,
+          type: 'application/pdf'
+        },
+        originalPath: 'file-sample_150kB.pdf',
+        size: 142786,
+        source: 'local_file_system',
+        status: 'Stored',
+        uploadId: '2ZaurtAztrY45d4S',
+        url: 'https://cdn.filestackcontent.com/VcVHlY1SzSC8VKNuXFBt'
+      }),
+      created: '2019-11-27 02:25:21',
+      isSender: false,
+      sender: {
+        uuid: '3',
+        name: CHARACTERS.steven.name,
+        role: 'participant',
+        avatar: CHARACTERS.steven.avatar
+      }
+    },
+    {
       uuid: '11',
       message: `I'm Ironman`,
       file: null,

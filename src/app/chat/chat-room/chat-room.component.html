@@ -5,7 +5,7 @@
       <ion-icon color="primary" slot="icon-only" name="information-circle"></ion-icon>
     </ion-button>
   </ion-toolbar>
-  <ion-toolbar *ngIf="chatChannel.scheduledMessageCount > 0" class="schedule-message-banner">
+  <ion-toolbar *ngIf="isScheduleListOpen || chatChannel.scheduledMessageCount > 0" class="schedule-message-banner">
     <p *ngIf="!isScheduleListOpen" class="schedule-message-banner-title subtitle-2"
       (click)="isScheduleListOpen = !isScheduleListOpen">You have <strong>{{chatChannel.scheduledMessageCount}}</strong>
       message scheduled for this channel</p>
@@ -34,7 +34,7 @@
     </div>
 
     <ion-list lines="none" color="light" class="chat-list desktop-view ion-no-padding">
-      <ion-item *ngFor="let message of messageList" color="light">
+      <ion-item *ngFor="let message of messageList; let index=index" color="light">
         <ng-container *ngIf="isLastMessage(message)">
           <ion-avatar [ngClass]="getAvatarClass(message)" slot="start">
             <img [src]="message.senderAvatar">
@@ -47,77 +47,68 @@
             <p>{{getMessageDate(message.created)}}</p>
           </div>
 
-          <ng-container *ngIf="!message.fileObject; else attachment">
-            <div class="message-body">
+          <div class="message-container">
+
+            <div class="action-container" *ngIf="message.isSender">
+              <ion-button class="delete-btn" fill="clear" size="small" title="Delete Message" (click)="deleteMessage(message.uuid)">
+                <ion-icon name="trash" slot="icon-only"></ion-icon>
+              </ion-button>
+              <ion-button fill="clear" size="small" title="Edit Message" *ngIf="!message.fileObject" (click)="openEditMessagePopup(index)">
+                <ion-icon name="create" slot="icon-only"></ion-icon>
+              </ion-button>
+            </div>
+
+            <div class="message-body" [ngClass]="getClassForMessageBody(message)">
               <ng-container *ngIf="!message.isSender">
                 <p class="seen-text subtitle-1 black">{{message.senderName}}</p>
                 <p class="seen-text caption gray-2">{{message.senderRole}}</p>
               </ng-container>
-              <p class="message-text subtitle-1 black" [innerHTML]="message.message"></p>
+  
+              <ng-container *ngIf="message.message || !message.fileObject;">
+                <p class="message-text subtitle-1 black" [innerHTML]="message.message"></p>
+              </ng-container>
+  
+              <ng-container *ngIf="message.fileObject">
+                <ng-container *ngIf="message.fileObject && message.fileObject.mimetype && message.fileObject.mimetype.includes('video')">
+                  <ng-container *ngIf="message?.fileObject?.mimetype === 'video/mp4'; else nonMp4Format">
+                    <div id="inner-box" (click)="preview(message.fileObject)">
+                      <p>
+                        <ion-icon name="play-circle"></ion-icon>
+                      </p>
+                    </div>
+                    <div class="label">
+                      <p>
+                        <ion-label color="primary">{{ message.fileObject.filename }}</ion-label>
+                      </p>
+                    </div>
+                  </ng-container>
+                  <ng-template #nonMp4Format>
+                    <app-video-conversion [video]="message" (preview)="preview($event)"></app-video-conversion>
+                  </ng-template>
+                </ng-container>
+  
+                <ng-container *ngIf="message.fileObject && message.fileObject.mimetype && message.fileObject.mimetype.includes('image')">
+                  <div [innerHTML]="message.preview" (click)="preview(message.fileObject)"></div>
+                </ng-container>
+  
+                <ng-container *ngIf="(message.fileObject && !message.fileObject.mimetype) || (message.fileObject && (
+                                  !message.fileObject.mimetype.includes('image') && !message.fileObject.mimetype.includes('video')))">
+                  <ion-item class="general-attachment" (click)="previewFile(message.fileObject)">
+                    <ion-ripple-effect></ion-ripple-effect>
+                    <ion-icon name="document" slot="start"></ion-icon>
+                    <ion-label color="primary">
+                      {{ message.fileObject.filename }}
+                    </ion-label>
+                    <ion-note *ngIf="getTypeByMime(message.fileObject.mimetype)">
+                      {{ getTypeByMime(message.fileObject.mimetype) }}
+                    </ion-note>
+                  </ion-item>
+                </ng-container>
+              </ng-container>
+  
             </div>
-          </ng-container>
+          </div>
 
-          <ng-template #attachment>
-
-            <ng-container
-              *ngIf="message.fileObject && message.fileObject.mimetype && message.fileObject.mimetype.includes('video')">
-              <div class="message-body video-attachment-container">
-                <ng-container *ngIf="!message.isSender">
-                  <p class="seen-text subtitle-1 black">{{message.senderName}}</p>
-                  <p class="seen-text caption gray-2">{{message.senderRole}}</p>
-                </ng-container>
-
-                <ng-container *ngIf="message?.fileObject?.mimetype === 'video/mp4'; else nonMp4Format">
-                  <div id="inner-box" (click)="preview(message.fileObject)">
-                    <p>
-                      <ion-icon name="play-circle"></ion-icon>
-                    </p>
-                  </div>
-                  <div class="label">
-                    <p>
-                      <ion-label color="primary">{{ message.fileObject.filename }}</ion-label>
-                    </p>
-                  </div>
-                </ng-container>
-
-                <ng-template #nonMp4Format>
-                  <app-video-conversion [video]="message" (preview)="preview($event)"></app-video-conversion>
-                </ng-template>
-
-              </div>
-            </ng-container>
-
-            <ng-container
-              *ngIf="message.fileObject && message.fileObject.mimetype && message.fileObject.mimetype.includes('image')">
-              <div class="message-body image" (click)="preview(message.fileObject)">
-                <ng-container *ngIf="!message.isSender">
-                  <p class="seen-text subtitle-1 black">{{message.senderName}}</p>
-                  <p class="seen-text caption gray-2">{{message.senderRole}}</p>
-                </ng-container>
-                <div [innerHTML]="message.preview"></div>
-              </div>
-            </ng-container>
-
-            <ng-container *ngIf="(message.fileObject && !message.fileObject.mimetype) || (message.fileObject && (
-                  !message.fileObject.mimetype.includes('image') && !message.fileObject.mimetype.includes('video')))">
-              <div class="message-body">
-                <ng-container *ngIf="!message.isSender">
-                  <p class="seen-text subtitle-1 black">{{message.senderName}}</p>
-                  <p class="seen-text caption gray-2">{{message.senderRole}}</p>
-                </ng-container>
-                <ion-item class="general-attachment" (click)="previewFile(message.fileObject)">
-                  <ion-ripple-effect></ion-ripple-effect>
-                  <ion-icon name="document" slot="start"></ion-icon>
-                  <ion-label color="primary">
-                    {{ message.fileObject.filename }}
-                  </ion-label>
-                  <ion-note *ngIf="getTypeByMime(message.fileObject.mimetype)">
-                    {{ getTypeByMime(message.fileObject.mimetype) }}
-                  </ion-note>
-                </ion-item>
-              </div>
-            </ng-container>
-          </ng-template>
         </ion-label>
       </ion-item>
 

@@ -55,7 +55,9 @@ export class ScheduleMessagePopupComponent implements OnInit {
    * This will cloase the group chat popup
    */
   close() {
-    this.modalController.dismiss();
+    this.modalController.dismiss({
+      messageScheduled: this.createdMessage ? true : false
+    });
   }
 
   scheduleMessage() {
@@ -68,7 +70,7 @@ export class ScheduleMessagePopupComponent implements OnInit {
       this.chatService.postNewMessage({
         channelUuid: this.channelUuid,
         message: this.scheduledMessage,
-        file: this.uploadedFile,
+        file: JSON.stringify(this.uploadedFile),
         scheduled: dateObj.toISOString()
       }).subscribe(
         response => {

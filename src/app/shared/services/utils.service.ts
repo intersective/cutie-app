@@ -340,7 +340,6 @@ export class UtilsService {
     } else {
       d2 = moment(this.iso8601Formatter(datetwo));
     }
-    console.log('dateOne', d1, 'datetwo', d2);
     return d1.diff(d2, 'minutes');
   }
 

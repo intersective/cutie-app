@@ -1,0 +1,46 @@
+<div class="ion-padding" [ngClass]="{'main-container': updateSuccess}">
+  <ng-container *ngIf="!updateSuccess; else messageCreated">
+    <p class="subtitle-2 popup-title">{{ reScheduled ? 'Modify Shedule' : 'Edit Message' }}</p>
+
+    <p class="caption hint-message" *ngIf="reScheduled">select date and time at least 30 minutes in the future</p>
+
+    <div class="form-container" [ngClass]="{'edit': !reScheduled}">
+      <ng-container *ngIf="reScheduled; else editMessage">
+        <p class="subtitle-2 popup-subtitle">Date</p>
+        <ion-input class="date-time-pickers" type="date" [(ngModel)]="selectedDate"></ion-input>
+    
+      
+        <p class="subtitle-2 popup-subtitle">Time</p>
+        <ion-input class="date-time-pickers" type="time" [(ngModel)]="selectedTime"></ion-input>
+  
+        <p class="subtitle-2 popup-error" *ngIf="invalidDateTime">Selected date and time is not valid</p>
+      </ng-container>
+      <ng-template #editMessage>
+        <ion-textarea rows="12" required="true" name="message" [(ngModel)]="message"></ion-textarea>
+      </ng-template>
+    </div>
+  </ng-container>
+  <ng-template #messageCreated>
+    <div class="success-container">
+      <div class="title-container">
+        <ion-icon name="checkmark-circle"></ion-icon>
+        <p class="subtitle-2 popup-title">{{ reScheduled ? 'Message Rescheduled' : 'Message Updated' }}</p>
+      </div>
+      <div class="message-container" *ngIf="!reScheduled">
+        <p class="subtitle-2 black">{{ message }}</p>
+      </div>
+      <div class="schedule-info-container">
+        <p class="subtitle-2 black">will be publised the <strong>{{ utils.utcToLocal(scheduledDateTime, 'date') }}</strong> at <strong>{{ utils.utcToLocal(scheduledDateTime, 'time') }}</strong> on <strong>{{ channelName }}</strong></p>
+      </div>
+    </div>
+  </ng-template>
+</div>
+<div class="message-popup-footer">
+  <ion-button color="light" class="btn-cancle" (click)="close()" [disabled]="sending">
+    Cancel
+  </ion-button>
+  <ion-button *ngIf="!updateSuccess" color="ocean" (click)="EditMessage()"
+    [disabled]="sending || !messageUuid">
+    {{ sending ? 'sending..' : reScheduled ? 'Schedule Message' : 'Update Message'}}
+  </ion-button>
+</div>
