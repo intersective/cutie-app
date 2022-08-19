@@ -119,17 +119,19 @@ export class ScheduleMessagePopupComponent implements OnInit {
    * @returns boolean
    */
   isValidDateTime(selectedDateTime) {
-    if (!selectedDateTime) {
-      return;
-    }
-    const dateTimeDiff = this.utils.getDateDifferenceInMinutes(selectedDateTime);
-    if (dateTimeDiff >= 30) {
-      this.invalidDateTime = false;
-      return true;
-    } else {
-      this.invalidDateTime = true;
-      return false;
-    }
+    this.invalidDateTime = false;
+    return true;
+    // if (!selectedDateTime) {
+    //   return;
+    // }
+    // const dateTimeDiff = this.utils.getDateDifferenceInMinutes(selectedDateTime);
+    // if (dateTimeDiff >= 30) {
+    //   this.invalidDateTime = false;
+    //   return true;
+    // } else {
+    //   this.invalidDateTime = true;
+    //   return false;
+    // }
   }
 
 }
