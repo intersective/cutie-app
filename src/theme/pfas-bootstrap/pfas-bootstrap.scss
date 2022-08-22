@@ -15,6 +15,7 @@
 @import './bootstrap/variables'; // Bootstrap variables overrides
 @import '~bootstrap/scss/variables';
 
+@import "~bootstrap/scss/maps";
 @import '~bootstrap/scss/mixins';
 // Custom mixins (be sure to follow original mixin order: https://github.com/twbs/bootstrap/blob/main/scss/_mixins.scss)
 // @import './bootstrap/mixins/buttons';

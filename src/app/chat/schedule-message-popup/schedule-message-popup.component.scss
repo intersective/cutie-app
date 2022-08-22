@@ -1,0 +1,111 @@
+.main-container {
+  overflow-y: auto;
+}
+.popup-title {
+  font-family: "Roboto";
+  font-weight: 700;
+}
+
+.popup-subtitle {
+  @extend .popup-title;
+  color: var(--practera-dark-blue-75);
+  margin-top: 10px;
+  margin-bottom: 9px;
+}
+
+.popup-error {
+  @extend .popup-title;
+  color: var(--ion-color-danger);
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.hint-message {
+  color: var(--practera-grey-75);
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.form-container {
+  width: 80%;
+  .btn-upload-file {
+    &::part(native) {
+      border: 1px solid;
+      border-color: var(--practera-grey-25);
+      background: transparent !important;
+      box-shadow: none !important;
+      text-transform: none;
+      font-weight: 700;
+    }
+  }
+
+  .date-time-pickers {
+    border: 1px solid;
+    border-color: var(--practera-light-grey-100);
+    border-radius: 6px;
+  }
+
+  .file-preview-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: row;
+  }
+}
+
+.success-container {
+  .title-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-direction: row;
+    margin-bottom: 14px;
+
+    ion-icon {
+      font-size: 24px;
+      color: var(--practera-green-100);
+      margin-right: 10px;
+    }
+    p {
+      margin: 0;
+    }
+  }
+  .message-container {
+    .attachment-container {
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      flex-direction: row;
+      flex-wrap: wrap;
+
+      p,
+      a {
+        font-family: "Roboto";
+        font-weight: 700;
+        font-size: 12px;
+        line-height: 19px;
+        font-weight: bold;
+      }
+      a {
+        cursor: pointer;
+      }
+      p {
+        margin-right: 10px;
+        margin-bottom: 0;
+      }
+    }
+  }
+  .schedule-info-container {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: row;
+    flex-wrap: wrap;
+    p {
+      margin: 0;
+    }
+  }
+}

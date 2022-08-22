@@ -107,4 +107,12 @@ export class StorageService {
     return this.storage.removeItem('onboarding');
   }
 
+  get timelineUuid() {
+    return this.getUser().timelineUuid;
+  }
+
+  get timelineId() {
+    return this.getUser().timelineId;
+  }
+
 }

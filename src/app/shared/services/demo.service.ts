@@ -8,6 +8,18 @@ import { environment } from '@environments/environment';
 import { urlFormatter } from 'helper';
 
 const CHARACTERS = {
+  learnersAnnouncements: {
+    name: 'Learners Announcements',
+    avatar: 'https://facts.net/wp-content/uploads/2020/03/Marvel-and-Fox.jpg'
+  },
+  expertsAnnouncements: {
+    name: 'Experts Announcements',
+    avatar: 'https://b.thumbs.redditmedia.com/q5wEnBMrwNwf4g9s6Ju35QfuE3cpw4Gjr883zJHGBUY.png'
+  },
+  cohortChannel: {
+    name: 'cohort channel',
+    avatar: 'https://flaticons.net/icon.php?slug_category=people&slug_icon=user-group',
+  },
   avengers: {
     name: 'Avengers',
     avatar: 'https://c3.klipartz.com/pngpicture/208/878/sticker-png-avengers-endgame-2019-avengers-logo-avengers-logo-thumbnail.png'
@@ -30,6 +42,16 @@ const CHARACTERS = {
     name: 'Thanos',
     avatar: 'https://c3.klipartz.com/pngpicture/468/242/sticker-png-thanos-background-thumbnail.png',
     email: 'thanos@practera.com'
+  },
+  scott: {
+    name: 'Scott Lang',
+    avatar: 'https://images.hindustantimes.com/rf/image_size_960x540/HT/p2/2019/02/19/Pictures/null_191c153a-3452-11e9-85ab-b5c6484f4b61.jpg',
+    email: 'scott@practera.com'
+  },
+  peter: {
+    name: 'Peter Quill',
+    avatar: 'https://upload.wikimedia.org/wikipedia/en/b/b2/Chris_Pratt_as_Peter_Quill.jpeg',
+    email: 'peter@practera.com'
   }
 };
 
@@ -87,7 +109,8 @@ export class DemoService {
       unreadMessageCount: 1,
       lastMessageCreated: '2020-07-14 06:20:37',
       lastMessage: 'Thanos is coming',
-      canEdit: false
+      canEdit: false,
+      scheduledMessageCount: 0
     },
     {
       uuid: '2',
@@ -102,7 +125,8 @@ export class DemoService {
       unreadMessageCount: 0,
       lastMessageCreated: null,
       lastMessage: null,
-      canEdit: false
+      canEdit: false,
+      scheduledMessageCount: 6
     },
     {
       uuid: '3',
@@ -121,7 +145,8 @@ export class DemoService {
       unreadMessageCount: 0,
       lastMessageCreated: '2020-07-14 06:20:37',
       lastMessage: 'Avengers assemble',
-      canEdit: false
+      canEdit: false,
+      scheduledMessageCount: 0
     },
     {
       uuid: '4',
@@ -140,7 +165,8 @@ export class DemoService {
       unreadMessageCount: 2,
       lastMessageCreated: '2020-07-15 06:20:37',
       lastMessage: `I'm Ironman`,
-      canEdit: false
+      canEdit: false,
+      scheduledMessageCount: 0
     },
     {
       uuid: '5',
@@ -159,7 +185,8 @@ export class DemoService {
       unreadMessageCount: 2,
       lastMessageCreated: '2020-07-15 06:20:37',
       lastMessage: `I'm inevitable`,
-      canEdit: false
+      canEdit: false,
+      scheduledMessageCount: 0
     },
     {
       uuid: '6',
@@ -178,10 +205,41 @@ export class DemoService {
       unreadMessageCount: 2,
       lastMessageCreated: '2020-07-15 06:20:37',
       lastMessage: `I'm inevitable`,
-      canEdit: false
+      canEdit: false,
+      scheduledMessageCount: 0
     }
   ];
   chatMessages = [
+    {
+      uuid: '4545',
+      message: 'text message with attachment',
+      file: JSON.stringify({
+        container: 'practera-aus',
+        filename: 'Thanos_is_coming.pdf',
+        handle: 'VcVHlY1SzSC8VKNuXFBt',
+        key: 'appv2/stage/uploads/37ad733fdf20adf0de20effcbbf6f120/THPhHZoRCiUscy4hrXvQ_file-sample_150kB.pdf',
+        mimetype: 'application/pdf',
+        originalFile: {
+          name: 'file-sample_150kB.pdf',
+          size: 142786,
+          type: 'application/pdf'
+        },
+        originalPath: 'file-sample_150kB.pdf',
+        size: 142786,
+        source: 'local_file_system',
+        status: 'Stored',
+        uploadId: '2ZaurtAztrY45d4S',
+        url: 'https://cdn.filestackcontent.com/VcVHlY1SzSC8VKNuXFBt'
+      }),
+      created: '2019-11-27 02:25:21',
+      isSender: false,
+      sender: {
+        uuid: '3',
+        name: CHARACTERS.steven.name,
+        role: 'participant',
+        avatar: CHARACTERS.steven.avatar
+      }
+    },
     {
       uuid: '11',
       message: `I'm Ironman`,
@@ -244,6 +302,81 @@ export class DemoService {
       file: null,
       created: '2019-11-27 02:21:21',
       isSender: false,
+      sender: {
+        uuid: '3',
+        name: CHARACTERS.steven.name,
+        role: 'participant',
+        avatar: CHARACTERS.steven.avatar
+      }
+    }
+  ];
+  scheduleChatMessages = [
+    {
+      uuid: '221',
+      message: `Hey, open the gate`,
+      file: null,
+      created: '2022-07-28 02:21:21',
+      isSender: false,
+      scheduled: '2022-08-28 02:21:21',
+      sender: {
+        uuid: '1',
+        name: CHARACTERS.scott.name,
+        role: 'coordinator',
+        avatar: CHARACTERS.scott.avatar
+      }
+    },
+    {
+      uuid: '222',
+      message: 'Gamora is back',
+      file: null,
+      created: '2019-11-28 02:21:21',
+      isSender: true,
+      scheduled: '2022-08-29 02:21:21',
+      sender: {
+        uuid: '2',
+        name: CHARACTERS.peter.name,
+        role: 'coordinator',
+        avatar: CHARACTERS.peter.avatar
+      }
+    },
+    {
+      uuid: '223',
+      message: 'Look at this',
+      file: JSON.stringify({
+        container: 'practera-aus',
+        filename: 'Thanos_is_coming.pdf',
+        handle: 'VcVHlY1SzSC8VKNuXFBt',
+        key: 'appv2/stage/uploads/37ad733fdf20adf0de20effcbbf6f120/THPhHZoRCiUscy4hrXvQ_file-sample_150kB.pdf',
+        mimetype: 'application/pdf',
+        originalFile: {
+          name: 'file-sample_150kB.pdf',
+          size: 142786,
+          type: 'application/pdf'
+        },
+        originalPath: 'file-sample_150kB.pdf',
+        size: 142786,
+        source: 'local_file_system',
+        status: 'Stored',
+        uploadId: '2ZaurtAztrY45d4S',
+        url: 'https://cdn.filestackcontent.com/VcVHlY1SzSC8VKNuXFBt'
+      }),
+      created: '2019-11-27 02:25:21',
+      isSender: false,
+      scheduled: '2022-09-02 05:21:21',
+      sender: {
+        uuid: '3',
+        name: CHARACTERS.steven.name,
+        role: 'participant',
+        avatar: CHARACTERS.steven.avatar
+      }
+    },
+    {
+      uuid: '224',
+      message: 'Hi guys, check this out!',
+      file: null,
+      created: '2019-11-27 02:21:21',
+      isSender: false,
+      scheduled: '2022-09-05 05:21:21',
       sender: {
         uuid: '3',
         name: CHARACTERS.steven.name,
@@ -1202,6 +1335,18 @@ export class DemoService {
   }
 
   getMessages(data) {
+    if (data.scheduledOnly) {
+      return {
+        data: {
+          channel: {
+            chatLogsConnection: {
+              cursor: '789',
+              chatLogs: this.scheduleChatMessages
+            }
+          }
+        }
+      };
+    }
     if (data.channelUuid === '2' || data.channelUuid === '1234') {
       return {
         data: {
@@ -1244,13 +1389,47 @@ export class DemoService {
     };
   }
 
-  getNewChannel() {
+  getNewChannel(data: any) {
+    if (data.isAnnouncement && data.name === CHARACTERS.expertsAnnouncements.name) {
+      return {
+        data: {
+          createChannel: {
+            uuid: '789',
+            name: CHARACTERS.expertsAnnouncements.name,
+            avatar: CHARACTERS.expertsAnnouncements.avatar,
+            pusherChannel: 'private-develop-team-1447-322-20',
+            isAnnouncement: true,
+            isDirectMessage: false,
+            readonly: false,
+            roles: ['participant', 'mentor'],
+            canEdit: true
+          }
+        }
+      };
+    }
+    if (data.isAnnouncement && data.name === CHARACTERS.learnersAnnouncements.name) {
+      return {
+        data: {
+          createChannel: {
+            uuid: '8546',
+            name: CHARACTERS.learnersAnnouncements.name,
+            avatar: CHARACTERS.learnersAnnouncements.avatar,
+            pusherChannel: 'private-develop-team-1447-322-20',
+            isAnnouncement: true,
+            isDirectMessage: false,
+            readonly: false,
+            roles: ['participant', 'mentor'],
+            canEdit: true
+          }
+        }
+      };
+    }
     return {
       data: {
         createChannel: {
           uuid: '1234',
-          name: 'cohort channel name',
-          avatar: 'https://flaticons.net/icon.php?slug_category=people&slug_icon=user-group',
+          name: CHARACTERS.cohortChannel.name,
+          avatar: CHARACTERS.cohortChannel.avatar,
           pusherChannel: 'private-develop-team-1447-322-20',
           isAnnouncement: false,
           isDirectMessage: false,

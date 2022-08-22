@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
 import { StorageService } from '@services/storage.service';
 import { environment } from '@environments/environment';
 import { AnalyticsService } from './analytics.service';
+import * as moment from 'moment';
 
 // @TODO: enhance Window reference later, we shouldn't refer directly to browser's window object like this
 declare var window: any;
@@ -137,9 +138,9 @@ export class UtilsService {
     // if no compareWith provided, compare with today
     let compareDate = new Date();
     if (compareWith) {
-      compareDate = new Date(this.timeStringFormatter(compareWith));
+      compareDate = new Date(this.iso8601Formatter(compareWith));
     }
-    const date = new Date(this.timeStringFormatter(time));
+    const date = new Date(this.iso8601Formatter(time));
     if (date.getFullYear() === compareDate.getFullYear() && date.getMonth() === compareDate.getMonth()) {
       if (date.getDate() === compareDate.getDate() - 1) {
         return 'Yesterday';
@@ -165,7 +166,7 @@ export class UtilsService {
     if (!time) {
       return '';
     }
-    const date = new Date(this.timeStringFormatter(time));
+    const date = new Date(this.iso8601Formatter(time));
     switch (display) {
       case 'date':
         const today = new Date();
@@ -206,10 +207,10 @@ export class UtilsService {
   }
 
   timeComparer(timeString: string, comparedString?: string) {
-    const time = new Date(this.timeStringFormatter(timeString) + 'Z');
+    const time = new Date(this.iso8601Formatter(timeString));
     let compared = new Date();
     if (comparedString) {
-      compared = new Date(this.timeStringFormatter(comparedString) + 'Z');
+      compared = new Date(this.iso8601Formatter(comparedString));
     }
     if (time.getTime() < compared.getTime()) {
       return -1;
@@ -223,21 +224,37 @@ export class UtilsService {
   }
 
   /**
-   * Format the time string
-   * 1. Add 'T' between date and time, for compatibility with Safari
-   * 2. Add 'Z' at last to indicate that it is UTC time, browser will automatically convert the time to local time
-   *
-   * Example time string: '2019-08-06 15:03:00'
-   * After formatter: '2019-08-06T15:03:00Z'
-   */
-  timeStringFormatter(time: string) {
-    if (!time.includes(':')) {
-      return time;
+  * Format the time string
+  * 1. Add 'T' between date and time, for compatibility with Safari
+  * 2. Add 'Z' at last to indicate that it is UTC time, browser will automatically convert the time to local time
+  *
+  * Example time string: '2019-08-06 15:03:00'
+  * After formatter: '2019-08-06T15:03:00Z'
+  *
+  * SAFARI enforce ISO 8601 (no space as time delimiter allowed)
+  * T for time delimiter
+  * Z for timezone (UTC) delimiter (+0000)
+  */
+  iso8601Formatter(time: Date | string) {
+    try {
+      if (typeof time === 'string') {
+        let tmpTime = time;
+        if (!time.includes('GMT') && !(time.toLowerCase()).includes('z')) {
+          tmpTime += ' GMT+0000';
+        }
+        return (new Date(tmpTime)).toISOString();
+      }
+      return time.toISOString();
+    } catch (err) {
+      // in case the above doesn't work on Safari
+      if (typeof time === 'string') {
+        // add "T" between date and time, so that it works on Safari
+        time = time.replace(' ', 'T');
+        // add "Z" to indicate that it is UTC time, it will automatically convert to local time
+        return time + 'Z';
+      }
+      return time.toISOString();
     }
-    // add "T" between date and time, so that it works on Safari
-    time = time.replace(' ', 'T');
-    // add "Z" to indicate that it is UTC time, it will automatically convert to local time
-    return time + 'Z';
   }
 
     /**
@@ -314,4 +331,16 @@ export class UtilsService {
         return 'fa-rocket';
     }
   }
+
+  getDateDifferenceInMinutes(dateOne: string, datetwo?: string) {
+    const d1 = moment(this.iso8601Formatter(dateOne));
+    let d2;
+    if (!datetwo) {
+      d2 = moment(this.iso8601Formatter(moment().format('YYYY-MM-DD hh:mm')));
+    } else {
+      d2 = moment(this.iso8601Formatter(datetwo));
+    }
+    return d1.diff(d2, 'minutes');
+  }
+
 }

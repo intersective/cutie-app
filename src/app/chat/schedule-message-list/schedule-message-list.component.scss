@@ -1,0 +1,101 @@
+.schedule-message-container {
+  padding: 20px;
+}
+
+.schedule-message-card {
+  border: 1px solid var(--practera-light-grey-100);
+  border-radius: 8px;
+  box-shadow: none;
+
+  &:hover {
+    ion-card-content {
+      .sender-info-container {
+        .action-container {
+          visibility: visible;
+        }
+      }
+    }
+  }
+
+  ion-card-content {
+    padding: 12px !important;
+
+    p {
+      margin: 0;
+    }
+
+    .sender-info-container {
+      max-height: 24px;
+      height: 24px;
+      // border-bottom: 1px solid var(--practera-grey-25);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-direction: row;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+
+      .action-container {
+        visibility: hidden;
+        ion-button {
+          color: var(--practera-grey-25);
+          ion-icon {
+            color: var(--practera-grey-25);
+            font-size: 18px;
+          }
+          &:hover {
+            &.delete-btn {
+              color: var(--ion-color-danger);
+              ion-icon {
+                color: var(--ion-color-danger);
+              }
+            }
+            background: transparent;
+            --background: transparent;
+            color: var(--practera-ocean-100);
+            ion-icon {
+              color: var(--practera-ocean-100);
+            }
+          }
+        }
+      }
+    }
+
+    .message-container {
+      margin-top: 10px;
+    }
+
+    .attachment-container {
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      flex-direction: row;
+      flex-wrap: wrap;
+
+      p,
+      a {
+        font-family: "Roboto";
+        font-weight: 700;
+        font-size: 12px;
+        line-height: 19px;
+        font-weight: bold;
+      }
+      a {
+        cursor: pointer;
+      }
+      p {
+        margin-right: 10px;
+      }
+    }
+  }
+}
+
+.ion-content-absolute-with-footer {
+  height: calc(100% - 175px);
+
+  &.schedule {
+    height: calc(100% - 106px);
+    top: 106px;
+  }
+}
