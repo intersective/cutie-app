@@ -343,4 +343,29 @@ export class UtilsService {
     return d1.diff(d2, 'minutes');
   }
 
+  utcLocalforScheduleMessages(time: string, display: string = 'all') {
+    if (!time) {
+      return '';
+    }
+    const date = new Date(this.iso8601Formatter(time));
+    switch (display) {
+      case 'date':
+        return new Intl.DateTimeFormat('en-GB', {
+          month: 'numeric',
+          day: 'numeric',
+          year: 'numeric'
+        }).format(date);
+      case 'time':
+        return new Intl.DateTimeFormat('en-US', {
+          hour12: true,
+          hour: 'numeric',
+          minute: 'numeric'
+        }).format(date);
+    }
+  }
+
+  browserTimezone() {
+    return Intl.DateTimeFormat().resolvedOptions().timeZone;
+  }
+
 }

@@ -2,6 +2,8 @@
   <ng-container *ngIf="!createdMessage; else messageCreated">
     <p class="subtitle-2 popup-title">Schedule Message</p>
 
+    <p class="caption hint-message"><strong>{{ utils.browserTimezone() }} Timezone</strong></p>
+
     <p class="caption hint-message">select date and time at least 30 minutes in the future</p>
 
     <div class="form-container">
@@ -45,7 +47,7 @@
         </div>
       </div>
       <div class="schedule-info-container">
-        <p class="subtitle-2 black">will be publised the <strong>{{ utils.utcToLocal(createdMessage.scheduled, 'date') }}</strong> at <strong>{{ utils.utcToLocal(createdMessage.scheduled, 'time') }}</strong> on <strong>{{ channelName }}</strong></p>
+        <p class="subtitle-2 black">Scheduled for <strong>{{ utils.utcLocalforScheduleMessages(createdMessage.scheduled, 'date') }}</strong> at <strong>{{ utils.utcLocalforScheduleMessages(createdMessage.scheduled, 'time') }} ({{ utils.browserTimezone() }})</strong> on <strong>{{ channelName }}</strong></p>
       </div>
     </div>
   </ng-template>
