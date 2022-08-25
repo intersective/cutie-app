@@ -52,7 +52,7 @@
 </div>
 <div class="message-popup-footer">
   <ion-button tabindex="2" color="light" class="btn-cancle" (click)="close()" [disabled]="sending">
-    Cancel
+    {{ createdMessage ? 'Close' : 'Cancel' }}
   </ion-button>
   <ion-button *ngIf="!createdMessage" tabindex="3" color="ocean" (click)="scheduleMessage()"
     [disabled]="sending || !selectedDate || !selectedTime || !channelUuid">
