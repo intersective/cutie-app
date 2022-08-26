@@ -773,7 +773,8 @@ export class ChatRoomComponent {
       componentProps: {
         chatMessage: this.messageList[index],
         channelName: this.chatChannel.name,
-        reScheduled: false
+        reScheduled: false,
+        isSentMessageEdit: true
       }
     });
     await modal.present();
