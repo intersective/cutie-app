@@ -50,6 +50,11 @@ export class EditScheduleMessagePopupComponent implements OnInit {
     this.message = this.chatMessage ? this.chatMessage.message : null;
     this.messageUuid = this.chatMessage ? this.chatMessage.uuid : null;
     this.scheduledDateTime = this.chatMessage ? this.chatMessage.scheduled : null;
+    if (this.reScheduled) {
+      const originalDateTime = this.utils.iso8601Formatter(this.scheduledDateTime);
+      this.selectedDate = moment(new Date(originalDateTime)).format('YYYY-MM-DD');
+      this.selectedTime = moment(new Date(originalDateTime)).format('HH:mm:ss');
+    }
   }
 
   /**
