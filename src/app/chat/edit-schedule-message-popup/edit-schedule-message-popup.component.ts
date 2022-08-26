@@ -19,6 +19,7 @@ export class EditScheduleMessagePopupComponent implements OnInit {
   @Input() reScheduled = false;
   @Input() chatMessage: Message;
   @Input() channelName: string;
+  @Input() isSentMessageEdit = false;
   messageUuid: string;
   selectedDate: string;
   selectedTime: string;
