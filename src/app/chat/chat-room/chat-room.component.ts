@@ -145,6 +145,7 @@ export class ChatRoomComponent {
       senderName: data.senderName,
       senderRole: data.senderRole,
       senderAvatar: data.senderAvatar,
+      senderUuid: data.senderUuid,
       isSender: false,
       message: data.message,
       created: data.created,
