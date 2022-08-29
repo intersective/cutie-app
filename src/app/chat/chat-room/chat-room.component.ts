@@ -82,6 +82,12 @@ export class ChatRoomComponent {
         receivedMessage.fileObject = fileObject;
         receivedMessage.preview = this.attachmentPreview(receivedMessage.fileObject);
       }
+      if (receivedMessage.senderUuid &&
+        this.storage.getUser().uuid &&
+        receivedMessage.senderUuid === this.storage.getUser().uuid
+      ) {
+        receivedMessage.isSender = true;
+      }
       if (!this.utils.isEmpty(receivedMessage)) {
         this.messageList.push(receivedMessage);
         this._markAsSeen();
@@ -138,6 +144,7 @@ export class ChatRoomComponent {
       senderName: data.senderName,
       senderRole: data.senderRole,
       senderAvatar: data.senderAvatar,
+      senderUuid: data.senderUuid,
       isSender: false,
       message: data.message,
       created: data.created,
