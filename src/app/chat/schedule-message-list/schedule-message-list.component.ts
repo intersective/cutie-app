@@ -93,8 +93,8 @@ export class ScheduleMessageListComponent implements OnInit {
   }
 
   getScheduleDate(date) {
-    const utcToLocalTime = this.utils.utcToLocal(date, 'time');
-    const utcToLocalDate = this.utils.utcToLocal(date, 'date');
+    const utcToLocalTime = this.utils.utcLocalforScheduleMessages(date, 'time');
+    const utcToLocalDate = this.utils.utcLocalforScheduleMessages(date, 'date');
     return `${utcToLocalTime} / ${utcToLocalDate}`;
   }
 

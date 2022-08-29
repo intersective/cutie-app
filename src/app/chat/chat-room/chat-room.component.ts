@@ -82,6 +82,11 @@ export class ChatRoomComponent {
         receivedMessage.fileObject = fileObject;
         receivedMessage.preview = this.attachmentPreview(receivedMessage.fileObject);
       }
+      if (receivedMessage.senderUuid &&
+        receivedMessage.senderUuid === this.storage.getUser().uuid
+      ) {
+        receivedMessage.isSender = true;
+      }
       if (!this.utils.isEmpty(receivedMessage)) {
         this.messageList.push(receivedMessage);
         this._markAsSeen();
@@ -773,7 +778,8 @@ export class ChatRoomComponent {
       componentProps: {
         chatMessage: this.messageList[index],
         channelName: this.chatChannel.name,
-        reScheduled: false
+        reScheduled: false,
+        isSentMessageEdit: true
       }
     });
     await modal.present();
