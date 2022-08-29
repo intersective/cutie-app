@@ -82,7 +82,6 @@ export class ChatRoomComponent {
         receivedMessage.fileObject = fileObject;
         receivedMessage.preview = this.attachmentPreview(receivedMessage.fileObject);
       }
-      console.log(receivedMessage);
       if (receivedMessage.senderUuid &&
         this.storage.getUser().uuid &&
         receivedMessage.senderUuid === this.storage.getUser().uuid
