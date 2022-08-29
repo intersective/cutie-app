@@ -123,7 +123,7 @@ export class ScheduleMessagePopupComponent implements OnInit {
       return;
     }
     const dateTimeDiff = this.utils.getDateDifferenceInMinutes(selectedDateTime);
-    if (dateTimeDiff >= 30) {
+    if (dateTimeDiff >= 0) {
       this.invalidDateTime = false;
       return true;
     } else {
