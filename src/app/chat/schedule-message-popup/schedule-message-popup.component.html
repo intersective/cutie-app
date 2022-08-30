@@ -41,7 +41,7 @@
         <p class="subtitle-2 popup-title">Message Scheduled</p>
       </div>
       <div class="message-container">
-        <p class="subtitle-2 black">{{ createdMessage.message }}</p>
+        <p class="message-text subtitle-2 black">{{ createdMessage.message }}</p>
         <div class="attachment-container" *ngIf="createdMessage.fileObject">
           <p class="black">Attachment:</p>
           <a class="ocean" (click)="previewFile(createdMessage.fileObject)">{{ createdMessage.fileObject.filename }}</a>

@@ -92,6 +92,7 @@ export class ChatRoomComponent {
         this.messageList.push(receivedMessage);
         this._markAsSeen();
         this._scrollToBottom();
+        this.utils.broadcastEvent('chat:info-update', true);
       }
     });
 
