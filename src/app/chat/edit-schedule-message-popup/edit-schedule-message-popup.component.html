@@ -30,7 +30,7 @@
         <p class="subtitle-2 popup-title">{{ reScheduled ? 'Message Rescheduled' : 'Message Updated' }}</p>
       </div>
       <div class="message-container" *ngIf="!reScheduled">
-        <p class="subtitle-2 black">{{ message }}</p>
+        <p class="message-text subtitle-2 black">{{ message }}</p>
       </div>
       <div class="schedule-info-container" *ngIf="!isSentMessageEdit">
         <p class="subtitle-2 black">Scheduled for <strong>{{ utils.utcLocalforScheduleMessages(scheduledDateTime, 'date') }}</strong> at <strong>{{ utils.utcLocalforScheduleMessages(scheduledDateTime, 'time') }} ({{ utils.browserTimezone() }})</strong> on <strong>{{ channelName }}</strong></p>
