@@ -333,12 +333,12 @@ export class UtilsService {
   }
 
   getDateDifferenceInMinutes(dateOne: string, datetwo?: string) {
-    const d1 = moment(this.iso8601Formatter(dateOne));
+    const d1 = moment(new Date(dateOne));
     let d2;
     if (!datetwo) {
-      d2 = moment(this.iso8601Formatter(moment().format('YYYY-MM-DD hh:mm')));
+      d2 = moment(new Date());
     } else {
-      d2 = moment(this.iso8601Formatter(datetwo));
+      d2 = moment(new Date(datetwo));
     }
     return d1.diff(d2, 'minutes');
   }
