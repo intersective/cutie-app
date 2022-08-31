@@ -3,6 +3,7 @@ export const environment = {
   demo: false,
   appkey: '<CUSTOM_APPKEY>',
   pusherKey: '<CUSTOM_PUSHERKEY>',
+  pusherCluster: '<CUSTOM_PUSHER_CLUSTER>',
   env: '<CUSTOM_APPENV>',
   APIEndpoint: '<CUSTOM_APIENDPOINT>',
   APIEndpointOld: '<CUSTOM_APIENDPOINTOLD>',
