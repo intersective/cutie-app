@@ -75,7 +75,7 @@ export class ChatRoomComponent {
       }
       if (receivedMessage && receivedMessage.file) {
         let fileObject = null;
-        fileObject = JSON.parse(receivedMessage.file);
+        fileObject = typeof receivedMessage.file === 'string' ? JSON.parse(receivedMessage.file) : receivedMessage.file;
         if (this.utils.isEmpty(fileObject)) {
           fileObject = null;
         }
