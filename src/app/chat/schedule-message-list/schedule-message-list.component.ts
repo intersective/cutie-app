@@ -99,7 +99,7 @@ export class ScheduleMessageListComponent implements OnInit {
   }
 
   previewFile(file) {
-    return this.filestackService.previewFile(file);
+    return window.open(file.url, '_system');
   }
 
   deleteMessage(messageUuid) {
