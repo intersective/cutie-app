@@ -72,6 +72,10 @@
     }
   }
   .message-container {
+    .message-text {
+      margin: 0;
+      white-space: pre-wrap !important;
+    }
     .attachment-container {
       margin-top: 10px;
       display: flex;

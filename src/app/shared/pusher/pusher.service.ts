@@ -26,6 +26,7 @@ export interface SendMessageParam {
   senderName: string;
   senderRole: string;
   senderAvatar: string;
+  sentAt: string;
 }
 
 export class PusherConfig {
@@ -132,7 +133,7 @@ export class PusherService {
     }
     try {
       const config: Config = {
-        cluster: 'mt1',
+        cluster: environment.pusherCluster,
         forceTLS: true,
         authEndpoint: urlFormatter(this.apiurl, api.pusherAuth),
         auth: {

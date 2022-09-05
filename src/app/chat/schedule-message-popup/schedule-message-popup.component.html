@@ -4,7 +4,8 @@
 
     <p class="caption hint-message"><strong>{{ utils.browserTimezone() }} Timezone</strong></p>
 
-    <p class="caption hint-message">select the date and time at least 30 minutes in the future</p>
+    <!-- comment this util we discuss about limit -->
+    <!-- <p class="caption hint-message">select the date and time at least 30 minutes in the future</p> -->
 
     <div class="form-container">
 
@@ -40,7 +41,7 @@
         <p class="subtitle-2 popup-title">Message Scheduled</p>
       </div>
       <div class="message-container">
-        <p class="subtitle-2 black">{{ createdMessage.message }}</p>
+        <p class="message-text subtitle-2 black">{{ createdMessage.message }}</p>
         <div class="attachment-container" *ngIf="createdMessage.fileObject">
           <p class="black">Attachment:</p>
           <a class="ocean" (click)="previewFile(createdMessage.fileObject)">{{ createdMessage.fileObject.filename }}</a>

@@ -55,6 +55,7 @@ export interface Message {
   noAvatar?: boolean;
   channelUuid?: string;
   scheduled?: string;
+  sentAt: string;
 }
 
 export interface MessageListResult {
@@ -233,6 +234,7 @@ export class ChatService {
               file
               created
               scheduled
+              sentAt
               sender {
                 uuid
                 name
@@ -288,7 +290,8 @@ export class ChatService {
         senderName: message.sender.name,
         senderRole: message.sender.role,
         senderAvatar: message.sender.avatar,
-        scheduled: message.scheduled
+        scheduled: message.scheduled,
+        sentAt: message.sentAt
       });
     });
     return {
@@ -413,6 +416,7 @@ export class ChatService {
             file
             created
             scheduled
+            sentAt
             sender {
               uuid
               name
@@ -464,7 +468,8 @@ export class ChatService {
       senderName: result.sender.name,
       senderRole: result.sender.role,
       senderAvatar: result.sender.avatar,
-      scheduled: result.scheduled
+      scheduled: result.scheduled,
+      sentAt: result.sentAt
     };
   }
 

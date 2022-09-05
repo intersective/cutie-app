@@ -44,7 +44,7 @@
         <ion-label [ngClass]="getClassForMessageBubble(message)">
 
           <div *ngIf="checkToShowMessageTime(message)" class="time caption gray-2">
-            <p>{{getMessageDate(message.created)}}</p>
+            <p>{{getMessageDate(message.sentAt)}}</p>
           </div>
 
           <div class="message-container">
@@ -144,7 +144,7 @@
       <ion-row nowrap class="ion-no-padding ion-align-items-center ion-justify-content-end">
         <ng-container *ngTemplateOutlet="attachmentButtons"></ng-container>
         <ion-col size="2" size-lg="1" class="ion-no-padding ion-text-center">
-          <ion-button (click)="sendMessage()" type="submit" fill="clear" color="ocean" class="ion-no-padding">
+          <ion-button [disabled]="!message" (click)="sendMessage()" type="submit" fill="clear" color="ocean" class="ion-no-padding">
             <ion-icon name="send" slot="icon-only"></ion-icon>
           </ion-button>
         </ion-col>
@@ -170,7 +170,7 @@
     </ion-col>
 
     <ion-col size="2" size-lg="1" class="ion-no-padding ion-text-center">
-      <ion-button (click)="openSchedulePopup()" fill="clear" color="ocean" class="ion-no-padding">
+      <ion-button [disabled]="!message" (click)="openSchedulePopup()" fill="clear" color="ocean" class="ion-no-padding">
         <ion-icon name="calendar" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-col>
