@@ -1,10 +1,8 @@
 <div class="label video-conversion"
   (click)="showInFilestackPreview(result)"
   *ngIf="result?.status === 'completed'; else conversionPending">
-  <p>
-    <ion-label color="primary" [title]="video?.fileObject?.filename">
-      {{ video?.fileObject?.filename }}
-    </ion-label>
+  <p class="label" [title]="video?.fileObject?.filename">
+    {{ video?.fileObject?.filename }}
   </p>
   <div id="inner-box">
     <p>
