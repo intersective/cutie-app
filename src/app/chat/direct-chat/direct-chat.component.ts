@@ -106,10 +106,11 @@ export class DirectChatComponent implements OnInit {
    * @param user selected user object
    */
   createChatChannel(user) {
+    const adminRole = this.storage.getUser().role === 'inst_admin' ? 'admin' : this.storage.getUser().role;
     this.chatService.createChannel({
       name: user.name,
       isAnnouncement: false,
-      roles: [user.role, this.storage.getUser().role],
+      roles: [user.role, adminRole],
       members: [{
         type: chatMemberUuidType,
         uuid: this.currentEnrolmentUuid
