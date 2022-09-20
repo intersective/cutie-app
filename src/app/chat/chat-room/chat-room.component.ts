@@ -144,6 +144,7 @@ export class ChatRoomComponent {
    * @description listen to pusher event for new message
    */
   getMessageFromEvent(data): Message {
+    console.log('data', data);
     return {
       uuid: data.uuid,
       senderName: data.senderName,
