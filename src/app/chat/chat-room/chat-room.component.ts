@@ -89,7 +89,7 @@ export class ChatRoomComponent {
         receivedMessage.isSender = true;
       }
       // if received message is schedule one need to update count
-      if (receivedMessage.scheduled) {
+      if (event.isScheduled) {
         this.chatChannel.scheduledMessageCount -= 1;
       }
       if (!this.utils.isEmpty(receivedMessage)) {
@@ -156,8 +156,7 @@ export class ChatRoomComponent {
       created: data.created,
       file: data.file,
       channelUuid: data.channelUuid,
-      sentAt: data.sentAt,
-      scheduled: data.scheduled ? data.scheduled : null
+      sentAt: data.sentAt
     };
   }
 
