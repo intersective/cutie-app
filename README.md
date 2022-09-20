@@ -1,8 +1,7 @@
-# TODO:
-No unit test, sonar test yet for cuite-app
 # Practera-cutie
 
 [GitHub Page](https://intersective.github.io/cutie/)
+*TODO: No unit test, sonar test yet for cuite-app*
 
 ## Requirements
 

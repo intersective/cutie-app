@@ -71,14 +71,12 @@
               <ng-container *ngIf="message.fileObject">
                 <ng-container *ngIf="message.fileObject && message.fileObject.mimetype && message.fileObject.mimetype.includes('video')">
                   <ng-container *ngIf="message?.fileObject?.mimetype === 'video/mp4'; else nonMp4Format">
+                    <p class="label">
+                      {{ message.fileObject.filename }}
+                    </p>
                     <div id="inner-box" (click)="preview(message.fileObject)">
                       <p>
                         <ion-icon name="play-circle"></ion-icon>
-                      </p>
-                    </div>
-                    <div class="label">
-                      <p>
-                        <ion-label color="primary">{{ message.fileObject.filename }}</ion-label>
                       </p>
                     </div>
                   </ng-container>
