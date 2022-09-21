@@ -88,6 +88,10 @@ export class ChatRoomComponent {
       ) {
         receivedMessage.isSender = true;
       }
+      // if received message is schedule one need to update count
+      if (event.isScheduled) {
+        this.chatChannel.scheduledMessageCount -= 1;
+      }
       if (!this.utils.isEmpty(receivedMessage)) {
         this.messageList.push(receivedMessage);
         this._markAsSeen();
