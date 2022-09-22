@@ -368,4 +368,14 @@ export class UtilsService {
     return Intl.DateTimeFormat().resolvedOptions().timeZone;
   }
 
+  getUserRolesForUI(role) {
+    if (role === 'participant') {
+      return role = 'learner';
+    } else if (role === 'mentor') {
+      return role = 'expert';
+    } else {
+      return role;
+    }
+  }
+
 }

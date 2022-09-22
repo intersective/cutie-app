@@ -3,6 +3,7 @@ import { ModalController } from '@ionic/angular';
 import { StorageService } from '@app/shared/services/storage.service';
 import { ChatService, ChatChannel, ChannelMembers, SearchUsersParam, User } from '@app/chat/chat.service';
 import { AuthService } from '@app/auth/auth.service';
+import { UtilsService } from '@services/utils.service';
 
 const searchScope = 'timeline';
 const chatMemberUuidType = 'Enrolment';
@@ -23,7 +24,8 @@ export class DirectChatComponent implements OnInit {
     public modalController: ModalController,
     private chatService: ChatService,
     public storage: StorageService,
-    private authService: AuthService
+    private authService: AuthService,
+    public utils: UtilsService
   ) { }
 
   ngOnInit() {
