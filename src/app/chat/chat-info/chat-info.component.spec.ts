@@ -97,7 +97,8 @@ describe('ChatInfoComponent', () => {
         unreadMessageCount: 0,
         lastMessage: null,
         lastMessageCreated: null,
-        canEdit: false
+        canEdit: false,
+        scheduledMessageCount: 0
       };
       component.ngOnInit();
       expect(chatServiceSpy.getChatMembers.calls.count()).toBe(1);
@@ -123,7 +124,8 @@ describe('ChatInfoComponent', () => {
         canEdit: true,
         unreadMessageCount: 0,
         lastMessage: null,
-        lastMessageCreated: null
+        lastMessageCreated: null,
+        scheduledMessageCount: 0
       };
       component.checkNamechanged(event);
       expect(component.enableSave).toBeTruthy();
@@ -144,7 +146,8 @@ describe('ChatInfoComponent', () => {
         canEdit: true,
         unreadMessageCount: 0,
         lastMessage: null,
-        lastMessageCreated: null
+        lastMessageCreated: null,
+        scheduledMessageCount: 0
       };
       component.channelName = 'ABC channel';
       component.selectedChat = {
@@ -159,7 +162,8 @@ describe('ChatInfoComponent', () => {
         canEdit: true,
         unreadMessageCount: 0,
         lastMessage: null,
-        lastMessageCreated: null
+        lastMessageCreated: null,
+        scheduledMessageCount: 0
       };
       chatServiceSpy.editChatChannel.and.returnValue(of(editResponse));
       component.editChannelDetail();
