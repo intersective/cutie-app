@@ -369,12 +369,13 @@ export class UtilsService {
   }
 
   getUserRolesForUI(role) {
-    if (role === 'participant') {
-      return role = 'learner';
-    } else if (role === 'mentor') {
-      return role = 'expert';
-    } else {
-      return role;
+    switch (role) {
+      case 'participant':
+        return 'learner';
+      case 'mentor':
+        return 'expert';
+      default:
+        return role;
     }
   }
 
