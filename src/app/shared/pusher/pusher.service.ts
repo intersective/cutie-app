@@ -274,6 +274,12 @@ export class PusherService {
         .bind('client-chat-new-message', data => {
           this.utils.broadcastEvent('chat:new-message', data);
         })
+        .bind('client-chat-delete-message', data => {
+          this.utils.broadcastEvent('chat:delete-message', data);
+        })
+        .bind('client-chat-edit-message', data => {
+          this.utils.broadcastEvent('chat:edit-message', data);
+        })
         .bind('client-typing-event', data => {
           this.utils.broadcastEvent('typing-' + channelName, data);
         })
@@ -320,6 +326,22 @@ export class PusherService {
       return;
     }
     channel.subscription.trigger('client-chat-new-message', data);
+  }
+
+  triggerDeleteMessage(channelName: string, data: SendMessageParam) {
+    const channel = this.channels.chat.find(c => c.name === channelName);
+    if (!channel) {
+      return;
+    }
+    channel.subscription.trigger('client-chat-delete-message', data);
+  }
+
+  triggerEditMessage(channelName: string, data: SendMessageParam) {
+    const channel = this.channels.chat.find(c => c.name === channelName);
+    if (!channel) {
+      return;
+    }
+    channel.subscription.trigger('client-chat-edit-message', data);
   }
 
 }

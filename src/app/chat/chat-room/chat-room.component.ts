@@ -70,23 +70,8 @@ export class ChatRoomComponent {
     // message by team
     this.utils.getEvent('chat:new-message').subscribe(event => {
       const receivedMessage = this.getMessageFromEvent(event);
-      if (receivedMessage.channelUuid !== this.channelUuid) {
+      if (this.utils.isEmpty(receivedMessage) || receivedMessage.channelUuid !== this.channelUuid) {
         return;
-      }
-      if (receivedMessage && receivedMessage.file) {
-        let fileObject = null;
-        fileObject = typeof receivedMessage.file === 'string' ? JSON.parse(receivedMessage.file) : receivedMessage.file;
-        if (this.utils.isEmpty(fileObject)) {
-          fileObject = null;
-        }
-        receivedMessage.fileObject = fileObject;
-        receivedMessage.preview = this.attachmentPreview(receivedMessage.fileObject);
-      }
-      if (receivedMessage.senderUuid &&
-        this.storage.getUser().uuid &&
-        receivedMessage.senderUuid === this.storage.getUser().uuid
-      ) {
-        receivedMessage.isSender = true;
       }
       // if received message is schedule one need to update count
       if (event.isScheduled) {
@@ -108,6 +93,32 @@ export class ChatRoomComponent {
       }
       if (event.deleted) {
         this.chatChannel.scheduledMessageCount -= 1;
+      }
+    });
+
+    this.utils.getEvent('chat:delete-message').subscribe(event => {
+      if (this.utils.isEmpty(event) || event.channelUuid !== this.channelUuid) {
+        return;
+      }
+      const deletedMessageIndex = this.messageList.findIndex(message => {
+        return message.channelUuid === event.uuid;
+      });
+      if (deletedMessageIndex > -1) {
+        this.messageList.splice(deletedMessageIndex, 1);
+      }
+    });
+
+    this.utils.getEvent('chat:edit-message').subscribe(event => {
+      const receivedMessage = this.getMessageFromEvent(event);
+      if (this.utils.isEmpty(receivedMessage) || receivedMessage.channelUuid !== this.channelUuid) {
+        return;
+      }
+
+      const editedMessageIndex = this.messageList.findIndex(message => {
+        return message.channelUuid === event.uuid;
+      });
+      if (editedMessageIndex > -1 && !this.utils.isEmpty(receivedMessage)) {
+        this.messageList[editedMessageIndex] = receivedMessage;
       }
     });
   }
@@ -144,7 +155,10 @@ export class ChatRoomComponent {
    * @description listen to pusher event for new message
    */
   getMessageFromEvent(data): Message {
-    return {
+    if (data) {
+      return null;
+    }
+    const receivedMessage: Message = {
       uuid: data.uuid,
       senderName: data.senderName,
       senderRole: data.senderRole,
@@ -157,6 +171,22 @@ export class ChatRoomComponent {
       channelUuid: data.channelUuid,
       sentAt: data.sentAt
     };
+    if (receivedMessage && receivedMessage.file) {
+      let fileObject = null;
+      fileObject = typeof receivedMessage.file === 'string' ? JSON.parse(receivedMessage.file) : receivedMessage.file;
+      if (this.utils.isEmpty(fileObject)) {
+        fileObject = null;
+      }
+      receivedMessage.fileObject = fileObject;
+      receivedMessage.preview = this.attachmentPreview(receivedMessage.fileObject);
+    }
+    if (receivedMessage.senderUuid &&
+      this.storage.getUser().uuid &&
+      receivedMessage.senderUuid === this.storage.getUser().uuid
+    ) {
+      receivedMessage.isSender = true;
+    }
+    return receivedMessage;
   }
 
   private _loadMessages() {
