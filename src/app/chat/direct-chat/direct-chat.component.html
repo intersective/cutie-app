@@ -49,7 +49,7 @@
             <div class="chat-name-container caption">
               <p class="chat-name subtitle-1">{{user.name}}</p>
               <ng-container *ngIf="user.role && user.role !== 'participant'">
-                <span class="ion-text-capitalize">{{ user.role }}</span>
+                <span class="ion-text-capitalize">{{ utils.getUserRolesForUI(user.role) }}</span>
               </ng-container>
             </div>
             <ng-container *ngIf="user.email">
