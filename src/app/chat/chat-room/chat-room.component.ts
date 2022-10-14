@@ -98,8 +98,7 @@ export class ChatRoomComponent {
 
     // Update schedule message count when schedule messages get created
     this.utils.getEvent('chat:new-shedule-message').subscribe(event => {
-      const receivedChannel = event.channel;
-      if (receivedChannel !== this.channelUuid) {
+      if (event.channelUuid !== this.channelUuid) {
         return;
       }
       if (event.deleted) {
