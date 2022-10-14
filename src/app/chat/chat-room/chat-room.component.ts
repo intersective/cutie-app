@@ -85,7 +85,7 @@ export class ChatRoomComponent {
       }
     });
 
-    // Update schedule message count when messages get delete
+    // Update schedule message count when schedule messages get delete
     this.utils.getEvent('chat:schedule-delete').subscribe(event => {
       const receivedChannel = event.channel;
       if (receivedChannel !== this.channelUuid) {
@@ -93,6 +93,17 @@ export class ChatRoomComponent {
       }
       if (event.deleted) {
         this.chatChannel.scheduledMessageCount -= 1;
+      }
+    });
+
+    // Update schedule message count when schedule messages get created
+    this.utils.getEvent('chat:new-shedule-message').subscribe(event => {
+      const receivedChannel = event.channel;
+      if (receivedChannel !== this.channelUuid) {
+        return;
+      }
+      if (event.deleted) {
+        this.chatChannel.scheduledMessageCount += 1;
       }
     });
 
@@ -268,7 +279,7 @@ export class ChatRoomComponent {
       message: message
     }).subscribe(
       response => {
-        this.pusherService.triggerSendMessage(this.chatChannel.pusherChannel, {
+        this.pusherService.triggerSendMessage(this.chatChannel.pusherChannel, false, {
           channelUuid: this.channelUuid,
           uuid: response.uuid,
           isSender: response.isSender,
@@ -580,7 +591,7 @@ export class ChatRoomComponent {
       file: JSON.stringify(file)
     }).subscribe(
       response => {
-        this.pusherService.triggerSendMessage(this.chatChannel.pusherChannel, {
+        this.pusherService.triggerSendMessage(this.chatChannel.pusherChannel, false, {
           channelUuid: this.channelUuid,
           uuid: response.uuid,
           isSender: response.isSender,

@@ -279,6 +279,9 @@ export class PusherService {
         .bind('client-chat-new-message', data => {
           this.utils.broadcastEvent('chat:new-message', data);
         })
+        .bind('client-chat-new-shedule-message', data => {
+          this.utils.broadcastEvent('chat:new-shedule-message', data);
+        })
         .bind('client-chat-delete-message', data => {
           console.log('delete message - 1');
           this.utils.broadcastEvent('chat:delete-message', data);
@@ -335,12 +338,16 @@ export class PusherService {
    * @param channelName pusher channel name that need to trigger the event on
    * @param data send message object
    */
-  triggerSendMessage(channelName: string, data: SendMessageParam) {
+  triggerSendMessage(channelName: string, isSchedule: boolean, data: SendMessageParam) {
     const channel = this.channels.chat.find(c => c.name === channelName);
     if (!channel) {
       return;
     }
-    channel.subscription.trigger('client-chat-new-message', data);
+    if (isSchedule) {
+      channel.subscription.trigger('client-chat-new-shedule-message', data);
+    } else {
+      channel.subscription.trigger('client-chat-new-message', data);
+    }
   }
 
   triggerDeleteMessage(channelName: string, isSchedule: boolean, data: DeleteMessageTriggerParam) {
