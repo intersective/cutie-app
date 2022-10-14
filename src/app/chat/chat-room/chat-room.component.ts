@@ -96,49 +96,29 @@ export class ChatRoomComponent {
       }
     });
 
-    // Update schedule message count when schedule messages get created
-    this.utils.getEvent('chat:new-shedule-message').subscribe(event => {
-      if (event.channelUuid !== this.channelUuid) {
-        return;
-      }
-      if (event.deleted) {
-        this.chatChannel.scheduledMessageCount += 1;
-      }
-    });
-
     this.utils.getEvent('chat:delete-message').subscribe(event => {
-      console.log('delete message - 2', event);
       if (this.utils.isEmpty(event) || event.channelUuid !== this.channelUuid) {
         return;
       }
-      console.log('delete message - 3');
       const deletedMessageIndex = this.messageList.findIndex(message => {
         return message.uuid === event.uuid;
       });
-      console.log('delete message - 4', deletedMessageIndex);
       if (deletedMessageIndex > -1) {
         this.messageList.splice(deletedMessageIndex, 1);
-        console.log('delete message - 5');
       }
-      console.log('delete message - 6');
     });
 
     this.utils.getEvent('chat:edit-message').subscribe(event => {
-      console.log('edit message - 2', event);
       const receivedMessage = this.getMessageFromEvent(event);
       if (this.utils.isEmpty(receivedMessage) || receivedMessage.channelUuid !== this.channelUuid) {
         return;
       }
-      console.log('edit message - 3');
       const editedMessageIndex = this.messageList.findIndex(message => {
         return message.uuid === event.uuid;
       });
-      console.log('edit message - 4', receivedMessage, editedMessageIndex);
       if (editedMessageIndex > -1 && !this.utils.isEmpty(receivedMessage)) {
         this.messageList[editedMessageIndex] = receivedMessage;
-        console.log('edit message - 5');
       }
-      console.log('edit message - 6');
     });
   }
 
@@ -278,7 +258,7 @@ export class ChatRoomComponent {
       message: message
     }).subscribe(
       response => {
-        this.pusherService.triggerSendMessage(this.chatChannel.pusherChannel, false, {
+        this.pusherService.triggerSendMessage(this.chatChannel.pusherChannel, {
           channelUuid: this.channelUuid,
           uuid: response.uuid,
           isSender: response.isSender,
@@ -590,7 +570,7 @@ export class ChatRoomComponent {
       file: JSON.stringify(file)
     }).subscribe(
       response => {
-        this.pusherService.triggerSendMessage(this.chatChannel.pusherChannel, false, {
+        this.pusherService.triggerSendMessage(this.chatChannel.pusherChannel, {
           channelUuid: this.channelUuid,
           uuid: response.uuid,
           isSender: response.isSender,
@@ -780,8 +760,7 @@ export class ChatRoomComponent {
       componentProps: {
         channelUuid: this.channelUuid,
         scheduledMessage: message,
-        channelName: this.chatChannel.name,
-        pusherChannel: this.chatChannel.pusherChannel
+        channelName: this.chatChannel.name
       }
     });
     await modal.present();
