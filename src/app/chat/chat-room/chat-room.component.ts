@@ -811,6 +811,11 @@ export class ChatRoomComponent {
       return;
     }
     this.messageList.splice(deletedMessageIndex, 1);
+    // trigger pusher client event for delete messages.
+    this.pusherService.triggerDeleteMessage(this.chatChannel.pusherChannel, false, {
+      channelUuid: this.channelUuid,
+      uuid: messageUuid,
+    });
   }
 
   async openEditMessagePopup(index) {
@@ -834,6 +839,21 @@ export class ChatRoomComponent {
     */
       if (data.data.updateSuccess && data.data.newMessageData) {
         this.messageList[index].message = data.data.newMessageData;
+
+        // trigger pusher client event for edit messages.
+        this.pusherService.triggerEditMessage(this.chatChannel.pusherChannel, false, {
+          channelUuid: this.channelUuid,
+          uuid: this.messageList[index].uuid,
+          isSender: this.messageList[index].isSender,
+          message: this.messageList[index].message,
+          file: JSON.stringify(this.messageList[index].file),
+          created: this.messageList[index].created,
+          senderUuid: this.messageList[index].senderUuid,
+          senderName: this.messageList[index].senderName,
+          senderRole: this.messageList[index].senderRole,
+          senderAvatar: this.messageList[index].senderAvatar,
+          sentAt: this.messageList[index].sentAt
+        });
       }
       // this will update chat list
       this.utils.broadcastEvent('chat:info-update', true);
