@@ -97,29 +97,38 @@ export class ChatRoomComponent {
     });
 
     this.utils.getEvent('chat:delete-message').subscribe(event => {
+      console.log('delete message - 2', event);
       if (this.utils.isEmpty(event) || event.channelUuid !== this.channelUuid) {
         return;
       }
+      console.log('delete message - 3');
       const deletedMessageIndex = this.messageList.findIndex(message => {
-        return message.channelUuid === event.uuid;
+        return message.uuid === event.uuid;
       });
+      console.log('delete message - 4', deletedMessageIndex);
       if (deletedMessageIndex > -1) {
         this.messageList.splice(deletedMessageIndex, 1);
+        console.log('delete message - 5');
       }
+      console.log('delete message - 6');
     });
 
     this.utils.getEvent('chat:edit-message').subscribe(event => {
+      console.log('edit message - 2', event);
       const receivedMessage = this.getMessageFromEvent(event);
       if (this.utils.isEmpty(receivedMessage) || receivedMessage.channelUuid !== this.channelUuid) {
         return;
       }
-
+      console.log('edit message - 3');
       const editedMessageIndex = this.messageList.findIndex(message => {
-        return message.channelUuid === event.uuid;
+        return message.uuid === event.uuid;
       });
+      console.log('edit message - 4', receivedMessage, editedMessageIndex);
       if (editedMessageIndex > -1 && !this.utils.isEmpty(receivedMessage)) {
         this.messageList[editedMessageIndex] = receivedMessage;
+        console.log('edit message - 5');
       }
+      console.log('edit message - 6');
     });
   }
 

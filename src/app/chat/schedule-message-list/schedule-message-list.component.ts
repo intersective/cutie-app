@@ -38,29 +38,37 @@ export class ScheduleMessageListComponent implements OnInit {
     private popupService: PopupService,
   ) {
     this.utils.getEvent('chat:delete-shedule-message').subscribe(event => {
+      console.log('delete schedule message - 2', event);
       if (this.utils.isEmpty(event) || event.channelUuid !== this.channelUuid) {
         return;
       }
       const deletedMessageIndex = this.messageList.findIndex(message => {
-        return message.channelUuid === event.uuid;
+        return message.uuid === event.uuid;
       });
+      console.log('delete schedule message - 3', deletedMessageIndex);
       if (deletedMessageIndex > -1) {
         this.messageList.splice(deletedMessageIndex, 1);
+        console.log('delete schedule message - 4');
       }
+      console.log('delete schedule message - 5');
     });
 
     this.utils.getEvent('chat:edit-shedule-message').subscribe(event => {
+      console.log('edit schedule message - 2', event);
       const receivedMessage = this.getMessageFromEvent(event);
       if (this.utils.isEmpty(receivedMessage) || receivedMessage.channelUuid !== this.channelUuid) {
         return;
       }
 
       const editedMessageIndex = this.messageList.findIndex(message => {
-        return message.channelUuid === event.uuid;
+        return message.uuid === event.uuid;
       });
+      console.log('edit schedule message - 3', receivedMessage, editedMessageIndex);
       if (editedMessageIndex > -1 && !this.utils.isEmpty(receivedMessage)) {
         this.messageList[editedMessageIndex] = receivedMessage;
+        console.log('edit schedule message - 4');
       }
+      console.log('edit schedule message - 5');
     });
   }
 

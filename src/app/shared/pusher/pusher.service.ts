@@ -280,15 +280,19 @@ export class PusherService {
           this.utils.broadcastEvent('chat:new-message', data);
         })
         .bind('client-chat-delete-message', data => {
+          console.log('delete message - 1');
           this.utils.broadcastEvent('chat:delete-message', data);
         })
         .bind('client-chat-edit-message', data => {
+          console.log('edit message - 1');
           this.utils.broadcastEvent('chat:edit-message', data);
         })
         .bind('client-chat-delete-shedule-message', data => {
+          console.log('delete schedule message - 1');
           this.utils.broadcastEvent('chat:delete-shedule-message', data);
         })
         .bind('client-chat-edit-shedule-message', data => {
+          console.log('edit schedule message - 1');
           this.utils.broadcastEvent('chat:edit-shedule-message', data);
         })
         .bind('client-typing-event', data => {
