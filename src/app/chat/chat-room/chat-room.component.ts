@@ -781,7 +781,8 @@ export class ChatRoomComponent {
       componentProps: {
         channelUuid: this.channelUuid,
         scheduledMessage: message,
-        channelName: this.chatChannel.name
+        channelName: this.chatChannel.name,
+        pusherChannel: this.chatChannel.pusherChannel
       }
     });
     await modal.present();

@@ -20,6 +20,7 @@ export class ScheduleMessagePopupComponent implements OnInit {
   @Input() scheduledMessage: string;
   @Input() channelUuid: string;
   @Input() channelName: string;
+  @Input() pusherChannel: string;
   uploadedFile: any;
   uploading: boolean;
   selectedDate: string;
@@ -76,6 +77,19 @@ export class ScheduleMessagePopupComponent implements OnInit {
         response => {
           this.createdMessage = response;
           this.sending = false;
+          this.pusherService.triggerSendMessage(this.pusherChannel, true, {
+            channelUuid: this.channelUuid,
+            uuid: response.uuid,
+            isSender: response.isSender,
+            message: response.message,
+            file: response.file,
+            created: response.created,
+            senderUuid: response.senderUuid,
+            senderName: response.senderName,
+            senderRole: response.senderRole,
+            senderAvatar: response.senderAvatar,
+            sentAt: response.sentAt
+          });
         },
         error => {
           console.log(error);
