@@ -101,7 +101,7 @@ export class ChatRoomComponent {
         return;
       }
       const deletedMessageIndex = this.messageList.findIndex(message => {
-        return message.channelUuid === event.uuid;
+        return message.uuid === event.uuid;
       });
       if (deletedMessageIndex > -1) {
         this.messageList.splice(deletedMessageIndex, 1);
@@ -115,7 +115,7 @@ export class ChatRoomComponent {
       }
 
       const editedMessageIndex = this.messageList.findIndex(message => {
-        return message.channelUuid === event.uuid;
+        return message.uuid === event.uuid;
       });
       if (editedMessageIndex > -1 && !this.utils.isEmpty(receivedMessage)) {
         this.messageList[editedMessageIndex] = receivedMessage;
