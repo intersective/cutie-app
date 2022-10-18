@@ -22,7 +22,7 @@ const routes: Routes = [{
     },
     {
       path: '',
-      redirectTo: '/onboarding'
+      redirectTo: '/error'
     }
   ]
 }];
