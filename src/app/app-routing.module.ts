@@ -26,14 +26,14 @@ const routes: Routes = [
     path: 'templates',
     loadChildren: './template-library/template-library.module#TemplateLibraryModule'
   },
-  {
-    path: 'onboarding',
-    loadChildren: './onboarding/onboarding.module#OnboardingModule'
-  },
+  // {
+  //   path: 'onboarding',
+  //   loadChildren: './onboarding/onboarding.module#OnboardingModule'
+  // },
   {
     path: '',
     loadChildren: './menu/menu.module#MenuModule'
-  }
+  },
 ];
 
 @NgModule({
