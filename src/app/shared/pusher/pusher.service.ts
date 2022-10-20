@@ -29,6 +29,11 @@ export interface SendMessageParam {
   sentAt: string;
 }
 
+export interface DeleteMessageTriggerParam {
+  channelUuid:  string;
+  uuid: string;
+}
+
 export class PusherConfig {
   pusherKey = '';
   apiurl = '';
@@ -274,6 +279,18 @@ export class PusherService {
         .bind('client-chat-new-message', data => {
           this.utils.broadcastEvent('chat:new-message', data);
         })
+        .bind('client-chat-delete-message', data => {
+          this.utils.broadcastEvent('chat:delete-message', data);
+        })
+        .bind('client-chat-edit-message', data => {
+          this.utils.broadcastEvent('chat:edit-message', data);
+        })
+        .bind('client-chat-delete-shedule-message', data => {
+          this.utils.broadcastEvent('chat:delete-shedule-message', data);
+        })
+        .bind('client-chat-edit-shedule-message', data => {
+          this.utils.broadcastEvent('chat:edit-shedule-message', data);
+        })
         .bind('client-typing-event', data => {
           this.utils.broadcastEvent('typing-' + channelName, data);
         })
@@ -320,6 +337,30 @@ export class PusherService {
       return;
     }
     channel.subscription.trigger('client-chat-new-message', data);
+  }
+
+  triggerDeleteMessage(channelName: string, isSchedule: boolean, data: DeleteMessageTriggerParam) {
+    const channel = this.channels.chat.find(c => c.name === channelName);
+    if (!channel) {
+      return;
+    }
+    if (isSchedule) {
+      channel.subscription.trigger('client-chat-delete-shedule-message', data);
+    } else {
+      channel.subscription.trigger('client-chat-delete-message', data);
+    }
+  }
+
+  triggerEditMessage(channelName: string, isSchedule: boolean, data: SendMessageParam) {
+    const channel = this.channels.chat.find(c => c.name === channelName);
+    if (!channel) {
+      return;
+    }
+    if (isSchedule) {
+      channel.subscription.trigger('client-chat-edit-shedule-message', data);
+    } else {
+      channel.subscription.trigger('client-chat-edit-message', data);
+    }
   }
 
 }

@@ -20,6 +20,7 @@ export class ScheduleMessageListComponent implements OnInit {
   @ViewChild('content') private content: ElementRef;
   @Input() channelUuid: string;
   @Input() channelName: string;
+  @Input() pusherChannel: string;
 
   // message history list
   messageList: Message[] = [];
@@ -35,7 +36,33 @@ export class ScheduleMessageListComponent implements OnInit {
     private filestackService: FilestackService,
     private modalController: ModalController,
     private popupService: PopupService,
-  ) { }
+  ) {
+    this.utils.getEvent('chat:delete-shedule-message').subscribe(event => {
+      if (this.utils.isEmpty(event) || event.channelUuid !== this.channelUuid) {
+        return;
+      }
+      const deletedMessageIndex = this.messageList.findIndex(message => {
+        return message.uuid === event.uuid;
+      });
+      if (deletedMessageIndex > -1) {
+        this.messageList.splice(deletedMessageIndex, 1);
+      }
+    });
+
+    this.utils.getEvent('chat:edit-shedule-message').subscribe(event => {
+      const receivedMessage = this.getMessageFromEvent(event);
+      if (this.utils.isEmpty(receivedMessage) || receivedMessage.channelUuid !== this.channelUuid) {
+        return;
+      }
+
+      const editedMessageIndex = this.messageList.findIndex(message => {
+        return message.uuid === event.uuid;
+      });
+      if (editedMessageIndex > -1 && !this.utils.isEmpty(receivedMessage)) {
+        this.messageList[editedMessageIndex] = receivedMessage;
+      }
+    });
+  }
 
   ngOnInit() {
     this._initialise();
@@ -48,6 +75,43 @@ export class ScheduleMessageListComponent implements OnInit {
     this.messagePageCursor = '';
     this.messagePageSize = 20;
   }
+
+    /**
+   * @description listen to pusher event for new message
+   */
+     getMessageFromEvent(data): Message {
+      if (data) {
+        return null;
+      }
+      const receivedMessage: Message = {
+        uuid: data.uuid,
+        senderName: data.senderName,
+        senderRole: data.senderRole,
+        senderAvatar: data.senderAvatar,
+        senderUuid: data.senderUuid,
+        isSender: false,
+        message: data.message,
+        created: data.created,
+        file: data.file,
+        channelUuid: data.channelUuid,
+        sentAt: data.sentAt
+      };
+      if (receivedMessage && receivedMessage.file) {
+        let fileObject = null;
+        fileObject = typeof receivedMessage.file === 'string' ? JSON.parse(receivedMessage.file) : receivedMessage.file;
+        if (this.utils.isEmpty(fileObject)) {
+          fileObject = null;
+        }
+        receivedMessage.fileObject = fileObject;
+      }
+      if (receivedMessage.senderUuid &&
+        this.storage.getUser().uuid &&
+        receivedMessage.senderUuid === this.storage.getUser().uuid
+      ) {
+        receivedMessage.isSender = true;
+      }
+      return receivedMessage;
+    }
 
   loadMessages(event?) {
     // if one chat request send to the api. not calling other one.
@@ -144,6 +208,12 @@ export class ScheduleMessageListComponent implements OnInit {
       return;
     }
     this.messageList.splice(deletedMessageIndex, 1);
+
+    // trigger pusher client event for delete schedule messages.
+    this.pusherService.triggerDeleteMessage(this.pusherChannel, true, {
+      channelUuid: this.channelUuid,
+      uuid: messageUuid,
+    });
   }
 
   async openEditMessagePopup(index, reSchedule) {
@@ -170,6 +240,21 @@ export class ScheduleMessageListComponent implements OnInit {
       if (data.data.updateSuccess && data.data.newMessageData) {
         this.messageList[index].message = data.data.newMessageData;
       }
+      // trigger pusher client event for edit messages.
+      this.pusherService.triggerEditMessage(this.pusherChannel, true, {
+        channelUuid: this.channelUuid,
+        uuid: this.messageList[index].uuid,
+        isSender: this.messageList[index].isSender,
+        message: this.messageList[index].message,
+        file: JSON.stringify(this.messageList[index].file),
+        created: this.messageList[index].created,
+        senderUuid: this.messageList[index].senderUuid,
+        senderName: this.messageList[index].senderName,
+        senderRole: this.messageList[index].senderRole,
+        senderAvatar: this.messageList[index].senderAvatar,
+        sentAt: this.messageList[index].sentAt
+      });
+
       // this will update chat list
       this.utils.broadcastEvent('chat:info-update', true);
     });
