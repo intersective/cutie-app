@@ -1,5 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+
+import { QuillConfig, QuillModule } from 'ngx-quill';
+
 import { SharedModule } from '@shared/shared.module';
 import { ChatComponent } from './chat.component';
 import { ChatListComponent } from './chat-list/chat-list.component';
@@ -37,7 +40,14 @@ import { EditScheduleMessagePopupComponent } from './edit-schedule-message-popup
         path: '',
         component: ChatComponent
       }
-    ])
+    ]),
+    QuillModule.forRoot(
+      {
+        modules: {
+          toolbar: [['bold', 'italic', 'underline', 'strike'], [{ list: 'ordered' }, { list: 'bullet' }], ['link']]
+        }
+      }
+    )
   ],
   exports: [
     ChatComponent,

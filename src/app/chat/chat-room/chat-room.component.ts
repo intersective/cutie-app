@@ -1,6 +1,7 @@
 import { Component, Input, ViewChild, NgZone, AfterContentInit, AfterViewInit, ElementRef, ViewEncapsulation } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IonContent, ModalController } from '@ionic/angular';
+
 import { StorageService } from '@services/storage.service';
 import { UtilsService } from '@services/utils.service';
 import { PusherService } from '@shared/pusher/pusher.service';
@@ -858,6 +859,10 @@ export class ChatRoomComponent {
       // this will update chat list
       this.utils.broadcastEvent('chat:info-update', true);
     });
+  }
+
+  onContentChangedQull(data) {
+    console.log(data);
   }
 
 }

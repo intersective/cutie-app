@@ -135,8 +135,9 @@
     <ion-grid class="white-bg">
       <ion-row nowrap class="ion-no-padding">
         <ion-col size="12" class="ion-align-self-center">
-          <ion-textarea placeholder="Enter your message" required="true" name="message" [(ngModel)]="message"
-            (ngModelChange)="typing()" appAutoresize="100" autoGrow="true" wrap="hard"></ion-textarea>
+          <quill-editor class="content-editor" [placeholder]="'Enter your message'" (onContentChanged)="onContentChangedQull($event)"></quill-editor>
+          <!-- <ion-textarea placeholder="Enter your message" required="true" name="message" [(ngModel)]="message"
+            (ngModelChange)="typing()" appAutoresize="100" autoGrow="true" wrap="hard"></ion-textarea> -->
         </ion-col>
       </ion-row>
       <ion-row nowrap class="ion-no-padding ion-align-items-center ion-justify-content-end">
