@@ -396,20 +396,4 @@ export class UtilsService {
     return false;
   }
 
-  extractContentFromHTML(s, space) {
-    const span = document.createElement('span');
-    span.innerHTML = s;
-    if (space) {
-      const children = span.querySelectorAll('*');
-      for (let i = 0 ; i < children.length ; i++) {
-        if (children[i].textContent) {
-          children[i].textContent += ' ';
-        } else {
-          children[i].innerText += ' ';
-        }
-      }
-    }
-    return [span.textContent || span.innerText].toString().replace(/ +/g, ' ');
-  }
-
 }
