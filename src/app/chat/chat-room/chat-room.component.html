@@ -135,15 +135,31 @@
     <ion-grid class="white-bg">
       <ion-row nowrap class="ion-no-padding">
         <ion-col size="12" class="ion-align-self-center">
-          <quill-editor class="content-editor" [placeholder]="'Enter your message'" (onContentChanged)="onContentChangedQull($event)"></quill-editor>
-          <!-- <ion-textarea placeholder="Enter your message" required="true" name="message" [(ngModel)]="message"
-            (ngModelChange)="typing()" appAutoresize="100" autoGrow="true" wrap="hard"></ion-textarea> -->
+          <!-- quill editor -->
+            <quill-editor [minLength]="1" customToolbarPosition="top" class="message-text-editor" [placeholder]="'Enter your message'" [(ngModel)]="message" (ngModelChange)="typing()">
+              <div quill-editor-toolbar>
+                <span class="ql-formats">
+                  <button class="ql-bold" [title]="'Bold'"></button>
+                  <button class="ql-italic" [title]="'Italic'"></button>
+                  <button class="ql-underline" [title]="'Underline'"></button>
+                  <button class="ql-strike" [title]="'Strike'"></button>
+                </span>
+                <span class="ql-formats">
+                  <button class="ql-list" value="ordered"></button>
+                  <button class="ql-list" value="bullet"></button>
+                </span>
+                <span class="ql-formats">
+                  <button class="ql-link"></button>
+                </span>
+              </div>
+            </quill-editor>
+          <!-- quill editor -->
         </ion-col>
       </ion-row>
-      <ion-row nowrap class="ion-no-padding ion-align-items-center ion-justify-content-end">
+      <ion-row nowrap class="ion-no-padding ion-align-items-center ion-justify-content-end action-buttons">
         <ng-container *ngTemplateOutlet="attachmentButtons"></ng-container>
         <ion-col size="2" size-lg="1" class="ion-no-padding ion-text-center">
-          <ion-button [disabled]="!message" (click)="sendMessage()" type="submit" fill="clear" color="ocean" class="ion-no-padding">
+          <ion-button [disabled]="!message || utils.isQuillContentEmpty(this.message)" (click)="sendMessage()" type="submit" fill="clear" color="ocean" class="ion-no-padding">
             <ion-icon name="send" slot="icon-only"></ion-icon>
           </ion-button>
         </ion-col>
@@ -169,7 +185,7 @@
     </ion-col>
 
     <ion-col size="2" size-lg="1" class="ion-no-padding ion-text-center">
-      <ion-button [disabled]="!message" (click)="openSchedulePopup()" fill="clear" color="ocean" class="ion-no-padding">
+      <ion-button [disabled]="!message || utils.isQuillContentEmpty(this.message)" (click)="openSchedulePopup()" fill="clear" color="ocean" class="ion-no-padding">
         <ion-icon name="calendar" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-col>

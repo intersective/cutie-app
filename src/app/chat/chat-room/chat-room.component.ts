@@ -250,7 +250,7 @@ export class ChatRoomComponent {
   }
 
   sendMessage() {
-    if (!this.message) {
+    if (!this.message || this.utils.isQuillContentEmpty(this.message)) {
       return;
     }
     const message = this.message;
@@ -308,7 +308,6 @@ export class ChatRoomComponent {
     this.sendingMessage = true;
     // remove typed message from text area and shrink text area.
     this.message = '';
-    this.element.nativeElement.querySelector('textarea').style.height = 'auto';
   }
 
   private _afterSendMessage() {
@@ -859,10 +858,6 @@ export class ChatRoomComponent {
       // this will update chat list
       this.utils.broadcastEvent('chat:info-update', true);
     });
-  }
-
-  onContentChangedQull(data) {
-    console.log(data);
   }
 
 }
