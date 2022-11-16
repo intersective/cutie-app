@@ -381,7 +381,7 @@ export class UtilsService {
 
   /**
    * This will check if quill editor content is empty or not.
-   * reson we need quill will return html tags. if user hit enter without any text quill still send html content.
+   * reason we need this is quill will return html tags. if user hit enter without any text quill still send html content.
    * so we can't just check null, ''.
    * ex: - if user just hist enter 2 times without type any word quill will return this.
    * <p><br/></p><p><br/></p>

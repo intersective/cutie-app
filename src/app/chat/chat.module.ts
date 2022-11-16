@@ -41,13 +41,7 @@ import { EditScheduleMessagePopupComponent } from './edit-schedule-message-popup
         component: ChatComponent
       }
     ]),
-    QuillModule.forRoot(
-      {
-        modules: {
-          toolbar: [['bold', 'italic', 'underline', 'strike'], [{ list: 'ordered' }, { list: 'bullet' }], ['link']]
-        }
-      }
-    )
+    QuillModule.forRoot()
   ],
   exports: [
     ChatComponent,
