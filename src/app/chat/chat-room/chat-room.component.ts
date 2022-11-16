@@ -1,6 +1,7 @@
 import { Component, Input, ViewChild, NgZone, AfterContentInit, AfterViewInit, ElementRef, ViewEncapsulation } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IonContent, ModalController } from '@ionic/angular';
+
 import { StorageService } from '@services/storage.service';
 import { UtilsService } from '@services/utils.service';
 import { PusherService } from '@shared/pusher/pusher.service';
@@ -249,7 +250,7 @@ export class ChatRoomComponent {
   }
 
   sendMessage() {
-    if (!this.message) {
+    if (!this.message || this.utils.isQuillContentEmpty(this.message)) {
       return;
     }
     const message = this.message;
@@ -307,7 +308,6 @@ export class ChatRoomComponent {
     this.sendingMessage = true;
     // remove typed message from text area and shrink text area.
     this.message = '';
-    this.element.nativeElement.querySelector('textarea').style.height = 'auto';
   }
 
   private _afterSendMessage() {

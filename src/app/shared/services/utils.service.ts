@@ -20,7 +20,7 @@ declare var document: any;
 
 export class UtilsService {
   private lodash;
-  protected _eventsSubject = new Subject<{key: string, value: any}>();
+  protected _eventsSubject = new Subject<{ key: string, value: any }>();
 
   constructor(
     // @Inject(DOCUMENT) private document: Document,
@@ -68,7 +68,7 @@ export class UtilsService {
     return this.lodash.has(object, path);
   }
 
-  indexOf(array, value, fromIndex= 0) {
+  indexOf(array, value, fromIndex = 0) {
     return this.lodash.indexOf(array, value, fromIndex);
   }
 
@@ -77,7 +77,7 @@ export class UtilsService {
   }
 
   openUrl(url, options?: { target: String }) {
-    options = options || {target: '_self' };
+    options = options || { target: '_self' };
     return window.open(url, options.target);
   }
 
@@ -257,9 +257,9 @@ export class UtilsService {
     }
   }
 
-    /**
-   * Get the user's current location from IP
-   */
+  /**
+ * Get the user's current location from IP
+ */
   getIpLocation() {
     this._ipAPI().subscribe(
       res => this.storage.setCountry(res.country_name),
@@ -272,7 +272,7 @@ export class UtilsService {
   }
 
   removeAllSpecialCharactersAndToLower(type: string): string {
-    type = type.replace(/[!@#^_.$&*%\s\-]/g,''); // tslint:disable-line
+    type = type.replace(/[!@#^_.$&*%\s\-]/g, ''); // tslint:disable-line
     type = type.toLowerCase();
     return type;
   }
@@ -289,24 +289,24 @@ export class UtilsService {
       portalId: environment.onboarding.portalId,
       formId: formOptions.formId,
       target: formOptions.target || '#form',
-      onFormReady: function($form) {
+      onFormReady: function ($form) {
         hiddenValues.forEach(v => {
           if (environment.onboarding.formInRawHtml) {
-            document.querySelector(`.hs-form input[name="${ v.name }"]`).value = v.value;
+            document.querySelector(`.hs-form input[name="${v.name}"]`).value = v.value;
           } else {
-            document.getElementById('hs-form-iframe-0').contentDocument.querySelector(`input[name="${ v.name }"]`).value = v.value;
+            document.getElementById('hs-form-iframe-0').contentDocument.querySelector(`input[name="${v.name}"]`).value = v.value;
           }
         });
       },
-      onFormSubmit: (function($form) {
+      onFormSubmit: (function ($form) {
         this.analytics.track('Submit', {
           category: formOptions.category
         });
       }).bind(this)
     });
-    window.jQuery = window.jQuery || function(nodeOrSelector) {
-      if (typeof(nodeOrSelector) === 'string') {
-          return document.querySelector(nodeOrSelector);
+    window.jQuery = window.jQuery || function (nodeOrSelector) {
+      if (typeof (nodeOrSelector) === 'string') {
+        return document.querySelector(nodeOrSelector);
       }
       return nodeOrSelector;
     };
@@ -377,6 +377,23 @@ export class UtilsService {
       default:
         return role;
     }
+  }
+
+  /**
+   * This will check if quill editor content is empty or not.
+   * reason we need this is quill will return html tags. if user hit enter without any text quill still send html content.
+   * so we can't just check null, ''.
+   * ex: - if user just hist enter 2 times without type any word quill will return this.
+   * <p><br/></p><p><br/></p>
+   * if we only check null or '' user will be able to submit empty values in quill editor.
+   * @param editorContent content user typed in quill editor.
+   * @returns boolean - if content is only empty html tags or it have text in it.
+   */
+  isQuillContentEmpty(editorContent: string) {
+    if (editorContent.replace(/<(.|\n)*?>/g, '').trim().length === 0) {
+      return true;
+    }
+    return false;
   }
 
 }

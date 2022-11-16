@@ -1466,10 +1466,10 @@ export class DemoService {
     return {
       data: {
         createChatLog: {
-          uuid: data.channelUuid,
+          uuid: data.channelUuid ? data.channelUuid : '1',
           isSender: false,
-          message: data.message,
-          file: data.file,
+          message: data.message ? data.message : 'test message',
+          file: data.file ? data.file : null ,
           created: '2020-08-13 08:10:10',
           sender: {
             uuid: '1',

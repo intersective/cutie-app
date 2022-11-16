@@ -37,7 +37,7 @@
             <p class="chat-name subtitle-1" [ngClass]="{'bold': chat.unreadMessageCount > 0}">{{chat.name}}</p>
           </div>
           <ng-container *ngIf="chat.lastMessage; else messgeElseBlock">
-            <p class="body-2">{{chat.lastMessage}}</p>
+            <p class="body-2 last-message" [innerHTML]="chat.lastMessage"></p>
           </ng-container>
           <ng-template #messgeElseBlock>
             <p class="body-2 gray-2">No messages.</p>
@@ -91,7 +91,7 @@
             <p class="chat-name subtitle-1" [ngClass]="{'bold': chat.unreadMessageCount > 0}">{{chat.name}}</p>
           </div>
           <ng-container *ngIf="chat.lastMessage; else messgeElseBlock">
-            <p class="body-2">{{chat.lastMessage}}</p>
+            <p class="body-2 last-message" [innerHTML]="chat.lastMessage"></p>
           </ng-container>
           <ng-template #messgeElseBlock>
             <p class="body-2 gray-2">No messages.</p>
@@ -143,7 +143,7 @@
             </ng-container>
           </div>
           <ng-container *ngIf="chat.lastMessage; else messgeElseBlock">
-            <p class="body-2">{{chat.lastMessage}}</p>
+            <p class="body-2 last-message" [innerHTML]="chat.lastMessage"></p>
           </ng-container>
           <ng-template #messgeElseBlock>
             <p class="body-2 gray-2">No messages.</p>
