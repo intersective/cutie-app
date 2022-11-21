@@ -311,20 +311,20 @@ $message-body-size: 60%;
   text-align: left !important;
 }
 .ion-content-absolute-with-footer {
-  height: calc(100% - 230px);
+  height: calc(100% - 223px);
 
   &.schedule {
-    height: calc(100% - 221px);
+    height: calc(100% - 269px);
     top: 106px;
   }
 }
 
 .footer {
-  min-height: 169px;
+  min-height: 162px;
   padding: 0;
 
   &.ion-footer-absolute {
-    height: 169px;
+    height: 162px;
     ion-grid {
       padding: 0;
       min-height: 96px;
@@ -335,7 +335,7 @@ $message-body-size: 60%;
     padding: 0;
     background-color: white;
     min-height: 96px;
-    max-height: 169px;
+    max-height: 162px;
     ion-row {
       min-height: 80px;
       max-height: 121px;
@@ -410,14 +410,14 @@ $message-body-size: 60%;
 }
 
 .message-text-editor {
-  height: 90px;
+  // height: 90px;
   .ql-toolbar, .ql-container {
     border: none;
   }
   .ql-container {
     .ql-editor {
       max-height: 100px;
-      min-height: 80px;
+      min-height: 72px;
     }
   }
   // .ql-toolbar {

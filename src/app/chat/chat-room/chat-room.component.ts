@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, NgZone, AfterContentInit, AfterViewInit, ElementRef, ViewEncapsulation } from '@angular/core';
+import { Component, Input, ViewChild, NgZone, ElementRef, ViewEncapsulation } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IonContent, ModalController } from '@ionic/angular';
 
@@ -489,6 +489,11 @@ export class ChatRoomComponent {
   typing() {
     if (!this.utils.isEmpty(this.message)) {
       this._scrollToBottom();
+    }
+    // check quill content is empty. if it is then empty string to message.
+    // this will let user to clear message if they added formating that we not supporting.
+    if (!this.utils.isEmpty(this.message) && this.utils.isQuillContentEmpty(this.message)) {
+      this.message = '';
     }
     this.pusherService.triggerTyping(this.chatChannel.pusherChannel);
   }

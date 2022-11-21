@@ -305,4 +305,39 @@ ion-item.sc-ion-select-popover {
   }
 }
 
-/** Button Class **/
+/** chat text editors **/
+// edit message
+.edit-message-text-editor {
+  .ql-toolbar {
+    border: 1px solid;
+    border-color: var(--practera-light-grey-100);
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+  }
+  .ql-container {
+    border: 1px solid;
+    border-color: var(--practera-light-grey-100);
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+
+    .ql-editor {
+      min-height: 150px;
+      max-height: 282px;
+      padding-top: 6px;
+      padding-bottom: 0;
+    }
+  }
+}
+
+.ql-editor ol, .ql-editor ul {
+  padding-left: 0;
+}
+
+.message-text {
+  ol, ul, p, a {
+    margin: 0 !important;
+  }
+  ol, ul {
+    padding-left: 16px;
+  }
+}
