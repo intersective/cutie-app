@@ -19,7 +19,6 @@
         <p class="subtitle-2 popup-error" *ngIf="invalidDateTime">Selected date and time is not valid</p>
       </ng-container>
       <ng-template #editMessage>
-        <!-- <ion-textarea rows="12" required="true" name="message" [(ngModel)]="message"></ion-textarea> -->
         <!-- quill editor -->
         <quill-editor [minLength]="1" customToolbarPosition="top" [required]="true" class="edit-message-text-editor" [placeholder]="'Enter your message'" [(ngModel)]="message" (ngModelChange)="typing()">
           <div quill-editor-toolbar>
