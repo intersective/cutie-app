@@ -69,17 +69,6 @@
     }
   }
   .message-container {
-    .message-text {
-      margin: 0;
-      white-space: pre-wrap !important;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      display: -webkit-box;
-      display: -moz-box;
-      line-clamp: 10;
-      -webkit-line-clamp: 10;
-      -webkit-box-orient: vertical;
-    }
 
     .attachment-container {
       margin-top: 10px;

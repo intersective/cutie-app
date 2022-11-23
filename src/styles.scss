@@ -1,3 +1,5 @@
+@use './theme/pfas/typography';
+
 h1, h2, h3 {
   font-weight: bold;
 }
@@ -339,5 +341,96 @@ ion-item.sc-ion-select-popover {
   }
   ol, ul {
     padding-left: 16px;
+  }
+}
+
+/******************
+  read only quill view
+  Chat room message bubble.
+  Schedule message list.
+  edit message success view.
+  create schedule message success view
+******************/
+quill-view {
+  .ngx-quill-view {
+    .ql-editor {
+      padding: 0;
+      color: black;
+      margin: 0;
+      text-align: left;
+      user-select: all !important;
+      white-space: pre-wrap !important;
+    }
+  }
+}
+
+// Chat room message bubble
+.chat-list {
+  ion-item {
+    ion-label {
+      .message-container {
+        .message-body {
+          quill-view {
+            .ngx-quill-view {
+              .ql-editor {
+                @extend .subtitle-1;
+                p, ol, ul, li, a {
+                  @extend .subtitle-1;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.send-messages {
+  .message-container {
+    .message-body {
+      quill-view {
+        .ngx-quill-view {
+          .ql-editor {
+            color: white !important;
+              p {
+                color: white !important;
+                a {
+                  text-decoration: underline;
+                  color: white !important;
+                }
+              }
+          }
+        }
+      }
+    }
+  }
+}
+
+// sechedule message list
+.ql-schedule-message-container {
+  quill-view {
+    .ngx-quill-view {
+      .ql-editor {
+        @extend .caption;
+        p, ol, ul, li, a {
+          @extend .caption;
+        }
+      }
+    }
+  }
+}
+
+// Edit message success view & sechedule message create success view
+.ql-success-message-container {
+  quill-view {
+    .ngx-quill-view {
+      .ql-editor {
+        @extend .subtitle-2;
+        p, ol, ul, li, a {
+          @extend .subtitle-2;
+        }
+      }
+    }
   }
 }

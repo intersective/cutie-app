@@ -119,7 +119,7 @@ $message-body-size: 60%;
             }
           }
   
-          p, .message-text {
+          p {
             color: black;
             margin: 0;
             text-align: left;
@@ -245,17 +245,6 @@ $message-body-size: 60%;
             }
             // margin-left: calc(100% - 150px) !important;
             float: right;
-  
-            .message-text {
-              color: white !important;
-              p {
-                color: white !important;
-                a {
-                  text-decoration: underline;
-                  color: white !important;
-                }
-              }
-            }
           }
 
           &:hover {
@@ -410,7 +399,6 @@ $message-body-size: 60%;
 }
 
 .message-text-editor {
-  // height: 90px;
   .ql-toolbar, .ql-container {
     border: none;
   }
@@ -420,14 +408,4 @@ $message-body-size: 60%;
       min-height: 72px;
     }
   }
-  // .ql-toolbar {
-  //   .ql-formats {
-  //     button {
-  //       color: var(--practera-ocean-100);
-  //       &:active, &:focus, &:hover {
-  //         color: var(--practera-ocean-100);
-  //       }
-  //     }
-  //   }
-  // }
 }
