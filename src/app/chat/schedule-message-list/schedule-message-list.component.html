@@ -25,8 +25,9 @@
                   </div>
                 </div>
                 <hr>
-                <div class="message-container">
-                  <p class="message-text caption black" [innerHTML]="message.message"></p>
+                <div class="message-container ql-schedule-message-container">
+                  <!-- Quill read only view/ use to render html content -->
+                <quill-view [content]="message.message"></quill-view>
                 </div>
                 <div class="attachment-container" *ngIf="message.fileObject">
                   <p class="black">Attachment:</p>

@@ -570,6 +570,7 @@ export class ChatRoomComponent {
       file.mimetype = '';
     }
     this.sendingMessage = true;
+    this._beforeSenMessages();
     this.chatService.postAttachmentMessage({
       channelUuid: this.channelUuid,
       message: this.message,

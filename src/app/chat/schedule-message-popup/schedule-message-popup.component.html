@@ -40,8 +40,9 @@
         <ion-icon name="checkmark-circle"></ion-icon>
         <p class="subtitle-2 popup-title">Message Scheduled</p>
       </div>
-      <div class="message-container">
-        <p class="message-text subtitle-2 black" [innerHTML]="createdMessage.message"></p>
+      <div class="message-container ql-success-message-container">
+        <!-- Quill read only view/ use to render html content -->
+        <quill-view [content]="createdMessage.message"></quill-view>
         <div class="attachment-container" *ngIf="createdMessage.fileObject">
           <p class="black">Attachment:</p>
           <a class="ocean" (click)="previewFile(createdMessage.fileObject)">{{ createdMessage.fileObject.filename }}</a>
