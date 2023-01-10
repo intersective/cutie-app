@@ -20,7 +20,7 @@
       </ng-container>
       <ng-template #editMessage>
         <!-- quill editor -->
-        <quill-editor [minLength]="1" customToolbarPosition="top" [required]="true" class="edit-message-text-editor" [placeholder]="'Enter your message'" [(ngModel)]="message">
+        <quill-editor (onEditorCreated)="utils.formatQuillClipboard($event)" [minLength]="1" customToolbarPosition="top" [required]="true" class="edit-message-text-editor" [placeholder]="'Enter your message'" [(ngModel)]="message">
           <div quill-editor-toolbar>
             <span class="ql-formats">
               <button class="ql-bold" [title]="'Bold'"></button>

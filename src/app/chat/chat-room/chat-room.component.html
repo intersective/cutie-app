@@ -137,7 +137,7 @@
       <ion-row nowrap class="ion-no-padding">
         <ion-col size="12" class="ion-align-self-center">
           <!-- quill editor -->
-            <quill-editor [minLength]="1" customToolbarPosition="top" class="message-text-editor" [placeholder]="'Enter your message'" [(ngModel)]="message" (ngModelChange)="typing()">
+            <quill-editor (onEditorCreated)="utils.formatQuillClipboard($event)" [minLength]="1" customToolbarPosition="top" class="message-text-editor" [placeholder]="'Enter your message'" [(ngModel)]="message" (ngModelChange)="typing()">
               <div quill-editor-toolbar>
                 <span class="ql-formats">
                   <button class="ql-bold" [title]="'Bold'"></button>
