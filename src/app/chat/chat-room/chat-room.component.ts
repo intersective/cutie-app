@@ -1,6 +1,6 @@
 import { Component, Input, ViewChild, NgZone, ElementRef, ViewEncapsulation } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { IonContent, ModalController } from '@ionic/angular';
+import { IonContent, ModalController, PopoverController } from '@ionic/angular';
 
 import { StorageService } from '@services/storage.service';
 import { UtilsService } from '@services/utils.service';
@@ -13,6 +13,7 @@ import { ChatPreviewComponent } from '../chat-preview/chat-preview.component';
 import { ChatInfoComponent } from '../chat-info/chat-info.component';
 import { ScheduleMessagePopupComponent } from '../schedule-message-popup/schedule-message-popup.component';
 import { EditScheduleMessagePopupComponent } from '../edit-schedule-message-popup/edit-schedule-message-popup.component';
+import { AttachmentPopoverComponent } from '../attachment-popover/attachment-popover.component';
 
 @Component({
   selector: 'app-chat-room',
@@ -52,6 +53,8 @@ export class ChatRoomComponent {
   whoIsTyping: string;
   isScheduleListOpen: boolean;
 
+  selectedAttachments: any[] = [];
+
   constructor(
     private chatService: ChatService,
     public router: Router,
@@ -63,7 +66,8 @@ export class ChatRoomComponent {
     private modalController: ModalController,
     private ngZone: NgZone,
     public element: ElementRef,
-    private popupService: PopupService
+    private popupService: PopupService,
+    public popoverController: PopoverController
   ) {
     if (this.skeletonOnly) {
       return;
@@ -865,6 +869,20 @@ export class ChatRoomComponent {
       // this will update chat list
       this.utils.broadcastEvent('chat:info-update', true);
     });
+  }
+
+  async presentPopover(ev: any) {
+    const popover = await this.popoverController.create({
+      component: AttachmentPopoverComponent,
+      cssClass: 'my-custom-class',
+      event: ev,
+      translucent: true,
+    });
+    await popover.present();
+
+    const { data } = await popover.onDidDismiss();
+    this.selectedAttachments.push(data.selectedFile);
+    console.log(this.selectedAttachments);
   }
 
 }
