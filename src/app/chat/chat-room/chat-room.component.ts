@@ -882,7 +882,15 @@ export class ChatRoomComponent {
 
     const { data } = await popover.onDidDismiss();
     this.selectedAttachments.push(data.selectedFile);
-    console.log(this.selectedAttachments);
+  }
+
+  getResizedImageUrl(fileStackObject, dimension) {
+    return `https://cdn.filestackcontent.com/quality=value:70/resize=w:${dimension},h:${dimension},fit:crop/${fileStackObject.handle}`;
+  }
+
+  removeSelectAttachment(index, handle) {
+    this.selectedAttachments.splice(index, 1);
+    this.filestackService.deleteFile(handle).subscribe(console.log);
   }
 
 }
