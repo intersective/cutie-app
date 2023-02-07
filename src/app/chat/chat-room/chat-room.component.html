@@ -166,7 +166,7 @@
               <div class="image">
                 <img [src]="getResizedImageUrl(attachment, 80)">
                 <div class="overlay" (click)="preview(attachment)"></div>
-                <span class="remove-attach" (click)="removeSelectAttachment(i, attachment.handle)">
+                <span class="remove-attach" (click)="removeSelectAttachment(attachment, i, true)">
                   <ion-icon name="close"></ion-icon>
                 </span>
               </div>
@@ -174,9 +174,11 @@
             <!-- video preview -->
             <ion-col size="4" size-lg="2" class="ion-no-padding ion-text-center" *ngIf="attachment.mimetype && attachment.mimetype.includes('video')">
               <div class="video">
-                <app-video-conversion [video]="message" (preview)="preview($event)"></app-video-conversion>
+                <div class="play-icon">
+                  <ion-icon name="play" color="ocean"></ion-icon>
+                </div>
                 <div class="overlay" (click)="preview(attachment)"></div>
-                <span class="remove-attach" (click)="removeSelectAttachment(i, attachment.handle)">
+                <span class="remove-attach" (click)="removeSelectAttachment(attachment, i, true)">
                   <ion-icon name="close"></ion-icon>
                 </span>
               </div>
@@ -193,7 +195,7 @@
                   </ion-label>
                 </ion-item>
                 <div class="overlay" (click)="preview(attachment)"></div>
-                <span class="remove-attach" (click)="removeSelectAttachment(i, attachment.handle)">
+                <span class="remove-attach" (click)="removeSelectAttachment(attachment, i, true)">
                   <ion-icon name="close"></ion-icon>
                 </span>
               </div>
@@ -204,19 +206,21 @@
       <!-- Action button section -->
       <ion-row nowrap class="ion-no-padding ion-align-items-center ion-justify-content-between action-buttons">
         <ion-col size="2" size-lg="1" class="ion-no-padding ion-text-center">
-          <ion-button (click)="presentPopover($event)" fill="clear" color="ocean" class="ion-no-padding">
+          <ion-button [disabled]="selectedAttachments.length > 0" (click)="attachmentSelectPopover($event)" fill="clear" color="ocean" class="ion-no-padding">
             <ion-icon name="attach" slot="icon-only"></ion-icon>
           </ion-button>
         </ion-col>
         <ion-col size="5" size-lg="2" class="ion-no-padding ion-text-center">
           <ion-row nowrap class="ion-no-padding ion-align-items-center ion-justify-content-between action-buttons">
             <ion-col size="6" size-lg="6" class="ion-no-padding ion-text-center">
-              <ion-button [disabled]="!message || utils.isQuillContentEmpty(this.message)" (click)="openSchedulePopup()" fill="clear" color="ocean" class="ion-no-padding">
+              <ion-button [disabled]="(!message || utils.isQuillContentEmpty(this.message)) && selectedAttachments.length === 0" 
+              (click)="openSchedulePopup()" fill="clear" color="ocean" class="ion-no-padding">
                 <ion-icon name="timer" slot="icon-only"></ion-icon>
               </ion-button>
             </ion-col>
             <ion-col size="6" size-lg="6" class="ion-no-padding ion-text-center">
-              <ion-button [disabled]="!message || utils.isQuillContentEmpty(this.message)" (click)="sendMessage()" type="submit" fill="clear" color="ocean" class="ion-no-padding">
+              <ion-button [disabled]="(!message || utils.isQuillContentEmpty(this.message)) && selectedAttachments.length === 0" 
+              (click)="sendMessage()" type="submit" fill="clear" color="ocean" class="ion-no-padding">
                 <ion-icon name="send" slot="icon-only"></ion-icon>
               </ion-button>
             </ion-col>
