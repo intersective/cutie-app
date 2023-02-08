@@ -348,6 +348,13 @@ $message-body-size: 60%;
             min-height: 100px;
             max-height: 100px;
             padding: 10px;
+            border-radius: 4px;
+            img {
+              border-radius: 4px;
+            }
+            .overlay {
+              left: 29px;
+            }
             &:hover {
               .remove-attach {
                 display: block;
@@ -446,6 +453,7 @@ $message-body-size: 60%;
             height: 80px;
             display: none;
             color: transparent;
+            border-radius: 4px;
           }
         }
       }
