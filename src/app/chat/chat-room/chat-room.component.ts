@@ -1,10 +1,10 @@
 import { Component, Input, ViewChild, NgZone, ElementRef, ViewEncapsulation } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { IonContent, ModalController } from '@ionic/angular';
+import { IonContent, ModalController, PopoverController } from '@ionic/angular';
 
 import { StorageService } from '@services/storage.service';
 import { UtilsService } from '@services/utils.service';
-import { PusherService } from '@shared/pusher/pusher.service';
+import { PusherService, SendMessageParam } from '@shared/pusher/pusher.service';
 import { FilestackService } from '@shared/filestack/filestack.service';
 import { PopupService } from '@shared/popup/popup.service';
 
@@ -13,6 +13,7 @@ import { ChatPreviewComponent } from '../chat-preview/chat-preview.component';
 import { ChatInfoComponent } from '../chat-info/chat-info.component';
 import { ScheduleMessagePopupComponent } from '../schedule-message-popup/schedule-message-popup.component';
 import { EditScheduleMessagePopupComponent } from '../edit-schedule-message-popup/edit-schedule-message-popup.component';
+import { AttachmentPopoverComponent } from '../attachment-popover/attachment-popover.component';
 
 @Component({
   selector: 'app-chat-room',
@@ -52,6 +53,8 @@ export class ChatRoomComponent {
   whoIsTyping: string;
   isScheduleListOpen: boolean;
 
+  selectedAttachments: any[] = [];
+
   constructor(
     private chatService: ChatService,
     public router: Router,
@@ -63,7 +66,8 @@ export class ChatRoomComponent {
     private modalController: ModalController,
     private ngZone: NgZone,
     public element: ElementRef,
-    private popupService: PopupService
+    private popupService: PopupService,
+    public popoverController: PopoverController
   ) {
     if (this.skeletonOnly) {
       return;
@@ -250,49 +254,116 @@ export class ChatRoomComponent {
   }
 
   sendMessage() {
-    if (!this.message || this.utils.isQuillContentEmpty(this.message)) {
+    if (this.sendingMessage) {
       return;
     }
-    const message = this.message;
+    if (this.selectedAttachments.length > 0) {
+      this._postAttachment();
+    } else {
+      this.postTextOnlyMessage();
+    }
+  }
+
+  private getPostMessageParams(type, file?: any) {
+    if (type === 'text') {
+      if (!this.message || this.utils.isQuillContentEmpty(this.message)) {
+        return;
+      }
+      const message = this.message;
+      return {
+        channelUuid: this.channelUuid,
+        message: message
+      };
+    }
+    if (type === 'file' && file) {
+      if (!file.mimetype) {
+        file.mimetype = '';
+      }
+      const message = this.message;
+      return {
+        channelUuid: this.channelUuid,
+        message: message,
+        file: JSON.stringify(file)
+      };
+    } else {
+      return;
+    }
+  }
+
+  postTextOnlyMessage() {
+    const param = this.getPostMessageParams('text');
     this._beforeSenMessages();
-    this.chatService.postNewMessage({
-      channelUuid: this.channelUuid,
-      message: message
-    }).subscribe(
+    this.chatService.postNewMessage(param).subscribe(
       response => {
-        this.pusherService.triggerSendMessage(this.chatChannel.pusherChannel, {
-          channelUuid: this.channelUuid,
-          uuid: response.uuid,
-          isSender: response.isSender,
-          message: response.message,
-          file: response.file,
-          created: response.created,
-          senderUuid: response.senderUuid,
-          senderName: response.senderName,
-          senderRole: response.senderRole,
-          senderAvatar: response.senderAvatar,
-          sentAt: response.sentAt
-        });
-        this.messageList.push(
-          {
-            uuid: response.uuid,
-            isSender: response.isSender,
-            message: response.message,
-            file: response.file,
-            created: response.created,
-            senderUuid: response.senderUuid,
-            senderName: response.senderName,
-            senderRole: response.senderRole,
-            senderAvatar: response.senderAvatar,
-            sentAt: response.sentAt
-          }
-        );
+        this.triggerPusherEvent(response);
+        this.updateListData(response);
         this.utils.broadcastEvent('chat:info-update', true);
         this._scrollToBottom();
         this._afterSendMessage();
       },
       error => {
         this._afterSendMessage();
+      }
+    );
+  }
+
+  private _postAttachment() {
+    const selectedAttachments = this.selectedAttachments;
+    this.selectedAttachments = [];
+    selectedAttachments.forEach(attachment => {
+      const param = this.getPostMessageParams('file', attachment);
+      this._beforeSenMessages();
+      this.chatService.postAttachmentMessage(param).subscribe(
+        response => {
+          this.triggerPusherEvent(response, attachment);
+          this.updateListData(response);
+          this.utils.broadcastEvent('chat:info-update', true);
+          this._scrollToBottom();
+          this.removeSelectAttachment(attachment);
+          this._afterSendMessage();
+        },
+        error => {
+          this._afterSendMessage();
+        }
+      );
+    });
+  }
+
+  triggerPusherEvent(response, file?: any) {
+    const pusherData: SendMessageParam = {
+      channelUuid: this.channelUuid,
+      uuid: response.uuid,
+      isSender: response.isSender,
+      message: response.message,
+      file: response.file,
+      created: response.created,
+      senderUuid: response.senderUuid,
+      senderName: response.senderName,
+      senderRole: response.senderRole,
+      senderAvatar: response.senderAvatar,
+      sentAt: response.sentAt
+    };
+    if (file) {
+      pusherData.file = JSON.stringify(file);
+    }
+    this.pusherService.triggerSendMessage(this.chatChannel.pusherChannel, pusherData);
+  }
+
+  updateListData(response) {
+    this.messageList.push(
+      {
+        uuid: response.uuid,
+        isSender: response.isSender,
+        message: response.message,
+        file: response.file,
+        fileObject: response.fileObject,
+        preview: this.attachmentPreview(response.fileObject),
+        created: response.created,
+        senderUuid: response.senderUuid,
+        senderName: response.senderName,
+        senderRole: response.senderRole,
+        senderAvatar: response.senderAvatar,
+        sentAt: response.sentAt
       }
     );
   }
@@ -523,6 +594,9 @@ export class ChatRoomComponent {
   }
 
   private attachmentPreview(filestackRes) {
+    if (!filestackRes) {
+      return;
+    }
     let preview = `Uploaded ${filestackRes.filename}`;
     const dimension = 224;
     if (!filestackRes.mimetype) {
@@ -540,81 +614,8 @@ export class ChatRoomComponent {
     return preview;
   }
 
-  async attach(type: string) {
-    const options: any = {};
-
-    if (this.filestackService.getFileTypes(type)) {
-      options.accept = this.filestackService.getFileTypes(type);
-      options.storeTo = this.filestackService.getS3Config(type);
-    }
-    await this.filestackService.open(
-      options,
-      res => {
-        return this._postAttachment(res);
-      },
-      err => {
-        console.log(err);
-      }
-    );
-  }
-
   previewFile(file) {
     return this.filestackService.previewFile(file);
-  }
-
-  private _postAttachment(file) {
-    if (this.sendingMessage) {
-      return;
-    }
-    if (!file.mimetype) {
-      file.mimetype = '';
-    }
-    this.sendingMessage = true;
-    const message = this.message;
-    this._beforeSenMessages();
-    this.chatService.postAttachmentMessage({
-      channelUuid: this.channelUuid,
-      message: message,
-      file: JSON.stringify(file)
-    }).subscribe(
-      response => {
-        this.pusherService.triggerSendMessage(this.chatChannel.pusherChannel, {
-          channelUuid: this.channelUuid,
-          uuid: response.uuid,
-          isSender: response.isSender,
-          message: response.message,
-          file: JSON.stringify(file),
-          created: response.created,
-          senderUuid: response.senderUuid,
-          senderName: response.senderName,
-          senderRole: response.senderRole,
-          senderAvatar: response.senderAvatar,
-          sentAt: response.sentAt
-        });
-        this.messageList.push(
-          {
-            uuid: response.uuid,
-            isSender: response.isSender,
-            message: response.message,
-            file: response.file,
-            fileObject: response.fileObject,
-            preview: this.attachmentPreview(response.fileObject),
-            created: response.created,
-            senderUuid: response.senderUuid,
-            senderName: response.senderName,
-            senderRole: response.senderRole,
-            senderAvatar: response.senderAvatar,
-            sentAt: response.sentAt
-          }
-        );
-        this.utils.broadcastEvent('chat:info-update', true);
-        this._scrollToBottom();
-        this._afterSendMessage();
-      },
-      error => {
-        this._afterSendMessage();
-      }
-    );
   }
 
   getTypeByMime(mimetype: string): string {
@@ -761,6 +762,8 @@ export class ChatRoomComponent {
 
   async openSchedulePopup() {
     const message = this.message;
+    const selectedAttachments = this.selectedAttachments;
+    this.selectedAttachments = [];
     this._beforeSenMessages();
     const modal = await this.modalController.create({
       component: ScheduleMessagePopupComponent,
@@ -768,6 +771,7 @@ export class ChatRoomComponent {
       componentProps: {
         channelUuid: this.channelUuid,
         scheduledMessage: message,
+        scheduledAttachments: selectedAttachments,
         channelName: this.chatChannel.name
       }
     });
@@ -865,6 +869,37 @@ export class ChatRoomComponent {
       // this will update chat list
       this.utils.broadcastEvent('chat:info-update', true);
     });
+  }
+
+  async attachmentSelectPopover(ev: any) {
+    const popover = await this.popoverController.create({
+      component: AttachmentPopoverComponent,
+      cssClass: 'my-custom-class',
+      event: ev,
+      translucent: true,
+    });
+    await popover.present();
+
+    const { data } = await popover.onDidDismiss();
+    this.selectedAttachments.push(data.selectedFile);
+  }
+
+  getResizedImageUrl(fileStackObject, dimension) {
+    return `https://cdn.filestackcontent.com/quality=value:70/resize=w:${dimension},h:${dimension},fit:crop/${fileStackObject.handle}`;
+  }
+
+  removeSelectAttachment(attachment, index?: number, isDelete = false) {
+    if (!attachment) {
+      return;
+    }
+    let attachIndex = this.selectedAttachments.indexOf(attachment);
+    if (index) {
+      attachIndex = index;
+    }
+    this.selectedAttachments.splice(attachIndex, 1);
+    if (isDelete) {
+      this.filestackService.deleteFile(attachment.handle).subscribe(console.log);
+    }
   }
 
 }

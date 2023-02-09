@@ -8,6 +8,7 @@ import { StorageService } from '@services/storage.service';
 import { environment } from '@environments/environment';
 import { AnalyticsService } from './analytics.service';
 import * as moment from 'moment';
+import Delta from 'quill-delta';
 
 // @TODO: enhance Window reference later, we shouldn't refer directly to browser's window object like this
 declare var window: any;
@@ -394,6 +395,22 @@ export class UtilsService {
       return true;
     }
     return false;
+  }
+
+  /**
+   * This method will add matcher to the clipboard of the quill editor.
+   * And it will make sure every thing user paste will paste as plain text. without any formating that pasting text have.
+   * Reason we need this.
+   * User may copy and paste some formated text that may contain formats we are not supporting. So if those send as message
+   * UI/UX will out. becouse we didn't support them. that's why we make sure we remove formating from text that user paste to text editor.
+   * @param quillEditor Quill text editor instance
+   * @returns quill clipboard matcher event
+   */
+  formatQuillClipboard(quillEditor) {
+    return quillEditor.clipboard.addMatcher(Node.ELEMENT_NODE, function (node, delta) {
+      const plaintext = node.innerText;
+      return new Delta().insert(plaintext);
+    });
   }
 
 }
