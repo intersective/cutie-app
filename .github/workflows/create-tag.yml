@@ -8,7 +8,7 @@
 ################################################
 #  GITHUB ACTION WORKFLOW NAME
 ################################################
-name: Practera Release Tag/Next Release branch candidate creation
+name: Practera Release Tag/Branch Creation
 
 
 ################################################
@@ -22,7 +22,7 @@ on:
         required: true
         default: ''
       HOTFIX_TAG:
-        description: '# Optional, required to calculate tag if Hotfix Release, then mandatory to input recent tag version (include prefix - v as well) deployed to live otherwise ignore this input'
+        description: '# Optional, if Hotfix Release, then mandatory to input recent tag version (include prefix - v as well) deployed to live otherwise ignore this input'
         default: 'false'
 
 ################################################
