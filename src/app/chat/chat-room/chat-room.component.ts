@@ -763,8 +763,7 @@ export class ChatRoomComponent {
   async openSchedulePopup() {
     const message = this.message;
     const selectedAttachments = this.selectedAttachments;
-    this.selectedAttachments = [];
-    this._beforeSenMessages();
+    this.sendingMessage = true;
     const modal = await this.modalController.create({
       component: ScheduleMessagePopupComponent,
       cssClass: 'chat-schedule-message-popup',
@@ -779,6 +778,8 @@ export class ChatRoomComponent {
     modal.onWillDismiss().then((data) => {
       this.sendingMessage = false;
       if (data.data.messageScheduled) {
+        this.selectedAttachments = [];
+        this.message = '';
         this.chatChannel.scheduledMessageCount += 1;
         this.utils.broadcastEvent('chat:info-update', true);
       }
