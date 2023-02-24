@@ -402,11 +402,13 @@ $message-body-size: 60%;
             margin: 10px;
             .general-attachment {
               --min-height: 80px;
+              max-width: 300px;
               min-width: 300px;
               --background: var(--practera-light-grey-50);
               --border-color: var(--practera-light-grey-75);
               --border-radius: 4px;
               ion-label {
+                max-width: 210px;
                 .mimetype {
                   color: var(--practera-grey-75);
                 }
