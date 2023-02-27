@@ -162,7 +162,7 @@
         <ion-row nowrap class="ion-no-padding ion-align-items-left ion-justify-content-start attach-preview">
           <ng-container *ngFor="let attachment of selectedAttachments; let i = index">
             <!-- Image preview -->
-            <ion-col size="4" size-lg="2" class="ion-no-padding ion-text-center" *ngIf="attachment.mimetype && attachment.mimetype.includes('image')">
+            <ion-col size="4" size-lg="2" class="ion-no-padding" *ngIf="attachment.mimetype && attachment.mimetype.includes('image')">
               <div class="image">
                 <img [src]="getResizedImageUrl(attachment, 80)">
                 <div class="overlay" (click)="preview(attachment)"></div>
@@ -172,7 +172,7 @@
               </div>
             </ion-col>
             <!-- video preview -->
-            <ion-col size="4" size-lg="2" class="ion-no-padding ion-text-center" *ngIf="attachment.mimetype && attachment.mimetype.includes('video')">
+            <ion-col size="4" size-lg="2" class="ion-no-padding" *ngIf="attachment.mimetype && attachment.mimetype.includes('video')">
               <div class="video">
                 <div class="play-icon">
                   <ion-icon name="play" color="ocean"></ion-icon>
