@@ -18,6 +18,7 @@ export class ScheduleMessagePopupComponent implements OnInit {
 
 
   @Input() scheduledMessage: string;
+  @Input() scheduledAttachments: any[];
   @Input() channelUuid: string;
   @Input() channelName: string;
   uploadedFile: any;
@@ -70,7 +71,7 @@ export class ScheduleMessagePopupComponent implements OnInit {
       this.chatService.postNewMessage({
         channelUuid: this.channelUuid,
         message: this.scheduledMessage,
-        file: JSON.stringify(this.uploadedFile),
+        file: JSON.stringify(this.scheduledAttachments[0]),
         scheduled: dateObj.toISOString()
       }).subscribe(
         response => {

@@ -63,10 +63,6 @@
 
     .message-container {
       margin-top: 10px;
-      .message-text {
-        margin: 0;
-        white-space: pre-wrap !important;
-      }
     }
 
     .attachment-container {
@@ -100,6 +96,5 @@
 
   &.schedule {
     height: calc(100% - 106px);
-    top: 106px;
   }
 }

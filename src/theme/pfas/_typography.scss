@@ -144,5 +144,5 @@ ion-textarea, ion-input, input, textarea {
     color: var(--practera-40-Percent-gray) !important;
     opacity: 1 !important;
   }
-  @extend .black;
+  @extend .black !optional;
 }

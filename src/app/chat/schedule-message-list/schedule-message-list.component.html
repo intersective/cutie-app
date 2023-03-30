@@ -19,14 +19,15 @@
                     <ion-button fill="clear" size="small" title="Change Schedule" (click)="openEditMessagePopup(index, true)">
                       <ion-icon name="calendar" slot="icon-only"></ion-icon>
                     </ion-button>
-                    <ion-button fill="clear" size="small" title="Edit Message" (click)="openEditMessagePopup(index, false)">
+                    <ion-button *ngIf="message.message" fill="clear" size="small" title="Edit Message" (click)="openEditMessagePopup(index, false)">
                       <ion-icon name="create" slot="icon-only"></ion-icon>
                     </ion-button>
                   </div>
                 </div>
                 <hr>
-                <div class="message-container">
-                  <p class="message-text caption black">{{ message.message }}</p>
+                <div class="message-container ql-schedule-message-container" *ngIf="message.message">
+                  <!-- Quill read only view/ use to render html content -->
+                <quill-view [content]="message.message"></quill-view>
                 </div>
                 <div class="attachment-container" *ngIf="message.fileObject">
                   <p class="black">Attachment:</p>

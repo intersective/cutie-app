@@ -19,7 +19,25 @@
         <p class="subtitle-2 popup-error" *ngIf="invalidDateTime">Selected date and time is not valid</p>
       </ng-container>
       <ng-template #editMessage>
-        <ion-textarea rows="12" required="true" name="message" [(ngModel)]="message"></ion-textarea>
+        <!-- quill editor -->
+        <quill-editor (onEditorCreated)="utils.formatQuillClipboard($event)" [minLength]="1" customToolbarPosition="top" [required]="true" class="edit-message-text-editor" [placeholder]="'Enter your message'" [(ngModel)]="message">
+          <div quill-editor-toolbar>
+            <span class="ql-formats">
+              <button class="ql-bold" [title]="'Bold'"></button>
+              <button class="ql-italic" [title]="'Italic'"></button>
+              <button class="ql-underline" [title]="'Underline'"></button>
+              <button class="ql-strike" [title]="'Strike'"></button>
+            </span>
+            <span class="ql-formats">
+              <button class="ql-list" value="ordered"></button>
+              <button class="ql-list" value="bullet"></button>
+            </span>
+            <span class="ql-formats">
+              <button class="ql-link"></button>
+            </span>
+          </div>
+        </quill-editor>
+      <!-- quill editor -->
       </ng-template>
     </div>
   </ng-container>
@@ -29,8 +47,9 @@
         <ion-icon name="checkmark-circle"></ion-icon>
         <p class="subtitle-2 popup-title">{{ reScheduled ? 'Message Rescheduled' : 'Message Updated' }}</p>
       </div>
-      <div class="message-container" *ngIf="!reScheduled">
-        <p class="message-text subtitle-2 black">{{ message }}</p>
+      <div class="message-container ql-success-message-container" *ngIf="!reScheduled">
+        <!-- Quill read only view/ use to render html content -->
+        <quill-view [content]="message"></quill-view>
       </div>
       <div class="schedule-info-container" *ngIf="!isSentMessageEdit">
         <p class="subtitle-2 black">Scheduled for <strong>{{ utils.utcLocalforScheduleMessages(scheduledDateTime, 'date') }}</strong> at <strong>{{ utils.utcLocalforScheduleMessages(scheduledDateTime, 'time') }} ({{ utils.browserTimezone() }})</strong> on <strong>{{ channelName }}</strong></p>
