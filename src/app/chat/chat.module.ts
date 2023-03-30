@@ -17,6 +17,7 @@ import { GroupChatPopupComponent } from './group-chat-popup/group-chat-popup.com
 import { ScheduleMessageListComponent } from './schedule-message-list/schedule-message-list.component';
 import { ScheduleMessagePopupComponent } from './schedule-message-popup/schedule-message-popup.component';
 import { EditScheduleMessagePopupComponent } from './edit-schedule-message-popup/edit-schedule-message-popup.component';
+import { AttachmentPopoverComponent } from './attachment-popover/attachment-popover.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { EditScheduleMessagePopupComponent } from './edit-schedule-message-popup
     GroupChatPopupComponent,
     ScheduleMessageListComponent,
     ScheduleMessagePopupComponent,
-    EditScheduleMessagePopupComponent
+    EditScheduleMessagePopupComponent,
+    AttachmentPopoverComponent
   ],
   imports: [
     SharedModule,
@@ -55,7 +57,8 @@ import { EditScheduleMessagePopupComponent } from './edit-schedule-message-popup
     AnnouncementChatPopupComponent,
     GroupChatPopupComponent,
     ScheduleMessagePopupComponent,
-    EditScheduleMessagePopupComponent],
+    EditScheduleMessagePopupComponent,
+    AttachmentPopoverComponent],
   providers: [ChatService],
 })
 export class ChatModule { }

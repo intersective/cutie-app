@@ -300,59 +300,170 @@ $message-body-size: 60%;
   text-align: left !important;
 }
 .ion-content-absolute-with-footer {
-  height: calc(100% - 223px);
+  height: calc(100% - 213px);
 
   &.schedule {
-    height: calc(100% - 269px);
-    top: 106px;
+    height: calc(100% - 258px);
+    &.attach-preview {
+      height: calc(100% - 358px);
+    }
+  }
+
+  &.attach-preview {
+    height: calc(100% - 313px);
   }
 }
 
 .footer {
-  min-height: 162px;
+  min-height: 152px;
   padding: 0;
-
-  &.ion-footer-absolute {
-    height: 162px;
-    ion-grid {
-      padding: 0;
-      min-height: 96px;
-    }
-  }
 
   ion-grid {
     padding: 0;
     background-color: white;
-    min-height: 96px;
-    max-height: 162px;
     ion-row {
-      min-height: 80px;
-      max-height: 121px;
       &.action-buttons {
         min-height: 48px;
         max-height: 66px;
         ion-col {
           min-height: 48px;
           max-height: 66px;
-        }
-      }
-      ion-col {
-        min-height: 80px;
-        max-height: 121px;
-        ion-button {
-          padding-top: 6px;
-          min-height: 24px;
-          max-height: 100px;
-          height: auto;
-          ion-icon {
-            font-size: 24px;
+          ion-button {
+            padding-top: 6px;
+            min-height: 24px;
+            max-height: 100px;
+            height: auto;
+            ion-icon {
+              font-size: 24px;
+            }
           }
         }
-        ion-textarea {
-          max-height: 48px;
-          --padding-top: 0;
-          --padding-bottom: 0;
-          margin-top: 8px;
+      }
+
+      &.attach-preview {
+        min-height: 100px;
+        max-height: 100px;
+        ion-col {
+          .image {
+            min-height: 100px;
+            max-height: 100px;
+            padding: 10px;
+            border-radius: 4px;
+            img {
+              border-radius: 4px;
+            }
+            .overlay {
+              left: 10px;
+            }
+            &:hover {
+              .remove-attach {
+                display: block;
+                text-align: center;
+                left: 80px;
+              }
+              .overlay {
+                display: block;
+                background: rgba(0, 0, 0, .6);
+              }
+            }
+          }
+          .video {
+            width: 80px;
+            height: 80px;
+            margin: 10px;
+            padding: 20px;
+            background: var(--practera-light-grey-50);
+            border: 1px solid;
+            border-color: var(--practera-light-grey-75);
+            border-radius: 4px;
+            .play-icon {
+              width: 40px;
+              height: 40px;
+              margin: auto;
+              border-radius: 50%;
+              border: 1px solid;
+              border-color: var(--practera-light-grey-100);
+              background: white;
+              ion-icon {
+                padding: 11px;
+              }
+            }
+            .overlay {
+              left: 10px;
+            }
+            &:hover {
+              .remove-attach {
+                display: block;
+                text-align: center;
+                left: 80px;
+              }
+              .overlay {
+                display: block;
+                background: rgba(0, 0, 0, .6);
+              }
+            }
+          }
+          .file-preview {
+            height: fit-content;
+            width: fit-content;
+            margin: 10px;
+            .general-attachment {
+              --min-height: 80px;
+              max-width: 300px;
+              min-width: 300px;
+              --background: var(--practera-light-grey-50);
+              --border-color: var(--practera-light-grey-75);
+              --border-radius: 4px;
+              ion-label {
+                max-width: 210px;
+                .mimetype {
+                  color: var(--practera-grey-75);
+                }
+              }
+            }
+            .overlay {
+              left: 10px;
+              width: 300px;
+              border-radius: 4px;
+              z-index: 2;
+            }
+            .remove-attach {
+              left: 300px;
+              z-index: 2;
+            }
+            &:hover {
+              .remove-attach {
+                display: block;
+              }
+              .overlay {
+                display: block;
+                background: rgba(0, 0, 0, .6);
+              }
+            }
+          }
+          .remove-attach {
+            cursor: pointer;
+            position: absolute;
+            top: 0px;
+            left: 100px;
+            background: var(--practera-ocean-100);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            color: white;
+            display: none;
+          }
+          .overlay {
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            left: 28px;
+            width: 80px;
+            height: 80px;
+            display: none;
+            color: transparent;
+            border-radius: 4px;
+          }
         }
       }
     }
@@ -404,8 +515,8 @@ $message-body-size: 60%;
   }
   .ql-container {
     .ql-editor {
-      max-height: 100px;
-      min-height: 72px;
+      max-height: 82px;
+      min-height: 62px;
     }
   }
 }
