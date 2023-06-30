@@ -26,6 +26,7 @@ jobs:
   deploy-p2-prerelease:
     name: deploy-p2-prerelease
     runs-on: ubuntu-latest
+    environment: p2-prerelease
     permissions: write-all
     timeout-minutes: 15
 
