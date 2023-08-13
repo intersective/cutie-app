@@ -46,8 +46,7 @@
                 "node_modules/bootstrap/scss",
                 "src/theme"
               ]
-            },
-            "es5BrowserSupport": true
+            }
           },
           "configurations": {
             "production": {
