@@ -21,30 +21,29 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { urlFormatter } from 'helper';
 
 @NgModule({
-  declarations: [AppComponent],
-  entryComponents: [],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    IonicModule.forRoot(),
-    AppRoutingModule,
-    RequestModule,
-    PusherModule.forRoot({
-      apiurl: urlFormatter(environment.APIEndpointOld),
-      pusherKey: environment.pusherKey,
-    }),
-    ApolloModule,
-    HttpLinkModule,
-    PopupModule,
-    NgbModule
-  ],
-  providers: [
-    StatusBar,
-    SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    UtilsService
-  ],
-  bootstrap: [AppComponent]
+    declarations: [AppComponent],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        IonicModule.forRoot(),
+        AppRoutingModule,
+        RequestModule,
+        PusherModule.forRoot({
+            apiurl: urlFormatter(environment.APIEndpointOld),
+            pusherKey: environment.pusherKey,
+        }),
+        ApolloModule,
+        HttpLinkModule,
+        PopupModule,
+        NgbModule
+    ],
+    providers: [
+        StatusBar,
+        SplashScreen,
+        { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+        UtilsService
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule {
   constructor(
