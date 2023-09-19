@@ -1,7 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
+    "baseUrl": "src",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
@@ -10,7 +10,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
-    "target": "es2020",
+    "target": "ES2022",
     "typeRoots": [
       "node_modules/@types"
     ],
@@ -19,13 +19,23 @@
       "dom",
       "esnext.asynciterable"
     ],
-    "baseUrl": "src",
     "paths": {
-      "@app/*": ["app/*"],
-      "@shared/*": ["app/shared/*"],
-      "@components/*": ["app/components/*"],
-      "@services/*": ["app/shared/services/*"],
-      "@environments/*": ["environments/*"]
-    }
+      "@app/*": [
+        "app/*"
+      ],
+      "@shared/*": [
+        "app/shared/*"
+      ],
+      "@components/*": [
+        "app/components/*"
+      ],
+      "@services/*": [
+        "app/shared/services/*"
+      ],
+      "@environments/*": [
+        "environments/*"
+      ]
+    },
+    "useDefineForClassFields": false
   }
 }
