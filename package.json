@@ -29,7 +29,7 @@
     "@apollo/client": "^3.5.9",
     "@ionic/angular": "^6.7.5",
     "@ionic/storage": "^3.0.6",
-    "@ng-bootstrap/ng-bootstrap": "^12.1.2",
+    "@ng-bootstrap/ng-bootstrap": "^14.2.0",
     "@swimlane/ngx-charts": "^20.1.0",
     "@swimlane/ngx-datatable": "^20.0.0",
     "ansi-colors": "^4.1.1",
