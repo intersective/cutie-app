@@ -3,7 +3,7 @@ import { RequestService } from '@shared/request/request.service';
 import { map } from 'rxjs/operators';
 import { environment } from '@environments/environment';
 import { DemoService } from '@services/demo.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 /**
  * list of api endpoint involved in this service
