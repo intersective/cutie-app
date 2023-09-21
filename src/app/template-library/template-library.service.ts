@@ -3,7 +3,7 @@ import { map } from 'rxjs/operators';
 import { environment } from '@environments/environment';
 import { DemoService } from '@services/demo.service';
 import { RequestService } from '../shared/request/request.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { urlFormatter } from 'helper';
 
 export interface Template {
