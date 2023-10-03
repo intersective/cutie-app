@@ -178,7 +178,7 @@ export class ChatService {
         }
       }`,
       {}
-    ).pipe(map(response => {
+    ).pipe(map((response: any) => {
       if (response.data) {
         return this._normaliseChatListResponse(response.data);
       }
@@ -244,7 +244,7 @@ export class ChatService {
           }
         }
       }`, params
-    ).pipe(map(response => {
+    ).pipe(map((response: any) => {
       if (response.data) {
         return this._normaliseMessageListResponse(response.data);
       }
@@ -319,7 +319,7 @@ export class ChatService {
       {
         uuid: channelId
       }
-    ).pipe(map(response => {
+    ).pipe(map((response: any) => {
       if (response.data) {
         return this._normaliseChatMembersResponse(response.data);
       }
@@ -353,7 +353,7 @@ export class ChatService {
         }
       }`,
       {}
-    ).pipe(map(response => {
+    ).pipe(map((response: any) => {
       if (response.data) {
         return this._normalisePusherChannelsResponse(response.data);
       }
