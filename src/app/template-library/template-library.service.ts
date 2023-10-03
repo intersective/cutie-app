@@ -5,6 +5,7 @@ import { DemoService } from '@services/demo.service';
 import { RequestService } from '../shared/request/request.service';
 import { Observable } from 'rxjs';
 import { urlFormatter } from 'helper';
+import { ApolloService } from '@shared/apollo/apollo.service';
 
 export interface Template {
   uuid: string;
@@ -50,14 +51,15 @@ export class TemplateLibraryService {
   constructor(
     private request: RequestService,
     private demo: DemoService,
-    private _zone: NgZone
+    private _zone: NgZone,
+    private apollo: ApolloService,
   ) { }
 
   getTemplates(): Observable<Template[]> {
     if (environment.demo) {
       return this.demo.getTemplates().pipe(map(this._handleTemplates));
     }
-    return this.request.graphQLQuery(
+    return this.apollo.graphQLFetch(
       `query templates {
         templates {
           uuid
@@ -76,7 +78,7 @@ export class TemplateLibraryService {
     if (environment.demo) {
       return this.demo.getTemplates().pipe(map(this._handleTemplates));
     }
-    return this.request.graphQLQuery(
+    return this.apollo.graphQLFetch(
       `query templates($type: String) {
         templates(type: $type) {
           uuid
@@ -98,7 +100,7 @@ export class TemplateLibraryService {
     if (environment.demo) {
       return this.demo.getTemplates().pipe(map(this._handleTemplates));
     }
-    return this.request.graphQLQuery(
+    return this.apollo.graphQLFetch(
       `query templates($filter: String) {
         templates(filter: $filter) {
           uuid
@@ -118,7 +120,7 @@ export class TemplateLibraryService {
     if (environment.demo) {
       return this.demo.getCustomTemplates().pipe(map(this._handleTemplates));
     }
-    return this.request.graphQLQuery(
+    return this.apollo.graphQLFetch(
       `query templates($privateOnly: Boolean) {
         templates(privateOnly: $privateOnly) {
           uuid
@@ -140,7 +142,7 @@ export class TemplateLibraryService {
     if (environment.demo) {
       return this.demo.getTemplate().pipe(map(this._handleTemplate));
     }
-    return this.request.graphQLQuery(
+    return this.apollo.graphQLFetch(
       `query template($uuid: ID!) {
         template(uuid: $uuid) {
           uuid
@@ -163,7 +165,7 @@ export class TemplateLibraryService {
     if (environment.demo) {
       return this.demo.importExperience().pipe(map(this._handleImportedExperienceResponse));
     }
-    return this.request.graphQLMutate(
+    return this.apollo.graphQLMutate(
       `mutation importExperience($templateUuid: ID!) {
         importExperience(templateUuid: $templateUuid) {
           experienceUuid
@@ -184,7 +186,7 @@ export class TemplateLibraryService {
     if (environment.demo) {
       return this.demo.deleteTemplate().pipe(map(this._handleDeletedTemplateResponse));
     }
-    return this.request.graphQLMutate(
+    return this.apollo.graphQLMutate(
 `mutation deleteTemplate($uuid: ID!) {
          deleteTemplate(uuid: $uuid) {
            success
@@ -206,7 +208,7 @@ export class TemplateLibraryService {
     if (environment.demo) {
       return this.demo.importExperienceUrl(templateUuid).pipe(map(this._handleImportedExperienceUrlResponse));
     }
-    return this.request.graphQLQuery(
+    return this.apollo.graphQLFetch(
       `query importExperienceUrl($templateUuid: ID!) {
         importExperienceUrl(templateUuid: $templateUuid)
       }`,

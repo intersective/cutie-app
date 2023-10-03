@@ -9,6 +9,7 @@ import { StorageService } from '@services/storage.service';
 import { PusherStatic, Pusher, Config, Channel } from 'pusher-js';
 import * as PusherLib from 'pusher-js';
 import { urlFormatter } from 'helper';
+import { ApolloService } from '@shared/apollo/apollo.service';
 
 const api = {
   pusherAuth: 'api/v2/message/notify/pusher_auth.json',
@@ -66,7 +67,8 @@ export class PusherService {
     private request: RequestService,
     private utils: UtilsService,
     public storage: StorageService,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private apollo: ApolloService,
   ) {
     if (config) {
       this.pusherKey = config.pusherKey;
@@ -192,13 +194,13 @@ export class PusherService {
   }
 
   getChatChannels(): Observable<any> {
-    return this.request.chatGraphQLQuery(
+    return this.apollo.chatGraphQLQuery(
       `query getPusherChannels {
         channels {
           pusherChannel
         }
       }`
-    ).pipe(map(response => {
+    ).pipe(map((response: any) => {
       if (response.data && response.data.channels) {
         const result = JSON.parse(JSON.stringify(response.data.channels));
         result.forEach(element => {
