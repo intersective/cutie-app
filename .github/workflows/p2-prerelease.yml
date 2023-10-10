@@ -16,8 +16,8 @@ on:
         default: ''
   push:
     branches:
-      - 'golive/*'
-      # - 'release/live'
+      - 'prerelease'
+
 
 ################################################
 #  GITHUB ACTION JOBS
