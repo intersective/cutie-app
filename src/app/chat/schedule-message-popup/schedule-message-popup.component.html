@@ -10,11 +10,11 @@
     <div class="form-container">
 
       <p class="subtitle-2 popup-subtitle">Date</p>
-      <ion-input class="date-time-pickers" type="date" [(ngModel)]="selectedDate"></ion-input>
+      <ion-input class="date-time-pickers" type="date" [(ngModel)]="selectedDate" (ionChange)="validateDateTime()"></ion-input>
   
     
       <p class="subtitle-2 popup-subtitle">Time</p>
-      <ion-input class="date-time-pickers" type="time" [(ngModel)]="selectedTime"></ion-input>
+      <ion-input class="date-time-pickers" type="time" [(ngModel)]="selectedTime" (ionChange)="validateDateTime()"></ion-input>
 
       <p class="subtitle-2 popup-error" *ngIf="invalidDateTime">Selected date and time is not valid</p>
     

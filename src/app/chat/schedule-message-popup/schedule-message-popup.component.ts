@@ -62,6 +62,10 @@ export class ScheduleMessagePopupComponent implements OnInit {
     });
   }
 
+  validateDateTime() {
+    this.invalidDateTime = !this.isValidDateTime(`${this.selectedDate} ${this.selectedTime}`);
+  }
+
   scheduleMessage() {
     if (!this.selectedDate || !this.selectedTime || !this.channelUuid) {
       return;
