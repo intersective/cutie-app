@@ -45,7 +45,7 @@
     {{ createdMessage ? 'Close' : 'Cancel' }}
   </ion-button>
   <ion-button *ngIf="!createdMessage" tabindex="3" color="ocean" (click)="scheduleMessage()"
-    [disabled]="sending || !selectedDate || !selectedTime || !channelUuid">
+    [disabled]="sending || invalidDateTime || !channelUuid">
     {{ sending ? 'sending..' : 'Schedule Message'}}
   </ion-button>
 </div>
