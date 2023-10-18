@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import * as moment from 'moment';
 
 import { StorageService } from '@services/storage.service';
 import { UtilsService } from '@services/utils.service';
@@ -47,7 +46,7 @@ export class ScheduleMessagePopupComponent implements OnInit {
     this.uploading = false;
     this.sending = false;
     this.selectedDate = today.toLocaleDateString();
-    this.selectedTime = (today.getHours() < 10 ? "0" : "") + today.getHours() + ":00";
+    this.selectedTime = (today.getHours() < 10 ? '0' : '') + today.getHours() + ':00';
     this.uploadedFile = null;
     this.invalidDateTime = false;
     this.createdMessage = null;
