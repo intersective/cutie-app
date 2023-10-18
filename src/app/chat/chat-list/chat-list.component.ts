@@ -54,7 +54,6 @@ export class ChatListComponent {
       return;
     }
     this._initialise();
-    this._checkAndSubscribePusherChannels();
     this._loadChatData();
   }
 
@@ -75,6 +74,7 @@ export class ChatListComponent {
       this._groupingChatChannels();
       this.loadingChatList = false;
       this.chatListReady.emit(this.announcementChatChannels.concat(this.groupChatChannels, this.directChatChannels));
+      this._checkAndSubscribePusherChannels();
     });
   }
 
