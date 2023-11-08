@@ -23,6 +23,7 @@ jobs:
   deploy-p2-euk-live:
     name: deploy-p2-euk-live
     runs-on: ubuntu-latest
+    permissions: write-all
     environment: p2-euk
     timeout-minutes: 15
 
