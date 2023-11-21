@@ -170,7 +170,7 @@ export class RequestService {
     return;
   }
 
-  private handleError(error: HttpErrorResponse) {
+  handleError(error: HttpErrorResponse) {
     if (isDevMode()) {
       console.error(error); // log to console instead
     }

@@ -4,7 +4,7 @@ import { InMemoryCache, defaultDataIdFromObject } from '@apollo/client/core';
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { environment } from '@environments/environment';
-import { RequestService } from 'request';
+import { RequestService } from '../request/request.service';
 import { catchError, concatMap, map } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 
