@@ -30,7 +30,7 @@ export interface Experience {
   todoItemCount: number;
   statistics: Statistics;
   role: Role;
-  isLast: boolean;
+  isLast?: boolean;
 }
 
 export type Role = 'sysadmin' | 'inst_admin' | 'admin' | 'coordinator' | 'mentor' | 'participant';
