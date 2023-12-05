@@ -6,9 +6,11 @@ h1, h2, h3 {
 }
 
 .practera-popup {
+  --background: transparent !important;
+  --box-shadow: none !important;
   .modal-wrapper {
-    --background: transparent;
-    --box-shadow: none;
+    --background: transparent !important;
+    --box-shadow: none !important;
   }
 }
 
