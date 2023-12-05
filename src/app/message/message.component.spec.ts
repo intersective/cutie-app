@@ -5,7 +5,6 @@ import { of } from 'rxjs';
 import { MessageComponent } from './message.component';
 import { StorageService } from '@services/storage.service';
 import { Router, NavigationEnd } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
 import { LoadingController } from '@ionic/angular';
 import { MessageService } from './message.service';
 import { NotificationService } from '@services/notification.service';

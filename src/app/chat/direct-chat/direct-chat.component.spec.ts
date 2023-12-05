@@ -194,7 +194,8 @@ describe('DirectChatComponent', () => {
           canEdit: true,
           unreadMessageCount: 0,
           lastMessage: null,
-          lastMessageCreated: null
+          lastMessageCreated: null,
+          scheduledMessageCount: 0
         }
       ));
       component.createChatChannel(user);

@@ -35,8 +35,8 @@ describe('OnboardingFormComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('for comfirmed()', () => {
-    component.confirmed();
+  it('for cancel()', () => {
+    component.cancel();
     expect(modalSpy.dismiss).toHaveBeenCalled();
   });
 
