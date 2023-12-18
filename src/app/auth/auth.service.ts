@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { RequestService } from '@shared/request/request.service';
+import { ApolloService } from '@shared/apollo/apollo.service';
 import { Observable, of } from 'rxjs';
-import { delay } from 'rxjs/internal/operators';
+import { delay } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { HttpParams } from '@angular/common/http';
 import { StorageService } from '@services/storage.service';
@@ -25,6 +26,7 @@ export class AuthService {
 
   constructor(
     private request: RequestService,
+    private apollo: ApolloService,
     private storage: StorageService,
     private utils: UtilsService,
     private demo: DemoService
@@ -119,7 +121,7 @@ export class AuthService {
     if (environment.demo) {
       return this.demo.getMyInfoGraphQL().pipe(map(this._handleMyInfoGraphQL, this));
     }
-    return this.request.graphQLQuery(
+    return this.apollo.graphQLFetch(
       `query user {
         user {
           uuid
@@ -157,16 +159,13 @@ export class AuthService {
       const response = this.demo.getCurrentUser();
       return of(this._normaliseGetUserEnrolmentUuidResponse(response.data)).pipe(delay(1000));
     }
-    return this.request.graphQLQuery(
+    return this.apollo.graphQLFetch(
       `query user {
         user {
           enrolmentUuid
         }
       }`,
-      {},
-      {
-        noCache: true
-      }
+      {}
     ).pipe(
       map(response => {
         if (response.data) {
