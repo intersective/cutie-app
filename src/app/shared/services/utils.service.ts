@@ -273,7 +273,7 @@ export class UtilsService {
   }
 
   removeAllSpecialCharactersAndToLower(type: string): string {
-    type = type.replace(/[!@#^_.$&*%\s\-]/g, ''); // tslint:disable-line
+    type = type.replace(/[!@#^_.$&*%\s\-]/g, ''); // eslint-disable-line
     type = type.toLowerCase();
     return type;
   }
