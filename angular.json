@@ -168,8 +168,7 @@
             "demo": {
               "browserTarget": "app:build:demo"
             },
-            "ci": {
-            }
+            "ci": {}
           }
         },
         "extract-i18n": {
@@ -242,6 +241,15 @@
               "devServerTarget": "app:serve:sandbox"
             }
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
         }
       }
     },
@@ -266,7 +274,9 @@
   },
   "cli": {
     "schematicCollections": [
-      "@ionic/angular-toolkit"
+      "@angular-eslint/schematics",
+      "@ionic/angular-toolkit",
+      "@angular-eslint/schematics"
     ]
   },
   "schematics": {
