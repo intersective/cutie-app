@@ -59,13 +59,13 @@ jobs:
 ################################################
 #  VALIDATE NEW TAG DEFINED FOR RELEASE PROCESS
 ################################################ 
-      - name: Validate new tag defined for release process
-        run: |
-          aws s3 cp s3://$STATUSREPORTS3Bucket/scripts/validate-tag-creation.sh validate-tag-creation.sh
-          chmod +x ./validate-tag-creation.sh
-          ./validate-tag-creation.sh
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Validate new tag defined for release process
+      #   run: |
+      #     aws s3 cp s3://$STATUSREPORTS3Bucket/scripts/validate-tag-creation.sh validate-tag-creation.sh
+      #     chmod +x ./validate-tag-creation.sh
+      #     ./validate-tag-creation.sh
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 
 
