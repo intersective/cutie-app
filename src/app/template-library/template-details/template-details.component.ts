@@ -18,6 +18,7 @@ export class TemplateDetailsComponent {
   categoryLeadImage = '/assets/exp-placeholder.png';
   deletingTemplate = false;
   isTemplatepublic = false;
+  showToggle = true;
 
   constructor(
     private route: ActivatedRoute,
@@ -39,6 +40,7 @@ export class TemplateDetailsComponent {
       }
       this.template = res;
       this.isTemplatepublic = false;
+      this.checkUserRole();
 
       this.service.getCategories().forEach(category => {
         if (category.id === res.type) {
@@ -153,6 +155,14 @@ export class TemplateDetailsComponent {
         );
       }
     });
+  }
+
+  checkUserRole() {
+    if (this.storage.getUser().role === 'cs_admin') {
+      this.showToggle = true;
+    } else {
+      this.showToggle = false;
+    }
   }
 
 }
