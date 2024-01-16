@@ -24,6 +24,13 @@
   padding-right: 20px;
 }
 
+.public-toggle {
+  ion-toggle {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+}
+
 .template-title {
   font-weight: bold;
   font-size: 42px;
