@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ModalController, AlertController, ToastController, LoadingController } from '@ionic/angular';
-import { AlertOptions, ToastOptions, ModalOptions, LoadingOptions } from '@ionic/core';
+import { AlertOptions, ToastOptions, ModalOptions, LoadingOptions } from '@ionic/angular';
 import { UtilsService } from '@services/utils.service';
 import { DescriptionComponent } from './description/description.component';
 import { TagsComponent } from './tags/tags.component';
