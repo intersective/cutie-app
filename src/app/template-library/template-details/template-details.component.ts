@@ -5,6 +5,9 @@ import { PopupService } from '../../shared/popup/popup.service';
 import { StorageService } from '@services/storage.service';
 import { environment } from '@environments/environment';
 
+const PRIVATETOPUBLICMGS = "This action will make this template available to every Practera user globally, do you still want to change it?";
+const PUBLICTOPRIVATE = "This action will make this template available to every Practera user globally, do you still want to change it?";
+
 @Component({
   selector: 'app-template-details',
   templateUrl: './template-details.component.html',
@@ -39,7 +42,7 @@ export class TemplateDetailsComponent {
         return;
       }
       this.template = res;
-      this.isTemplatepublic = false;
+      this.isTemplatepublic = this.template.isPublic;
       this.checkUserRole();
 
       this.service.getCategories().forEach(category => {
@@ -113,28 +116,28 @@ export class TemplateDetailsComponent {
 
   /**
   * Method get call then toggle button change.
-  * it check is template visibility change from private to public.
-  * if it is then will show a alert to get confirmation from user.
+  * this will show a alert to get confirmation from user.
   * if user confirm it will call updateTemplateVisibilityConfirm method.
   * @params $event - event data of toggle change.
   **/
   updateTemplateVisibility($event: CustomEvent) {
-    if (!this.template.isPublic && this.isTemplatepublic) {
-      this.popupService.showAlert({
-        message: 'This action will make this template available to every Practera user globally, do you still want to change it?',
-        buttons: [
-          {
-            text: 'Cancel',
-            role: 'cancel',
-            handler: () => {this.isTemplatepublic = false}
-          },
-          {
-            text: 'Confirm',
-            handler: this.updateTemplateVisibilityConfirm.bind(this)
-          },
-        ]
-      });
-    }
+
+    let alertMessage = `This action will make this template ${this.template.isPublic && !this.isTemplatepublic ? 'unavailable' : 'available'} to every Practera user globally, do you still want to change it?`;
+
+    this.popupService.showAlert({
+      message: alertMessage,
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => { this.isTemplatepublic = false }
+        },
+        {
+          text: 'Confirm',
+          handler: this.updateTemplateVisibilityConfirm.bind(this)
+        },
+      ]
+    });
   }
 
   /**
