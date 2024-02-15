@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, PopoverController } from '@ionic/angular';
 
 import { StorageService } from '@services/storage.service';
 import { UtilsService } from '@services/utils.service';
@@ -7,6 +7,8 @@ import { PusherService } from '@shared/pusher/pusher.service';
 import { FilestackService } from '@shared/filestack/filestack.service';
 
 import { ChatService, ChatChannel, Message, MessageListResult } from '../chat.service';
+
+import { DateTimePickerComponent } from '../date-time-picker/date-time-picker.component';
 
 @Component({
   selector: 'app-schedule-message-popup',
@@ -35,6 +37,7 @@ export class ScheduleMessagePopupComponent implements OnInit {
     public pusherService: PusherService,
     private filestackService: FilestackService,
     private modalController: ModalController,
+    private popoverController: PopoverController
   ) { }
 
   ngOnInit() {
@@ -62,7 +65,8 @@ export class ScheduleMessagePopupComponent implements OnInit {
   }
 
   validateDateTime() {
-    this.invalidDateTime = !this.isValidDateTime(`${this.selectedDate} ${this.selectedTime}`);
+    console.log(this.selectedDate);
+    // this.invalidDateTime = !this.isValidDateTime(`${this.selectedDate} ${this.selectedTime}`);
   }
 
   scheduleMessage() {
@@ -135,6 +139,19 @@ export class ScheduleMessagePopupComponent implements OnInit {
       this.invalidDateTime = true;
       return false;
     }
+  }
+
+  async openSheduleDatePopup(e: Event, type) {
+    const popover = await this.popoverController.create({
+      component: DateTimePickerComponent,
+      event: e,
+      componentProps: {
+        channelUuid: this.channelUuid,
+        type: type
+      }
+    });
+
+    await popover.present();
   }
 
 }

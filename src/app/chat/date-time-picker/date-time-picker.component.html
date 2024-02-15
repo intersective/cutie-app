@@ -1,0 +1,9 @@
+<ng-container *ngIf="type === 'all'; else singlePick">
+    <ion-datetime id="dateBtn" mode="ios" hourCycle="h12" preferWheel="false" [showDefaultButtons]="true" [(ngModel)]="selectedDateTime">
+    </ion-datetime>
+</ng-container>
+
+<ng-template #singlePick>
+    <ion-datetime id="dateBtn" mode="ios" hourCycle="h12" preferWheel="false" [showDefaultButtons]="true" [presentation]="type" [(ngModel)]="selectedDateTime">
+    </ion-datetime>
+</ng-template>

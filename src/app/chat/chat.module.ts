@@ -18,6 +18,7 @@ import { ScheduleMessageListComponent } from './schedule-message-list/schedule-m
 import { ScheduleMessagePopupComponent } from './schedule-message-popup/schedule-message-popup.component';
 import { EditScheduleMessagePopupComponent } from './edit-schedule-message-popup/edit-schedule-message-popup.component';
 import { AttachmentPopoverComponent } from './attachment-popover/attachment-popover.component';
+import { DateTimePickerComponent } from './date-time-picker/date-time-picker.component';
 
 @NgModule({
     declarations: [
@@ -33,7 +34,8 @@ import { AttachmentPopoverComponent } from './attachment-popover/attachment-popo
         ScheduleMessageListComponent,
         ScheduleMessagePopupComponent,
         EditScheduleMessagePopupComponent,
-        AttachmentPopoverComponent
+        AttachmentPopoverComponent,
+        DateTimePickerComponent
     ],
     imports: [
         SharedModule,

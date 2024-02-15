@@ -27,7 +27,8 @@
 }
 
 .form-container {
-  width: 80%;
+  margin-top: 25px;
+  width: 100%;
   .btn-upload-file {
     &::part(native) {
       border: 1px solid;

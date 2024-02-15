@@ -9,15 +9,32 @@
 
     <div class="form-container">
 
-      <p class="subtitle-2 popup-subtitle">Date</p>
-      <ion-input class="date-time-pickers" type="date" [(ngModel)]="selectedDate" (ionChange)="validateDateTime()"></ion-input>
-  
-    
+      <ion-input label="Date" label-placement="floating" fill="outline" placeholder="Select the date" [(ngModel)]="selectedDate"
+        (ionChange)="validateDateTime()">
+        <ion-button fill="clear" slot="end" aria-label="Show/hide" (click)="openSheduleDatePopup($event, 'date')">
+          <ion-icon slot="icon-only" name="calendar-outline" aria-hidden="true"></ion-icon>
+        </ion-button>
+      </ion-input>
+      <br>
+      <ion-input label="Time" label-placement="floating" fill="outline" placeholder="Select the time" [(ngModel)]="selectedTime"
+        (ionChange)="validateDateTime()">
+        <ion-button fill="clear" slot="end" aria-label="Show/hide" (click)="openSheduleDatePopup($event, 'time')">
+          <ion-icon slot="icon-only" name="time-outline" aria-hidden="true"></ion-icon>
+        </ion-button>
+      </ion-input>
+
+      <!-- <p class="subtitle-2 popup-subtitle">Date</p>
+      <ion-input class="date-time-pickers" type="date" [(ngModel)]="selectedDate"
+        (ionChange)="validateDateTime()">
+      </ion-input>
+
+
       <p class="subtitle-2 popup-subtitle">Time</p>
-      <ion-input class="date-time-pickers" type="time" [(ngModel)]="selectedTime" (ionChange)="validateDateTime()"></ion-input>
+      <ion-input class="date-time-pickers" type="time" [(ngModel)]="selectedTime"
+        (ionChange)="validateDateTime()"></ion-input> -->
 
       <p class="subtitle-2 popup-error" *ngIf="invalidDateTime">Selected date and time is not valid</p>
-    
+
     </div>
   </ng-container>
   <ng-template #messageCreated>
@@ -35,7 +52,9 @@
         </div>
       </div>
       <div class="schedule-info-container">
-        <p class="subtitle-2 black">Scheduled for <strong>{{ utils.utcLocalforScheduleMessages(createdMessage.scheduled, 'date') }}</strong> at <strong>{{ utils.utcLocalforScheduleMessages(createdMessage.scheduled, 'time') }} ({{ utils.browserTimezone() }})</strong> on <strong>{{ channelName }}</strong></p>
+        <p class="subtitle-2 black">Scheduled for <strong>{{ utils.utcLocalforScheduleMessages(createdMessage.scheduled,
+            'date') }}</strong> at <strong>{{ utils.utcLocalforScheduleMessages(createdMessage.scheduled, 'time') }} ({{
+            utils.browserTimezone() }})</strong> on <strong>{{ channelName }}</strong></p>
       </div>
     </div>
   </ng-template>
