@@ -5,9 +5,6 @@ import { PopupService } from '../../shared/popup/popup.service';
 import { StorageService } from '@services/storage.service';
 import { environment } from '@environments/environment';
 
-const PRIVATETOPUBLICMGS = "This action will make this template available to every Practera user globally, do you still want to change it?";
-const PUBLICTOPRIVATE = "This action will make this template available to every Practera user globally, do you still want to change it?";
-
 @Component({
   selector: 'app-template-details',
   templateUrl: './template-details.component.html',
