@@ -223,6 +223,28 @@ export class TemplateLibraryService {
     return res.data.importExperienceUrl;
   }
 
+  updateTemplateVisibility(templateUuid: string, isPublic: boolean): Observable<any> {
+    if (environment.demo) {
+      return this.demo.importExperience().pipe(map(this._handleupdateTemplateVisibility));
+    }
+    return this.apollo.graphQLMutate(
+      `mutation updateTemplate($templateUuid: ID!, $isPublic: Boolean) {
+        updateTemplate(uuid: $templateUuid, isPublic: $isPublic) {
+          success
+          message
+        }
+      }`,
+      {templateUuid, isPublic}
+    ).pipe(map(this._handleupdateTemplateVisibility));
+  }
+
+  private _handleupdateTemplateVisibility(res): string {
+    if (!res || !res.data) {
+      return null;
+    }
+    return res.data.updateTemplate;
+  }
+
   createExperienceSSE(url: string): Observable<{ progress?: number; redirect?: string }> {
     return new Observable(observer => {
       const eventSource = new EventSource(url);

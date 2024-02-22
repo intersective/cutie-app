@@ -75,7 +75,7 @@ export class BrowseTemplatesComponent {
   loadCustomTemplates() {
     this.loadingTemplates = true;
     this.isCustomTemplates = true;
-    this.heading = 'Custom Templates';
+    this.heading = 'Private Templates';
     this.service.getCustomTemplates().subscribe(res => {
       if (res === null) {
         return;
