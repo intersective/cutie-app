@@ -13,36 +13,32 @@ import { OnboardingTemplateDetailComponent } from '@app/components/onboarding-te
 import { VideoConversionComponent } from '@app/components/video-conversion/video-conversion.component';
 
 @NgModule({
-  declarations: [
-    NavbarComponent,
-    ActionPopoverComponent,
-    PreviewComponent,
-    ActionFooterComponent,
-    OnboardingTemplateDetailComponent,
-    VideoConversionComponent,
-  ],
-  imports: [
-    CommonModule,
-    IonicModule,
-    FormsModule
-  ],
-  exports: [
-    CommonModule,
-    IonicModule,
-    FormsModule,
-    NavbarComponent,
-    ActionPopoverComponent,
-    ActionFooterComponent,
-    OnboardingTemplateDetailComponent,
-    VideoConversionComponent,
-  ],
-  providers: [
-    StorageService,
-    FilestackService
-  ],
-  entryComponents: [
-    ActionPopoverComponent,
-    PreviewComponent
-  ]
+    declarations: [
+        NavbarComponent,
+        ActionPopoverComponent,
+        PreviewComponent,
+        ActionFooterComponent,
+        OnboardingTemplateDetailComponent,
+        VideoConversionComponent,
+    ],
+    imports: [
+        CommonModule,
+        IonicModule,
+        FormsModule
+    ],
+    exports: [
+        CommonModule,
+        IonicModule,
+        FormsModule,
+        NavbarComponent,
+        ActionPopoverComponent,
+        ActionFooterComponent,
+        OnboardingTemplateDetailComponent,
+        VideoConversionComponent,
+    ],
+    providers: [
+        StorageService,
+        FilestackService
+    ]
 })
 export class SharedModule { }

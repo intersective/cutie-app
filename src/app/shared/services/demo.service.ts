@@ -3,7 +3,7 @@ import { UtilsService } from '@services/utils.service';
 import { StorageService } from '@services/storage.service';
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { delay } from 'rxjs/internal/operators';
+import { delay } from 'rxjs';
 import { environment } from '@environments/environment';
 import { urlFormatter } from 'helper';
 

@@ -6,7 +6,7 @@ import * as shape from 'd3-shape';
   templateUrl: './chart.component.html',
   styleUrls: ['./chart.component.scss'],
 })
-export class ChartComponent implements OnInit {
+export class ChartComponent {
   @Input() type: string;
   @Input() maxHeight: string;
   @Input() data: any[];
@@ -21,8 +21,5 @@ export class ChartComponent implements OnInit {
     ]
   };
   constructor() { }
-
-  ngOnInit() {
-  }
 
 }
