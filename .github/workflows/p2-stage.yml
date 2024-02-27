@@ -10,7 +10,7 @@ name: Deploy to p2-stage environment
 on:
   workflow_dispatch:
   push:
-    branches: [ 'trunk' ]
+    branches: [ 'feat/local-setup' ]
 
 ################################################
 #  GITHUB ACTION JOBS
@@ -202,88 +202,94 @@ jobs:
           CUSTOM_ONBOARDING_FORM_IN_RAW_HTML: 0
           CUSTOM_ONBOARDING_POPUP_FORM_ID: 67a53834-ffac-4ebc-81cd-39f9e77167d8
 
-
-###############################################################
-#  BUILD WEB PACKAGES
-##############################################################
-      - name: Build Web Packages
-        run: |
-          printf '' > src/environments/environment.ts
-          node_modules/.bin/ng build --configuration=${{ env.BUILD_CONFIG }}
-
-
-##########################################################
-#  AWS S3 SYNC OPERATIONS
-##########################################################
-      - name: AWS S3 Sync Operations
-        run: |
-          CUTIEAPPS3=$(aws cloudformation list-exports --query "Exports[?Name==\`$STACK_NAME-CUTIES3BUCKET-$ENV\`].Value" --no-paginate --output text)
-          aws s3 sync www/ s3://$CUTIEAPPS3 --delete
-
-
-
-##########################################################
-#  AWS CDN CACHE INVALIDATION
-##########################################################
-      - name: AWS Cloudfront Cache invalidation
-        run: |
-          CUTIEAPPCDN=$(aws cloudformation list-exports --query "Exports[?Name==\`$STACK_NAME-CutieCloudFrontDistributionID-$ENV\`].Value" --no-paginate --output text)
-          for i in $CUTIEAPPCDN;do aws cloudfront create-invalidation --distribution-id $i --paths "/*";done
-
-
-
-##########################################################
-#  SLACK NOTIFICATION
-##########################################################
-      - name: Slack Notification
-        if: always() # Pick up events even if the job fails or is canceled.
-        uses: 8398a7/action-slack@v3
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          MATRIX_CONTEXT: ${{ toJson(matrix) }} # required
+      - name: 'Upload Artifact'
+        uses: actions/upload-artifact@v4
         with:
-          status: ${{ job.status }}
-          author_name: ${{ env.BRANCH_TAG_NAME }} -  ${{ env.ROOTSTACK }} deployed to ${{ env.ENV }} environemnt in ${{ env.STACK_NAME }} AWS account
-          mention: 'here'
-          if_mention: failure,cancelled
-          job_name: deploy-p2-stage # Match the name above.
-          fields: repo,commit,eventName,ref,workflow,message,author,job,took
-          custom_payload: |
-            {
-            username: 'GitHub Action CI WorkFlow',
-            icon_emoji: ':github:',
-            attachments: [{
-              color: '${{ job.status }}' === 'success' ? 'good' : ${{ job.status }}' === 'failure' ? 'danger' : 'warning',
-              text:
-             `${process.env.AS_REPO}\n
-              ${process.env.AS_COMMIT}\n
-              ${process.env.AS_EVENT_NAME}\n
-              @${process.env.AS_REF}\n
-              @${process.env.AS_WORKFLOW}\n
-              ${process.env.AS_MESSAGE}\n
-              ${process.env.AS_AUTHOR}\n
-              ${process.env.AS_JOB}\n
-              ${process.env.AS_TOOK}`,
-            }]
-            }
+          name: my-artifact
+          path: src/environments/environment.custom.ts
+          retention-days: 5
+
+# ###############################################################
+# #  BUILD WEB PACKAGES
+# ##############################################################
+#       - name: Build Web Packages
+#         run: |
+#           printf '' > src/environments/environment.ts
+#           node_modules/.bin/ng build --configuration=${{ env.BUILD_CONFIG }}
 
 
-# ################################################
-# #  STATUS VARIABLE UPDATE
-# ################################################
-      - name: Deployment status variable update
-        if: ${{ failure() }}
-        run: |
-          echo "STATUS=FAILURE" >> $GITHUB_ENV
+# ##########################################################
+# #  AWS S3 SYNC OPERATIONS
+# ##########################################################
+#       - name: AWS S3 Sync Operations
+#         run: |
+#           CUTIEAPPS3=$(aws cloudformation list-exports --query "Exports[?Name==\`$STACK_NAME-CUTIES3BUCKET-$ENV\`].Value" --no-paginate --output text)
+#           aws s3 sync www/ s3://$CUTIEAPPS3 --delete
 
-# ################################################
-# #  DEVOPS-DEPLOYMENT REPORT
-# ################################################
-      - name: DevOps Deployment Reporting
-        if: always()
-        run: |
-          pip install --upgrade pip
-          pip install --upgrade csvtotable
-          aws s3 cp s3://$STATUSREPORTS3Bucket/deploy-reporting.sh deploy-reporting.sh
-          chmod +x deploy-reporting.sh && ./deploy-reporting.sh
-          echo "LINK="${GITHUB_REPOSITORY##*/}.html >> $GITHUB_ENV
+
+
+# ##########################################################
+# #  AWS CDN CACHE INVALIDATION
+# ##########################################################
+#       - name: AWS Cloudfront Cache invalidation
+#         run: |
+#           CUTIEAPPCDN=$(aws cloudformation list-exports --query "Exports[?Name==\`$STACK_NAME-CutieCloudFrontDistributionID-$ENV\`].Value" --no-paginate --output text)
+#           for i in $CUTIEAPPCDN;do aws cloudfront create-invalidation --distribution-id $i --paths "/*";done
+
+
+
+# ##########################################################
+# #  SLACK NOTIFICATION
+# ##########################################################
+#       - name: Slack Notification
+#         if: always() # Pick up events even if the job fails or is canceled.
+#         uses: 8398a7/action-slack@v3
+#         env:
+#           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+#           MATRIX_CONTEXT: ${{ toJson(matrix) }} # required
+#         with:
+#           status: ${{ job.status }}
+#           author_name: ${{ env.BRANCH_TAG_NAME }} -  ${{ env.ROOTSTACK }} deployed to ${{ env.ENV }} environemnt in ${{ env.STACK_NAME }} AWS account
+#           mention: 'here'
+#           if_mention: failure,cancelled
+#           job_name: deploy-p2-stage # Match the name above.
+#           fields: repo,commit,eventName,ref,workflow,message,author,job,took
+#           custom_payload: |
+#             {
+#             username: 'GitHub Action CI WorkFlow',
+#             icon_emoji: ':github:',
+#             attachments: [{
+#               color: '${{ job.status }}' === 'success' ? 'good' : ${{ job.status }}' === 'failure' ? 'danger' : 'warning',
+#               text:
+#              `${process.env.AS_REPO}\n
+#               ${process.env.AS_COMMIT}\n
+#               ${process.env.AS_EVENT_NAME}\n
+#               @${process.env.AS_REF}\n
+#               @${process.env.AS_WORKFLOW}\n
+#               ${process.env.AS_MESSAGE}\n
+#               ${process.env.AS_AUTHOR}\n
+#               ${process.env.AS_JOB}\n
+#               ${process.env.AS_TOOK}`,
+#             }]
+#             }
+
+
+# # ################################################
+# # #  STATUS VARIABLE UPDATE
+# # ################################################
+#       - name: Deployment status variable update
+#         if: ${{ failure() }}
+#         run: |
+#           echo "STATUS=FAILURE" >> $GITHUB_ENV
+
+# # ################################################
+# # #  DEVOPS-DEPLOYMENT REPORT
+# # ################################################
+#       - name: DevOps Deployment Reporting
+#         if: always()
+#         run: |
+#           pip install --upgrade pip
+#           pip install --upgrade csvtotable
+#           aws s3 cp s3://$STATUSREPORTS3Bucket/deploy-reporting.sh deploy-reporting.sh
+#           chmod +x deploy-reporting.sh && ./deploy-reporting.sh
+#           echo "LINK="${GITHUB_REPOSITORY##*/}.html >> $GITHUB_ENV
