@@ -20,18 +20,6 @@ const api = {
   me: 'api/users.json',
 };
 
-interface AuthEndpoint {
-  data: {
-    auth: {
-      apikey: string;
-      experience: object;
-      email?: string;
-      unregistered?: boolean;
-      activationCode?: string;
-    }
-  }
-}
-
 @Injectable({
   providedIn: 'root'
 })
@@ -52,11 +40,10 @@ export class AuthService {
     service?: string;
     // needed when switching program (inform server the latest selected experience)
     experienceUuid?: string;
-  }): Observable<AuthEndpoint> {
+  }): Observable<any> {
     const options: {
       variables?: {
         authToken?: string;
-        experienceUuid?: string;
       };
       context?: {
         headers?: {
@@ -75,10 +62,6 @@ export class AuthService {
       options.variables.authToken = data.authToken;
     }
 
-    if (data.experienceUuid) {
-      options.variables.experienceUuid = data.experienceUuid;
-    }
-
     // Initialize options.headers
     if (data.apikey || data.service) {
       options.context = { headers: {} };
@@ -94,8 +77,8 @@ export class AuthService {
     }
 
     return this.apollo.graphQLFetch(`
-      query auth($authToken: String, $experienceUuid: ID) {
-        auth(authToken: $authToken, experienceUuid: $experienceUuid) {
+      query auth($authToken: String) {
+        auth(authToken: $authToken) {
           apikey
           experience {
             id
@@ -129,29 +112,10 @@ export class AuthService {
       }`,
       options
     ).pipe(
-      map((res: AuthEndpoint)=> {
-        if (res?.data?.auth?.unregistered === true) {
-          // [CORE-6011] trusting API returns email and activationCode
-          const { email, activationCode } = res.data.auth;
-          throw {
-            data: {
-              user: {
-                email,
-                key: activationCode
-              },
-              message: 'User is not registered'
-            },
-            status: 'forbidden',
-          };
-        }
+      map((res)=> {
         return res;
       }),
       catchError(err => {
-        // When logout get call from here user get redirect without showing any error messages.
-        // so from here need to throw the error. and handel from the components.
-        // then we can show error message and add logout as call back of notification popup.
-        // Kepping this in case some error happen. logic moved
-        //this.logout(); // clear user's information
         return throwError(err);
       }),
     );
@@ -185,68 +149,6 @@ export class AuthService {
   }
 
   /**
-   * login API specifically only accept request data in encodedUrl formdata,
-   * so must convert them into compatible formdata before submission
-   */
-  directLogin(token: string): Observable<any> {
-    return this.autologin({ authToken: token });
-    // if (environment.demo) {
-    //   return this.demo.directLogin().pipe(map(this._handleLoginResponse, this));
-    // }
-    // this.logout();
-    // const body = new HttpParams()
-    //   .set('auth_token', token);
-    // return this.request.post(api.login, body.toString(), {
-    //     headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-    //   }).pipe(map(this._handleLoginResponse, this));
-  }
-
-  /**
-   * login API specifically only accept request data in encodedUrl formdata,
-   * so must convert them into compatible formdata before submission
-   */
-  jwtLogin(jwt: string): Observable<any> {
-    return this.autologin({ apikey: jwt });
-    // if (environment.demo) {
-    //   const response = this.demo.directLogin();
-    //   this._handleLoginResponse(response);
-    //   return of(response).pipe(delay(2000));
-    // }
-    // this.logout();
-    // const body = new HttpParams()
-    //   .set('apikey', jwt);
-    // return this.request.post(api.login, body.toString(), {
-    //     headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-    //   }).pipe(map(this._handleLoginResponse, this));
-  }
-
-  private _handleLoginResponse(response) {
-    const data = response.data;
-    if (data) {
-      this.storage.setUser({
-        apikey: data.apikey,
-        timelineId: data.timeline_id ? data.timeline_id : null,
-        timelineUuid: data.timeline_uuid ? data.timeline_uuid : null,
-        programId: data.program_id ? data.program_id : null
-      });
-      const programs = data.Timelines ? data.Timelines.map(function(timeline) {
-        return {
-          enrolment: timeline.Enrolment,
-          program: timeline.Program,
-          project: timeline.Project,
-          timeline: timeline.Timeline
-        };
-      }) : [];
-      this.storage.set('programs', programs);
-    }
-    this.getMyInfo().subscribe();
-    if (data.timeline_id || data.timeline_uuid) {
-      this.getUserEnrolmentUuid().subscribe();
-    }
-    return response;
-  }
-
-  /**
    * get user info
    */
   getMyInfo(): Observable<any> {
@@ -277,7 +179,11 @@ export class AuthService {
           role
           contactNumber
           userHash
-          institution
+          institution {
+            id
+            uuid
+            name
+          }
         }
       }`
     ).pipe(map(this._handleMyInfoGraphQL, this));
