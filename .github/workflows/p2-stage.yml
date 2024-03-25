@@ -10,7 +10,7 @@ name: Deploy to p2-stage environment
 on:
   workflow_dispatch:
   push:
-    branches: [ 'feat/local-setup' ]
+    branches: [ 'trunk' ]
 
 ################################################
 #  GITHUB ACTION JOBS
