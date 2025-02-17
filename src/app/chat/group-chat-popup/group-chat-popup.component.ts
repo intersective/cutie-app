@@ -58,6 +58,11 @@ export class GroupChatPopupComponent implements OnInit {
  */
   async createChatChannels() {
     const currentExperience = this.storage.get('experience');
+
+    if (currentExperience === null) {
+      throw new Error('Experience not found');
+    }
+
     this.creating = true;
     if (this.isCohortChecked) {
       this.chatService.createChannel({

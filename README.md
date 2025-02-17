@@ -15,20 +15,30 @@
 1. Ignore the `.localsegment` error during compilation (it's for devops purpose)
 1. Start coding!
 
+### Routes
+
+1. Open the `app-routing.module.ts` file.
+2. Find the available routing URLs.
+3. Manually update the URL in your browser to access the desired page.
+
 ### Sandbox API environment (option 1)
 
-1. Copy the "me" object from the localStorage from our app or core-admin
-1. Paste it in your running local cutie-app's localStorage with the same key ("me")
-1. There is no content in the root "/"
-1. relative-url must be added after the `https://localhost:4202/` in order to see the content that you expect to see
-1. For example, `https://localhost:4202/overview-only` will redirect you to *overview-only* route. 
-1. You would not redirected and will get stuck in `https://localhost:4202` when there is no relative URL appended.
+1. Copy the "me" object from the localStorage of our app or core-admin.
+2. Paste it into the localStorage of your running local cutie-app with the same key ("me").
+3. Ensure there is no content in the root "/".
+4. Add a relative URL after `https://localhost:4202/` to see the expected content.
+  - For example, `https://localhost:4202/overview-only` will redirect you to the *overview-only* route.
+  - Without a relative URL, you will get stuck at `https://localhost:4202`.
+
+> Note: Use port 4202 if running `npm start`, or change it according to how you serve the app locally.
+
+> Note: If you prefer to access a specific page, please refer to the [Routes](#routes) section above.
 
 ### Sandbox API environment (option 2)
 
-1. Follow this URL format: https://localhost:4202/?redirect=overview-only&jwt={OUR-APP-APIKEY}
-1. Get the APIKEY from the already authorised app user localStorage or HTTP header and replace {OUR-APP-APIKEY} with the obtained APIKEY
-1. You'll be redirect to the specified "redirect" destination.
+1. Use the following URL format: `https://localhost:4202/?redirect=overview-only&jwt={OUR-APP-APIKEY}`
+2. Retrieve the APIKEY from the localStorage or HTTP header of an already authorised app user and replace `{OUR-APP-APIKEY}` with the obtained APIKEY.
+3. You will be redirected to the specified "redirect" destination.
 
 ## Installation
 
