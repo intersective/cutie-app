@@ -8,7 +8,7 @@ import { PusherService, SendMessageParam } from '@shared/pusher/pusher.service';
 import { FilestackService } from '@shared/filestack/filestack.service';
 import { PopupService } from '@shared/popup/popup.service';
 
-import { ChatService, ChatChannel, Message, MessageListResult } from '../chat.service';
+import { ChatService, ChatChannel, Message, MessageListResult, FileResponse } from '../chat.service';
 import { ChatPreviewComponent } from '../chat-preview/chat-preview.component';
 import { ChatInfoComponent } from '../chat-info/chat-info.component';
 import { ScheduleMessagePopupComponent } from '../schedule-message-popup/schedule-message-popup.component';
@@ -53,13 +53,12 @@ export class ChatRoomComponent {
   whoIsTyping: string;
   isScheduleListOpen: boolean;
 
-  selectedAttachments: any[] = [];
+  selectedAttachments: FileResponse[] = [];
 
   constructor(
     private chatService: ChatService,
     public router: Router,
     public storage: StorageService,
-    private route: ActivatedRoute,
     public utils: UtilsService,
     public pusherService: PusherService,
     private filestackService: FilestackService,
@@ -177,13 +176,7 @@ export class ChatRoomComponent {
       sentAt: data.sentAt
     };
     if (receivedMessage && receivedMessage.file) {
-      let fileObject = null;
-      fileObject = typeof receivedMessage.file === 'string' ? JSON.parse(receivedMessage.file) : receivedMessage.file;
-      if (this.utils.isEmpty(fileObject)) {
-        fileObject = null;
-      }
-      receivedMessage.fileObject = fileObject;
-      receivedMessage.preview = this.attachmentPreview(receivedMessage.fileObject);
+      receivedMessage.preview = this.attachmentPreview(receivedMessage.file);
     }
     if (receivedMessage.senderUuid &&
       this.storage.getUser().uuid &&
@@ -222,8 +215,8 @@ export class ChatRoomComponent {
           this.messagePageCursor = messageListResult.cursor;
           this.loadingChatMessages = false;
           messages = messages.map(msg => {
-            if (msg.file && msg.fileObject) {
-              msg.preview = this.attachmentPreview(msg.fileObject);
+            if (msg.file) {
+              msg.preview = this.attachmentPreview(msg.file);
             }
             return msg;
           });
@@ -264,30 +257,24 @@ export class ChatRoomComponent {
     }
   }
 
-  private getPostMessageParams(type, file?: any) {
+  private getPostMessageParams(type: 'text' | 'file', file?: FileResponse) {
     if (type === 'text') {
       if (!this.message || this.utils.isQuillContentEmpty(this.message)) {
         return;
       }
-      const message = this.message;
       return {
         channelUuid: this.channelUuid,
-        message: message
+        message: this.message
       };
     }
     if (type === 'file' && file) {
-      if (!file.mimetype) {
-        file.mimetype = '';
-      }
-      const message = this.message;
       return {
         channelUuid: this.channelUuid,
-        message: message,
-        file: JSON.stringify(file)
+        message: this.message,
+        file: file
       };
-    } else {
-      return;
     }
+    return;
   }
 
   postTextOnlyMessage() {
@@ -329,13 +316,13 @@ export class ChatRoomComponent {
     });
   }
 
-  triggerPusherEvent(response, file?: any) {
+  triggerPusherEvent(response, file?: FileResponse) {
     const pusherData: SendMessageParam = {
       channelUuid: this.channelUuid,
       uuid: response.uuid,
       isSender: response.isSender,
       message: response.message,
-      file: response.file,
+      file: file || response.file,
       created: response.created,
       senderUuid: response.senderUuid,
       senderName: response.senderName,
@@ -343,9 +330,6 @@ export class ChatRoomComponent {
       senderAvatar: response.senderAvatar,
       sentAt: response.sentAt
     };
-    if (file) {
-      pusherData.file = JSON.stringify(file);
-    }
     this.pusherService.triggerSendMessage(this.chatChannel.pusherChannel, pusherData);
   }
 
@@ -597,24 +581,21 @@ export class ChatRoomComponent {
     );
   }
 
-  private attachmentPreview(filestackRes) {
-    if (!filestackRes) {
+  private attachmentPreview(fileResponse: FileResponse) {
+    if (!fileResponse) {
       return;
     }
-    let preview = `Uploaded ${filestackRes.filename}`;
+    let preview = `Uploaded ${fileResponse.name}`;
     const dimension = 224;
-    if (!filestackRes.mimetype) {
+    if (!fileResponse.type) {
       return preview;
     }
-    if (filestackRes.mimetype.includes('image')) {
-      const attachmentURL = `https://cdn.filestackcontent.com/quality=value:70/resize=w:${dimension},h:${dimension},fit:crop/${filestackRes.handle}`;
-      // preview = `<p>Uploaded ${filestackRes.filename}</p><img src=${attachmentURL}>`;
-      preview = `<img src=${attachmentURL}>`;
-    } else if (filestackRes.mimetype.includes('video')) {
-      // we'll need to identify filetype for 'any' type fileupload
+    if (fileResponse.type.includes('image')) {
+      const truncatedName = fileResponse.name.length > 20 ? fileResponse.name.substring(0, 20) + '...' : fileResponse.name;
+      preview = `<img src="${fileResponse.url}" alt="${truncatedName}">`;
+    } else if (fileResponse.type.includes('video')) {
       preview = `<app-file-display [file]="submission.answer" [fileType]="question.fileType"></app-file-display>`;
     }
-
     return preview;
   }
 

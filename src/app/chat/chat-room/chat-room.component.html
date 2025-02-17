@@ -1,8 +1,8 @@
-<ion-header mode="ios">
+<ion-header mode="ios" aria-label="chat room">
   <ion-toolbar class="ion-toolbar-absolute">
     <ion-title class="ion-text-center subtitle-2">{{ chatChannel.name }}</ion-title>
-    <ion-button slot="end" fill="clear" size="small" (click)="openChatInfo()">
-      <ion-icon color="primary" slot="icon-only" name="information-circle"></ion-icon>
+    <ion-button slot="end" fill="clear" size="small" (click)="openChatInfo()" aria-label="chatroom info">
+      <ion-icon color="primary" slot="icon-only" name="information-circle" aria-hidden="true"></ion-icon>
     </ion-button>
   </ion-toolbar>
   <ion-toolbar *ngIf="isScheduleListOpen || chatChannel.scheduledMessageCount > 0" class="schedule-message-banner">
@@ -23,25 +23,25 @@
     class="ion-content-absolute-with-footer" color="light" [scrollEvents]="true"
     (ionScroll)="loadMoreMessages($event)">
 
-    <div *ngIf="loadingChatMessages" class="ion-text-center">
+    <div *ngIf="loadingChatMessages" class="ion-text-center" aria-label="loading message">
       <ion-spinner></ion-spinner>
     </div>
 
-    <div *ngIf="!messageList.length && !loadingChatMessages" class="ion-text-center not-started-empty-status">
-      <img class="image desktop" src="/assets/icon-epmty-chat.svg">
-      <p class="head-text headline-5 gray-3">Type your first message!</p>
-      <p class="sub-text subtitle-1 gray-1">It's time to start a chat</p>
+    <div *ngIf="!messageList.length && !loadingChatMessages" class="ion-text-center not-started-empty-status" aria-live="polite">
+      <img class="image desktop" src="/assets/icon-epmty-chat.svg" alt="empty chat" i18n-alt aria-hidden="true">
+      <p class="head-text headline-5 gray-3" i18n>Type your first message!</p>
+      <p class="sub-text subtitle-1 gray-1" i18n>It's time to start a chat</p>
     </div>
 
     <ion-list lines="none" color="light" class="chat-list desktop-view ion-no-padding">
       <ion-item *ngFor="let message of messageList; let index=index" color="light">
         <ng-container *ngIf="isLastMessage(message)">
           <ion-avatar [ngClass]="getAvatarClass(message)" slot="start">
-            <img [src]="message.senderAvatar">
+            <img [src]="message.senderAvatar" alt="sender avatar">
           </ion-avatar>
         </ng-container>
 
-        <ion-label [ngClass]="getClassForMessageBubble(message)">
+        <ion-label [ngClass]="getClassForMessageBubble(message)" text-wrap>
 
           <div *ngIf="checkToShowMessageTime(message)" class="time caption gray-2">
             <p>{{getMessageDate(message.sentAt)}}</p>
@@ -53,32 +53,34 @@
               <ion-button class="delete-btn" fill="clear" size="small" title="Delete Message" (click)="deleteMessage(message.uuid)">
                 <ion-icon name="trash" slot="icon-only"></ion-icon>
               </ion-button>
-              <ion-button fill="clear" size="small" title="Edit Message" *ngIf="!message.fileObject" (click)="openEditMessagePopup(index)">
+              <ion-button fill="clear" size="small" title="Edit Message" *ngIf="!message.file" (click)="openEditMessagePopup(index)">
                 <ion-icon name="create" slot="icon-only"></ion-icon>
               </ion-button>
             </div>
 
-            <div class="message-body" [ngClass]="getClassForMessageBody(message)">
+            <div class="message-body" [ngClass]="getClassForMessageBody(message)" aria-describedby="message-content">
               <ng-container *ngIf="!message.isSender">
                 <p class="seen-text subtitle-1 black">{{message.senderName}}</p>
                 <p class="seen-text caption gray-2">{{ utils.getUserRolesForUI(message.senderRole) }}</p>
               </ng-container>
   
-              <ng-container *ngIf="message.message || !message.fileObject;">
+              <ng-container *ngIf="message.message || !message.file;">
                 <!-- Quill read only view/ use to render html content -->
-                <quill-view [content]="message.message"></quill-view>
+                <quill-view id="message-content" [content]="message?.message" [sanitize]="true" tabindex="0"></quill-view>
               </ng-container>
   
-              <ng-container *ngIf="message.fileObject">
-                <ng-container *ngIf="message.fileObject && message.fileObject.mimetype && message.fileObject.mimetype.includes('video')">
-                  <ng-container *ngIf="message?.fileObject?.mimetype === 'video/mp4'; else nonMp4Format">
-                    <p class="label">
-                      {{ message.fileObject.filename }}
-                    </p>
-                    <div id="inner-box" (click)="preview(message.fileObject)">
-                      <p>
-                        <ion-icon name="play-circle"></ion-icon>
+              <ng-container *ngIf="message?.file?.type">
+                <ng-container *ngIf="message?.file?.type?.includes('video')">
+                  <ng-container *ngIf="message?.file?.type === 'video/mp4'; else nonMp4Format">
+                    <div id="message-content" class="label" (click)="preview(message.file)" (keydown)="preview(message.file)" tabindex="0" role="button">
+                      <p class="label">
+                        {{ message.file.name }}
                       </p>
+                      <div id="inner-box">
+                        <p>
+                          <ion-icon name="play-circle"></ion-icon>
+                        </p>
+                      </div>
                     </div>
                   </ng-container>
                   <ng-template #nonMp4Format>
@@ -86,20 +88,20 @@
                   </ng-template>
                 </ng-container>
   
-                <ng-container *ngIf="message.fileObject && message.fileObject.mimetype && message.fileObject.mimetype.includes('image')">
-                  <div [innerHTML]="message.preview" (click)="preview(message.fileObject)"></div>
+                <ng-container *ngIf="message?.file?.type?.includes('image')">
+                  <div [innerHTML]="message.preview" (click)="preview(message.file)" (keydown)="preview(message.file)" tabindex="0" role="button"></div>
                 </ng-container>
   
-                <ng-container *ngIf="(message.fileObject && !message.fileObject.mimetype) || (message.fileObject && (
-                                  !message.fileObject.mimetype.includes('image') && !message.fileObject.mimetype.includes('video')))">
-                  <ion-item class="general-attachment" (click)="previewFile(message.fileObject)">
+                <ng-container *ngIf="(message.file && !message.file.type) || (message.file && (
+                                  !message.file.type.includes('image') && !message.file.type.includes('video')))">
+                  <ion-item class="general-attachment" (click)="previewFile(message.file)">
                     <ion-ripple-effect></ion-ripple-effect>
-                    <ion-icon name="document" slot="start"></ion-icon>
+                    <ion-icon name="document-outline" slot="start"></ion-icon>
                     <ion-label color="primary">
-                      {{ message.fileObject.filename }}
+                      {{ message.file.name }}
                     </ion-label>
-                    <ion-note *ngIf="getTypeByMime(message.fileObject.mimetype)">
-                      {{ getTypeByMime(message.fileObject.mimetype) }}
+                    <ion-note *ngIf="getTypeByMime(message.file.type)">
+                      {{ getTypeByMime(message.file.type) }}
                     </ion-note>
                   </ion-item>
                 </ng-container>
@@ -111,10 +113,10 @@
         </ion-label>
       </ion-item>
 
-    <ng-container *ngIf="whoIsTyping">
-      <ion-item color="light">
-        <ion-label class="received-messages no-avatar" color="medium">
-          <p class="message-typing">
+      <ng-container *ngIf="whoIsTyping">
+        <ion-item color="light">
+          <ion-label class="received-messages no-avatar" color="medium">
+            <p class="message-typing">
               <i>{{ whoIsTyping }}</i>
               <ion-spinner name="dots" class="vertical-middle"></ion-spinner>
             </p>

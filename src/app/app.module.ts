@@ -33,7 +33,9 @@ import { urlFormatter } from 'helper';
         NgbModule
     ],
     providers: [
-        { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+        {
+            provide: RouteReuseStrategy, useClass: IonicRouteStrategy 
+        },
         UtilsService
     ],
     bootstrap: [AppComponent]

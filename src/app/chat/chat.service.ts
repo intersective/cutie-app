@@ -10,6 +10,12 @@ import { DemoService } from '@services/demo.service';
 import { delay } from 'rxjs';
 import { StorageService } from '@services/storage.service';
 
+export interface FileResponse {
+  name: string;
+  type: string;
+  url: string;
+}
+
 export interface ChatChannel {
   uuid: string;
   name: string;
@@ -50,7 +56,7 @@ export interface Message {
   isSender: boolean;
   message: string;
   created: string;
-  file: string;
+  file: FileResponse;
   fileObject?: {
     filename: string;
     mimetype: string;
@@ -113,7 +119,7 @@ export interface ChannelCreatePopupParam {
 interface NewMessageParam {
   channelUuid: string;
   message: string;
-  file?: string;
+  file?: FileResponse;
   scheduled?: string;
 }
 
@@ -233,7 +239,11 @@ export class ChatService {
               uuid
               isSender
               message
-              file
+              file {
+                name
+                type
+                url
+              }
               created
               scheduled
               sentAt
@@ -401,27 +411,31 @@ export class ChatService {
       return of(this._normalisePostMessageResponse(response.data)).pipe(delay(1000));
     }
     return this.apollo.graphQLMutate(
-      `mutation createChatLogs($channelUuid: String!, $message: String, $file: String, $scheduled: String) {
-        createChatLog(channelUuid: $channelUuid, message: $message, file: $file, scheduled: $scheduled) {
+      `mutation createChatLogs($channelUuid: String!, $message: String, $fileObj: FileInput, $scheduled: String) {
+        createChatLog(channelUuid: $channelUuid, message: $message, fileObj: $fileObj, scheduled: $scheduled) {
+          uuid
+          isSender
+          message
+          file {
+            name
+            type
+            url
+          }
+          created
+          scheduled
+          sentAt
+          sender {
             uuid
-            isSender
-            message
-            file
-            created
-            scheduled
-            sentAt
-            sender {
-              uuid
-              name
-              role
-              avatar
+            name
+            role
+            avatar
           }
         }
       }`,
       {
         channelUuid: data.channelUuid,
         message: data.message,
-        file: data.file,
+        fileObj: data.file,
         scheduled: data.scheduled
       }
     ).pipe(
