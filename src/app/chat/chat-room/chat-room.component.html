@@ -164,7 +164,7 @@
         <ion-row nowrap class="ion-no-padding ion-align-items-left ion-justify-content-start attach-preview">
           <ng-container *ngFor="let attachment of selectedAttachments; let i = index">
             <!-- Image preview -->
-            <ion-col size="4" size-lg="2" class="ion-no-padding" *ngIf="attachment.mimetype && attachment.mimetype.includes('image')">
+            <ion-col size="4" size-lg="2" class="ion-no-padding" *ngIf="attachment.type && attachment.type.includes('image')">
               <div class="image">
                 <img [src]="getResizedImageUrl(attachment, 80)">
                 <div class="overlay" (click)="preview(attachment)"></div>
@@ -174,7 +174,7 @@
               </div>
             </ion-col>
             <!-- video preview -->
-            <ion-col size="4" size-lg="2" class="ion-no-padding" *ngIf="attachment.mimetype && attachment.mimetype.includes('video')">
+            <ion-col size="4" size-lg="2" class="ion-no-padding" *ngIf="attachment.type && attachment.type.includes('video')">
               <div class="video">
                 <div class="play-icon">
                   <ion-icon name="play" color="ocean"></ion-icon>
@@ -186,14 +186,14 @@
               </div>
             </ion-col>
             <!-- File preview -->
-            <ion-col size="10" size-lg="6" class="ion-no-padding ion-text-center" *ngIf="!attachment.mimetype || !attachment.mimetype.includes('image') && !attachment.mimetype.includes('video')">
+            <ion-col size="10" size-lg="6" class="ion-no-padding ion-text-center" *ngIf="!attachment.type || !attachment.type.includes('image') && !attachment.type.includes('video')">
               <div class="file-preview">
                 <ion-item lines="none" class="general-attachment" (click)="previewFile(attachment)">
                   <ion-ripple-effect></ion-ripple-effect>
                   <ion-icon name="document" slot="start"></ion-icon>
                   <ion-label color="black">
-                    <p>{{ attachment.filename }}</p>
-                    <p class="mimetype" *ngIf="getTypeByMime(attachment.mimetype)">{{ getTypeByMime(attachment.mimetype) }}</p>
+                    <p>{{ attachment.name }}</p>
+                    <p class="mimetype" *ngIf="getTypeByMime(attachment.type)">{{ getTypeByMime(attachment.type) }}</p>
                   </ion-label>
                 </ion-item>
                 <div class="overlay" (click)="preview(attachment)"></div>
